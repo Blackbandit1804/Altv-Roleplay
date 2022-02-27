@@ -1,7 +1,6 @@
 import * as alt from 'alt';
 import * as game from 'natives';
-import { LocalStorage } from "alt";
-const storage = LocalStorage.get();
+import * as LocalStorage from "alt";
 
 alt.on('keyup', (key) => {
     if (alt.Player.local.getSyncedMeta("HasHandcuffs") == true || alt.Player.local.getSyncedMeta("HasRopeCuffs") == true || alt.Player.local.getSyncedMeta("IsUnconscious") == true || alt.Player.local.getSyncedMeta("IsCefOpen") == true) return;
