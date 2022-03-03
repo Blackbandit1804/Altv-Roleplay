@@ -524,28 +524,28 @@ namespace Altv_Roleplay.Handler
                             {
                    
                                 player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 0, 0);         //  Sonnenbrille
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 374, 0);       //  Oberbekleidung
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 55, 0);       //  Oberbekleidung
                                 player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 0, 0);         //  Körper
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 186, 0);       //  Unterbekleidung
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 129, 1);       //  Hose 
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 58, 0);       //  Unterbekleidung
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 24, 0);       //  Hose 
                                 player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, 0, 0);       //  Gürtel
                                 player.EmitLocked("Client:SpawnArea:setCharClothes", 10, 8, 1);        //  Decals
                                 player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 25, 0);        //  Schuhe
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 57, 0);      // Schutzweste
+                               //player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 57, 0);      // Schutzweste
                                
                             }
                             else
                             {
                                 //Weiblich
                                 player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 0, 0);         //  Sonnenbrille
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 100, 0);       //  Oberbekleidung
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 48, 0);       //  Oberbekleidung
                                 player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 0, 0);         //  Körper
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 186, 0);       //  Unterbekleidung
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 129, 1);       //  Hose 
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 10, 0);       //  Unterbekleidung
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 30, 0);       //  Hose 
                                 player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, 0, 0);       //  Gürtel
                                 player.EmitLocked("Client:SpawnArea:setCharClothes", 10, 8, 1);        //  Decals
                                 player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 25, 0);        //  Schuhe
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 57, 0);      // Schutzweste
+                                //player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 57, 0);      // Schutzweste
 
                             }
 
