@@ -1,0 +1,2 @@
+| 5 | Saved Coordenates: Position(x: 461,1033, y: -987,66595, z: 25,690796) Saved Rotation: Rotation(roll: 0, pitch: 0, yaw: 3,1168559)
+| out | Saved Coordenates: Position(x: 457,91208, y: -993,0857, z: 25,690796) Saved Rotation: Rotation(roll: 0, pitch: 0, yaw: 0,8905303)

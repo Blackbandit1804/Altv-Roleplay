@@ -527,10 +527,10 @@ namespace Altv_Roleplay.Handler
                                 player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 55, 0);       //  Oberbekleidung
                                 player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 0, 0);         //  Körper
                                 player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 58, 0);       //  Unterbekleidung
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 24, 0);       //  Hose 
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 121, 0);       //  Hose 
                                 player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, 0, 0);       //  Gürtel
                                 player.EmitLocked("Client:SpawnArea:setCharClothes", 10, 8, 1);        //  Decals
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 25, 0);        //  Schuhe
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 24, 0);        //  Schuhe
                                //player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 57, 0);      // Schutzweste
                                
                             }
@@ -538,10 +538,10 @@ namespace Altv_Roleplay.Handler
                             {
                                 //Weiblich
                                 player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 0, 0);         //  Sonnenbrille
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 48, 0);       //  Oberbekleidung
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 330, 0);       //  Oberbekleidung
                                 player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 0, 0);         //  Körper
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 10, 0);       //  Unterbekleidung
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 30, 0);       //  Hose 
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 35, 0);       //  Unterbekleidung
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 112, 0);       //  Hose 
                                 player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, 0, 0);       //  Gürtel
                                 player.EmitLocked("Client:SpawnArea:setCharClothes", 10, 8, 1);        //  Decals
                                 player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 25, 0);        //  Schuhe
@@ -576,15 +576,14 @@ namespace Altv_Roleplay.Handler
                             player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 24, 2);
                             player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 250, 0);
                             player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 155, 0);
-                            //player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 12, 1); // WESTE
                             player.EmitLocked("Client:SpawnArea:setCharClothes", 10, 58, 1);
                             player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 25, 0);
                             player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 87, 0);
                             player.EmitLocked("Client:SpawnArea:setCharAccessory", 2, 2, 0);
-
                             player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, 0, 0);
                             player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 0, 0);
                             player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 0, 0);
+
                             HUDHandler.SendNotification(player, 2, 2500, "Du hast deine Arbeitsklamotten angezogen.");
                             player.SetData("HasMedicClothesOn", true);
                             Characters.SetCharacterArmor(charId, 100);
@@ -644,16 +643,34 @@ namespace Altv_Roleplay.Handler
                     {
                         if (!player.HasData("HasVUCClothesOn"))
                         {
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 98, 6);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 248, 14);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 153, 0);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 25, 0);
-                            player.EmitLocked("Client:SpawnArea:setCharAccessory", 2, 2, 0);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 43, 0);
+                            if (!Characters.GetCharacterGender((int)player.GetCharacterMetaId()))
+                            {
 
-                            player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, 0, 0);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 0, 0);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 0, 0);
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 0, 0);         //  Sonnenbrille
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 58, 0);       //  Oberbekleidung
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 0, 0);         //  Körper
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 4, 0);       //  Unterbekleidung
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 35, 0);       //  Hose 
+                                player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, 0, 0);       //  Gürtel
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 10, 8, 1);        //  Decals
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 21, 0);        //  Schuhe
+                                                                                                       
+
+                            }
+                            else
+                            {
+                                //Weiblich
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 0, 0);         //  Sonnenbrille
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 13, 0);       //  Oberbekleidung
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 211, 0);         //  Körper
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 8, 0);       //  Unterbekleidung
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 20, 2);       //  Hose 
+                                player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, 0, 0);       //  Gürtel
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 10, 0, 0);        //  Decals
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 7, 0);        //  Schuhe
+                              
+
+                            }
                             HUDHandler.SendNotification(player, 2, 2500, "Du hast deine Arbeitsklamotten angezogen.");
                             player.SetData("HasVUCClothesOn", true);
                             Characters.SetCharacterArmor(charId, 100);
