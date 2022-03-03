@@ -13,6 +13,10 @@ using Altv_Roleplay.Factories;
 using Altv_Roleplay.Model;
 using Altv_Roleplay.models;
 using Altv_Roleplay.Utils;
+using Altv_Roleplay.Handler;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Globalization;
 
 namespace Altv_Roleplay.Handler
 {
@@ -516,18 +520,34 @@ namespace Altv_Roleplay.Handler
                     {
                         if (!player.HasData("HasPDClothesOn"))
                         {
+                            if (!Characters.GetCharacterGender((int)player.GetCharacterMetaId()))
+                            {
+                   
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 0, 0);         //  Sonnenbrille
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 374, 0);       //  Oberbekleidung
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 0, 0);         //  Körper
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 186, 0);       //  Unterbekleidung
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 129, 1);       //  Hose 
+                                player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, 0, 0);       //  Gürtel
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 10, 8, 1);        //  Decals
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 25, 0);        //  Schuhe
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 57, 0);      // Schutzweste
+                               
+                            }
+                            else
+                            {
+                                //Weiblich
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 0, 0);         //  Sonnenbrille
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 100, 0);       //  Oberbekleidung
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 0, 0);         //  Körper
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 186, 0);       //  Unterbekleidung
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 129, 1);       //  Hose 
+                                player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, 0, 0);       //  Gürtel
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 10, 8, 1);        //  Decals
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 25, 0);        //  Schuhe
+                                player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 57, 0);      // Schutzweste
 
-                            //player.EmitLocked("Client:SpawnArea:setCharAccessory", 0, 46, 0);    //  Kopfbedeckung
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 0, 0);         //  Sonnenbrille
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 374, 0);       //  Oberbekleidung
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 0, 0);         //  Körper
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 186, 0);       //  Unterbekleidung
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 129, 1);       //  Hose 
-                            player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, 0, 0);       //  Gürtel
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 10, 8, 1);        //  Decals
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 25, 0);        //  Schuhe
-
-                            //player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 57, 0);      // Schutzweste
+                            }
 
                             HUDHandler.SendNotification(player, 2, 2500, "Du hast deine Arbeitsklamotten angezogen.");
                             player.SetData("HasPDClothesOn", true);

@@ -290,7 +290,6 @@ D:\GitHub\Github-master\Altv-Roleplay\Gameserver\resources\roleplay\Altv-Rolepla
 D:\GitHub\Github-master\Altv-Roleplay\Gameserver\resources\roleplay\Altv-Roleplay.dll
 D:\GitHub\Github-master\Altv-Roleplay\Gameserver\resources\roleplay\ref\Altv-Roleplay.dll
 D:\GitHub\Github-master\Altv-Roleplay\Gameserver\resources\roleplay\Altv-Roleplay.pdb
-D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\obj\Debug\Altv-Roleplay.csproj.AssemblyReference.cache
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\obj\Debug\Altv-Roleplay.GeneratedMSBuildEditorConfig.editorconfig
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\obj\Debug\Altv-Roleplay.AssemblyInfoInputs.cache
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\obj\Debug\Altv-Roleplay.AssemblyInfo.cs
