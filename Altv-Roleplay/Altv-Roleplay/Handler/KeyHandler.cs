@@ -639,7 +639,7 @@ namespace Altv_Roleplay.Handler
                 if (player.Position.IsInRange(Constants.Positions.Clothes_VUC, 2.5f) && !player.IsInVehicle)
                 {
                     int factionId = ServerFactions.GetCharacterFactionId(charId);
-                    if (factionId == 5)
+                    if (factionId == 9)
                     {
                         if (!player.HasData("HasVUCClothesOn"))
                         {
