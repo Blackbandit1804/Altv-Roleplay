@@ -2,3 +2,15 @@
 *.resource
 Gameserver/server.log
 *.log
+*.ydd
+*.yft
+*.ytd
+*.meta
+*.ydr
+*.ybn
+*.ymt
+*.ytyp
+*.ymap
+*.ymf
+*.ynv
+*.dat151
