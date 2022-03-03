@@ -1,115 +1,402 @@
-[17:04:40] alt:V Server 9.6 (release)
-[17:04:40] Starting Community Roleplay on 0.0.0.0:7788
-[17:04:40] Loading resource minimap
-[17:04:40] Loaded resource minimap
-[17:04:40] Loading resource minimap_js
-[17:04:40] Loaded resource minimap_js
-[17:04:40] Loading resource maps_gabz
-[17:04:42] Loaded resource maps_gabz
-[17:04:42] Loading resource passengerseat
-[17:04:42] Loaded resource passengerseat
-[17:04:42] Loading resource els
-[17:04:42] Loaded resource els
-[17:04:42] Loading resource clothes_01
-[17:04:44] Loaded resource clothes_01
-[17:04:44] Loading resource DisableIdleCam
-[17:04:44] Loading resource chat
-[17:04:44] Loaded resource chat
-[17:04:44] Loaded resource DisableIdleCam
-[17:04:44] Loading resource es-blip
-[17:04:44] Loaded resource es-blip
-[17:04:44] Loading resource es-helptext
-[17:04:44] Loaded resource es-helptext
-[17:04:44] Loading resource es-marker
-[17:04:44] Loaded resource es-marker
-[17:04:44] Loading resource es-object
-[17:04:44] Loaded resource es-object
-[17:04:44] Loading resource es-streamer-text
-[17:04:44] Loaded resource es-streamer-text
-[17:04:44] Loading resource es-ped
-[17:04:44] Loaded resource es-ped
-[17:04:44] Loading resource HideMap
-[17:04:45] Loaded resource HideMap
-[17:04:45] Loading resource pointing
-[17:04:45] Loaded resource pointing
-[17:04:45] Loading resource weather
-[17:04:45] RealWeatherTimeSync: started
-[17:04:45] Loaded resource weather
-[17:04:45] Loading resource roleplay
-[17:04:49] 1 Charakter-Skins wurden geladen.
-[17:04:50] 0 Character Bank Accounts wurden geladen.
-[17:04:50] 1 Charakter Positionen wurden geladen.
-[17:04:50] 5 Charakter Inventar-Items wurden geladen.
-[17:04:50] 1 Character-Licenses wurden geladen.
-[17:04:50] 0 Character-Permissions wurden geladen.
-[17:04:50] 1 Character-Minijob-Entrys wurden geladen.
-[17:04:50] 0 Character-Phone-Chats wurden geladen.
-[17:04:50] 0 Character-Phone-Chat-Messages wurden geladen.
-[17:04:50] 0 Character-Phone-Contacts wurden geladen.
-[17:04:50] 0 Character-Phone-Verlauf wurden geladen.
-[17:04:50] 142 Server-Storages wurden geladen.
-[17:04:50] 104 Server-Wanted-Einträge wurden geladen.
-[17:04:50] 0 Characters-Wanted-Einträge wurden geladen.
-[17:04:50] 28 Server-Blips wurden geladen.
-[17:04:50] 5 Server-Marker wurden geladen.
-[17:04:50] 803 Server-All-Vehicles wurden geladen.
-[17:04:51] 309 Server-Animationen wurden geladen.
-[17:04:51] 78 Server-ATMs wurden geladen.
-[17:04:51] 16 Server-Banken wurden geladen.
-[17:04:51] 0 Server-Bank-Papers geladen.
-[17:04:51] 264 Server-Items wurden geladen.
-[17:04:51] 11 Server-Peds wurden geladen.
-[17:04:51] 15 Server-Clothes-Shops wurden geladen.
-[17:04:51] 30175 Server-Clothes-Shop-Items wurden geladen.
-[17:04:51] 51 Server-Shops wurden geladen.
-[17:04:52] 677 Server ShopItems wurden geladen.
-[17:04:52] 7 Server-Barbers wurden geladen.
-[17:04:52] 12 Server-Teleports wurden geladen.
-[17:04:52] 58 Server-Garagen wurden geladen.
-[17:04:52] 90 Server-Garagen Slots wurden geladen.
-[17:04:52] 0 Server-Vehicle-Mods wurden geladen.
-[17:04:52] 0 Server-Vehicles wurden geladen.
-[17:04:52] 0 Server-Vehicle-Trunk-Items wurden geladen.
-[17:04:52] 10 Server-Vehicle-Shops wurden geladen.
-[17:04:52] 142 Server-Vehicle-ShopItems wurden geladen.
-[17:04:52] 9 Server-Farming-Spots wurden geladen.
-[17:04:52] 19 Server-Farming-Verarbeiter wurden geladen.
-[17:04:52] 9 Server-Jobs wurden geladen.
-[17:04:52] 8 Server-Licenses wurden geladen.
-[17:04:52] 26 Server-Tankstellen wurden geladen.
-[17:04:52] 230 Server-Tankstellen-Spots wurden geladen
-[17:04:52] 9 Server-Tablet-App-Datas wurden geladen.
-[17:04:52] 1 Character-Tablet-App Einträge wurden geladen.
-[17:04:53] 1 Character-Tablet-Tutorial Entrys wurden geladen.
-[17:04:53] 0 Server-Tablet-Events wurden geladen.
-[17:04:53] 51 Server-Tablet-Notes wurden geladen.
-[17:04:53] 0 Server-Companys wurden geladen.
-[17:04:53] 0 Server-Company-Member wurden geladen.
-[17:04:53] 17 Server-Factions wurden geladen.
-[17:04:53] 30 Server-Faction-Positions wurden geladen.
-[17:04:53] 0 Server-Faction-Labor-Items wurden geladen.
-[17:04:53] 30 Server-Faction-Members wurden geladen.
-[17:04:53] 168 Server-Faction-Ranks wurden geladen.
-[17:04:53] 0 Server-Faction-Member wurden geladen.
-[17:04:53] 0 Server-Faction-Storage-Items wurden geladen.
-[17:04:53] 43 Server-Doors wurden geladen.
-[17:04:53] 7 Server-Hotels wurden geladen.
-[17:04:53] 68 Server-Hotels-Apartments wurden geladen.
-[17:04:53] 0 Server-Hotels-Storage-Items wurden geladen.
-[17:04:53] 1012 Server-Houses wurden geladen.
-[17:04:53] 10 Server-House-Interior wurden geladen.
-[17:04:53] 0 Server-House-Storage-Items wurden geladen.
-[17:04:53] 0 Server-House-Renter wurden geladen.
-[17:04:53] 6 Server-Minijobs-BusDriver-Routes wurden geladen.
-[17:04:53] 47 Server-Minijob-Busdriver-Spots wurden geladen.
-[17:04:54] 177 Server-Minijob-Garbage-Spots wurden geladen.
-[17:04:54] 0 Server-Fraktions-Logs wurden geladen.
-[17:04:54] 0 Server-Company-Logs wurden geladen.
-[17:04:54] Lade Minijob: Elektrolieferant...
-[17:04:54] Minijob: Elektrolieferant geladen...
-[17:04:54] Lade Minijob: Pilot...
-[17:04:54] Minijob: Pilot geladen...
-[17:04:54] Lade Minijob: Müllmann...
-[17:04:54] Minijob: Müllmann geladen...
-[17:04:54] Lade Minijob: Busfahrer...
-[17:04:54] Minijob: Busfahrer geladen...
+[17:36:17] alt:V Server 9.6 (release)
+[17:36:17] Starting Community-Roleplay on 0.0.0.0:7788
+[17:36:17] Loading resource minimap
+[17:36:17] Loaded resource minimap
+[17:36:17] Loading resource minimap_js
+[17:36:17] Loaded resource minimap_js
+[17:36:17] Loading resource maps_gabz
+[17:36:18] Loaded resource maps_gabz
+[17:36:18] Loading resource passengerseat
+[17:36:18] Loaded resource passengerseat
+[17:36:18] Loading resource els
+[17:36:18] Loaded resource els
+[17:36:18] Loading resource clothes_01
+[17:36:18] Loaded resource clothes_01
+[17:36:18] Loading resource DisableIdleCam
+[17:36:18] Loading resource chat
+[17:36:18] Loaded resource chat
+[17:36:18] Loaded resource DisableIdleCam
+[17:36:18] Loading resource es-blip
+[17:36:18] Loaded resource es-blip
+[17:36:18] Loading resource es-helptext
+[17:36:18] Loaded resource es-helptext
+[17:36:18] Loading resource es-marker
+[17:36:18] Loaded resource es-marker
+[17:36:18] Loading resource es-object
+[17:36:18] Loaded resource es-object
+[17:36:18] Loading resource es-streamer-text
+[17:36:18] Loaded resource es-streamer-text
+[17:36:18] Loading resource es-ped
+[17:36:18] Loaded resource es-ped
+[17:36:18] Loading resource HideMap
+[17:36:18] Loaded resource HideMap
+[17:36:18] Loading resource pointing
+[17:36:18] Loaded resource pointing
+[17:36:18] Loading resource weather
+[17:36:18] RealWeatherTimeSync: started
+[17:36:18] Loaded resource weather
+[17:36:18] Loading resource roleplay
+[17:36:22] 1 Charakter-Skins wurden geladen.
+[17:36:22] 0 Character Bank Accounts wurden geladen.
+[17:36:22] 1 Charakter Positionen wurden geladen.
+[17:36:22] 5 Charakter Inventar-Items wurden geladen.
+[17:36:22] 1 Character-Licenses wurden geladen.
+[17:36:22] 0 Character-Permissions wurden geladen.
+[17:36:22] 1 Character-Minijob-Entrys wurden geladen.
+[17:36:22] 0 Character-Phone-Chats wurden geladen.
+[17:36:22] 0 Character-Phone-Chat-Messages wurden geladen.
+[17:36:22] 0 Character-Phone-Contacts wurden geladen.
+[17:36:22] 0 Character-Phone-Verlauf wurden geladen.
+[17:36:22] 142 Server-Storages wurden geladen.
+[17:36:22] 104 Server-Wanted-Einträge wurden geladen.
+[17:36:22] 0 Characters-Wanted-Einträge wurden geladen.
+[17:36:22] 28 Server-Blips wurden geladen.
+[17:36:23] 5 Server-Marker wurden geladen.
+[17:36:23] 803 Server-All-Vehicles wurden geladen.
+[17:36:23] 309 Server-Animationen wurden geladen.
+[17:36:23] 78 Server-ATMs wurden geladen.
+[17:36:23] 16 Server-Banken wurden geladen.
+[17:36:23] 0 Server-Bank-Papers geladen.
+[17:36:23] 264 Server-Items wurden geladen.
+[17:36:23] 11 Server-Peds wurden geladen.
+[17:36:23] 15 Server-Clothes-Shops wurden geladen.
+[17:36:23] 30175 Server-Clothes-Shop-Items wurden geladen.
+[17:36:23] 51 Server-Shops wurden geladen.
+[17:36:23] 677 Server ShopItems wurden geladen.
+[17:36:23] 7 Server-Barbers wurden geladen.
+[17:36:23] 12 Server-Teleports wurden geladen.
+[17:36:24] 58 Server-Garagen wurden geladen.
+[17:36:24] 90 Server-Garagen Slots wurden geladen.
+[17:36:24] 0 Server-Vehicle-Mods wurden geladen.
+[17:36:24] 0 Server-Vehicles wurden geladen.
+[17:36:24] 0 Server-Vehicle-Trunk-Items wurden geladen.
+[17:36:24] 10 Server-Vehicle-Shops wurden geladen.
+[17:36:24] 142 Server-Vehicle-ShopItems wurden geladen.
+[17:36:24] 9 Server-Farming-Spots wurden geladen.
+[17:36:24] 19 Server-Farming-Verarbeiter wurden geladen.
+[17:36:24] 9 Server-Jobs wurden geladen.
+[17:36:24] 8 Server-Licenses wurden geladen.
+[17:36:24] 26 Server-Tankstellen wurden geladen.
+[17:36:24] 230 Server-Tankstellen-Spots wurden geladen
+[17:36:24] 9 Server-Tablet-App-Datas wurden geladen.
+[17:36:24] 1 Character-Tablet-App Einträge wurden geladen.
+[17:36:24] 1 Character-Tablet-Tutorial Entrys wurden geladen.
+[17:36:24] 0 Server-Tablet-Events wurden geladen.
+[17:36:24] 51 Server-Tablet-Notes wurden geladen.
+[17:36:24] 0 Server-Companys wurden geladen.
+[17:36:24] 0 Server-Company-Member wurden geladen.
+[17:36:25] 17 Server-Factions wurden geladen.
+[17:36:25] 30 Server-Faction-Positions wurden geladen.
+[17:36:25] 0 Server-Faction-Labor-Items wurden geladen.
+[17:36:25] 30 Server-Faction-Members wurden geladen.
+[17:36:25] 168 Server-Faction-Ranks wurden geladen.
+[17:36:25] 0 Server-Faction-Member wurden geladen.
+[17:36:25] 0 Server-Faction-Storage-Items wurden geladen.
+[17:36:25] 43 Server-Doors wurden geladen.
+[17:36:25] 7 Server-Hotels wurden geladen.
+[17:36:25] 68 Server-Hotels-Apartments wurden geladen.
+[17:36:25] 0 Server-Hotels-Storage-Items wurden geladen.
+[17:36:25] 1012 Server-Houses wurden geladen.
+[17:36:25] 10 Server-House-Interior wurden geladen.
+[17:36:25] 0 Server-House-Storage-Items wurden geladen.
+[17:36:25] 0 Server-House-Renter wurden geladen.
+[17:36:25] 6 Server-Minijobs-BusDriver-Routes wurden geladen.
+[17:36:25] 47 Server-Minijob-Busdriver-Spots wurden geladen.
+[17:36:25] 177 Server-Minijob-Garbage-Spots wurden geladen.
+[17:36:25] 0 Server-Fraktions-Logs wurden geladen.
+[17:36:25] 0 Server-Company-Logs wurden geladen.
+[17:36:25] Lade Minijob: Elektrolieferant...
+[17:36:25] Minijob: Elektrolieferant geladen...
+[17:36:25] Lade Minijob: Pilot...
+[17:36:25] Minijob: Pilot geladen...
+[17:36:25] Lade Minijob: Müllmann...
+[17:36:25] Minijob: Müllmann geladen...
+[17:36:25] Lade Minijob: Busfahrer...
+[17:36:25] Minijob: Busfahrer geladen...
+[17:36:26] Loaded resource roleplay
+[17:36:26] Required server permissions:
+[17:36:26] Optional server permissions:
+[17:36:26] Starting HTTP server on 0.0.0.0:7788
+[17:36:26] Main thread started (ThreadId: 16980)
+[17:36:26] Colshape thread started (ThreadId: 14844)
+[17:36:26] EntityStreamer thread started (ThreadId: 10776)
+[17:36:26] Sync thread started (ThreadId: 4664)
+[17:36:26] Network thread started (ThreadId: 4776)
+[17:36:26] Console thread started (ThreadId: 25376)
+[17:36:26][Warning] Server started in debug mode
+[17:37:26] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000041
+[17:37:50] ValidateLoginCredentials benötigte 392ms
+[17:37:53] Eingeloggt mauke509
+[17:37:54] 1 - CharacterSelectedSpawnPlace benötigte 509ms
+[17:37:56] player-characterid = 1
+[17:37:56] 0
+[17:37:56] 2. Verlauf: Gesendet
+[17:37:56] 3. Verlauf: Gesendet
+[17:37:56] Verlauf: Done
+[17:38:26] OnEntityTimer: Player Foreach benötigte: 00:00:00.3800844
+[17:39:26] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[17:39:46] OnDesireTimer Timer aufgerufen
+[17:40:26] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[17:41:26] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000053
+[17:42:26] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[17:43:06] OnDesireTimer Timer aufgerufen
+[17:43:26] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[17:44:26] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[17:45:26] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[17:46:26] OnDesireTimer Timer aufgerufen
+[17:46:27] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000039
+[17:47:27] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[17:48:27] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[17:49:27] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[17:49:46] OnDesireTimer Timer aufgerufen
+[17:50:27] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[17:51:27] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000042
+[17:52:27] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[17:53:06] OnDesireTimer Timer aufgerufen
+[17:53:27] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[17:54:27] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[17:55:27] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[17:56:26] OnDesireTimer Timer aufgerufen
+[17:56:28] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000037
+[17:57:28] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[17:58:28] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[17:59:28] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[17:59:46] OnDesireTimer Timer aufgerufen
+[18:00:28] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[18:01:28] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[18:02:28] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000014
+[18:03:06] OnDesireTimer Timer aufgerufen
+[18:03:28] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000039
+[18:04:28] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[18:05:28] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[18:06:26] OnDesireTimer Timer aufgerufen
+[18:06:29] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000048
+[18:07:29] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[18:08:29] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000045
+[18:09:29] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000039
+[18:09:47] OnDesireTimer Timer aufgerufen
+[18:10:29] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000065
+[18:11:29] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000048
+[18:12:29] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000037
+[18:13:07] OnDesireTimer Timer aufgerufen
+[18:13:29] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000039
+[18:14:29] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[18:15:29] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000027
+[18:16:27] OnDesireTimer Timer aufgerufen
+[18:16:30] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000049
+[18:17:30] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[18:18:30] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[18:19:30] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[18:19:47] OnDesireTimer Timer aufgerufen
+[18:20:30] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[18:21:30] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[18:22:30] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[18:23:07] OnDesireTimer Timer aufgerufen
+[18:23:30] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[18:24:30] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[18:25:30] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[18:26:27] OnDesireTimer Timer aufgerufen
+[18:26:31] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000029
+[18:27:31] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000045
+[18:28:31] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000018
+[18:29:31] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[18:29:47] OnDesireTimer Timer aufgerufen
+[18:30:31] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000022
+[18:31:31] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[18:32:31] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[18:33:07] OnDesireTimer Timer aufgerufen
+[18:33:31] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000040
+[18:34:31] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000030
+[18:35:31] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000030
+[18:36:27] OnDesireTimer Timer aufgerufen
+[18:36:31] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[18:37:32] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[18:38:32] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000040
+[18:39:32] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000037
+[18:39:47] OnDesireTimer Timer aufgerufen
+[18:40:32] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[18:41:32] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000039
+[18:42:32] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[18:43:08] OnDesireTimer Timer aufgerufen
+[18:43:32] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000062
+[18:44:32] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[18:45:32] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000025
+[18:46:28] OnDesireTimer Timer aufgerufen
+[18:46:32] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[18:47:33] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000059
+[18:48:33] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[18:49:33] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[18:49:48] OnDesireTimer Timer aufgerufen
+[18:50:33] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000050
+[18:51:33] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[18:52:33] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000042
+[18:53:08] OnDesireTimer Timer aufgerufen
+[18:53:33] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000051
+[18:54:33] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000028
+[18:55:33] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000042
+[18:56:28] OnDesireTimer Timer aufgerufen
+[18:56:34] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000037
+[18:57:34] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000045
+[18:58:34] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000040
+[18:59:34] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[18:59:48] OnDesireTimer Timer aufgerufen
+[19:00:34] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000026
+[19:01:34] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000030
+[19:02:34] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[19:03:08] OnDesireTimer Timer aufgerufen
+[19:03:34] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000037
+[19:04:34] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[19:05:34] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000269
+[19:06:28] OnDesireTimer Timer aufgerufen
+[19:06:34] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[19:07:35] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000037
+[19:08:35] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000174
+[19:09:35] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[19:09:48] OnDesireTimer Timer aufgerufen
+[19:10:35] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[19:11:35] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000041
+[19:12:35] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[19:13:08] OnDesireTimer Timer aufgerufen
+[19:13:35] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000039
+[19:14:35] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[19:15:35] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000039
+[19:16:29] OnDesireTimer Timer aufgerufen
+[19:16:36] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000049
+[19:17:36] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[19:18:36] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000039
+[19:19:36] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000037
+[19:19:49] OnDesireTimer Timer aufgerufen
+[19:20:36] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000014
+[19:21:36] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[19:22:36] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000059
+[19:23:09] OnDesireTimer Timer aufgerufen
+[19:23:36] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000047
+[19:24:36] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[19:25:36] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000040
+[19:26:29] OnDesireTimer Timer aufgerufen
+[19:26:37] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[19:27:37] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[19:28:37] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[19:29:37] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000061
+[19:29:49] OnDesireTimer Timer aufgerufen
+[19:30:37] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[19:31:37] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000041
+[19:32:37] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[19:33:09] OnDesireTimer Timer aufgerufen
+[19:33:37] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[19:34:37] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000031
+[19:35:37] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000043
+[19:36:29] OnDesireTimer Timer aufgerufen
+[19:36:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[19:37:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000044
+[19:38:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[19:39:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[19:39:49] OnDesireTimer Timer aufgerufen
+[19:40:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000046
+[19:41:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000037
+[19:42:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000048
+[19:43:09] OnDesireTimer Timer aufgerufen
+[19:43:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[19:44:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[19:45:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[19:46:29] OnDesireTimer Timer aufgerufen
+[19:46:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000023
+[19:47:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000042
+[19:48:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000055
+[19:49:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000031
+[19:49:50] OnDesireTimer Timer aufgerufen
+[19:50:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[19:51:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000039
+[19:52:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[19:53:10] OnDesireTimer Timer aufgerufen
+[19:53:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[19:54:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000037
+[19:55:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000031
+[19:56:30] OnDesireTimer Timer aufgerufen
+[19:56:40] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[19:57:40] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[19:58:40] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[19:59:40] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[19:59:50] OnDesireTimer Timer aufgerufen
+[20:00:40] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000031
+[20:01:40] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[20:02:40] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000041
+[20:03:10] OnDesireTimer Timer aufgerufen
+[20:03:40] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000210
+[20:04:40] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[20:05:40] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000031
+[20:06:30] OnDesireTimer Timer aufgerufen
+[20:06:41] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[20:07:41] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000037
+[20:08:41] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000039
+[20:09:41] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[20:09:50] OnDesireTimer Timer aufgerufen
+[20:10:41] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[20:11:41] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000042
+[20:12:41] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000019
+[20:13:10] OnDesireTimer Timer aufgerufen
+[20:13:41] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[20:14:41] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[20:15:41] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000047
+[20:16:30] OnDesireTimer Timer aufgerufen
+[20:16:42] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[20:17:42] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[20:18:42] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000037
+[20:19:42] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[20:19:50] OnDesireTimer Timer aufgerufen
+[20:20:42] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000041
+[20:21:42] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[20:22:42] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[20:23:10] OnDesireTimer Timer aufgerufen
+[20:23:42] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[20:24:42] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000030
+[20:25:42] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[20:26:31] OnDesireTimer Timer aufgerufen
+[20:26:43] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[20:27:43] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000030
+[20:28:43] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000037
+[20:29:43] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[20:29:51] OnDesireTimer Timer aufgerufen
+[20:30:43] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000028
+[20:31:43] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[20:32:43] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[20:33:11] OnDesireTimer Timer aufgerufen
+[20:33:43] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[20:34:43] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[20:35:43] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000040
+[20:36:31] OnDesireTimer Timer aufgerufen
+[20:36:44] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[20:37:44] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000037
+[20:38:44] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000016
+[20:39:44] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[20:39:51] OnDesireTimer Timer aufgerufen
+[20:40:44] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000030
+[20:41:44] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[20:42:44] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[20:43:11] OnDesireTimer Timer aufgerufen
+[20:43:44] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[20:44:44] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[20:45:13] Stopping resource minimap
+[20:45:13] Stopped resource minimap
+[20:45:13] Stopping resource minimap_js
+[20:45:13] Stopped resource minimap_js
+[20:45:13] Stopping resource clothes_01
+[20:45:13] Stopped resource clothes_01
+[20:45:13] Stopping resource maps_gabz
+[20:45:13] Stopped resource maps_gabz
+[20:45:13] Stopping resource passengerseat
+[20:45:13] Stopped resource passengerseat
+[20:45:13] Stopping resource els
+[20:45:13] Stopped resource els
+[20:45:13] Stopping resource DisableIdleCam
+[20:45:13] Stopped resource DisableIdleCam
+[20:45:13] Stopping resource chat
+[20:45:13] Stopping resource HideMap
+[20:45:13] Stopped resource HideMap
+[20:45:13] Stopped resource chat
+[20:45:13] Stopping resource pointing
+[20:45:13] Stopped resource pointing
+[20:45:13] Stopping resource weather
+[20:45:13] Stopped resource weather
+[20:45:13] Stopping resource roleplay
+[20:45:13] Server ist gestoppt.
