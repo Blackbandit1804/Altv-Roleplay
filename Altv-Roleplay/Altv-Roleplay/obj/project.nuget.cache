@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "P67Ejxem+dyMPo69Tg04qh2h+jLaREiMV6TQPTzowvQu4Ts1BNikAPSYRnnmn100zN4BzhpoIok1AZbYB1R64g==",
+  "dgSpecHash": "zRAKk9JIrPToqXtfvFTp3NVVxJjDdnG0kG3vsBpqh7lArWZ7jMSlvPC0Tm5LKDawRUkrzHFfHJkauxZhRQFguw==",
   "success": true,
-  "projectFilePath": "D:\\github\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj",
+  "projectFilePath": "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mauke\\.nuget\\packages\\altv.net\\9.0.2\\altv.net.9.0.2.nupkg.sha512",
     "C:\\Users\\mauke\\.nuget\\packages\\altv.net.async\\9.0.2\\altv.net.async.9.0.2.nupkg.sha512",

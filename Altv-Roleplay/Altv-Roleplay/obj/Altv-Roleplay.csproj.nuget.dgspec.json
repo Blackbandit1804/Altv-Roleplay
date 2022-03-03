@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\github\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj": {}
+    "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj": {}
   },
   "projects": {
-    "D:\\github\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj": {
+    "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\github\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj",
+        "projectUniqueName": "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj",
         "projectName": "Altv-Roleplay",
-        "projectPath": "D:\\github\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj",
+        "projectPath": "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj",
         "packagesPath": "C:\\Users\\mauke\\.nuget\\packages\\",
-        "outputPath": "D:\\github\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\obj\\",
+        "outputPath": "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Microsoft\\Shared\\NuGetPackages"
