@@ -361,7 +361,7 @@ namespace Altv_Roleplay.Handler
                     CharactersInventory.AddCharacterItem(charId, $"Fahrzeugschluessel LSC{rnd3}", 2, "schluessel");
                     HUDHandler.SendNotification(player, 2, 5000, $"Fahrzeug erfolgreich gekauft. Kennzeichen: LSC{rnd3}");
                 }
-                else if (shopid == 23)
+                else if (shopid == 17)
                 {
                     ServerVehicles.CreateVehicle(fHash, charId, 0, 6, false, 9, ParkOut, RotOut, $"LSF{rnd3}", 255, 255, 255);
                     CharactersInventory.AddCharacterItem(charId, $"Fahrzeugschluessel LSF{rnd3}", 2, "schluessel");

@@ -18,7 +18,6 @@ D:\GitHub\Github-master\Server\resources\SaltyClient\Server\SaltyChat.Server.run
 D:\GitHub\Github-master\Server\resources\SaltyClient\Server\SaltyChat.Server.dll
 D:\GitHub\Github-master\Server\resources\SaltyClient\Server\ref\SaltyChat.Server.dll
 D:\GitHub\Github-master\Server\resources\SaltyClient\Server\SaltyChat.Server.pdb
-D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.csproj.AssemblyReference.cache
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.GeneratedMSBuildEditorConfig.editorconfig
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.AssemblyInfoInputs.cache
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.AssemblyInfo.cs

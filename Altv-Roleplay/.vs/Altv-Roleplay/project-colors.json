@@ -5,7 +5,17 @@
       "ProjectGuid": "8a18d778-7483-4f69-a18a-493c1e27a853",
       "DisplayName": "Altv-Roleplay",
       "ColorIndex": 0
+    },
+    "bdde4213-9540-4d54-8d5b-f954309e6dbe": {
+      "ProjectGuid": "bdde4213-9540-4d54-8d5b-f954309e6dbe",
+      "DisplayName": "SaltyChat.Server",
+      "ColorIndex": 1
+    },
+    "11c71b78-004a-471f-b29d-c2cbe4673579": {
+      "ProjectGuid": "11c71b78-004a-471f-b29d-c2cbe4673579",
+      "DisplayName": "DiscordLog",
+      "ColorIndex": 2
     }
   },
-  "NextColorIndex": 1
+  "NextColorIndex": 3
 }
