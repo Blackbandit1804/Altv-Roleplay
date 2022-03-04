@@ -299,3 +299,4 @@ D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\obj\Debug\Altv
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\obj\Debug\ref\Altv-Roleplay.dll
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\obj\Debug\Altv-Roleplay.pdb
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\obj\Debug\Altv-Roleplay.genruntimeconfig.cache
+D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\obj\Debug\Altv-Roleplay.csproj.AssemblyReference.cache

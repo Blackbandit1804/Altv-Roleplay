@@ -56,7 +56,7 @@ function toggleEmergencyLight() {
 
 alt.on('keydown', (key) => {
     if (alt.Player.local.vehicle == null || game.getVehicleClass(alt.Player.local.vehicle.scriptID) != 18) { return; }
-    if (alt.Player.local.vehicle != null && alt.Player.local.scriptID != game.getPedInVehicleSeat(alt.Player.local.vehicle.scriptID, -1)) { return; }
+    if (alt.Player.local.vehicle != null || alt.Player.local.scriptID != game.getPedInVehicleSeat(alt.Player.local.vehicle.scriptID, -1)) { return; }
     if (key === "Q".charCodeAt(0)) {
         disableRadio();
         toggleEmergencyLight();
