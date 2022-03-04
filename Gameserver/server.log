@@ -157,3 +157,38 @@
 [15:17:17] Essen/Durst Anzeige update: 0 | 100 | 65 | 65
 [15:17:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0048771
 [15:18:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0110353
+[15:19:21] [chat:cmd] mauke509: /ReloadDB 3
+[15:19:23] [chat:cmd] mauke509: /am
+[15:19:25] [chat:cmd] mauke509: /ReloadDB
+[15:19:28] [chat:cmd] mauke509: /ReloadDB 3
+[15:19:28] 59 Server-Garagen wurden geladen.
+[15:19:28] 90 Server-Garagen Slots wurden geladen.
+[15:19:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0105938
+[15:20:32] [chat:cmd] mauke509: /car r820
+[15:20:37] OnDesireTimer Timer aufgerufen
+[15:20:37] Essen/Durst Anzeige update: 0 | 100 | 64 | 64
+[15:20:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0203521
+[15:20:39] Vehicle KM-State-HUD updated!
+[15:21:09] Vehicle KM-State-HUD updated!
+[15:21:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0179604
+[15:21:39] Vehicle KM-State-HUD updated!
+[15:22:09] Vehicle KM-State-HUD updated!
+[15:22:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0179154
+[15:22:40] Vehicle KM-State-HUD updated!
+[15:23:38] OnEntityTimer: Player Foreach benötigte: 00:00:00.0213060
+[15:23:58] OnDesireTimer Timer aufgerufen
+[15:23:58] Essen/Durst Anzeige update: 0 | 80 | 63 | 63
+[15:24:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0146928
+[15:25:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0123416
+[15:26:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0097121
+[15:27:18] OnDesireTimer Timer aufgerufen
+[15:27:18] Essen/Durst Anzeige update: 0 | 80 | 62 | 62
+[15:27:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0150409
+[15:28:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0224534
+[15:29:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0085787
+[15:30:38] OnDesireTimer Timer aufgerufen
+[15:30:38] Essen/Durst Anzeige update: 0 | 80 | 61 | 61
+[15:30:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0098322
+[15:31:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0333344
+[15:32:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0105708
+[15:33:39] OnEntityTimer: Player Foreach benötigte: 00:00:00.0101266
