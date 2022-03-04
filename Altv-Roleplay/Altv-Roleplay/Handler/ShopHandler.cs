@@ -318,6 +318,12 @@ namespace Altv_Roleplay.Handler
                     CharactersInventory.AddCharacterItem(charId, $"Fahrzeugschluessel LSPD{rnd3}", 2, "schluessel");
                     HUDHandler.SendNotification(player, 2, 5000, $"Fahrzeug erfolgreich gekauft. Kennzeichen: LSPD{rnd3}");
                 }
+                else if (shopid == 3 && ServerFactions.GetCharacterFactionRank(charId) == 15 && ServerFactions.GetCharacterFactionId(charId) == 1)
+                {
+                    ServerVehicles.CreateVehicle(fHash, charId, 0, 1, false, 2, ParkOut, RotOut, $"LSPD{rnd3}", 255, 255, 255);
+                    CharactersInventory.AddCharacterItem(charId, $"Fahrzeugschluessel LSPD{rnd3}", 2, "schluessel");
+                    HUDHandler.SendNotification(player, 2, 5000, $"Fahrzeug erfolgreich gekauft. Kennzeichen: LSPD{rnd3}");
+                }
                 else if (shopid == 8)
                 {
                     ServerVehicles.CreateVehicle(fHash, charId, 0, 4, false, 4, ParkOut, RotOut, $"MD{rnd3}", 255, 255, 255);

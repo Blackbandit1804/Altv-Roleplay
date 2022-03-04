@@ -4,3 +4,7 @@
 | heli | Saved Coordenates: Position(x: 351,3231, y: -588,2242, z: 74,15088) Saved Rotation: Rotation(roll: 0, pitch: 0, yaw: -1,9294822)
 | heli | Saved Coordenates: Position(x: 339,23077, y: -587,0901, z: 74,15088) Saved Rotation: Rotation(roll: 0, pitch: 0, yaw: -1,9789561)
 | gov | Saved Coordenates: Position(x: -1304,3737, y: -559,2923, z: 20,787598) Saved Rotation: Rotation(roll: 0, pitch: 0, yaw: 2,968434)
+| 56 | Saved Coordenates: Position(x: 463,91208, y: -985,411, z: 43,6864) Saved Rotation: Rotation(roll: 0, pitch: 0, yaw: 1,484217)
+| out | Saved Coordenates: Position(x: 449,3011, y: -981,37585, z: 43,6864) Saved Rotation: Rotation(roll: 0, pitch: 0, yaw: 1,4347432)
+| handler | Saved Coordenates: Position(x: 463,91208, y: -985,4374, z: 43,6864) Saved Rotation: Rotation(roll: 0, pitch: 0, yaw: 1,484217)
+| seller | Saved Coordenates: Position(x: 341,7099, y: -578,8088, z: 28,79126) Saved Rotation: Rotation(roll: 0, pitch: 0, yaw: 1,6326387)

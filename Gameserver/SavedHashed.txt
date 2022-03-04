@@ -1,1 +1,13 @@
 | police | Saved hash: 2046537925
+| police2 | Saved hash: 2667966721
+| police3 | Saved hash: 1912215274
+| policeb | Saved hash: 4260343491
+| policet | Saved hash: 456714581
+| predator | Saved hash: 3806844075
+| riot | Saved hash: 3089277354
+| riot2 | Saved hash: 2601952180
+| polmav | Saved hash: 353883353
+| ambulance | Saved hash: 1171614426
+| lsmcscout | Saved hash: 2149684796
+| lsmcmav | Saved hash: 2880947283
+| lsmcbuffals | Saved hash: 2240464625
