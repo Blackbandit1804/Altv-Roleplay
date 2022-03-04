@@ -8,3 +8,5 @@
 | out | Saved Coordenates: Position(x: 449,3011, y: -981,37585, z: 43,6864) Saved Rotation: Rotation(roll: 0, pitch: 0, yaw: 1,4347432)
 | handler | Saved Coordenates: Position(x: 463,91208, y: -985,4374, z: 43,6864) Saved Rotation: Rotation(roll: 0, pitch: 0, yaw: 1,484217)
 | seller | Saved Coordenates: Position(x: 341,7099, y: -578,8088, z: 28,79126) Saved Rotation: Rotation(roll: 0, pitch: 0, yaw: 1,6326387)
+| 65 | Saved Coordenates: Position(x: 300,67252, y: -597,6396, z: 43,282104) Saved Rotation: Rotation(roll: 0, pitch: 0, yaw: 2,1768517)
+| kleidung | Saved Coordenates: Position(x: -341,57803, y: -162,18462, z: 44,579468) Saved Rotation: Rotation(roll: 0, pitch: 0, yaw: 0)

@@ -80,7 +80,7 @@ namespace Altv_Roleplay.Utils
             //Kleidung
             public static readonly Position Clothes_Police = new Position((float)462.93628, (float)-999.33624, (float)29.698345);
             public static readonly Position Clothes_Medic = new Position((float)298.65494, (float)-597.9429, (float)43.28);
-            public static readonly Position Clothes_ACLS = new Position((float)-205.93846, (float)-1336.6154, (float)33.9);
+            public static readonly Position Clothes_ACLS = new Position((float)-341.5780, (float)-162.18462, (float)44.57946);
             public static readonly Position Clothes_VUC = new Position((float)104.874725, (float)-1303.556, (float)28.5);
 
             //Farming
