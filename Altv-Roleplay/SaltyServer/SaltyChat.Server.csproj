@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>../../../Server/resources/SaltyClient/Server</OutputPath>
+    <OutputPath>D:\GitHub\Github-master\Altv-Roleplay\Gameserver\resources\SaltyClient\Server</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
