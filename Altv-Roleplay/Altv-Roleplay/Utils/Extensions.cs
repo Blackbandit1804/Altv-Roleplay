@@ -26,13 +26,6 @@ namespace Altv_Roleplay.Utils
             player.Kick(reason);
         }
 
-        public static bool IsCefOpen(this ClassicPlayer player)
-        {
-            if (player == null || !player.Exists) return false;
-            player.GetSyncedMetaData("IsCefOpen", out bool isCefOpened);
-            return isCefOpened;
-        }
-
         public static void updateTattoos(this ClassicPlayer player)
         {
             if (player == null || !player.Exists || player.CharacterId <= 0) return;
@@ -46,7 +39,7 @@ namespace Altv_Roleplay.Utils
             return myVehicle.VehicleId != 0;
         }
 
-        public static void SetVehicleId(this IVehicle vehicle, ulong vehicleId)
+        public static void SetVehicleId(this IVehicle vehicle, long vehicleId)
         {
             var myVehicle = (ClassicVehicle)vehicle;
             if (myVehicle == null || !myVehicle.Exists) return;
@@ -67,11 +60,11 @@ namespace Altv_Roleplay.Utils
             return myVehicle.Trunkstate;
         }
 
-        public static ulong GetVehicleId(this IVehicle vehicle)
+        public static long GetVehicleId(this IVehicle vehicle)
         {
             var myVehicle = (ClassicVehicle)vehicle;
             if (myVehicle == null || !myVehicle.Exists) return 0;
-            return (ulong)myVehicle.VehicleId;
+            return (long)myVehicle.VehicleId;
         }
 
         public static ulong GetCharacterMetaId(this IPlayer player)
@@ -95,7 +88,7 @@ namespace Altv_Roleplay.Utils
             myColshape.ColshapeName = name;
         }
 
-        public static ulong GetColshapeCarDealerVehPrice(this IColShape cols)
+        public static long GetColshapeCarDealerVehPrice(this IColShape cols)
         {
             var myColshape = (ClassicColshape)cols;
             if (myColshape == null || !myColshape.Exists) return 0;
@@ -116,18 +109,18 @@ namespace Altv_Roleplay.Utils
             return myColshape.ColshapeName;
         }
 
-        public static void SetColShapeId(this IColShape cols, ulong id)
+        public static void SetColShapeId(this IColShape cols, long id)
         {
             var myColshape = (ClassicColshape)cols;
             if (myColshape == null || !myColshape.Exists) return;
             myColshape.ColshapeId = (int)id;
         }
 
-        public static ulong GetColShapeId(this IColShape cols)
+        public static long GetColShapeId(this IColShape cols)
         {
             var myColshape = (ClassicColshape)cols;
             if (myColshape == null || !myColshape.Exists) return 0;
-            return (ulong)myColshape.ColshapeId;
+            return (long)myColshape.ColshapeId;
         }
 
         public static string GetPlayerFarmingActionMeta(this IPlayer player)
@@ -257,33 +250,33 @@ namespace Altv_Roleplay.Utils
             return myPlayer.CurrentMinijobStep;
         }
 
-        public static void SetPlayerCurrentMinijobActionCount(this IPlayer player, ulong count) //Verwendung: ATM aufgefüllt => Count 1 höher => next ATM => Count höhr => Count == max == fertig.
+        public static void SetPlayerCurrentMinijobActionCount(this IPlayer player, long count) //Verwendung: ATM aufgefüllt => Count 1 höher => next ATM => Count höhr => Count == max == fertig.
         {
             var myPlayer = (ClassicPlayer)player;
             if (myPlayer == null || !myPlayer.Exists) return;
             myPlayer.CurrentMinijobActionCount = (int)count;
         }
 
-        public static ulong GetPlayerCurrentMinijobActionCount(this IPlayer player)
+        public static long GetPlayerCurrentMinijobActionCount(this IPlayer player)
         {
             var myPlayer = (ClassicPlayer)player;
             if (myPlayer == null || !myPlayer.Exists) return 0;
-            return (ulong)myPlayer.CurrentMinijobActionCount;
+            return (long)myPlayer.CurrentMinijobActionCount;
         }
 
         //Miniob: Müllmann
-        public static void SetPlayerCurrentMinijobRouteId(this IPlayer player, ulong routeId)
+        public static void SetPlayerCurrentMinijobRouteId(this IPlayer player, long routeId)
         {
             var myPlayer = (ClassicPlayer)player;
             if (myPlayer == null || !myPlayer.Exists) return;
             myPlayer.CurrentMinijobRouteId = (int)routeId;
         }
 
-        public static ulong GetPlayerCurrentMinijobRouteId(this IPlayer player)
+        public static long GetPlayerCurrentMinijobRouteId(this IPlayer player)
         {
             var myPlayer = (ClassicPlayer)player;
             if (myPlayer == null || !myPlayer.Exists) return 0;
-            return (ulong)myPlayer.CurrentMinijobRouteId;
+            return (long)myPlayer.CurrentMinijobRouteId;
         }
 
         public static Position getPositionInBackOfPosition(this Position pos, float rotation, float distance)

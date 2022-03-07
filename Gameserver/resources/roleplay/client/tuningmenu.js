@@ -14,7 +14,8 @@ let webview,
     currentSecondaryPaintType,
     paintTypeIds = [0, 0, 15,21,118,120],
     viewModeActive,
-    paintTypes = ["Normal", "", "Pearl", "Matt", "Metallic", "Chrom"];
+    paintTypes = ["Normal", "", "Pearl", "Matt", "Metallic", "Chrom"],
+    lastInteract = 0;
 
 alt.onServer("Client:Tuningmenu:OpenMenu", (veh, pMods, iMods, modPrices) => {
     if (webview) {
@@ -24,7 +25,7 @@ alt.onServer("Client:Tuningmenu:OpenMenu", (veh, pMods, iMods, modPrices) => {
 
     webview = new alt.WebView('http://resource/client/cef/tuningmenu/index.html');
     webview.focus();
-    alt.emitServer("Server:CEF:setCefStatus", true);
+    alt.emit("Client:HUD:setCefStatus", true);
     alt.showCursor(true);
     alt.toggleGameControls(false);
 
@@ -45,10 +46,13 @@ alt.onServer("Client:Tuningmenu:OpenMenu", (veh, pMods, iMods, modPrices) => {
     }, 500);
 
     webview.on("Client:Tuningmenu:CloseMenu", () => {
+        if(lastInteract + 500 > Date.now()) return;
+        lastInteract = Date.now();
+
         webview.unfocus();
         webview.destroy();
 	    webview = undefined;
-        alt.emitServer("Server:CEF:setCefStatus", false);
+        alt.emit("Client:HUD:setCefStatus", false);
         alt.emitServer("Server:Tuning:resetToNormal", vehicle);
         resetToNormal(vehicle, installedMods)
         alt.showCursor(false);
@@ -76,8 +80,6 @@ alt.onServer("Client:Tuningmenu:OpenMenu", (veh, pMods, iMods, modPrices) => {
     webview.on("Client:Tuningmenu:ShowcasePaintType", (cat, val) => {
         if (!vehicle) return;
         
-        alt.log("val: " + val);
-        alt.log("new: " + paintTypeIds.indexOf(parseInt(val)));
         if (cat == "primary") {
             game.setVehicleModColor1(vehicle, parseInt(paintTypeIds.indexOf(parseInt(val))), 0, parseInt(showcasedMods[63]));
             alt.setTimeout(() => {
@@ -118,7 +120,8 @@ alt.onServer("Client:Tuningmenu:OpenMenu", (veh, pMods, iMods, modPrices) => {
     });
 
     webview.on("Client:Tuningmenu:EquipTuneItem", (type, index) => {
-        if (!vehicle) return;
+        if (!vehicle || lastInteract + 500 > Date.now()) return;
+        lastInteract = Date.now();
 
         installedMods[type] = index;
         
@@ -126,7 +129,8 @@ alt.onServer("Client:Tuningmenu:OpenMenu", (veh, pMods, iMods, modPrices) => {
     });
 
     webview.on("Client:Tuningmenu:EquipRGBTuneItem", (type, colorR, colorG, colorB, paintType) => {
-        if (!vehicle) return;
+        if (!vehicle || lastInteract + 500 > Date.now()) return;
+        lastInteract = Date.now();
         
         if (type == 100) {
             installedMods[55] = paintTypeIds.indexOf(paintType);
@@ -196,11 +200,10 @@ function resetToNormal(vehicle, mods) {
         } else if (type < 49) game.setVehicleMod(vehicle, parseInt(type), parseInt(index) - 1, false);
         else if (type == 49) game.setVehicleLivery(vehicle, parseInt(index) - 1);
         else if (type == 50) {
-            alt.log("test1: " + index);
             game.setVehicleWheelType(vehicle, parseInt(index));
             game.setVehicleMod(vehicle, 23, parseInt(installedMods[51]) - 1, false);
         }
-        else if (type == 51) { game.setVehicleMod(vehicle, 23, parseInt(index) - 1, false); alt.log("test4: " + index); }
+        else if (type == 51) game.setVehicleMod(vehicle, 23, parseInt(index) - 1, false);
         else if (type == 52) game.setVehicleExtraColours(vehicle, parseInt(installedMods[63]), parseInt(index));
         else if (type == 53) game.setVehicleWindowTint(vehicle, parseInt(index));
         else if (type == 54) game.setVehicleNumberPlateTextIndex(vehicle, parseInt(index));

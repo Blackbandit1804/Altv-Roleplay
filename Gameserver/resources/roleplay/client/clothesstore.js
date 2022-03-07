@@ -4,6 +4,7 @@ import * as game from 'natives';
 export let clothesStoreBrowser = null;
 
 let opened = false;
+let lastInteract = 0;
 
 alt.onServer("Client:HUD:CreateCEF", () => {
     if (clothesStoreBrowser == null) {
@@ -15,10 +16,16 @@ alt.onServer("Client:HUD:CreateCEF", () => {
         });
 
         clothesStoreBrowser.on('Client:Clothesstore:BuyCloth', (clothId, isProp) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Clothesstore:BuyCloth", clothId, isProp);
         });
 
         clothesStoreBrowser.on('Client:Clothesstore:SetPerfectTorso', (BestTorsoDrawable, BestTorsoTexture) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Clothesstore:SetPerfectTorso", BestTorsoDrawable, BestTorsoTexture);
         });
     }

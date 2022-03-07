@@ -17,18 +17,17 @@ namespace Altv_Roleplay.Factions.ACLS
     class Functions : IScript
     {
         [AsyncClientEvent("Server:Raycast:RepairVehicle")]
-        public async Task RepairVehicle(IPlayer player, IVehicle vehicle)
+        public void RepairVehicle(IPlayer player, IVehicle vehicle)
         {
             try
             {
                 if (player == null || !player.Exists || vehicle == null || !vehicle.Exists) return;
                 int charId = (int)player.GetCharacterMetaId();
                 if (charId <= 0 || player.HasPlayerRopeCuffs() || player.HasPlayerHandcuffs() || player.IsPlayerUnconscious()) return;
-                if (!CharactersInventory.ExistCharacterItem(charId, "Reparaturkit", "inventory") && !CharactersInventory.ExistCharacterItem(charId, "Reparaturkit", "backpack")) { HUDHandler.SendNotification(player, 4, 2000, "Du besitzt kein Reparaturkit."); return; }
+                if(!CharactersInventory.ExistCharacterItem(charId, "Reparaturkit", "inventory") && !CharactersInventory.ExistCharacterItem(charId, "Reparaturkit", "backpack")) { HUDHandler.SendNotification(player, 4, 2000, "Du besitzt kein Reparaturkit."); return; }
                 if (CharactersInventory.ExistCharacterItem(charId, "Reparaturkit", "inventory")) CharactersInventory.RemoveCharacterItemAmount(charId, "Reparaturkit", 1, "inventory");
                 else if (CharactersInventory.ExistCharacterItem(charId, "Reparaturkit", "backpack")) CharactersInventory.RemoveCharacterItemAmount(charId, "Reparaturkit", 1, "backpack");
-                InventoryHandler.InventoryAnimation(player, "repair", 10000); //Animation
-                await Task.Delay(10000); //warten bis repair
+                //ToDo: Reparatur-Animation abspielen
                 ServerVehicles.SetVehicleEngineHealthy(vehicle, true);
                 Alt.EmitAllClients("Client:Utilities:repairVehicle", vehicle);
                 //player.EmitLocked("Client:Utilities:repairVehicle", vehicle);
@@ -50,7 +49,7 @@ namespace Altv_Roleplay.Factions.ACLS
                 if (charId <= 0 || player.HasPlayerRopeCuffs() || player.HasPlayerHandcuffs() || player.IsPlayerUnconscious() || !ServerFactions.IsCharacterInAnyFaction(charId) || !vehicle.Position.IsInRange(Constants.Positions.AutoClubLosSantos_StoreVehPosition, 5f) || vehId <= 0) return;
                 if (ServerFactions.GetCharacterFactionId(charId) != 4) return;
                 int vehClass = ServerAllVehicles.GetVehicleClass(vehicle.Model);
-                switch (vehClass)
+                switch(vehClass)
                 {
                     case 0: //Fahrzeuge
                         ServerVehicles.SetVehicleInGarage(vehicle, true, 10);
@@ -61,7 +60,7 @@ namespace Altv_Roleplay.Factions.ACLS
                         break;
                     case 3: //Helikopter
                         break;
-                }
+                }              
                 ServerFactions.SetFactionBankMoney(4, ServerFactions.GetFactionBankMoney(4) + 1500); //ToDo: Anpassen
                 HUDHandler.SendNotification(player, 2, 2000, "Fahrzeug erfolgreich verwahrt.");
                 LoggingService.NewFactionLog(4, charId, vehId, "towVehicle", $"{Characters.GetCharacterName(charId)} hat das Fahrzeug mit der ID {vehId} abgeschleppt.");
@@ -73,6 +72,7 @@ namespace Altv_Roleplay.Factions.ACLS
         }
 
         int[] modPrices = { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
+
         [AsyncClientEvent("Server:Raycast:tuneVehicle")]
         public void openTuningMenu(IPlayer player, IVehicle veh)
         {
@@ -173,8 +173,8 @@ namespace Altv_Roleplay.Factions.ACLS
                     installedMods[83] = mod.neon_g;
 
                     possibleMods[84] = 0;
-                    installedMods[84] = mod.neon_b; 
-                    
+                    installedMods[84] = mod.neon_b;
+
                     possibleMods[85] = 0;
                     installedMods[85] = mod.smoke_r;
 
@@ -186,7 +186,6 @@ namespace Altv_Roleplay.Factions.ACLS
 
                     possibleMods[88] = 12;
                     installedMods[88] = mod.headlightColor;
-
 
                     player.Emit("Client:Tuningmenu:OpenMenu", veh, possibleMods, installedMods, modPrices);
                 }
@@ -224,7 +223,7 @@ namespace Altv_Roleplay.Factions.ACLS
                 int price = modPrices[type];
 
                 if (!CharactersInventory.ExistCharacterItem(charId, "Bargeld", "inventory") || CharactersInventory.GetCharacterItemAmount(charId, "Bargeld", "inventory") < price) HUDHandler.SendNotification(player, 3, 5000, $"Du hast nicht genug Bargeld dabei (${price}).");
-                CharactersInventory.RemoveCharacterItemAmount(charId, "Bargeld", 50, "inventory");
+                CharactersInventory.RemoveCharacterItemAmount(charId, "Bargeld", price, "inventory");
 
                 ServerVehicles.InstallBoughtMod(vehicle, type, index);
             }
@@ -242,10 +241,10 @@ namespace Altv_Roleplay.Factions.ACLS
                 if (player == null || !player.Exists || vehicle == null || !vehicle.Exists) return;
                 if (player.GetCharacterMetaId() <= 0 || vehicle.GetVehicleId() <= 0) return;
 
-                ServerVehicles.InstallBoughtModRgb(vehicle, type, colorR, colorG, colorB);
+                if (type == 100) ServerVehicles.InstallBoughtMod(vehicle, 55, paintType);
+                else if (type == 200) ServerVehicles.InstallBoughtMod(vehicle, 59, paintType);
 
-                //if (paintType == 100) ServerVehicles.InstallBoughtMod(vehicle, 55, paintType);
-                //else if (paintType == 200) ServerVehicles.InstallBoughtMod(vehicle, 59, paintType);
+                ServerVehicles.InstallBoughtModRgb(vehicle, type, colorR, colorG, colorB);
             }
             catch (Exception e)
             {

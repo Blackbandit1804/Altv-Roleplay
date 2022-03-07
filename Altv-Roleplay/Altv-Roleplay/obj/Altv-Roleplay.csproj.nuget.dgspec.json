@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj": {}
+    "C:\\Users\\mauke\\Desktop\\main-main\\Mappe - Visual Studio\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj": {}
   },
   "projects": {
-    "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj": {
+    "C:\\Users\\mauke\\Desktop\\main-main\\Mappe - Visual Studio\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj",
+        "projectUniqueName": "C:\\Users\\mauke\\Desktop\\main-main\\Mappe - Visual Studio\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj",
         "projectName": "Altv-Roleplay",
-        "projectPath": "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj",
+        "projectPath": "C:\\Users\\mauke\\Desktop\\main-main\\Mappe - Visual Studio\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj",
         "packagesPath": "C:\\Users\\mauke\\.nuget\\packages\\",
-        "outputPath": "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\obj\\",
+        "outputPath": "C:\\Users\\mauke\\Desktop\\main-main\\Mappe - Visual Studio\\Altv-Roleplay\\Altv-Roleplay\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Microsoft\\Shared\\NuGetPackages"
@@ -31,7 +31,11 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\mauke\\Desktop\\main-main\\Mappe - Visual Studio\\Altv-Roleplay\\DiscordLog\\DiscordLog.csproj": {
+                "projectPath": "C:\\Users\\mauke\\Desktop\\main-main\\Mappe - Visual Studio\\Altv-Roleplay\\DiscordLog\\DiscordLog.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -46,37 +50,25 @@
           "dependencies": {
             "AltV.Net.Async": {
               "target": "Package",
-              "version": "[9.0.4, )"
-            },
-            "AltV.Net.EntitySync": {
-              "target": "Package",
-              "version": "[1.13.0, )"
-            },
-            "AltV.Net.EntitySync.ServerEvent": {
-              "target": "Package",
-              "version": "[9.0.4, )"
+              "version": "[9.0.2, )"
             },
             "AltV.Net.Resources.Chat.Api": {
               "target": "Package",
-              "version": "[9.0.4, )"
+              "version": "[9.0.2, )"
             },
             "BCrypt.Net-Next": {
               "target": "Package",
-              "version": "[4.0.3, )"
+              "version": "[4.0.2, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[6.0.2, )"
+              "version": "[6.0.1, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[6.0.2, )"
-            },
-            "MySql.Data": {
-              "target": "Package",
-              "version": "[8.0.28, )"
+              "version": "[6.0.1, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",
@@ -108,6 +100,21 @@
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
         }
+      }
+    },
+    "C:\\Users\\mauke\\Desktop\\main-main\\Mappe - Visual Studio\\Altv-Roleplay\\DiscordLog\\DiscordLog.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\mauke\\Desktop\\main-main\\Mappe - Visual Studio\\Altv-Roleplay\\DiscordLog\\DiscordLog.csproj",
+        "projectName": "DiscordLog",
+        "projectPath": "C:\\Users\\mauke\\Desktop\\main-main\\Mappe - Visual Studio\\Altv-Roleplay\\DiscordLog\\DiscordLog.csproj",
+        "frameworks": {
+          "net461": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net461": {}
       }
     }
   }

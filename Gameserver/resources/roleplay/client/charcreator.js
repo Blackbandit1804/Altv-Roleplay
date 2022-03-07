@@ -5,6 +5,7 @@ let charcreatorBrowser = null;
 let charcreatorCam = null;
 let pedHandle = null;
 let modelHash = null;
+let lastInteract = 0;
 
 alt.onServer('Client:Charcreator:CreateCEF', (player) => {
     if (charcreatorBrowser == null) {
@@ -29,17 +30,17 @@ alt.onServer('Client:Charcreator:CreateCEF', (player) => {
             } else if (gender == 1 || gender == true) {
                 spawnCreatorPed(true);
             }
-        });//DONE
+        });
 
         charcreatorBrowser.on("Client:Charcreator:cefIsReady", () => {
             alt.setTimeout(function() {
                 charcreatorBrowser.emit("CEF:Charcreator:showArea", "sexarea");
             }, 1000);
-        });//DONE
+        });
 
         charcreatorBrowser.on("Client:Charcreator:SetRotation", (rot) => {
-            game.setEntityHeading(pedHandle, rot);
-        });//DONE
+            game.setEntityHeading(pedHandle, parseFloat(rot));
+        });
 
         charcreatorBrowser.on("Client:Charcreator:UpdateFaceFeature", (facefeaturesdata) => {
             let facefeatures = JSON.parse(facefeaturesdata);
@@ -47,12 +48,12 @@ alt.onServer('Client:Charcreator:CreateCEF', (player) => {
             for (let i = 0; i < 20; i++) {
                 game.setPedFaceFeature(pedHandle, i, parseFloat(facefeatures[i]));
             }
-        });//DONE
+        });
 
         charcreatorBrowser.on("Client:Charcreator:UpdateHeadBlends", (headblendsdata) => {
             let headblends = JSON.parse(headblendsdata);
             game.setPedHeadBlendData(pedHandle, parseInt(headblends[0]), parseInt(headblends[1]), 0, parseInt(headblends[2]), parseInt(headblends[5]), 0, parseFloat(headblends[3]), parseInt(headblends[4]), 0, true);
-        });//DONE
+        });
 
         charcreatorBrowser.on("Client:Charcreator:UpdateHeadOverlays", (headoverlaysarray) => {
             let headoverlays = JSON.parse(headoverlaysarray);
@@ -77,16 +78,20 @@ alt.onServer('Client:Charcreator:CreateCEF', (player) => {
             game.setPedHairColor(pedHandle, parseInt(headoverlays[2][13]), parseInt(headoverlays[1][13]));
         });
 
-        charcreatorBrowser.on("Client:Charcreator:SaveCharacter", (vorname, nachname, birthdate, gender, facefeaturesarray, headblendsdataarray, headoverlaysarray, clothesarray) => {
+        charcreatorBrowser.on("Client:Charcreator:SaveCharacter", (vorname, nachname, birthdate, gender, facefeaturesarray, headblendsdataarray, headoverlaysarray1, headoverlaysarray2, headoverlaysarray3, clothesarray) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             game.clearPedProp(game.playerPedId(), 0);
             game.clearPedProp(game.playerPedId(), 1);
             game.clearPedProp(game.playerPedId(), 2);
             game.clearPedProp(game.playerPedId(), 6);
             game.clearPedProp(game.playerPedId(), 7);
-            alt.emitServer("Server:Charcreator:CreateCharacter", vorname + " " + nachname, birthdate, gender, facefeaturesarray, headblendsdataarray, headoverlaysarray);
+            
+            alt.emitServer("Server:Charcreator:CreateCharacter", vorname + " " + nachname, birthdate, gender, facefeaturesarray, headblendsdataarray, headoverlaysarray1, headoverlaysarray2, headoverlaysarray3);
         });
     }
-});//DONE
+});
 
 alt.onServer("Client:Charcreator:DestroyCEF", () => {
     destroycharcreatorBrowser();
@@ -96,7 +101,7 @@ alt.onServer("Client:Charcreator:showError", (msg) => {
     if (charcreatorBrowser != null) {
         charcreatorBrowser.emit("CEF:Charcreator:showError", msg);
     }
-});//DONE
+});
 
 
 alt.onServer("Client:Charcreator:showArea", (area) => {
@@ -127,13 +132,13 @@ function spawnCreatorPed(gender) {
             game.setPedComponentVariation(pedHandle, 3, 15, 0, 0);
         }
     }, 0);
-}//DONE
+}
 
 let destroycharcreatorBrowser = function() {
     if (charcreatorBrowser != null) {
         charcreatorBrowser.destroy();
     }
-    charcreatorBrowser = null;    
+    charcreatorBrowser = null;
     game.renderScriptCams(false, false, 0, true, false, 0);
     game.setCamActive(charcreatorCam, false);
     if (charcreatorCam != null) {
@@ -145,4 +150,4 @@ let destroycharcreatorBrowser = function() {
     }
     charcreatorCam = null;
     alt.showCursor(false);
-}//DONE
+}

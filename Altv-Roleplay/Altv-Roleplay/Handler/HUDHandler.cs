@@ -18,13 +18,11 @@ namespace Altv_Roleplay.Handler
         public static void CreateHUDBrowser(IPlayer client)
         {
             if (client == null || !client.Exists) return;
-            client.EmitLocked("Client:HUD:CreateCEF", Characters.GetCharacterArmor(User.GetPlayerOnline(client)), Characters.GetCharacterHealth(User.GetPlayerOnline(client)), Characters.GetCharacterHunger(User.GetPlayerOnline(client)), Characters.GetCharacterThirst(User.GetPlayerOnline(client)), CharactersInventory.GetCharacterItemAmount2(User.GetPlayerOnline(client), "Bargeld"), CharactersInventory.GetCharacterItemAmount2(User.GetPlayerOnline(client), "Schwarzgeld"));
-            client.EmitLocked("Client:HUD:UpdateDesire", Characters.GetCharacterArmor(User.GetPlayerOnline(client)), Characters.GetCharacterHealth(User.GetPlayerOnline(client)), Characters.GetCharacterHunger(User.GetPlayerOnline(client)), Characters.GetCharacterThirst(User.GetPlayerOnline(client))); //HUD updaten
-            client.EmitLocked("Client:HUD:updateMoney", CharactersInventory.GetCharacterItemAmount(User.GetPlayerOnline(client), "Bargeld", "inventory"));
+            client.EmitLocked("Client:HUD:CreateCEF", Characters.GetCharacterHunger(User.GetPlayerOnline(client)), Characters.GetCharacterThirst(User.GetPlayerOnline(client)), CharactersInventory.GetCharacterItemAmount(User.GetPlayerOnline(client), "Bargeld", "inventory"));
         }
 
-        [AsyncScriptEvent(ScriptEventType.PlayerEnterVehicle)]
-        public async Task OnPlayerEnterVehicle_Handler(IVehicle vehicle, IPlayer client, byte seat)
+        [ScriptEvent(ScriptEventType.PlayerEnterVehicle)]
+        public void OnPlayerEnterVehicle_Handler(IVehicle vehicle, IPlayer client, byte seat)
         {
             try
             {
@@ -38,8 +36,8 @@ namespace Altv_Roleplay.Handler
             }
         }
 
-        [AsyncScriptEvent(ScriptEventType.PlayerLeaveVehicle)]
-        public async Task OnPlayerLeaveVehicle_Handler(IVehicle vehicle, IPlayer client, byte seat)
+        [ScriptEvent(ScriptEventType.PlayerLeaveVehicle)]
+        public void OnPlayerLeaveVehicle_Handler(IVehicle vehicle, IPlayer client, byte seat)
         {
             try
             {
@@ -56,7 +54,7 @@ namespace Altv_Roleplay.Handler
             if (player == null || !player.Exists) return;
             IVehicle Veh = player.Vehicle;
             if (!Veh.Exists) return;
-            ulong vehID = Veh.GetVehicleId();
+            long vehID = Veh.GetVehicleId();
             if (vehID == 0) return;
             player.EmitLocked("Client:HUD:SetPlayerHUDVehicleInfos", ServerVehicles.GetVehicleFuel(Veh), ServerVehicles.GetVehicleKM(Veh));  
         }
@@ -75,7 +73,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Vehicle:UpdateVehicleKM")]
-        public async Task UpdateVehicleKM(IPlayer player, float km)
+        public void UpdateVehicleKM(IPlayer player, float km)
         {
             //KM = bei 600 Meter = 600
             //600 / 1000 = 0,6   = 0,6km ?

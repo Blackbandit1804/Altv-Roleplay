@@ -88,13 +88,11 @@ export default class Fingerpointing {
 
                 let ray = game.startShapeTestCapsule(coords.x, coords.y, coords.z - 0.2, coords.x, coords.y, coords.z + 0.2, 1.0, 95, this.localPlayer.scriptID, 7);
                 let [_, blocked, coords1, coords2, entity] = game.getShapeTestResult(ray, false, null, null, null);
-                //alt.log("Blocked: " + blocked);
-                //alt.log("Entity: " + game.getEntityType(entity));
 
                 game.setTaskMoveNetworkSignalFloat(this.localPlayer.scriptID, "Pitch", camPitch);
                 game.setTaskMoveNetworkSignalFloat(this.localPlayer.scriptID, "Heading", camHeading * -1.0 + 1.0);
                 game.setTaskMoveNetworkSignalBool(this.localPlayer.scriptID, "isBlocked", blocked);
-                game.setTaskMoveNetworkSignalBool(this.localPlayer.scriptID, "isFirstPerson", game._0xEE778F8C7E1142E2(game._0x19CAFA3C87F7C2FF()) === 4);
+                game.setTaskMoveNetworkSignalBool(this.localPlayer.scriptID, "isFirstPerson", game.getCamViewModeForContext(game.getCamActiveViewModeContext()) === 4);
 
             }
         }
@@ -107,11 +105,8 @@ export default class Fingerpointing {
                 if(game.hasAnimDictLoaded(dict))
                 {
                     alt.clearInterval(check);
-                    alt.log('Anim dict loaded');
                     resolve(true);
-                } else {
-                    alt.log('Requesting Animdict.');
-                }
+                } 
 
             },(5));
         });

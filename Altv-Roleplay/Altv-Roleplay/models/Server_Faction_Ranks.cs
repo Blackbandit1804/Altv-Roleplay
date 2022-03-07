@@ -4,15 +4,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Altv_Roleplay.models
 {
-    public partial class CharactersPhoneVerlauf
+    public partial class Server_Faction_Ranks
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
-        public int charId { get; set; }
-        public int phoneNumber { get; set; }
-        public int anotherNumber { get; set; }
-        public DateTime date { get; set; }
 
+        public int factionId { get; set; }
+        public int rankId { get; set; }
+        public string name { get; set; }
+        public int paycheck { get; set; }
     }
 }

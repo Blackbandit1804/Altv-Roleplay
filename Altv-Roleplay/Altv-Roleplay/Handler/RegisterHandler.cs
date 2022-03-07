@@ -12,7 +12,7 @@ namespace Altv_Roleplay.Handler
     class RegisterHandler : IScript
     {
         [AsyncClientEvent("Server:Register:RegisterNewPlayer")]
-        public async Task RegisterNewPlayer(IPlayer player, string username, string email, string pass, string passrepeat)
+        public async void RegisterNewPlayer(IPlayer player, string username, string email, string pass, string passrepeat)
         {
             if (player == null || !player.Exists) return;
 

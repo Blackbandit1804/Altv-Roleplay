@@ -9,10 +9,9 @@ namespace Altv_Roleplay.models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         public int componentId { get; set; }
-        public int drawableId { get; set; }
+        public int drawableId { get; set; } 
         public int textureId { get; set; }
         public int gender { get; set; }
         public int isProp { get; set; }
-
     }
 }

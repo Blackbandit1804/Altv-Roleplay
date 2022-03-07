@@ -11,7 +11,7 @@ namespace Altv_Roleplay.models
 
         public int routeId { get; set; }
         public string routeName { get; set; }
-        public ulong hash { get; set; }
+        public long hash { get; set; }
         public int neededExp { get; set; }
         public int givenExp { get; set; }
         public int paycheck { get; set; }

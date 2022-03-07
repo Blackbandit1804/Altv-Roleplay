@@ -94,9 +94,8 @@ alt.onServer("Client:Minijob:RemoveJobMarkerWithFreeze", (delay) => {
             game.freezeEntityPosition(vehicle, true);
         }
         alt.setTimeout(() => {
-            game.freezeEntityPosition(alt.Player.local.scriptID, false);
-            if (alt.Player.local.vehicle != null) {
-                game.freezeEntityPosition(alt.Player.local.vehicle.scriptID, false);
+            if (vehicle != null) {
+                game.freezeEntityPosition(vehicle, false);
             }
         }, delay);
     }, 500);
@@ -171,7 +170,7 @@ export class Raycast {
 alt.everyTick(() => {
     if (markers.length >= 1) {
         for (var i = 0; i < markers.length; i++) {
-            game.drawRect(0, 0, 0, 0, 0, 0, 0, 0);
+            game.drawRect(0, 0, 0, 0, 0, 0, 0, 0, false);
             game.drawMarker(markers[i].type, markers[i].x, markers[i].y, markers[i].z, 0, 0, 0, 0, 0, 0, markers[i].scaleX, markers[i].scaleY, markers[i].scaleZ, markers[i].red, markers[i].green, markers[i].blue, markers[i].alpha, markers[i].bobUpAndDown, false, 2, false, undefined, undefined, false);
         }
     }

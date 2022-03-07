@@ -43,12 +43,12 @@ alt.onServer("Client:HUD:CreateCEF", () => {
         if (state) {
             alt.toggleGameControls(false);
             adminMenuBrowser.focus();
-            alt.emitServer("Server:CEF:setCefStatus", true);
+            alt.emit("Client:HUD:setCefStatus", true);
             adminmenu_isfocused = true;
         } else {
             alt.toggleGameControls(true);
             adminMenuBrowser.unfocus();
-            alt.emitServer("Server:CEF:setCefStatus", false);
+            alt.emit("Client:HUD:setCefStatus", false);
             adminmenu_isfocused = false;
         }
     })
@@ -83,7 +83,7 @@ alt.onServer("Client:Adminmenu:OpenMenu", () => {
     if (adminMenuBrowser != null) {
         adminmenu_isopened = true;
         adminMenuBrowser.emit("CEF:AdminMenu:OpenMenu");
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
     }
 });
 
@@ -91,7 +91,7 @@ alt.onServer("Client:Adminmenu:CloseMenu", () => {
     if (!adminmenu_isopened) return;
     adminmenu_isopened = false;
     adminMenuBrowser.emit("CEF:AdminMenu:CloseMenu");
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
 });
 
 alt.onServer("Client:Adminmenu:ReceiveMeta", (GetPlayerPlayer) => {
@@ -119,7 +119,7 @@ alt.onServer("Client:Adminmenu:CloseMenu", () => {
     if (!adminmenu_isopened) return;
     adminmenu_isopened = false;
     adminMenuBrowser.emit("CEF:AdminMenu:CloseMenu");
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
 });
 
 alt.onServer("Client:AdminMenu:SendAllOnlinePlayers", (AllOnlinePlayerArray) => {
@@ -132,7 +132,7 @@ alt.onServer("Client:AdminMenu:GetWaypointInfo", () => {
     const waypoint = game.getFirstBlipInfoId(8);
     if (game.doesBlipExist(waypoint)) {
         let coords = game.getBlipInfoIdCoord(waypoint);
-        game.setEntityCoords(alt.Player.local.scriptID, coords.x, coords.y, 150);
+        game.setEntityCoords(alt.Player.local.scriptID, coords.x, coords.y, 150, 0, 0, 0, false);
         alt.setTimeout(() => {
             const [found, groundZ] = game.getGroundZFor3dCoord(coords.x, coords.y, coords.z + 100, false, false);
             coords = new alt.Vector3(coords.x, coords.y, groundZ + 1);
@@ -153,8 +153,8 @@ alt.onServer("Client:AdminMenu:Godmode", (info) => {
 
 alt.onServer("Client:AdminMenu:Spectate", (target, info) => {
     if (info == "on") {
-        spectate_lastpos = game.getEntityCoords(alt.Player.local.scriptID);
-        game.setEntityCoords(alt.Player.local.scriptID, target.pos.x, target.pos.y, target.pos.z - 3);
+        spectate_lastpos = game.getEntityCoords(alt.Player.local.scriptID, true);
+        game.setEntityCoords(alt.Player.local.scriptID, target.pos.x, target.pos.y, target.pos.z - 3, 0, 0, 0, false);
         alt.setTimeout(() => {
             spectate_camera = game.createCam("DEFAULT_SCRIPTED_CAMERA", true);
             //spectate_camera = game.createCamWithParams('DEFAULT_SCRIPTED_CAMERA', target.pos.x, target.pos.y, target.pos.z, 0, 0, 240, 50, true, 2);
@@ -165,7 +165,7 @@ alt.onServer("Client:AdminMenu:Spectate", (target, info) => {
             
             spectate_interval = alt.everyTick(() => {
                 game.pointCamAtCoord(spectate_camera, target.pos.x, target.pos.y, target.pos.z);
-                game.setEntityCoords(alt.Player.local.scriptID, target.pos.x, target.pos.y, target.pos.z - 3);
+                game.setEntityCoords(alt.Player.local.scriptID, target.pos.x, target.pos.y, target.pos.z - 3, 0, 0, 0, false);
             });
         }, 30);
     } else if (info == "off") {
@@ -174,7 +174,7 @@ alt.onServer("Client:AdminMenu:Spectate", (target, info) => {
         game.setCamActive(spectate_camera, false);
         game.renderScriptCams(false, false, 0, false, false, 0);
         game.destroyCam(spectate_camera, true);
-        game.setEntityCoords(alt.Player.local.scriptID, spectate_lastpos.x, spectate_lastpos.y, spectate_lastpos.z);
+        game.setEntityCoords(alt.Player.local.scriptID, spectate_lastpos.x, spectate_lastpos.y, spectate_lastpos.z, 0, 0, 0, false);
         game.freezeEntityPosition(alt.Player.local.scriptID, false);
         spectate_lastpos, spectate_camera = null;
     }
@@ -216,7 +216,7 @@ alt.onServer("Client:Adminmenu:ToggleNametags", (info) => {
                 let scale = 1 - (0.8 * dist) / 25;
                 let fontSize = 0.6 * scale;
             
-                const lineHeight = game.getTextScaleHeight(fontSize, 4);
+                const lineHeight = game.getRenderedCharacterHeight(fontSize, 4);
                 const entity = player.vehicle ? player.vehicle.scriptID : player.scriptID;
                 const vector = game.getEntityVelocity(entity);
                 const frameTime = game.getFrameTime();
@@ -237,7 +237,7 @@ alt.onServer("Client:Adminmenu:ToggleNametags", (info) => {
                 game.addTextComponentSubstringPlayerName(isChatting ? `${name}~r~*` : `${name}`);
                 game.endTextCommandDisplayText(0, 0, 0);
             
-                if (!game.isEntityDead(player.scriptID)) {
+                if (!game.isEntityDead(player.scriptID, false)) {
                     drawBarBackground(100, lineHeight, scale, 0.25, 0, 147, 29, 255);
                     drawBar(game.getEntityHealth(player.scriptID) - 100, lineHeight, scale, 0.25, 0, 224, 11, 255);
             
@@ -261,7 +261,7 @@ alt.onServer("Client:Adminmenu:TogglePlayerBlips", (info) => {
             if (!player.valid) continue;
 
             const username = player.getSyncedMeta('NAME');
-            if (!username) continue;
+            if (!username || username == undefined) continue;
 
             playerblips_blip[player.scriptID] = new alt.PointBlip(player.pos.x, player.pos.y, player.pos.z);
             playerblips_blip[player.scriptID].scale = 0.9;
@@ -325,14 +325,15 @@ function drawBar(value, lineHeight, scale, position, r, g, b, a) {
         r,
         g,
         b,
-        a
+        a,
+        false
     );
 }
 
 function drawBarBackground(value, lineHeight, scale, position, r, g, b, a) {
     const width = value * 0.0005 * scale;
-    game.drawRect(0, lineHeight + position * lineHeight, width + 0.002, lineHeight / 3 + 0.002, 0, 0, 0, 255);
-    game.drawRect(0, lineHeight + position * lineHeight, width, lineHeight / 3, r, g, b, a);
+    game.drawRect(0, lineHeight + position * lineHeight, width + 0.002, lineHeight / 3 + 0.002, 0, 0, 0, 255, false);
+    game.drawRect(0, lineHeight + position * lineHeight, width, lineHeight / 3, r, g, b, a, false);
 }
 
 function addSpeedToVector(vector1, vector2, speed, lr = false) {
@@ -428,6 +429,6 @@ export default class NoClip {
         if (game.isDisabledControlPressed(0, NoClip.KEYS.UP)) zModifier += speed;
         if (game.isDisabledControlPressed(0, NoClip.KEYS.DOWN)) zModifier -= speed;
 
-       if (!isVectorEqual(new alt.Vector3(currentPos.x, currentPos.y, currentPos.z + zModifier), alt.Player.local.pos)) game.setEntityCoords(alt.Player.local.scriptID, currentPos.x, currentPos.y, (currentPos.z + zModifier - 1), true, false, false, true);
+        if (!isVectorEqual(new alt.Vector3(currentPos.x, currentPos.y, currentPos.z + zModifier), alt.Player.local.pos)) game.setEntityCoords(alt.Player.local.scriptID, currentPos.x, currentPos.y, (currentPos.z + zModifier - 1), 0, 0, 0, false);
     }
 }

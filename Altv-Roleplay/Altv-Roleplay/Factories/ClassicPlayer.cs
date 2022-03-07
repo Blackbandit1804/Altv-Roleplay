@@ -1,6 +1,6 @@
-﻿using AltV.Net.Elements.Entities;
+﻿using AltV.Net;
+using AltV.Net.Elements.Entities;
 using System;
-using AltV.Net;
 using System.Collections.Generic;
 using System.Text;
 
@@ -30,7 +30,6 @@ namespace Altv_Roleplay.Factories
         public bool HasShoesOn { get; set; } = false;
         public bool HasNecklaceOn { get; set; } = false;
         public bool isRobbingAShop { get; set; } = false;
-        public bool Gummigeschoss { get; set; } = false;
 
 
         public ClassicPlayer(IServer server, IntPtr nativePointer, ushort id) : base(server, nativePointer, id)

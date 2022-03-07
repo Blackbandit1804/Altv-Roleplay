@@ -142,7 +142,7 @@ namespace Altv_Roleplay.Minijobs.Elektrolieferant
             }
         }
 
-        private static async void PlayerExitVehicle(IVehicle vehicle, IPlayer player, byte seat)
+        private static void PlayerExitVehicle(IVehicle vehicle, IPlayer player, byte seat)
         {
             try
             {

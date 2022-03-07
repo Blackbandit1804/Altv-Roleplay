@@ -11,9 +11,6 @@ alt.onServer('Client:Pedcreator:spawnPed', (pedArray) => {
 function spawnPed(model, x, y, z, rotation) {
     let modelHash = game.getHashKey(model);
     new Promise((resolve, reject) => {
-        if (game.hasModelLoaded(modelHash)) {
-            resolve();
-        }
         game.requestModel(modelHash);
         const timer = alt.setInterval(() => {
             if (game.hasModelLoaded(modelHash)) {

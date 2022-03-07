@@ -5,6 +5,7 @@ let loginBrowser = null;
 let loginCam = null;
 let loginPedHandle = null;
 let loginModelHash = null;
+let lastInteract = 0;
 
 alt.onServer('Client:Login:CreateCEF', () => {
     if (loginBrowser == null) {
@@ -17,44 +18,62 @@ alt.onServer('Client:Login:CreateCEF', () => {
         loginBrowser = new alt.WebView("http://resource/client/cef/login/index.html");
         loginBrowser.focus();
         loginBrowser.on("Client:Login:cefIsReady", () => {
-            alt.setTimeout(() => {   
+            alt.setTimeout(() => {
                 if (alt.LocalStorage.get("username")) {
                     loginBrowser.emit("CEF:Login:setStorage", alt.LocalStorage.get("username"), alt.LocalStorage.get("password"));
                 }
                 loginBrowser.emit("CEF:Login:showArea", "login");
             }, 2000);
-        });//DONE
+        });
 
         loginBrowser.on("Client:Login:sendLoginDataToServer", (name, password) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Login:ValidateLoginCredentials", name, password);
-        });//DONE
+        });
 
         loginBrowser.on("Client:Register:sendRegisterDataToServer", (name, email, password, passwordrepeat) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+            
             alt.emitServer("Server:Register:RegisterNewPlayer", name, email, password, passwordrepeat);
-        });//DONE
+        });
 
         loginBrowser.on("Client:Charcreator:OpenCreator", () => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+            
             alt.emitServer("Server:Charcreator:CreateCEF");
             destroyLoginBrowser();
-        });//DONE
+        });
 
         loginBrowser.on("Client:Login:DestroyCEF", () => {
             destroyLoginBrowser();
-        });//DONE
+        });
 
         loginBrowser.on("Client:Charselector:KillCharacter", (charid) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+            
             alt.emitServer("Server:Charselector:KillCharacter", charid);
-        });//DONE
+        });
 
         loginBrowser.on("Client:Charselector:PreviewCharacter", (charid) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+            
             alt.emitServer("Server:Charselector:PreviewCharacter", charid);
-        });//DONE
+        });
 
         loginBrowser.on("Client:Charselector:spawnChar", (charid, spawnstr) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+            
             alt.emitServer("Server:Charselector:spawnChar", spawnstr, charid);
-        });//DONE
+        });
     }
-});//DONE
+});
 
 alt.onServer("Client:SpawnArea:setCharSkin", (facefeaturearray, headblendsarray, headoverlayarray) => {
     let facefeatures = JSON.parse(facefeaturearray);
@@ -79,13 +98,13 @@ alt.onServer("Client:SpawnArea:setCharSkin", (facefeaturearray, headblendsarray,
     game.setPedHeadOverlay(alt.Player.local.scriptID, 8, parseInt(headoverlays[0][8]), parseInt(headoverlays[1][8]));
     game.setPedHeadOverlay(alt.Player.local.scriptID, 9, parseInt(headoverlays[0][9]), parseInt(headoverlays[1][9]));
     game.setPedHeadOverlay(alt.Player.local.scriptID, 10, parseInt(headoverlays[0][10]), parseInt(headoverlays[1][10]));
-    game.setPedComponentVariation(alt.Player.local.scriptID, 2, parseInt(headoverlays[0][13]), 0, 0);
+    alt.emitServer("Server:SpawnArea:SetHairs", parseInt(headoverlays[0][13]));
     game.setPedHairColor(alt.Player.local.scriptID, parseInt(headoverlays[2][13]), parseInt(headoverlays[1][13]));
 
     for (let i = 0; i < 20; i++) {
         game.setPedFaceFeature(alt.Player.local.scriptID, i, parseFloat(facefeatures[i]));
     }
-});//DONE
+});
 
 alt.onServer("Client:SpawnArea:setCharClothes", (componentId, drawableId, textureId) => {
     //alt.log(`Component: ${componentId} - drawable: ${drawableId} - texture: ${textureId}`);
@@ -102,19 +121,19 @@ alt.onServer("Client:SpawnArea:clearCharAccessory", (componentId) => {
 
 alt.onServer("Client:Charselector:ViewCharacter", (gender, facefeaturearray, headblendsarray, headoverlayarray) => {
     spawnCharSelectorPed(gender, facefeaturearray, headblendsarray, headoverlayarray);
-});//DONE
+});
 
 alt.onServer("Client:Login:SaveLoginCredentialsToStorage", (name, password) => {
     alt.LocalStorage.set('username', name);
     alt.LocalStorage.set('password', password);
     alt.LocalStorage.save();
-});//DONE
+});
 
 alt.onServer("Client:Login:showError", (msg) => {
     if (loginBrowser != null) {
         loginBrowser.emit("CEF:Login:showError", msg);
     }
-});//DONE
+});
 
 alt.onServer("Client:Login:showArea", (area) => {
     if (loginBrowser != null) {
@@ -132,13 +151,13 @@ alt.onServer("Client:Login:showArea", (area) => {
             game.renderScriptCams(true, false, 0, true, false, 0);
         }
     }
-});//DONE
+});
 
 alt.onServer("Client:Charselector:sendCharactersToCEF", (chars) => {
     if (loginBrowser != null) {
         loginBrowser.emit("CEF:Charselector:sendCharactersToCEF", chars)
     }
-});//DONE
+});
 
 let destroyLoginBrowser = function() {
     if (loginBrowser != null) {
@@ -159,7 +178,7 @@ let destroyLoginBrowser = function() {
     alt.toggleGameControls(true);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     game.setEntityAlpha(alt.Player.local.scriptID, 255, 0);
-}//DONE
+}
 
 function spawnCharSelectorPed(gender, facefeaturearray, headblendsarray, headoverlayarray) {
     let facefeatures = JSON.parse(facefeaturearray);
@@ -209,14 +228,15 @@ function spawnCharSelectorPed(gender, facefeaturearray, headblendsarray, headove
             game.setPedComponentVariation(loginPedHandle, 2, parseInt(headoverlays[0][13]), 0, 0);
             game.setPedHairColor(loginPedHandle, parseInt(headoverlays[2][13]), parseInt(headoverlays[1][13]));
 
-            for (let i = 0; i < 20; i++) {                
+            for (let i = 0; i < 20; i++) {
                 game.setPedFaceFeature(loginPedHandle, i, parseFloat(facefeatures[i]));
             }
         }
     }, 200);
-}//DONE
+}
 
 alt.on('connectionComplete', () => {
+    alt.emit("Client:HUD:setCefStatus", false);
     loadallIPLsAndInteriors();
     alt.setStat('stamina', 50);
     alt.setStat('strength', 50);
@@ -225,7 +245,11 @@ alt.on('connectionComplete', () => {
     alt.setStat('flying_ability', 100);
     alt.setStat('shooting_ability', 100);
     alt.setStat('stealth_ability', 100);
-});//DONE
+
+    let date = new Date();
+    game.setClockTime(parseInt(date.getHours()), parseInt(date.getMinutes()), parseInt(date.getSeconds()));
+    alt.setMsPerGameMinute(60000);
+});
 
 function loadallIPLsAndInteriors() {
     alt.removeIpl("rc12b_default"); //Pillbox Hill Hospital
@@ -235,6 +259,7 @@ function loadallIPLsAndInteriors() {
 
     alt.requestIpl("hei_hw1_blimp_interior_v_apart_midspaz_milo");
     alt.requestIpl('canyonriver01');
+    alt.requestIpl('cs3_05_water_grp1');
     alt.requestIpl('chop_props');
     alt.requestIpl('FIBlobby');
     alt.removeIpl('FIBlobbyfake');
@@ -242,6 +267,7 @@ function loadallIPLsAndInteriors() {
     alt.requestIpl('FBI_repair');
     alt.requestIpl('v_tunnel_hole');
     alt.requestIpl('TrevorsMP');
+    alt.requestIpl('methtrailer_grp1');
     alt.requestIpl('TrevorsTrailer');
     alt.requestIpl('TrevorsTrailerTidy');
     alt.removeIpl('farm_burnt');
@@ -253,6 +279,7 @@ function loadallIPLsAndInteriors() {
     alt.requestIpl('farmint');
     alt.requestIpl('farm_lod');
     alt.requestIpl('farm_props');
+    alt.requestIpl('des_farmhs_startimap');
     alt.requestIpl('facelobby');
     alt.removeIpl('CS1_02_cf_offmission');
     alt.requestIpl('CS1_02_cf_onmission1');
@@ -266,11 +293,6 @@ function loadallIPLsAndInteriors() {
     game.removeIpl('ufo');
     game.removeIpl('ufo_lod');
     game.removeIpl('ufo_eye');
-    alt.requestIpl('farm');
-    alt.requestIpl('farm_lod');
-    alt.requestIpl('farm_props');
-    alt.requestIpl('farmint');
-    alt.requestIpl('des_farmhs_startimap');
     alt.removeIpl('v_carshowroom');
     alt.removeIpl('shutter_open');
     alt.removeIpl('shutter_closed');
@@ -360,7 +382,7 @@ function loadallIPLsAndInteriors() {
     alt.requestIpl('v_hospital');
     alt.requestIpl('bh1_47_joshhse_unburnt');
 
-
+    // HIGH END APARTMENT IPL
     alt.requestIpl("apa_v_mp_h_02_a");
 
     // CLOSE OPEN DOORS
@@ -376,7 +398,7 @@ function loadallIPLsAndInteriors() {
     game.doorControl(308207762, 7.518359, 539.5268, 176.17764, true, 0.0, 50.0, 0.0); // FRANKLIN'S NEW HOUSE
     game.doorControl(1145337974, 1273.8154, -1720.6969, 54.92143, true, 0.0, 50.0, 0.0); // LESTER'S HOUSE
     game.doorControl(132154435, 1972.769, 3815.366, 33.663258, true, 0.0, 50.0, 0.0); // TREVOR'S HOUSE
-    
+   
     alt.requestIpl('shr_int'); //Premium Deluxe Motorsports
     game.activateInteriorEntitySet(game.getInteriorAtCoordsWithType(-38.62, -1099.01, 27.31, 'v_carshowroom'), 'csr_beforeMission'); //Premium Deluxe Motorsports
     game.activateInteriorEntitySet(game.getInteriorAtCoordsWithType(-38.62, -1099.01, 27.31, 'v_carshowroom'), 'shutter_closed'); //Premium Deluxe Motorsports
@@ -446,30 +468,6 @@ function loadallIPLsAndInteriors() {
     game.deactivateInteriorEntitySet(nightClubGalaxyIntId, "Int01_ba_trad_lights"); //Galaxy Nightclub
     game.deactivateInteriorEntitySet(nightClubGalaxyIntId, "Int01_ba_Worklamps"); //Galaxy Nightclub
     game.refreshInterior(nightClubGalaxyIntId); //Galaxy Nightclub
-
-    // Weed Labor
-    alt.requestIpl("bkr_biker_interior_placement_interior_3_biker_dlc_int_ware02_milo");
-    game.activateInteriorEntitySet(247297, "weed_upgrade_equip");
-    game.activateInteriorEntitySet(247297, "weed_drying");
-    game.activateInteriorEntitySet(247297, "weed_security_upgrade");
-    game.activateInteriorEntitySet(247297, "weed_production");
-    game.activateInteriorEntitySet(247297, "weed_set_up");
-    game.activateInteriorEntitySet(247297, "weed_chairs");
-    game.activateInteriorEntitySet(247297, "weed_growtha_stage3");
-    game.activateInteriorEntitySet(247297, "weed_growthb_stage3");
-    game.activateInteriorEntitySet(247297, "weed_growthc_stage3");
-    game.activateInteriorEntitySet(247297, "weed_growthd_stage3");
-    game.activateInteriorEntitySet(247297, "weed_growthe_stage3");
-    game.activateInteriorEntitySet(247297, "weed_growthf_stage3");
-    game.refreshInterior(247297);
-
-    // Meth Labor
-    alt.requestIpl("bkr_biker_interior_placement_interior_2_biker_dlc_int_ware01_milo");
-    game.activateInteriorEntitySet(247041, "meth_lab_upgrade");
-    game.activateInteriorEntitySet(247041, "meth_lab_production");
-    game.activateInteriorEntitySet(247041, "meth_lab_security_high");
-    game.activateInteriorEntitySet(247041, "meth_lab_setup");
-    game.refreshInterior(247041);
 
     alt.requestIpl("tr_tuner_shop_burton");
     alt.requestIpl("tr_tuner_shop_strawberry");

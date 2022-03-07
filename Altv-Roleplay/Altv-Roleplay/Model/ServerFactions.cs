@@ -21,134 +21,9 @@ namespace Altv_Roleplay.Model
         public static List<Server_Faction_Members> ServerFactionMembers_ = new List<Server_Faction_Members>();
         public static List<Server_Faction_Storage_Items> ServerFactionStorageItems_ = new List<Server_Faction_Storage_Items>();
         public static List<Server_Faction_Positions> ServerFactionPositions_ = new List<Server_Faction_Positions>();
-        public static List<Server_Faction_Labor_Items> ServerFactionLaborItems_ = new List<Server_Faction_Labor_Items>();
         public static List<ServerFaction_Dispatch> ServerFactionDispatches_ = new List<ServerFaction_Dispatch>();
         public static List<Logs_Faction> LogsFaction_ = new List<Logs_Faction>();
         // 1  = DoJ, 2 = LSPD, 3 = LSFD, 4 = ACLS, 5 = Fahrschule
-
-        #region Labor Functions
-        public static bool IsLaborLocked(int factionId)
-        {
-            Server_Factions x = ServerFactions_.ToList().FirstOrDefault(y => y.id == factionId);
-            if (x != null) return x.isLaborLocked;
-            return false;
-        }
-
-        public static bool ExistFaction(int factionId)
-        {
-            return ServerFactions_.ToList().Exists(x => x.id == factionId);
-        }
-
-        public static string GetLaborItemsFromPlayer(int factionId, int accId)
-        {
-            return System.Text.Json.JsonSerializer.Serialize(ServerFactionLaborItems_.ToList().Where(x => x.factionId == factionId && x.accountId == accId).Select(x => new
-            {
-                x.itemName,
-                x.itemAmount,
-                pic = ServerItems.ReturnItemPicSRC(x.itemName),
-            }).ToList());
-        }
-
-        public static int GetLaborItemAmount(int factionId, int accountId, string itemName)
-        {
-            Server_Faction_Labor_Items x = ServerFactionLaborItems_.ToList().FirstOrDefault(y => y.factionId == factionId && y.accountId == accountId && y.itemName == itemName);
-            if (x != null) return x.itemAmount;
-            return 0;
-        }
-
-        public static void AddLaborItem(int factionId, int accountId, string itemName, int itemAmount)
-        {
-            try
-            {
-                if (factionId <= 0 || accountId <= 0 || string.IsNullOrWhiteSpace(itemName) || itemAmount <= 0) return;
-                Server_Faction_Labor_Items existItem = ServerFactionLaborItems_.FirstOrDefault(x => x.factionId == factionId && x.accountId == accountId && x.itemName == itemName);
-                if (existItem != null)
-                {
-                    existItem.itemAmount += itemAmount;
-                    using (var db = new gtaContext())
-                    {
-                        db.Server_Faction_Labor_Items.Update(existItem);
-                        db.SaveChanges();
-                    }
-                }
-                else
-                {
-                    Server_Faction_Labor_Items newItem = new Server_Faction_Labor_Items
-                    {
-                        factionId = factionId,
-                        accountId = accountId,
-                        itemAmount = itemAmount,
-                        itemName = itemName
-                    };
-
-                    ServerFactionLaborItems_.Add(newItem);
-                    using (var db = new gtaContext())
-                    {
-                        db.Server_Faction_Labor_Items.Add(newItem);
-                        db.SaveChanges();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-        }
-
-        public static void RemoveLaborItemAmount(int factionId, int accountId, string itemName, int itemAmount)
-        {
-            try
-            {
-                if (factionId <= 0 || accountId <= 0 || string.IsNullOrWhiteSpace(itemName) || itemAmount <= 0) return;
-                Server_Faction_Labor_Items item = ServerFactionLaborItems_.FirstOrDefault(x => x.factionId == factionId && x.accountId == accountId && x.itemName == itemName);
-                if (item == null) return;
-                item.itemAmount -= itemAmount;
-                if (item.itemAmount > 0)
-                {
-                    using (var db = new gtaContext())
-                    {
-                        db.Server_Faction_Labor_Items.Update(item);
-                        db.SaveChanges();
-                    }
-                }
-                else
-                {
-                    using (var db = new gtaContext())
-                    {
-                        db.Server_Faction_Labor_Items.Remove(item);
-                        db.SaveChanges();
-                    }
-                    ServerFactionLaborItems_.Remove(item);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-        }
-
-        public static Position GetLaborExitPosition(int factionId)
-        {
-            Server_Factions x = ServerFactions_.ToList().FirstOrDefault(y => y.id == factionId);
-            if (x != null)
-            {
-                return Utils.Constants.Positions.weedLabor_ExitPosition;
-                /*switch (x.type)
-                {
-                    case 2: return Utils.Constants.Positions.weedLabor_ExitPosition;
-                    case 3: return Utils.Constants.Positions.methLabor_ExitPosition;
-                }*/
-            }
-            return new Position(0, 0, 0);
-        }
-
-        public static void SetLaborLocked(int factionId, bool state)
-        {
-            Server_Factions x = ServerFactions_.FirstOrDefault(y => y.id == factionId);
-            if (x == null) return;
-            x.isLaborLocked = state;
-        }
-        #endregion
 
         public static void CreateServerFactionMember(int factionId, int charId, int rank, int dienstnummer)
         {
@@ -157,22 +32,14 @@ namespace Altv_Roleplay.Model
                 if (factionId == 0 || charId == 0) return;
                 var factionMemberData = ServerFactionMembers_.FirstOrDefault(x => x.charId == charId);
                 if (factionMemberData != null) return;
-                var phone = Characters.GetCharacterPhonenumber(charId);
-                var charname = Characters.GetCharacterName(charId);
-                var RankName = ServerFactions.GetFactionRankName(factionId, rank);
-                var factionname = ServerFactions.GetFactionShortName(factionId);
                 var factionInviteData = new Server_Faction_Members
                 {
                     charId = charId,
                     factionId = factionId,
                     rank = rank,
-                    rankname = RankName,
                     serviceNumber = dienstnummer,
                     isDuty = false,
-                    lastChange = DateTime.Now,
-                    phone = phone,
-                    charname = charname,
-                    factionname = factionname
+                    lastChange = DateTime.Now
                 };
                 ServerFactionMembers_.Add(factionInviteData);
                 using (gtaContext db = new gtaContext())
@@ -186,21 +53,6 @@ namespace Altv_Roleplay.Model
                 Alt.Log($"{e}");
             }
         }
-
-        public static bool existFaction(int factionid)
-        {
-            try
-            {
-                if (ServerFactions_.FirstOrDefault(x => x.id == factionid) != null) return true;
-                return false;
-            }
-            catch (Exception e)
-            {
-                Alt.Log($"{e}");
-            }
-            return false;
-        }
-
 
         public static void sendMsg(int fId, string msg)
         {
@@ -284,7 +136,8 @@ namespace Altv_Roleplay.Model
         {
             try
             {
-                if (senderId <= 0 || factionId <= 0) return;
+                if (senderId < 0 || factionId <= 0) return;
+
                 var data = new ServerFaction_Dispatch
                 {
                     senderCharId = senderId,
@@ -295,6 +148,12 @@ namespace Altv_Roleplay.Model
                 };
 
                 ServerFactionDispatches_.Add(data);
+
+                using (gtaContext db = new gtaContext())
+                {
+                    db.Server_Faction_Dispatch.Add(data);
+                    db.SaveChanges();
+                }
             }
             catch (Exception e)
             {
@@ -302,12 +161,42 @@ namespace Altv_Roleplay.Model
             }
         }
 
-        public static bool ExistDispatchBySender(int senderId)
+        public static void AddNewFactionDispatchNoName(string alternativename, int factionId, string message, Position pos)
+        {
+            try
+            {
+                if (factionId <= 0) return;
+
+                var data = new ServerFaction_Dispatch
+                {
+                    senderCharId = 0,
+                    factionId = factionId,
+                    message = message,
+                    Date = DateTime.Now.ToString("d", CultureInfo.CreateSpecificCulture("de-DE")),
+                    Destination = pos,
+                    altname = alternativename
+                };
+
+                ServerFactionDispatches_.Add(data);
+
+                using (gtaContext db = new gtaContext())
+                {
+                    db.Server_Faction_Dispatch.Add(data);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Alt.Log($"{e}");
+            }
+        }
+
+        public static bool ExistDispatchBySender(int senderId, int factionId)
         {
             try
             {
                 if (senderId <= 0) return false;
-                var dispatch = ServerFactionDispatches_.FirstOrDefault(x => x.senderCharId == senderId);
+                var dispatch = ServerFactionDispatches_.FirstOrDefault(x => x.senderCharId == senderId && x.factionId == factionId);
                 if (dispatch != null) return true;
             }
             catch (Exception e)
@@ -321,7 +210,7 @@ namespace Altv_Roleplay.Model
         {
             try
             {
-                if (factionId <= 0 || senderId <= 0) return false;
+                if (factionId <= 0 || senderId < 0) return false;
                 var dispatch = ServerFactionDispatches_.FirstOrDefault(x => x.senderCharId == senderId && x.factionId == factionId);
                 if (dispatch != null) return true;
             }
@@ -336,11 +225,17 @@ namespace Altv_Roleplay.Model
         {
             try
             {
-                if (factionId <= 0 || senderId <= 0) return;
+                if (factionId <= 0 || senderId < 0) return;
                 var dispatch = ServerFactionDispatches_.FirstOrDefault(x => x.factionId == factionId && x.senderCharId == senderId);
                 if(dispatch != null)
                 {
                     ServerFactionDispatches_.Remove(dispatch);
+
+                    using (gtaContext db = new gtaContext())
+                    {
+                        db.Server_Faction_Dispatch.Remove(dispatch);
+                        db.SaveChanges();
+                    }
                 }
             }
             catch (Exception e)
@@ -358,28 +253,12 @@ namespace Altv_Roleplay.Model
                 if(dispatch != null)
                 {
                     ServerFactionDispatches_.Remove(dispatch);
-                }
-            }
-            catch (Exception e)
-            {
-                Alt.Log($"{e}");
-            }
-        }
 
-        public static void createFactionDispatch(IPlayer player, int factionId, string msg, string notificationMsg)
-        {
-            try
-            {
-                if (player == null || !player.Exists || factionId <= 0 || msg.Length <= 0) return;
-                int charId = (int)player.GetCharacterMetaId();
-                if (charId <= 0) return;
-                if (ExistDispatchBySender(charId)) { RemoveDispatchWithoutFactionId(charId); }
-                AddNewFactionDispatch(charId, factionId, msg, player.Position);
-                foreach (var p in Alt.GetAllPlayers().Where(x => x != null && x.Exists && x.GetCharacterMetaId() > 0).ToList())
-                {
-                    if (p == null || !p.Exists) continue;
-                    if (!IsCharacterInAnyFaction((int)p.GetCharacterMetaId()) || !IsCharacterInFactionDuty((int)p.GetCharacterMetaId()) || GetCharacterFactionId((int)p.GetCharacterMetaId()) != factionId) continue;
-                    HUDHandler.SendNotification(p, 1, 3500, notificationMsg);
+                    using (gtaContext db = new gtaContext())
+                    {
+                        db.Server_Faction_Dispatch.Remove(dispatch);
+                        db.SaveChanges();
+                    }
                 }
             }
             catch (Exception e)
@@ -805,7 +684,7 @@ namespace Altv_Roleplay.Model
         {
             try
             {
-                if (factionId <= 0 || money < 1) return;
+                if (factionId <= 0 || money < 0) return;
                 var factionData = ServerFactions_.FirstOrDefault(x => x.id == factionId);
                 if(factionData != null)
                 {
@@ -872,9 +751,16 @@ namespace Altv_Roleplay.Model
                 posX = x.Destination.X,
                 posY = x.Destination.Y,
                 posZ = x.Destination.Z,
+                altname = x.altname
             }).ToList();
 
             return JsonConvert.SerializeObject(items);
+        }
+        public static int GetFactionDispatchCount(int factionId)
+        {
+            if (factionId <= 0) return 0;
+
+            return ServerFactionDispatches_.Where(x => x.factionId == factionId).Count();
         }
 
         public static string GetServerFactionMembers(int factionId)

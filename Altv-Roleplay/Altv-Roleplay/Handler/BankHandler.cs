@@ -15,11 +15,11 @@ namespace Altv_Roleplay.Handler
     class BankHandler : IScript
     {
         [AsyncClientEvent("Server:Bank:CreateNewBankAccount")]
-        public async Task CreateNewBankAccount(IPlayer player, string zoneName)
+        public void CreateNewBankAccount(IPlayer player, string zoneName)
         {
             if (player == null || !player.Exists || zoneName == "") return;
             if (CharactersBank.GetCharacterBankAccountCount(player) >= 2) { HUDHandler.SendNotification(player, 4, 5000, "Du kannst nur zwei Bankkonten gleichzeitig haben."); return; }
-            int rndAccNumber = new Random().Next(100000000, 999999999);
+            int rndAccNumber = new Random().Next(1000000, 999999999);
             int rndPin = new Random().Next(0000, 9999);
             int charid = User.GetPlayerOnline(player);
             if (charid == 0) return;
@@ -35,7 +35,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Bank:BankAccountAction")]
-        public async Task BankAccountAction(IPlayer player, string action, string accountNumberStr)
+        public void BankAccountAction(IPlayer player, string action, string accountNumberStr)
         {
             if (player == null || !player.Exists || action == "" || accountNumberStr == "") return;
             int accountNumber = Int32.Parse(accountNumberStr);
@@ -68,14 +68,14 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:ATM:requestBankData")]
-        public async Task requestATMBankData(ClassicPlayer player, int accountNumber)
+        public void requestATMBankData(ClassicPlayer player, int accountNumber)
         {
             if (player == null || !player.Exists || player.CharacterId <= 0) return;
             player.EmitLocked("Client:ATM:BankATMSetRequestedData", CharactersBank.GetBankAccountMoney(accountNumber), ServerBankPapers.GetBankAccountBankPaper(player, accountNumber));
         }
 
         [AsyncClientEvent("Server:ATM:WithdrawMoney")]
-        public async Task WithdrawATMMoney(IPlayer player, int accountNumber, int amount, string zoneName)
+        public void WithdrawATMMoney(IPlayer player, int accountNumber, int amount, string zoneName)
         {
             if (player == null || !player.Exists || accountNumber == 0 || amount < 1) return;
             int charid = User.GetPlayerOnline(player);
@@ -91,7 +91,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:ATM:TryPin")]
-        public async Task TryATMPin(IPlayer player, string action, int accountNumber)
+        public void TryATMPin(IPlayer player, string action, int accountNumber)
         {
             if (player == null || !player.Exists) return;
             int charid = User.GetPlayerOnline(player);
@@ -113,13 +113,13 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:ATM:DepositMoney")]
-        public async Task DepositATMMoney(IPlayer player, int accountNumber, int amount, string zoneName)
+        public void DepositATMMoney(IPlayer player, int accountNumber, int amount, string zoneName)
         {
             if (player == null || !player.Exists || accountNumber == 0 || amount < 1) return;
             int charid = User.GetPlayerOnline(player);
             if (charid == 0) return;
-            if (CharactersBank.GetBankAccountLockStatus(accountNumber)) { HUDHandler.SendNotification(player, 4, 5000, $"Diese EC Karte ist gesperrt und kann nicht weiter benutzt werden."); if (CharactersInventory.ExistCharacterItem(charid, "EC Karte " + accountNumber, "inventory")) { CharactersInventory.RemoveCharacterItemAmount(charid, "EC Karte " + accountNumber, 1, "inventory"); } return; }
-            if(!CharactersInventory.ExistCharacterItem(charid, "Bargeld", "inventory") || CharactersInventory.GetCharacterItemAmount(charid, "Bargeld", "inventory") < amount) { HUDHandler.SendNotification(player, 4, 5000, $"Du hast nicht genug Bargeld in deinem Inventar dabei ({amount}$)."); return; }
+            if (CharactersBank.GetBankAccountLockStatus(accountNumber)) { HUDHandler.SendNotification(player, 3, 5000, $"Diese EC Karte ist gesperrt und kann nicht weiter benutzt werden."); if (CharactersInventory.ExistCharacterItem(charid, "EC Karte " + accountNumber, "inventory")) { CharactersInventory.RemoveCharacterItemAmount(charid, "EC Karte " + accountNumber, 1, "inventory"); } return; }
+            if(!CharactersInventory.ExistCharacterItem(charid, "Bargeld", "inventory") || CharactersInventory.GetCharacterItemAmount(charid, "Bargeld", "inventory") < amount) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast nicht genug Bargeld in deinem Inventar dabei ({amount}$)."); return; }
             DateTime dateTime = DateTime.Now;
             CharactersBank.SetBankAccountMoney(accountNumber, (CharactersBank.GetBankAccountMoney(accountNumber) + amount)); //Geld aufs Konto packen
             CharactersInventory.RemoveCharacterItemAmount(charid, "Bargeld", amount, "inventory"); //Spieler Geld entfernen
@@ -128,12 +128,12 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:ATM:TransferMoney")]
-        public async Task TransferATMMoney(IPlayer player, int accountNumber, int targetNumber, int amount, string zoneName)
+        public void TransferATMMoney(IPlayer player, int accountNumber, int targetNumber, int amount, string zoneName)
         {
             if (player == null || !player.Exists || accountNumber == 0 || targetNumber == 0 || amount < 1) return;
             int charid = User.GetPlayerOnline(player);
             if (charid == 0) return;
-            if (CharactersBank.GetBankAccountLockStatus(accountNumber)) { HUDHandler.SendNotification(player, 4, 5000, $"Diese EC Karte ist gesperrt und kann nicht weiter benutzt werden."); if (CharactersInventory.ExistCharacterItem(charid, "EC Karte " + accountNumber, "inventory")) { CharactersInventory.RemoveCharacterItemAmount(charid, "EC Karte " + accountNumber, 1, "inventory"); } return; }
+            if (CharactersBank.GetBankAccountLockStatus(accountNumber)) { HUDHandler.SendNotification(player, 3, 5000, $"Diese EC Karte ist gesperrt und kann nicht weiter benutzt werden."); if (CharactersInventory.ExistCharacterItem(charid, "EC Karte " + accountNumber, "inventory")) { CharactersInventory.RemoveCharacterItemAmount(charid, "EC Karte " + accountNumber, 1, "inventory"); } return; }
             if(accountNumber == targetNumber) { HUDHandler.SendNotification(player, 3, 5000, $"Sie können sich selber kein Geld überweisen."); return; }
             if(CharactersBank.GetBankAccountMoney(accountNumber) < amount) { HUDHandler.SendNotification(player, 3, 5000, $"Ihr Bankkonto ist für diese Transaktion nicht ausreichend gedeckt ({amount}$)."); return; }
             CharactersBank.SetBankAccountMoney(accountNumber, (CharactersBank.GetBankAccountMoney(accountNumber) - amount)); //Geld vom Konto abziehen
@@ -147,7 +147,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:FactionBank:DepositMoney")]
-        public async Task DepositFactionMoney(IPlayer player, string type, int factionId, int moneyAmount) //Type: faction | company
+        public void DepositFactionMoney(IPlayer player, string type, int factionId, int moneyAmount) //Type: faction | company
         {
             try
             {
@@ -168,7 +168,7 @@ namespace Altv_Roleplay.Handler
                     if(ServerCompanys.GetCharacterServerCompanyRank(charid) < 1) { HUDHandler.SendNotification(player, 3, 5000, "Du hast nicht den benötigten Rang um auf das Unternehmenskonto zuzugreifen."); return; }
                 }
                
-                if (!CharactersInventory.ExistCharacterItem(charid, "Bargeld", "inventory") || CharactersInventory.GetCharacterItemAmount(charid, "Bargeld", "inventory") < moneyAmount) { HUDHandler.SendNotification(player, 4, 5000, "Du hast nicht genügend Bargeld zum Einzahlen dabei."); return; }
+                if (!CharactersInventory.ExistCharacterItem(charid, "Bargeld", "inventory") || CharactersInventory.GetCharacterItemAmount(charid, "Bargeld", "inventory") < moneyAmount) { HUDHandler.SendNotification(player, 3, 5000, "Du hast nicht genügend Bargeld zum Einzahlen dabei."); return; }
                 CharactersInventory.RemoveCharacterItemAmount(charid, "Bargeld", moneyAmount, "inventory");
 
                 if(type == "faction")
@@ -192,7 +192,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:FactionBank:WithdrawMoney")]
-        public async Task WithdrawFactionMoney(IPlayer player, string type, int factionId, int moneyAmount) //Type: faction | company
+        public void WithdrawFactionMoney(IPlayer player, string type, int factionId, int moneyAmount) //Type: faction | company
         {
             try
             {

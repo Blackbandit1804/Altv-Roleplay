@@ -70,8 +70,7 @@ namespace Altv_Roleplay.Model
                     }
 
                     return price;
-                }
-                else
+                } else
                 {
                     switch (ServerClothes.GetClothesComponent(clothId, Convert.ToInt32(Characters.GetCharacterGender(player.CharacterId))))
                     {
@@ -95,7 +94,7 @@ namespace Altv_Roleplay.Model
 
                     return price;
                 }
-
+                
             }
             catch (Exception e)
             {

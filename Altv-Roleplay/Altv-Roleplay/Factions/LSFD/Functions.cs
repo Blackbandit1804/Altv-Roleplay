@@ -14,7 +14,7 @@ namespace Altv_Roleplay.Factions.LSFD
     public class Functions : IScript
     {
         [AsyncClientEvent("Server:Raycast:RevivePlayer")]
-        public async Task RevivePlayer(IPlayer player, IPlayer targetPlayer)
+        public async void RevivePlayer(IPlayer player, IPlayer targetPlayer)
         {
             try
             {
@@ -22,7 +22,7 @@ namespace Altv_Roleplay.Factions.LSFD
                 int targetId = (int)targetPlayer.GetCharacterMetaId();
                 int charId = (int)player.GetCharacterMetaId();
                 if (charId <= 0 ||targetId <= 0 || !Characters.IsCharacterUnconscious(targetId)) return;
-                if(!CharactersInventory.ExistCharacterItem(charId, "Defibrillator", "inventory") && !CharactersInventory.ExistCharacterItem(charId, "Defibrillator", "backpack")) { HUDHandler.SendNotification(player, 4, 3500, "Du hast keinen Defibrillator dabei."); return; }
+                if(!CharactersInventory.ExistCharacterItem(charId, "Defibrilator", "inventory") && !CharactersInventory.ExistCharacterItem(charId, "Defibrilator", "backpack")) { HUDHandler.SendNotification(player, 3, 3500, "Du hast keinen Defibrilator dabei."); return; }
                 InventoryHandler.InventoryAnimation(player, "revive", 15000);
                 int rnd = new Random().Next(1, 100);
                 await Task.Delay(15000);
@@ -41,7 +41,7 @@ namespace Altv_Roleplay.Factions.LSFD
                 {
                     //Reanimation nicht erfolgreich
                     if (!player.IsInVehicle) InventoryHandler.StopAnimation(player, "missheistfbi3b_ig8_2", "cpr_loop_paramedic");
-                    HUDHandler.SendNotification(player, 3, 3500, "Die Renimation war nicht erfolgreich, versuch es weiter!");
+                    HUDHandler.SendNotification(player, 3, 3500, "Die Reanimation war nicht erfolgreich, versuch es weiter!");
                 }
             }
             catch (Exception e)
@@ -51,7 +51,7 @@ namespace Altv_Roleplay.Factions.LSFD
         }
 
         [AsyncClientEvent("Server:Raycast:healPlayer")]
-        public async Task HealPlayer(IPlayer player, IPlayer targetPlayer)
+        public async void HealPlayer(IPlayer player, IPlayer targetPlayer)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace Altv_Roleplay.Factions.LSFD
                 int charId = (int)player.GetCharacterMetaId();
                 if (!player.Position.IsInRange(targetPlayer.Position, 3f)) return;
                 if (charId <= 0 || targetId <= 0 || targetPlayer.Health >= 200) return;
-                if(!CharactersInventory.ExistCharacterItem(charId, "Verbandskasten", "inventory") && !CharactersInventory.ExistCharacterItem(charId, "Verbandskasten", "backpack")) { HUDHandler.SendNotification(player, 4, 2500, "Du hast keinen Verbandskasten dabei."); return; }
+                if(!CharactersInventory.ExistCharacterItem(charId, "Verbandskasten", "inventory") && !CharactersInventory.ExistCharacterItem(charId, "Verbandskasten", "backpack")) { HUDHandler.SendNotification(player, 3, 2500, "Du hast keinen Verbandskasten dabei."); return; }
                 //ToDo: Animation abspielen
                 await Task.Delay(4000);
                 if (player == null || !player.Exists || targetPlayer == null || !targetPlayer.Exists) return;

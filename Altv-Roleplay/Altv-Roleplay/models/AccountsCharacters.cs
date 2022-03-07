@@ -49,9 +49,9 @@ namespace Altv_Roleplay.models
         public int playtimeHours { get; set; }
         public bool isInJail { get; set; }
         public int jailTime { get; set; }
+        public int wallpaper { get; set; }
         public string pedName { get; set; }
         public int isAnimalPed { get; set; }
-        public bool isLaptopEquipped { get; set; }
 
         [NotMapped]
         public bool isPhoneFlyModeActivated { get; set; } = false; //Flugmodus

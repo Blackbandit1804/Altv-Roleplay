@@ -12,7 +12,7 @@ namespace Altv_Roleplay.Model
     {
         public static List<Server_Tattoos> ServerTattoos_ = new List<Server_Tattoos>();
 
-        public static async void GetAllTattoos(ClassicPlayer player)
+        public static void GetAllTattoos(ClassicPlayer player)
         {
             try
             {

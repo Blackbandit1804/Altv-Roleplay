@@ -11,7 +11,7 @@ namespace Altv_Roleplay.Model
     {
         public static List<Server_All_Vehicles> ServerAllVehicles_ = new List<Server_All_Vehicles>();
 
-        public static int GetVehicleTaxes(ulong hash)
+        public static int GetVehicleTaxes(long hash)
         {
             int tax = 0;
             if (hash <= 0) return tax;
@@ -23,7 +23,7 @@ namespace Altv_Roleplay.Model
             return tax;
         }
 
-        public static string GetVehicleNameOnHash(ulong hash)
+        public static string GetVehicleNameOnHash(long hash)
         {
             string vehName = "undefined";
             if (hash == 0) return vehName;
@@ -35,7 +35,7 @@ namespace Altv_Roleplay.Model
             return vehName;
         }
 
-        public static int GetVehicleClass(ulong hash)
+        public static int GetVehicleClass(long hash)
         {
             try
             {

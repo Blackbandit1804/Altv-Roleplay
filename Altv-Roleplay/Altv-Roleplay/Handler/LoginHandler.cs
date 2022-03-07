@@ -15,18 +15,14 @@ namespace Altv_Roleplay.Handler
 {
     class LoginHandler : IScript
     {
-        [AsyncScriptEvent(ScriptEventType.PlayerConnect)]
-        public async Task OnPlayerConnect_Handler(ClassicPlayer player, string reason)
+        [ScriptEvent(ScriptEventType.PlayerConnect)]
+        public void OnPlayerConnect_Handler(ClassicPlayer player, string reason)
         {
             if (player == null || !player.Exists) return;
-            AltAsync.Do(() =>
-            {
-                player.SetSyncedMetaData("PLAYER_SPAWNED", false);
-                player.SetSyncedMetaData("ADMINLEVEL", 0);
-                player.SetPlayerIsCuffed("handcuffs", false);
-                player.SetPlayerIsCuffed("ropecuffs", false);
-                setCefStatus(player, false);
-            });
+            player.SetSyncedMetaData("PLAYER_SPAWNED", false);
+            player.SetSyncedMetaData("ADMINLEVEL", 0);
+            player.SetPlayerIsCuffed("handcuffs", false);
+            player.SetPlayerIsCuffed("ropecuffs", false);
             player.SetPlayerCurrentMinijob("None");
             player.SetPlayerCurrentMinijobRouteId(0);
             player.SetPlayerCurrentMinijobStep("None");
@@ -37,8 +33,8 @@ namespace Altv_Roleplay.Handler
             CreateLoginBrowser(player);
         }
 
-        [AsyncScriptEvent(ScriptEventType.PlayerDisconnect)]
-        public async Task OnPlayerDisconnected_Handler(ClassicPlayer player, string reason)
+        [ScriptEvent(ScriptEventType.PlayerDisconnect)]
+        public void OnPlayerDisconnected_Handler(ClassicPlayer player, string reason)
         {
             try
             {
@@ -47,17 +43,10 @@ namespace Altv_Roleplay.Handler
                 User.SetPlayerOnline(player, 0);
                 Characters.SetCharacterCurrentFunkFrequence(player.CharacterId, null);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Alt.Log($"{e}");
             }
-        }
-
-        [AsyncClientEvent("Server:CEF:setCefStatus")]
-        public static async Task setCefStatus(IPlayer player, bool status)
-        {
-            if (player == null || !player.Exists) return;
-            AltAsync.Do(() => player.SetSyncedMetaData("IsCefOpen", status));
         }
 
         public static void CreateLoginBrowser(IPlayer client)
@@ -70,10 +59,9 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Login:ValidateLoginCredentials")]
-        public async Task ValidateLoginCredentials(IPlayer client, string username, string password)
+        public void ValidateLoginCredentials(ClassicPlayer client, string username, string password)
         {
             if (client == null || !client.Exists) return;
-            Console.WriteLine($"ValidateLoginCredentials - Thread = {Thread.CurrentThread.ManagedThreadId}");
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
@@ -89,74 +77,88 @@ namespace Altv_Roleplay.Handler
                 return;
             }
 
-            if (!BCrypt.Net.BCrypt.Verify(password, User.GetPlayerPassword(username)))
-            {
+            if(!BCrypt.Net.BCrypt.Verify(password, User.GetPlayerPassword(username))) {
                 client.EmitLocked("Client:Login:showError", "Das eingegebene Passwort ist falsch.");
                 LoggingService.NewLoginLog(username, client.SocialClubId, client.Ip, client.HardwareIdHash, false, $"Das eingegebene Passwort ist falsch");
                 return;
             }
 
-            if (User.GetPlayerSocialclubId(username) != client.SocialClubId)
-            {
-                client.EmitLocked("Client:Login:showError", "Login mit falschem Social-Club Account - im Support melden.");
-                User.SetPlayerBanned(client, true, "Loginversuch mit falschem Social-Club Account - im Support melden.");
-                LoggingService.NewLoginLog(username, client.SocialClubId, client.Ip, client.HardwareIdHash, false, $"Login mit falschem Social-Club Account - im Support melden (Eingetragen: {User.GetPlayerSocialclubId(username)} | Versuchter: {client.SocialClubId} | IP: ({client.Ip}) | HW-ID: ({client.HardwareIdHash})).");
-                return;
-            }
+            /*if(User.GetPlayerSocialclubId(username) != client.SocialClubId)*/
+            if (User.GetPlayerSocialclubId(username) != 0) { if (User.GetPlayerSocialclubId(username) != client.SocialClubId) { client.EmitLocked("Client:Login:showError", "Fehler bei der Anmeldung (Fehlercode 508)."); return; } }
+            else { User.SetPlayerSocialID(client); }
 
-            if (!User.IsPlayerWhitelisted(username))
+            if(!User.IsPlayerWhitelisted(username))
             {
                 client.EmitLocked("Client:Login:showError", "Dieser Benutzeraccount wurde noch nicht im Support aktiviert.");
                 LoggingService.NewLoginLog(username, client.SocialClubId, client.Ip, client.HardwareIdHash, false, $"Dieser Benutzeraccount wurde noch nicht im Support aktiviert ({username}).");
                 return;
             }
 
-            if (User.GetPlayerHardwareID(client) != 0) { if (User.GetPlayerHardwareID(client) != client.HardwareIdHash) { client.EmitLocked("Client:Login:showError", "Fehler bei der Anmeldung (Fehlercode 187)."); return; } }
+            if(User.GetPlayerHardwareID(client) != 0) { if(User.GetPlayerHardwareID(client) != client.HardwareIdHash) { client.EmitLocked("Client:Login:showError", "Fehler bei der Anmeldung (Fehlercode 187)."); return; } } 
             else { User.SetPlayerHardwareID(client); }
 
-            if (User.IsPlayerBanned(client))
+            if(User.IsPlayerBanned(client))
             {
                 client.EmitLocked("Client:Login:showError", "Dieser Benutzeraccount wurde gebannt, im Support melden.");
                 LoggingService.NewLoginLog(username, client.SocialClubId, client.Ip, client.HardwareIdHash, false, $"Dieser Benutzeraccount wurde gebannt, im Support melden ({username}).");
                 return;
             }
 
-            client.Dimension = (short)User.GetPlayerAccountId(client);
             client.EmitLocked("Client:Login:SaveLoginCredentialsToStorage", username, password);
-            User.SetPlayerOnline((ClassicPlayer)client, 0);
+            User.SetPlayerOnline(client, 0);
+            lock (client)
+            {
+                if (client == null || !client.Exists) return;
+                client.accountId = (short)User.GetPlayerAccountId(client);
+                client.Dimension = (short)User.GetPlayerAccountId(client);
+            }
             SendDataToCharselectorArea(client);
             LoggingService.NewLoginLog(username, client.SocialClubId, client.Ip, client.HardwareIdHash, true, "Erfolgreich eingeloggt.");
             stopwatch.Stop();
             if (stopwatch.Elapsed.Milliseconds > 30) Alt.Log($"ValidateLoginCredentials benötigte {stopwatch.Elapsed.Milliseconds}ms");
-        }
+        }        
 
-        [AsyncClientEvent("Server:Charselector:PreviewCharacter")]
-        public async Task PreviewCharacter(IPlayer client, int charid)
+        /*[AsyncClientEvent("Server:Charselector:PreviewCharacter")]
+        public void PreviewCharacter(IPlayer client, int charid)
         {
             if (client == null || !client.Exists) return;
             client.EmitLocked("Client:Charselector:ViewCharacter", Characters.GetCharacterGender(charid), Characters.GetCharacterSkin("facefeatures", charid), Characters.GetCharacterSkin("headblendsdata", charid), Characters.GetCharacterSkin("headoverlays", charid));
-        }
+        }*/
 
         public static void SendDataToCharselectorArea(IPlayer client)
         {
-            if (client == null || !client.Exists) return;
+            if (client == null || !client.Exists || ((ClassicPlayer)client).accountId <= 0) return;
             var charArray = Characters.GetPlayerCharacters(client);
-            client.Position = new Position((float)402.778, (float)-996.9758, (float)-98);
+            lock (client) 
+            {
+                if (client == null || !client.Exists) return;
+                client.Position = new Position((float)402.778, (float)-996.9758, (float)-98);
+            }
+            
             client.EmitLocked("Client:Charselector:sendCharactersToCEF", charArray);
             client.EmitLocked("Client:Login:showArea", "charselect");
         }
 
         [AsyncClientEvent("Server:Charselector:spawnChar")]
-        public async Task CharacterSelectedSpawnPlace(ClassicPlayer client, string spawnstr, string charcid)
+        public async void CharacterSelectedSpawnPlace(ClassicPlayer client, string spawnstr, string charcid)
         {
-            if (client == null || !client.Exists || spawnstr == null || charcid == null) return;
+            if (client == null || !client.Exists || spawnstr == null || charcid == null || client.accountId <= 0 || User.GetPlayerAccountId(client) <= 0) return;
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             int charid = Convert.ToInt32(charcid);
             if (charid <= 0) return;
+            if (User.GetPlayerAccountId(client) != Characters.GetCharacterAccountId(charid))
+            {
+                client.Kick("Login Fehler!");
+                return;
+            }
             string charName = Characters.GetCharacterName(charid);
-            await User.SetPlayerOnline(client, charid); //Online Feld = CharakterID
-            client.CharacterId = charid;
+            User.SetPlayerOnline(client, charid); //Online Feld = CharakterID
+            lock (client)
+            {
+                if (client == null || !client.Exists) return;
+                client.CharacterId = charid;
+            }
 
             if (Characters.GetCharacterFirstJoin(charid) && Characters.GetCharacterFirstSpawnPlace(client, charid) == "unset")
             {
@@ -164,10 +166,33 @@ namespace Altv_Roleplay.Handler
                 CharactersInventory.AddCharacterItem(charid, "Bargeld", 10000, "inventory");
                 CharactersInventory.AddCharacterItem(charid, "Tasche", 1, "inventory");
                 Characters.SetCharacterBackpack(client, "Tasche");
-                //player.EmitLocked("Client:SpawnArea:setCharClothes", 5, 0, 0);
+                //player.SetClothes(5, 0, 0, 2);
                 CharactersInventory.AddCharacterItem(charid, "Sandwich", 3, "backpack"); //ToDo: Trinken hinzufuegen
                 CharactersInventory.AddCharacterItem(charid, "Tablet", 1, "inventory");
                 CharactersInventory.AddCharacterItem(charid, "Smartphone", 1, "inventory");
+
+                // First-Spawn Kleider
+                if (!Characters.GetCharacterGender((int)client.GetCharacterMetaId()))
+                {
+                    //Männlich
+                    Characters.SwitchCharacterClothes(client, 5048, false);
+                    Characters.SwitchCharacterClothes(client, 7761, false);
+                    Characters.SwitchCharacterClothes(client, 4860, false);
+                    CharactersClothes.CreateCharacterOwnedClothes(client.CharacterId, 5048);
+                    CharactersClothes.CreateCharacterOwnedClothes(client.CharacterId, 7761);
+                    CharactersClothes.CreateCharacterOwnedClothes(client.CharacterId, 4860);
+                }
+                else
+                {
+                    //Weiblich
+                    Characters.SwitchCharacterClothes(client, 17018, false);
+                    Characters.SwitchCharacterClothes(client, 21383, false);
+                    Characters.SwitchCharacterClothes(client, 27501, false);
+                    CharactersClothes.CreateCharacterOwnedClothes(client.CharacterId, 17018);
+                    CharactersClothes.CreateCharacterOwnedClothes(client.CharacterId, 21383);
+                    CharactersClothes.CreateCharacterOwnedClothes(client.CharacterId, 27501);
+                }
+                
 
                 switch (spawnstr)
                 {
@@ -188,31 +213,52 @@ namespace Altv_Roleplay.Handler
                         break;
                 }
             }
-
-
-            if (Characters.GetCharacterGender(charid)) client.Model = 0x9C9EFFD8;
-            else client.Model = 0x705E61F2;
+            lock (client)
+            {
+                if (client == null || !client.Exists) return;
+                if (Characters.GetCharacterGender(charid)) client.Model = 0x9C9EFFD8;
+                else client.Model = 0x705E61F2;
+            }
 
             client.EmitLocked("Client:ServerBlips:LoadAllBlips", ServerBlips.GetAllServerBlips());
             client.EmitLocked("Client:ServerMarkers:LoadAllMarkers", ServerBlips.GetAllServerMarkers());
-            client.EmitLocked("Client:SpawnArea:setCharSkin", Characters.GetCharacterSkin("facefeatures", charid), Characters.GetCharacterSkin("headblendsdata", charid), Characters.GetCharacterSkin("headoverlays", charid));
+            //client.EmitLocked("Client:SpawnArea:setCharSkin", Characters.GetCharacterSkin("facefeatures", charid), Characters.GetCharacterSkin("headblendsdata", charid), Characters.GetCharacterSkin("headoverlays", charid));
             Position dbPos = Characters.GetCharacterLastPosition(charid);
-            client.Position = dbPos;
-            client.Spawn(dbPos, 0);
-            client.Dimension = Characters.GetCharacterLastDimension(charid);
-            client.Health = (ushort)(Characters.GetCharacterHealth(charid) + 100);
-            client.Armor = (ushort)Characters.GetCharacterArmor(charid);
+            lock (client)
+            {
+                if (client == null || !client.Exists) return;
+                client.Position = dbPos;
+                client.Spawn(dbPos, 0);
+            }
+            if (Characters.GetCharacterPedName(client.CharacterId) != "none" && !String.IsNullOrWhiteSpace(Characters.GetCharacterPedName(client.CharacterId))) client.Model = Alt.Hash(Characters.GetCharacterPedName(client.CharacterId));
+            lock (client)
+            {
+                if (client == null || !client.Exists) return;
+                client.Dimension = Characters.GetCharacterLastDimension(charid);
+                client.Health = (ushort)(Characters.GetCharacterHealth(charid) + 100);
+                client.Armor = (ushort)Characters.GetCharacterArmor(charid);
+            }
             HUDHandler.CreateHUDBrowser(client); //HUD erstellen
-            WeatherHandler.SetRealTime(client); //Echtzeit setzen
-            Characters.SetCharacterCorrectClothes(client);
+            WeatherHandler.SetRealWeather(client);
+            Characters.SetCharacterCorrectClothes(client, true);
+            Characters.SetCharacterSkin(client);
             Characters.SetCharacterLastLogin(charid, DateTime.Now);
             Characters.SetCharacterCurrentFunkFrequence(charid, null);
             Alt.Log($"Eingeloggt {client.Name}");
-            Alt.Emit("PlayerLoggedIn", client, charid);
+            Alt.Emit("SaltyChat:EnablePlayer", client, (int)charid);
             client.EmitLocked("SaltyChat_OnConnected");
+            client.SetSyncedMetaData("NAME", User.GetPlayerUsername(((ClassicPlayer)client).accountId) + " | " + Characters.GetCharacterName((int)client.GetCharacterMetaId()));
             if (Characters.IsCharacterUnconscious(charid))
             {
-                DeathHandler.openDeathscreen(client);
+                dbPos.Y = dbPos.Y + 1;
+                lock (client)
+                {
+                    if (client == null || !client.Exists) return;
+                    client.Spawn(dbPos, 0);
+                    client.EmitAsync("Client:Ragdoll:SetPedToRagdoll", true, 0);
+                    client.EmitAsync("Client:Deathscreen:openCEF");
+                    client.SetPlayerIsUnconscious(true);
+                }
             }
             if (Characters.IsCharacterFastFarm(charid))
             {
@@ -223,45 +269,51 @@ namespace Altv_Roleplay.Handler
             ServerAnimations.RequestAnimationMenuContent(client);
             if (Characters.IsCharacterPhoneEquipped(charid) && CharactersInventory.ExistCharacterItem(charid, "Smartphone", "inventory") && CharactersInventory.GetCharacterItemAmount(charid, "Smartphone", "inventory") > 0)
             {
-                client.EmitLocked("Client:Smartphone:equipPhone", true, Characters.GetCharacterPhonenumber(charid), Characters.IsCharacterPhoneFlyModeEnabled(charid));
+                client.EmitLocked("Client:Smartphone:equipPhone", true, Characters.GetCharacterPhonenumber(charid), Characters.IsCharacterPhoneFlyModeEnabled(charid), Characters.GetCharacterPhoneWallpaper(charid));
                 Characters.SetCharacterPhoneEquipped(charid, true);
             }
-            else if (!Characters.IsCharacterPhoneEquipped(charid) || !CharactersInventory.ExistCharacterItem(charid, "Smartphone", "inventory") || CharactersInventory.GetCharacterItemAmount(charid, "Smartphone", "inventory") <= 0)
-            {
-                client.EmitLocked("Client:Smartphone:equipPhone", false, Characters.GetCharacterPhonenumber(charid), Characters.IsCharacterPhoneFlyModeEnabled(charid));
+            else if(!Characters.IsCharacterPhoneEquipped(charid) || !CharactersInventory.ExistCharacterItem(charid, "Smartphone", "inventory") || CharactersInventory.GetCharacterItemAmount(charid, "Smartphone", "inventory") <= 0) {
+                client.EmitLocked("Client:Smartphone:equipPhone", false, Characters.GetCharacterPhonenumber(charid), Characters.IsCharacterPhoneFlyModeEnabled(charid), Characters.GetCharacterPhoneWallpaper(charid));
                 Characters.SetCharacterPhoneEquipped(charid, false);
             }
             SmartphoneHandler.RequestLSPDIntranet(client);
-            await setCefStatus(client, false);
-            AltAsync.Do(() => {
-                client.SetStreamSyncedMetaData("sharedUsername", $"{charName} ({Characters.GetCharacterAccountId(charid)})");
-                client.SetSyncedMetaData("ADMINLEVEL", client.AdminLevel());
-                client.SetSyncedMetaData("PLAYER_SPAWNED", true);
-            });
+            client.SetStreamSyncedMetaData("sharedUsername", $"{charName} ({Characters.GetCharacterAccountId(charid)})");
+            client.SetSyncedMetaData("ADMINLEVEL", client.AdminLevel());
+            client.SetSyncedMetaData("PLAYER_SPAWNED", true);
 
-            if (Characters.IsCharacterInJail(charid))
+            if(Characters.IsCharacterInJail(charid))
             {
                 HUDHandler.SendNotification(client, 1, 2500, $"Du befindest dich noch {Characters.GetCharacterJailTime(charid)} Minuten im Gefängnis.", 8000);
-                client.Position = new Position(1691.4594f, 2565.7056f, 45.556763f);
-                if (Characters.GetCharacterGender(charid) == false)
+                lock (client)
+                {
+                    if (client == null || !client.Exists) return;
+                    client.Position = new Position(1691.4594f, 2565.7056f, 45.556763f);
+                }
+                if(Characters.GetCharacterGender(charid) == false)
                 {
                     client.EmitLocked("Client:SpawnArea:setCharClothes", 11, 5, 0);
                     client.EmitLocked("Client:SpawnArea:setCharClothes", 3, 5, 0);
                     client.EmitLocked("Client:SpawnArea:setCharClothes", 4, 7, 15);
                     client.EmitLocked("Client:SpawnArea:setCharClothes", 6, 7, 0);
                     client.EmitLocked("Client:SpawnArea:setCharClothes", 8, 1, 88);
-                }
-                else
+                } else
                 {
 
                 }
             }
             client.updateTattoos();
-            client.EmitLocked("Client:SaltychatBlockscreen:action", "block", "none");
             stopwatch.Stop();
-            if (stopwatch.Elapsed.Milliseconds > 30) Alt.Log($"{charid} - CharacterSelectedSpawnPlace benötigte {stopwatch.Elapsed.Milliseconds}ms");
+            if (stopwatch.Elapsed.Milliseconds > 30) Alt.Log($"{charid} - CharacterSelectedSpawnPlace benötigte {stopwatch.Elapsed.Milliseconds}ms");          
             await Task.Delay(5000);
             Model.ServerTattoos.GetAllTattoos(client);
+        }
+
+        [AsyncClientEvent("Server:SpawnArea:SetHairs")]
+        public void SetHairs(ClassicPlayer player, int hairIndex)
+        {
+            if (player == null || !player.Exists || hairIndex < 0) return;
+
+            player.SetClothes(2, (ushort)hairIndex, 0, 2);
         }
     }
 }

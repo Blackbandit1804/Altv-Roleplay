@@ -10,255 +10,23 @@ using Altv_Roleplay.models;
 using Altv_Roleplay.Utils;
 using System;
 using System.Collections.Generic;
-using System.Numerics;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Altv_Roleplay.Database;
 
 namespace Altv_Roleplay.Handler
 {
     public class Commands : IScript
     {
-
-
-        [Command("vehpos")]
-        public void vehPos(IPlayer player)
-        {
-            if (player == null || !player.Exists || !player.IsInVehicle) return;
-            if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-            HUDHandler.SendNotification(player, 4, 60000, $"{player.Vehicle.Position.ToString()}");
-        }
-
-        [Command("testveh")]
-        public void CMD_testtest(IPlayer player)
-        {
-            VehicleHandler.testtesttest(player);
-        }
-
-        //Erstelle Lagerhalle
-        [Command("createstorage")]
-        public void CMD(IPlayer player, int weight, int price)
-        {
-            if (player == null || !player.Exists) return;
-            models.Server_Storages st = new models.Server_Storages
-            {
-                entryPos = player.Position,
-                items = new List<models.Server_Storage_Item>(),
-                owner = 0,
-                secondOwner = 0,
-                maxSize = weight,
-                price = price
-            };
-
-            Model.ServerStorages.ServerStorages_.Add(st);
-
-            using (gtaContext gta = new gtaContext())
-            {
-                gta.Server_Storages.Add(st);
-                gta.SaveChanges();
-            }
-            EntityStreamer.BlipStreamer.CreateStaticBlip("Lagerhalle", 0, 0.5f, true, 50, player.Position, 0);
-            EntityStreamer.MarkerStreamer.Create(EntityStreamer.MarkerTypes.MarkerTypeVerticalCylinder, new Vector3(player.Position.X, player.Position.Y, player.Position.Z - 1), new System.Numerics.Vector3(1), color: new AltV.Net.Data.Rgba(180, 50, 50, 100), dimension: 0, streamRange: 100);
-            HUDHandler.SendNotification(player, 4, 5000, "[LaVie Lagersystem] <br><br> Erfolgreich erstellt und eingerichtet");
-        }
-        
-
-        [Command("vscp")]
-        public void vehPrice(IPlayer player, string car, int price)
-        {
-            try
-            {
-                if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-                if (car == null) { HUDHandler.SendNotification(player, 4, 5000, "Fahrzeugname nicht angegeben!"); return; }
-                IVehicle testVehicle = Alt.CreateVehicle(car, player.Position, player.Rotation);
-
-                if (testVehicle == null)
-                {
-                    HUDHandler.SendNotification(player, 2, 5000, $"Falsches Fahrzeug.");
-                }
-                else
-                {
-                    testVehicle.Remove();
-                    uint hashedCar = Alt.Hash(car);
-                    HUDHandler.SendNotification(player, 2, 20000, $"Fahrzeugname: {car} || Fahrzeughash: {hashedCar} || Neuer Preis: {price}$");
-                    ServerVehicleShops.SetVehiclePrice(hashedCar, price);
-                }
-
-            }
-            catch (Exception e)
-            {
-                Alt.Log($"{e}");
-            }
-        }
-
-        //OoC Messages
-        [Command("ooc", true)]
-        public void oocCMD(IPlayer player, string msg)
-        {
-            if (player == null || !player.Exists) return;
-            if (msg == null) { HUDHandler.SendNotification(player, 4, 4000, "Wie wäre es mit einer Nachricht? (Fehlt)"); return; }
-
-            foreach (var client in Alt.GetAllPlayers())
-            {
-                var name = Characters.GetCharacterName((int)player.GetCharacterMetaId());
-                if (client == null || !client.Exists) continue;
-                var range = 5; //Change OOC Range!!
-                if (client.Position.Distance(player.Position) <= range)
-                {
-                    HUDHandler.SendNotification((IPlayer)client, 2, 5000, $"[{(int)player.GetCharacterMetaId()}] {name}: \n " + msg);
-/*                    HelperMethods.send//("OOC", $"{player.Name} Nachricht: {msg}", "red");
-*/                }
-            }
-        }
-
-        [Command("LSPD", true)]
-        public void LSPDCMD(IPlayer player, string msg)
-        {
-            if (player == null || !player.Exists) return;
-            if (!ServerFactions.IsCharacterInAnyFaction((int)player.GetCharacterMetaId())) { HUDHandler.SendNotification(player, 4, 4000, "Du bist in keiner Fraktion"); return; }
-            if (ServerFactions.GetCharacterFactionId((int)player.GetCharacterMetaId()) != 1) { HUDHandler.SendNotification(player, 4, 4000, "Du gehörst nicht zum LSPD"); return; }
-
-
-            foreach (var client in Alt.GetAllPlayers())
-            {
-                if (client == null || !client.Exists) continue;
-                HUDHandler.SendNotification((IPlayer)client, 4, 5000, "Das L.S.P.D informiert: \n" + msg);
-            }
-/*            HelperMethods.send//("LSPD USERMAIL", $"{player.accountName} hast eine LSPD Rundmail geschickt: {msg}", "red");
-*/        }
-        
-        [Command("report", true)]
-        public void REPORTCMD(IPlayer player, string msg)
-        {
-            if (player == null || !player.Exists) return;
-
-
-            foreach (var client in Alt.GetAllPlayers().Where(x => x != null && x.Exists && x.AdminLevel() >= 1))
-            {
-                if (client == null || !client.Exists) continue;
-                HUDHandler.SendNotification((IPlayer)client, 4, 5000, $"[SUPPORT] {Characters.GetCharacterName((int)player.GetCharacterMetaId())} (ID: {(int)player.GetCharacterMetaId()}) benötigt Support: {msg}");
-                //.SendEmbed("Command", "Command",$" {Characters.GetCharacterName((int)player.GetCharacterMetaId())}  {msg}");
-            }
-/*            HelperMethods.send//("LSPD USERMAIL", $"{player.accountName} hast eine LSPD Rundmail geschickt: {msg}", "red");
-*/        }
-
-        [Command("id")]
-        public static void CMD_ID(IPlayer player)
-        {
-            if (player == null) { HUDHandler.SendNotification(player, 4, 3000, "Fehler 002 >> player == null // Spieler nicht gefunden"); HUDHandler.SendNotification(player, 4, 3000, "Fehler 002 >> Sollte der Fehler bleiben, bitte melde das einem Admin!"); return; }
-            HUDHandler.SendNotification(player, 2, 10000, $"Deine ID = {player.Id}");
-        }
-
-        [Command("license")]
-        public void licenseCMD(IPlayer player, int charId, string licenseshort)
-        {
-            if (licenseshort == null || !player.Exists) return;
-            if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-            if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
-            if (charId <= 0) return;
-            Characters.AddCharacterPermission(charId, licenseshort);
-            HUDHandler.SendNotification(player, 2, 3500, $"Du hast die License {licenseshort} vergeben an: {charId}");
-        }
-
-        [Command("setAtm")]
-        public void SetATM_CMD(IPlayer player, string name)
-        {
-            if (player == null || !player.Exists) return;
-            if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-            if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
-            ulong charId = player.GetCharacterMetaId();
-            if (charId <= 0) return;
-            ServerATM.CreateNewATM(player, 0, player.Position, name);
-            HUDHandler.SendNotification(player, 2, 2500, $"ATM erfolgreich gesetzt: {name}");
-        }
-
         [Command("money")]
         public void GiveItemCMD(IPlayer player, int itemAmount)
         {
             if (player == null || !player.Exists) return;
             if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-            if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
             ulong charId = player.GetCharacterMetaId();
             if (charId <= 0) return;
             CharactersInventory.AddCharacterItem((int)charId, "Bargeld", itemAmount, "inventory");
             HUDHandler.SendNotification(player, 2, 5000, $"{itemAmount}$ erhalten (Bargeld).");
-        }
-
-        [Command("ReloadDB")]
-        public static void CMD_RELOAD(IPlayer player, int ID)
-        {
-            if (player == null || !player.Exists) return;
-            if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-            if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
-            ulong charId = player.GetCharacterMetaId();
-            if (charId <= 0) return;
-
-            // 1 = Accounts
-            if (ID == 1)
-            {
-                DatabaseHandler.LoadAllPlayers();
-                HUDHandler.SendNotification(player, 2, 5000, "Accounts neugeladen!");
-            }
-            // 2 = Characters
-            if (ID == 2)
-            {
-                DatabaseHandler.LoadAllPlayerCharacters();
-                HUDHandler.SendNotification(player, 2, 5000, "Characters neugeladen!");
-            }
-            // 3 = GARAGE
-            if (ID == 3)
-            {
-                DatabaseHandler.LoadAllGarages();
-                DatabaseHandler.LoadAllGarageSlots();
-                HUDHandler.SendNotification(player, 2, 5000, "Garagen neugeladen");
-            }
-            // 4 = VEHICLESHOP
-            if (ID == 4)
-            {
-                DatabaseHandler.LoadAllVehicleShops();
-                DatabaseHandler.LoadAllVehicleShopItems();
-                HUDHandler.SendNotification(player, 2, 5000, "Fahrzeugshops neugeladen!");
-            }
-            // 5 = SHOPS
-            if (ID == 5)
-            {
-                DatabaseHandler.LoadAllServerShops();
-                DatabaseHandler.LoadAllServerShopItems();
-                HUDHandler.SendNotification(player, 2, 5000, "Supermarket neugeladen!");
-            }
-            // 6 = Clothesshops
-            if (ID == 6)
-            {
-                DatabaseHandler.LoadAllClothesShops();
-                HUDHandler.SendNotification(player, 2, 5000, "Kleidungsshops neugeladen");
-            }
-            // 7 = Tankstellen
-            if (ID == 7)
-            {
-                DatabaseHandler.LoadAllServerFuelStations();
-                DatabaseHandler.LoadALlServerFuelStationSpots();
-                HUDHandler.SendNotification(player, 2, 5000, "Tankstellen neugeladen!");
-            }
-            // reNew
-            if (ID <= 0)
-            {
-                DatabaseHandler.RenewAll();
-                HUDHandler.SendNotification(player, 2, 5000, "ReNew CharactersEntrys DONE");
-            }
-        }
-
-        [Command("setBank")]
-        public void CMD_SETBANK(IPlayer player, string zoneName)
-        {
-            if (player == null || !player.Exists) return;
-            if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-            if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
-            ulong charId = player.GetCharacterMetaId();
-            if (charId <= 0) return;
-            ServerBank.CreateNewBank(player, 0, player.Position, zoneName);
-            HUDHandler.SendNotification(player, 2, 3500, $"Du hast die Bank {zoneName} erfolgreich erstellt!");
         }
 
         [Command("getaccountidbymail")]
@@ -267,10 +35,9 @@ namespace Altv_Roleplay.Handler
             try
             {
                 if (player == null || !player.Exists || player.CharacterId <= 0 || player.AdminLevel() <= 0) return;
-                if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
                 var accEntry = User.Player.ToList().FirstOrDefault(x => x.Email == mail);
                 if (accEntry == null) return;
-                HUDHandler.SendNotification(player, 2, 5000, $"Spieler-ID der E-Mail {mail} lautet: {accEntry.playerid} - Spielername: {accEntry.playerName}");
+                player.SendChatMessage($"Spieler-ID der E-Mail {mail} lautet: {accEntry.playerid} - Spielername: {accEntry.playerName}");
             }
             catch (Exception e)
             {
@@ -284,7 +51,6 @@ namespace Altv_Roleplay.Handler
             try
             {
                 if (player == null || !player.Exists || player.AdminLevel() <= 8) return;
-                if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
                 AltTrace.Start("FabiansDebugKasten");
             }
             catch (Exception e)
@@ -299,7 +65,6 @@ namespace Altv_Roleplay.Handler
             try
             {
                 if (player == null || !player.Exists || player.AdminLevel() <= 8) return;
-                if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
                 AltTrace.Stop();
             }
             catch (Exception e)
@@ -331,7 +96,6 @@ namespace Altv_Roleplay.Handler
             try
             {
                 if (player == null || !player.Exists || accId <= 0 || player.AdminLevel() <= 2) return;
-                if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
                 User.SetPlayerBanned(accId, true, $"Gebannt von {Characters.GetCharacterName(User.GetPlayerOnline(player))}");
                 var targetP = Alt.GetAllPlayers().ToList().FirstOrDefault(x => x != null && x.Exists && User.GetPlayerAccountId(x) == accId);
                 if (targetP != null) targetP.Kick("");
@@ -349,7 +113,6 @@ namespace Altv_Roleplay.Handler
             try
             {
                 if (player == null || !player.Exists || player.CharacterId <= 0 || accId <= 0 || player.AdminLevel() <= 3) return;
-                if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
                 User.SetPlayerBanned(accId, false, "");
                 HUDHandler.SendNotification(player, 4, 5000, $"Spieler mit ID {accId} Erfolgreich entbannt.");
             }
@@ -365,7 +128,6 @@ namespace Altv_Roleplay.Handler
             try
             {
                 if (player == null || !player.Exists || shopId <= 0 || itemId <= 0 || newPrice < 0 || player.AdminLevel() <= 8) return;
-                if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
                 var shopItem = ServerShopsItems.ServerShopsItems_.FirstOrDefault(x => x != null && x.shopId == shopId && x.id == itemId);
                 if (shopItem == null) return;
                 shopItem.itemPrice = newPrice;
@@ -374,7 +136,7 @@ namespace Altv_Roleplay.Handler
                     db.Server_Shops_Items.Update(shopItem);
                     db.SaveChanges();
                 }
-                HUDHandler.SendNotification(player, 4, 5000, "Preis geändert.");
+                player.SendChatMessage("Preis geändert.");
             }
             catch (Exception e)
             {
@@ -389,18 +151,32 @@ namespace Altv_Roleplay.Handler
             {
                 if (player == null || !player.Exists) return;
                 if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-                if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
 
-                foreach (var client in Alt.GetAllPlayers())
+                foreach(var client in Alt.GetAllPlayers())
                 {
                     if (client == null || !client.Exists) continue;
-                    HUDHandler.SendNotification(client, 4, 10000, msg);
+                    HUDHandler.SendNotification(client, 4, 5000, msg);
                 }
             }
             catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
+        }
+
+        [Command("clothes")]
+        public void clothesCMD(IPlayer player, int type, int draw, int tex)
+        {
+            if (player == null || !player.Exists) return;
+            if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
+            player.SetClothes((byte)type, (ushort)draw, (byte)tex, 2);
+        }
+
+        [Command("adolf")]
+        public void adolfCMD(IPlayer player, int type, int draw, int tex)
+        {
+            if (player == null || !player.Exists || player.AdminLevel() <= 8) return;
+            player.SetProps((byte)type, (ushort)draw, (byte)tex);
         }
 
         [Command("support", true)]
@@ -409,29 +185,9 @@ namespace Altv_Roleplay.Handler
             try
             {
                 if (player == null || !player.Exists || User.GetPlayerOnline(player) <= 0) return;
-                if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
                 foreach (var admin in Alt.GetAllPlayers().Where(x => x != null && x.Exists && x.AdminLevel() > 0))
                 {
-                    //admin.SendChatMessage($"[SUPPORT] {Characters.GetCharacterName(User.GetPlayerOnline(player))} (ID: {User.GetPlayerOnline(player)}) benötigt Support: {msg}");
-                    HUDHandler.SendNotification(admin, 4, 15000, $"[SUPPORT] {Characters.GetCharacterName(User.GetPlayerOnline(player))} (ID: {User.GetPlayerOnline(player)}) benötigt Support: {msg}");
-                }
-            }
-            catch (Exception e)
-            {
-                Alt.Log($"{e}");
-            }
-        }
-
-        [Command("report", true)]
-        public void reportCMD(IPlayer player, string msg)
-        {
-            try
-            {
-                if (player == null || !player.Exists || User.GetPlayerOnline(player) <= 0) return;
-                foreach (var admin in Alt.GetAllPlayers().Where(x => x != null && x.Exists && x.AdminLevel() > 5))
-                {
-                    //admin.SendChatMessage($"[SUPPORT] {Characters.GetCharacterName(User.GetPlayerOnline(player))} (ID: {User.GetPlayerOnline(player)}) benötigt Support: {msg}");
-                    HUDHandler.SendNotification(admin, 4, 15000, $"[REPORT] {Characters.GetCharacterName(User.GetPlayerOnline(player))} (ID: {User.GetPlayerOnline(player)}) benötigt Support: {msg}");
+                    admin.SendChatMessage($"[SUPPORT] {Characters.GetCharacterName(User.GetPlayerOnline(player))} (ID: {User.GetPlayerOnline(player)}) benötigt Support: {msg}");
                 }
             }
             catch (Exception e)
@@ -444,7 +200,6 @@ namespace Altv_Roleplay.Handler
         public void cMD(IPlayer player, int gender)
         {
             if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-            if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
             switch (gender)
             {
                 case 0: player.Model = 1885233650; break;
@@ -452,59 +207,130 @@ namespace Altv_Roleplay.Handler
             }
         }
 
-        [Command("car")]
+        [Command("weapon")]
+        public void wCMD(IPlayer player, WeaponModel wp)
+        {
+            if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
+            try
+            {
+                if (player == null || !player.Exists) return;
+                player.GiveWeapon(wp, 9999, true);
+            }
+            catch (Exception e)
+            {
+                Alt.Log($"{e}");
+            }
+        }
+
+        [Command("spawnveh")]
         public void heyCMD(IPlayer player, string model)
         {
             if (player == null || !player.Exists) return;
             if (player.AdminLevel() <= 1) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-            if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
             if (player.Vehicle != null && player.Vehicle.Exists) player.Vehicle.Remove();
-            IVehicle veh = Alt.CreateVehicle(model, new Position(player.Position.X + 2f, player.Position.Y, player.Position.Z), player.Rotation);
+            IVehicle veh = Alt.CreateVehicle(model, player.Position, player.Rotation);
             veh.EngineOn = true;
             veh.LockState = VehicleLockState.Unlocked;
-            veh.SetNumberplateTextAsync("Admin");
-            veh.PrimaryColor = 55;
-            veh.SecondaryColor = 55;
-            veh.DashboardColor = 55;
-            veh.WindowTint = 3;
-            veh.WheelColor = 55;
-            veh.PearlColor = 3;
-            player.EmitLocked("Client:HUD:setIntoVehicle", veh); //Setze Spieler in Fahrzeug (First try :D)
         }
 
-        [Command("carHash")]
-        public static void CMD_GetCarHash(IPlayer player, string car)
+        [Command("time")]
+        public void timeCMD(IPlayer player, int hour, int minute)
+        {
+            if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
+            try
+            {
+                player.SetDateTime(DateTime.Now.Day, DateTime.Now.Month, DateTime.Now.Year, hour, minute, 0);
+                player.EmitLocked("Client:Entity:setTime", hour, minute);
+            }
+            catch (Exception e)
+            {
+                Alt.Log($"{e}");
+            }
+        }
+
+        [Command("color")]
+        public void colorCMD(IPlayer player, int pr, int se)
         {
             try
             {
+                if (player == null || !player.Exists) return;
                 if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-                if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
-                if (car == null) { HUDHandler.SendNotification(player, 4, 5000, "Fahrzeugname nicht angegeben!"); return; }
-                IVehicle testVehicle = Alt.CreateVehicle(car, player.Position, player.Rotation);
+                if (player.Vehicle == null || !player.Vehicle.Exists) return;
+                if (pr < 0 || se < 0) return;
+                player.Vehicle.PrimaryColor = (byte)pr;
+                player.Vehicle.SecondaryColor = (byte)se;
+            }
+            catch (Exception e)
+            {
+                Alt.Log($"{e}");
+            }
+        }
 
-                if (testVehicle == null)
-                {
-                    HUDHandler.SendNotification(player, 2, 5000, $"Falsches Fahrzeug.");
-                }
-                else
-                {
-                    testVehicle.Remove();
-                    uint hashedCar = Alt.Hash(car);
-                    HUDHandler.SendNotification(player, 2, 20000, $"Fahrzeugname: {car} || Fahrzeughash: {hashedCar}");
-                    StreamWriter hashFile;
-                    if (!File.Exists("SavedCoords.txt"))
-                    {
-                        hashFile = new StreamWriter("SavedHashed.txt");
-                    }
-                    else
-                    {
-                        hashFile = File.AppendText("SavedHashed.txt");
-                    }
-                    HUDHandler.SendNotification(player, 4, 8000, "Die SavedHashed.txt datei wurde überarbeitet!");
-                    hashFile.WriteLine("| " + car + " | " + "Saved hash: " + hashedCar);
-                    hashFile.Close();
-                }
+        [Command("vehpos")]
+        public void vehPos(IPlayer player)
+        {
+            if (player == null || !player.Exists || !player.IsInVehicle) return;
+            if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
+            player.SendChatMessage($"{player.Vehicle.Position.ToString()}");
+            player.SendChatMessage($"{player.Vehicle.Rotation.ToString()}");
+        }
+        
+        [Command("test")]
+        public void returnVehicleModsCMD(IPlayer player, int modId)
+        {
+            if (player == null || !player.Exists || player.Vehicle == null) return;
+            if (player.AdminLevel() <= 0) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
+            if (!player.Vehicle.Exists) return;
+            //player.Vehicle.ModKit = 1;
+            player.EmitLocked("returnVehicleMods", player.Vehicle, modId);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 0);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 1);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 2); //Hier schlagen
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 3);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 4);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 5);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 6);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 7);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 8);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 9);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 10);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 25);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 26);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 27);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 28);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 29);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 30);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 31);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 32);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 33);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 34);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 35);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 36);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 37);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 38);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 39);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 40);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 41);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 42);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 43);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 44);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 45);
+            //player.EmitLocked("returnVehicleMods", player.Vehicle, 48);
+        }
 
+        [Command("players")]
+        public void PlayerCMD(IPlayer player)
+        {
+            try
+            {
+                if (player == null || !player.Exists) return;
+                if (player.AdminLevel() <= 0) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
+                string msg = "Liste aller Spieler:<br>";
+                foreach(var p in Alt.GetAllPlayers().Where(x => x != null && x.Exists && x.GetCharacterMetaId() > 0))
+                {
+                    msg += $"{Characters.GetCharacterName((int)p.GetCharacterMetaId())} ({p.GetCharacterMetaId()})<br>";
+                }
+                HUDHandler.SendNotification(player, 1, 8000, msg);
             }
             catch (Exception e)
             {
@@ -515,11 +341,9 @@ namespace Altv_Roleplay.Handler
         [Command("makeAdmin")]
         public static void CMD_Giveadmin(IPlayer player, int accId, int adminLevel)
         {
-            if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-            if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
             try
             {
-                if (player == null || !player.Exists) return;
+                if (player == null || !player.Exists || player.AdminLevel() <= adminLevel) return;
                 User.SetPlayerAdminLevel(accId, adminLevel);
             }
             catch (Exception e)
@@ -535,25 +359,58 @@ namespace Altv_Roleplay.Handler
             {
                 if (player == null || !player.Exists) return;
                 if (player.AdminLevel() <= 2) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-                if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
                 player.Position = new Position(X, Y, Z);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Alt.Log($"{e}");
             }
         }
 
-        [Command("dv")]
-        public void CMD_DeleteVehicle(IPlayer player, float range = 2)
+        [Command("pos")]
+        public void PosCMD(IPlayer player)
         {
-            if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
-            foreach (IVehicle veh in Alt.GetAllVehicles())
+            if (player == null || !player.Exists) return;
+            if (player.AdminLevel() <= 0) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
+            player.SendChatMessage($"{player.Position.ToString()}");
+        }
+
+        [Command("rot")]
+        public void RotCMD(IPlayer player)
+        {
+            if (player == null || !player.Exists) return;
+            if (player.AdminLevel() <= 0) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
+            player.SendChatMessage($"{player.Rotation.ToString()}");
+        }
+
+        [Command("torso")]
+        public void TorsoCMD(IPlayer player, int torso)
+        {
+            if (player == null || !player.Exists) return;
+            if (player.AdminLevel() <= 0) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
+            player.SetClothes(3, (ushort)torso, 0, 2);
+        }
+
+        [Command("delcar")]
+        public void delcarCMD(IPlayer player)
+        {
+            try
             {
-                if (veh.Position.Distance(player.Position) <= range)
+                if (player == null || !player.Exists || player.Vehicle == null || !player.Vehicle.Exists) return;
+                if (player.AdminLevel() <= 1) return;
+                else
                 {
-                    Alt.RemoveVehicle(veh);
+                    if (player.IsInVehicle)
+                    {
+                        HUDHandler.SendNotification(player, 4, 5000, "Du hast ein Fahrzeug gelöscht.");
+                        player.Vehicle.Remove();
+                    }
+                    else HUDHandler.SendNotification(player, 4, 5000, "Du bist in keinem Fahrzeug.");
                 }
+            }
+            catch(Exception e)
+            {
+                Alt.Log($"{e}");
             }
         }
 
@@ -563,7 +420,6 @@ namespace Altv_Roleplay.Handler
             try
             {
                 if (player == null || !player.Exists || player.AdminLevel() <= 8 || vehId <= 0) return;
-                if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
                 var vehicle = Alt.GetAllVehicles().ToList().FirstOrDefault(x => x != null && x.Exists && x.HasVehicleId() && (int)x.GetVehicleId() == vehId);
                 if (vehicle == null) return;
                 ServerVehicles.SetVehicleInGarage(vehicle, true, 25);
@@ -581,9 +437,8 @@ namespace Altv_Roleplay.Handler
             try
             {
                 if (player == null || !player.Exists || player.AdminLevel() <= 8) return;
-                if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
                 int count = 0;
-                foreach (var veh in Alt.GetAllVehicles().ToList().Where(x => x != null && x.Exists && x.HasVehicleId()))
+                foreach(var veh in Alt.GetAllVehicles().ToList().Where(x => x != null && x.Exists && x.HasVehicleId()))
                 {
                     if (veh == null || !veh.Exists || !veh.HasVehicleId()) continue;
                     int currentGarageId = ServerVehicles.GetVehicleGarageId(veh);
@@ -592,7 +447,7 @@ namespace Altv_Roleplay.Handler
                     count++;
                 }
 
-                HUDHandler.SendNotification(player, 4, 5000, $"{count} Fahrzeuge eingeparkt.");
+                player.SendChatMessage($"{count} Fahrzeuge eingeparkt.");
             }
             catch (Exception e)
             {
@@ -606,7 +461,6 @@ namespace Altv_Roleplay.Handler
             try
             {
                 if (player == null || !player.Exists || player.AdminLevel() <= 1 || string.IsNullOrWhiteSpace(plate)) return;
-                if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
                 var vehicle = Alt.GetAllVehicles().ToList().FirstOrDefault(x => x != null && x.Exists && x.HasVehicleId() && (int)x.GetVehicleId() > 0 && x.NumberplateText.ToLower() == plate.ToLower());
                 if (vehicle == null) return;
                 ServerVehicles.SetVehicleInGarage(vehicle, true, 25);
@@ -618,7 +472,7 @@ namespace Altv_Roleplay.Handler
             }
         }
 
-/*        [Command("whitelist")]
+        [Command("whitelist")]
         public void WhitelistCMD(IPlayer player, int targetAccId)
         {
             try
@@ -626,34 +480,52 @@ namespace Altv_Roleplay.Handler
                 if (player == null || !player.Exists || targetAccId <= 0 || player.GetCharacterMetaId() <= 0) return;
                 if (player.AdminLevel() <= 0) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
                 if (!User.ExistPlayerById(targetAccId)) { HUDHandler.SendNotification(player, 4, 5000, $"Diese ID existiert nicht {targetAccId}"); return; }
-                if (User.IsPlayerWhitelisted(targetAccId)) { HUDHandler.SendNotification(player, 4, 5000, "Der Spieler ist bereits gewhitelisted."); return; }
+                if(User.IsPlayerWhitelisted(targetAccId)) { HUDHandler.SendNotification(player, 4, 5000, "Der Spieler ist bereits gewhitelisted."); return; }
                 User.SetPlayerWhitelistState(targetAccId, true);
-                HUDHandler.SendNotification(player, 4, 5000, $"Du hast den Spieler {targetAccId} gewhitelistet.");
+                player.SendChatMessage($"Du hast den Spieler {targetAccId} gewhitelistet.");
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Alt.Log($"{e}");
             }
         }
 
-*/        [Command("revive")]
+        [Command("killme")]
+        public void KillMeCMD(IPlayer player)
+        {
+            if (player == null || !player.Exists) return;
+            if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
+            player.Health = 0;
+        }
+
+        [Command("reviveme")]
+        public void ReviveCMD(IPlayer player)
+        {
+            if (player == null || !player.Exists) return;
+            if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
+            player.Health = 200;
+            HUDHandler.SendNotification(player, 2, 5000, "Du hast dich wiederbelebt.");
+            DeathHandler.revive(player);
+            Alt.Emit("SaltyChat:SetPlayerAlive", player, true);
+        }
+
+        [Command("revive")]
         public void ReviveTargetCMD(IPlayer player, int targetId)
         {
             if (player == null || !player.Exists) return;
             if (player.AdminLevel() <= 2) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-            if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
             string charName = Characters.GetCharacterName(targetId);
             if (!Characters.ExistCharacterName(charName)) return;
             var tp = Alt.GetAllPlayers().FirstOrDefault(x => x != null && x.Exists && x.GetCharacterMetaId() == (ulong)targetId);
-            if (tp != null)
+            if(tp != null)
             {
                 tp.Health = 200;
                 DeathHandler.revive(tp);
                 Alt.Emit("SaltyChat:SetPlayerAlive", tp, true);
-                HUDHandler.SendNotification(player, 4, 5000, $"Du hast den Spieler {charName} wiederbelebt.");
+                player.SendChatMessage($"Du hast den Spieler {charName} wiederbelebt.");
                 return;
             }
-            HUDHandler.SendNotification(player, 4, 5000, $"Der Spieler {charName} ist nicht online.");
+            player.SendChatMessage($"Der Spieler {charName} ist nicht online.");
         }
 
         [Command("faction")]
@@ -663,14 +535,13 @@ namespace Altv_Roleplay.Handler
             {
                 if (player == null || !player.Exists || player.GetCharacterMetaId() <= 0) return;
                 if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-                if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
                 if (ServerFactions.IsCharacterInAnyFaction(charId))
                 {
                     ServerFactions.RemoveServerFactionMember(ServerFactions.GetCharacterFactionId(charId), charId);
                 }
 
                 ServerFactions.CreateServerFactionMember(id, charId, ServerFactions.GetFactionMaxRankCount(id), charId);
-                HUDHandler.SendNotification(player, 4, 5000, $"Done.");
+                player.SendChatMessage($"Done.");
             }
             catch (Exception e)
             {
@@ -683,7 +554,6 @@ namespace Altv_Roleplay.Handler
         {
             if (player == null || !player.Exists) return;
             if (player.AdminLevel() <= 8) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-            if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
             if (!ServerItems.ExistItem(ServerItems.ReturnNormalItemName(itemName))) { HUDHandler.SendNotification(player, 4, 5000, $"Itemname nicht gefunden: {itemName}"); return; }
             ulong charId = player.GetCharacterMetaId();
             if (charId <= 0) return;
@@ -691,17 +561,78 @@ namespace Altv_Roleplay.Handler
             HUDHandler.SendNotification(player, 2, 5000, $"Gegenstand '{itemName}' ({itemAmount}x) erhalten.");
         }
 
-        [Command("tp", false)]
+ /*       [Command("ban", true)]
+        public void BanPlayerCMD(IPlayer player, int targetId, string reason)
+        {
+            if (player == null || !player.Exists) return;
+            if (player.AdminLevel() <= 0) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
+            if(targetId <= 0 || reason.Length <= 0) {
+                player.SendChatMessage("Benutzung: /ban targetId Grund");
+                return;
+            }
+            string targetCharName = Characters.GetCharacterName(targetId);
+            if (targetCharName.Length <= 0) {
+                HUDHandler.SendNotification(player, 3, 5000, $"Warnung: Die angegebene Character-ID wurde nicht gefunden ({targetId}).");
+                return; 
+            }
+            if(!Characters.ExistCharacterName(targetCharName))
+            {
+                HUDHandler.SendNotification(player, 3, 5000, $"Warnung: Der angegebene Charaktername wurde nicht gefunden ({targetCharName} - ID: {targetId}).");
+                return;
+            }
+            int targetAccId = Characters.GetCharacterAccountId(targetId);
+            if (targetAccId <= 0) return;
+            if(User.IsPlayerBanned(targetAccId)) { HUDHandler.SendNotification(player, 1, 5000, "Der Spieler ist bereits gebannt."); return; }
+            User.SetPlayerBanned(targetAccId, true, reason);
+            HUDHandler.SendNotification(player, 2, 5000, $"Du hast den Spieler {targetCharName} (CharId: {targetId} - SpielerID: {targetAccId}) gebannt. Grund: {reason}");
+            var targetPlayer = Alt.GetAllPlayers().FirstOrDefault(x => x != null && x.Exists && x.GetCharacterMetaId() == (ulong)targetId);
+            if(targetPlayer != null && targetPlayer.Exists)
+            {
+                targetPlayer.kickWithMessage("Du wurdest gebannt.");
+            }
+        }
+*/
+/*        [Command("kick", true)]
+        public void KickPlayerCMD(IPlayer player, int targetId, string reason)
+        {
+            if (targetId <= 0 || reason.Length <= 0)
+            {
+                player.SendChatMessage("Benutzung: /kick targetId Grund");
+                return;
+            }
+            string targetCharName = Characters.GetCharacterName(targetId);
+            if (targetCharName.Length <= 0)
+            {
+                HUDHandler.SendNotification(player, 3, 5000, $"Warnung: Die angegebene Character-ID wurde nicht gefunden ({targetId}).");
+                return;
+            }
+            if (!Characters.ExistCharacterName(targetCharName))
+            {
+                HUDHandler.SendNotification(player, 3, 5000, $"Warnung: Der angegebene Charaktername wurde nicht gefunden ({targetCharName} - ID: {targetId}).");
+                return;
+            }
+            int targetAccId = Characters.GetCharacterAccountId(targetId);
+            if (targetAccId <= 0) return;
+            HUDHandler.SendNotification(player, 2, 5000, $"Du hast den Spieler {targetCharName} (CharId: {targetId} - SpielerID: {targetAccId}) gekickt. Grund: {reason}");
+            var targetPlayer = Alt.GetAllPlayers().FirstOrDefault(x => x != null && x.Exists && x.GetCharacterMetaId() == (ulong)targetId);
+            if (targetPlayer != null && targetPlayer.Exists)
+            {
+                targetPlayer.Kick(reason);
+                targetPlayer.kickWithMessage("Du wurdest vom Server gekickt!");
+            }
+
+        }
+*/
+        [Command("goto", false)]
         public void GotoCMD(IPlayer player, int targetId)
         {
             if (player.AdminLevel() <= 1) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-            if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
             try
             {
                 if (player == null || !player.Exists) return;
-                if (targetId <= 0 || targetId.ToString().Length <= 0)
+                if(targetId <= 0 || targetId.ToString().Length <= 0)
                 {
-                    HUDHandler.SendNotification(player, 4, 5000, "Benutzung: /goto charId");
+                    player.SendChatMessage("Benutzung: /goto charId");
                     return;
                 }
                 string targetCharName = Characters.GetCharacterName(targetId);
@@ -716,7 +647,7 @@ namespace Altv_Roleplay.Handler
                     return;
                 }
                 var targetPlayer = Alt.GetAllPlayers().FirstOrDefault(x => x != null && x.Exists && x.GetCharacterMetaId() == (ulong)targetId);
-                if (targetPlayer == null || !targetPlayer.Exists) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Spieler ist nicht online."); return; }
+                if(targetPlayer == null || !targetPlayer.Exists) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Spieler ist nicht online."); return; }
                 HUDHandler.SendNotification(targetPlayer, 1, 5000, $"{Characters.GetCharacterName((int)player.GetCharacterMetaId())} hat sich zu dir teleportiert.");
                 HUDHandler.SendNotification(player, 2, 5000, $"Du hast dich zu dem Spieler {Characters.GetCharacterName((int)targetPlayer.GetCharacterMetaId())} teleportiert.");
                 player.Position = targetPlayer.Position + new Position(0, 0, 1);
@@ -731,13 +662,12 @@ namespace Altv_Roleplay.Handler
         public void GetHereCMD(IPlayer player, int targetId)
         {
             if (player.AdminLevel() <= 1) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
-            if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
             try
             {
                 if (player == null || !player.Exists) return;
                 if (targetId <= 0 || targetId.ToString().Length <= 0)
                 {
-                    HUDHandler.SendNotification(player, 4, 5000, "Benutzung: /gethere charId");
+                    player.SendChatMessage("Benutzung: /gethere charId");
                     return;
                 }
                 string targetCharName = Characters.GetCharacterName(targetId);
@@ -763,136 +693,67 @@ namespace Altv_Roleplay.Handler
             }
         }
 
-
-        [Command("pos")]
-        public static void PosCMD(IPlayer player, string coordName)
-        {
-            if (!player.HasData("isAduty")) { HUDHandler.SendNotification(player, 4, 5000, "Nicht im (/am) Admindienst."); return; }
-            if (coordName == null)
-            {
-                HUDHandler.SendNotification(player, 4, 5000, "Kein Namen angegeben!");
-                return;
-            }
-            if (player.AdminLevel() <= 0)
-            {
-                HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte.");
-                return;
-            }
-
-            Position playerPosGet = player.Position;
-            Rotation playerRotGet = player.Rotation;
-
-            HUDHandler.SendNotification(player, 4, 8000, $"{coordName}: {playerPosGet.ToString()} - {playerRotGet.ToString()}");
-            StreamWriter coordsFile;
-            if (!File.Exists("SavedCoords.txt"))
-            {
-                coordsFile = new StreamWriter("SavedCoords.txt");
-            }
-            else
-            {
-                coordsFile = File.AppendText("SavedCoords.txt");
-            }
-            HUDHandler.SendNotification(player, 4, 8000, "Die SavedCoords.txt datei wurde überarbeitet!");
-            coordsFile.WriteLine("| " + coordName + " | " + "Saved Coordenates: " + playerPosGet.ToString() + " Saved Rotation: " + playerRotGet.ToString());
-            coordsFile.Close();
-        }
-
-        [Command("am", true)]
+        [Command("aduty", true)]
         public void AdutyCMD(IPlayer player)
         {
             if (player == null || !player.Exists) return;
-            if (player.AdminLevel() <= 2) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
+            if (player.AdminLevel() <= 0) { HUDHandler.SendNotification(player, 4, 5000, "Keine Rechte."); return; }
 
-            if (player.HasData("isAduty"))
+            if(player.HasData("isAduty"))
             {
                 player.DeleteData("isAduty");
+                player.EmitLocked("Client:Admin:Invincible", false);
                 Characters.SetCharacterCorrectClothes(player);
-                HUDHandler.SendNotification(player, 4, 5000, $"Du bist nun nicht mehr als Admin unterwegs. (F9 Deaktiviert)");
-
-
-                //WAFFEN CHANGE - AMMO
-                //player.EmitLocked("Client:WeaponAmmoChange:ComingRespond", (ulong)wHash);
-                string secondaryWeapon2REMOVE = (string)Characters.GetCharacterWeapon(player, "SecondaryWeapon2");
-                string secondaryWeaponREMOVE = (string)Characters.GetCharacterWeapon(player, "SecondaryWeapon");
-                string primaryWeaponREMOVE = (string)Characters.GetCharacterWeapon(player, "PrimaryWeapon");
-                if (primaryWeaponREMOVE != null)
-                {
-                    var hash = WeaponHandler.GetWeaponModelByName(primaryWeaponREMOVE);
-                    player.EmitLocked("Client:WeaponAmmoChange:ComingTimer", (ulong)hash);
-                }
-                else if (secondaryWeaponREMOVE != null)
-                {
-                    var hash = WeaponHandler.GetWeaponModelByName(secondaryWeaponREMOVE);
-                    player.EmitLocked("Client:WeaponAmmoChange:ComingTimer", (ulong)hash);
-                }
-                else if (secondaryWeapon2REMOVE != null)
-                {
-                    var hash = WeaponHandler.GetWeaponModelByName(secondaryWeapon2REMOVE);
-                    player.EmitLocked("Client:WeaponAmmoChange:ComingTimer", (ulong)hash);
-                }
-
-                player.RemoveAllWeapons();
-                string FistWeaponRemove = (string)Characters.GetCharacterWeapon(player, "FistWeapon");
-
-                if (secondaryWeaponREMOVE != "None") //Wenn nur Sekündär1
-                {
-                    int ammodiS1 = (int)Characters.GetCharacterWeapon(player, "SecondaryAmmo");
-                    player.GiveWeapon(WeaponHandler.GetWeaponModelByName(secondaryWeaponREMOVE), ammodiS1, false);
-                }
-
-                if (secondaryWeapon2REMOVE != "None") //Wenn nur Sekündär2
-                {
-                    int ammodiS1 = (int)Characters.GetCharacterWeapon(player, "SecondaryAmmo2");
-                    player.GiveWeapon(WeaponHandler.GetWeaponModelByName(secondaryWeapon2REMOVE), ammodiS1, false);
-                }
-
-                if (primaryWeaponREMOVE != "None") //Wenn nur Primär1
-                {
-                    int ammodiS1 = (int)Characters.GetCharacterWeapon(player, "PrimaryAmmo");
-                    player.GiveWeapon(WeaponHandler.GetWeaponModelByName(primaryWeaponREMOVE), ammodiS1, false);
-                }
-
-                if (FistWeaponRemove != "None") //Wenn nur FAUST
-                {
-                    player.GiveWeapon(WeaponHandler.GetWeaponModelByName(FistWeaponRemove), 0, false);
-                }
+                HUDHandler.SendNotification(player, 4, 5000, $"Du befindest dich nun im nicht mehr im Aduty");
             }
             else
             {
                 player.SetData("isAduty", true);
                 if (!Characters.GetCharacterGender((int)player.GetCharacterMetaId()))
                 {
-                    //MÃ¤nnlich
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 135, 10);
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 114, 10);
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 78, 10);
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 3, 0);
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 5, 0, 0);
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 7, 0, 0);
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 15, 0); 
-                    player.EmitLocked("Client:SpawnArea:setCharAccessory", 0, 11, 0); //hut
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 0, 0);
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 287, 10);
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 1, 99);
-                }
-                else
+                    //Männlich
+                    player.SetClothes(1, 135, 2, 2);
+                    player.SetClothes(4, 114, 2, 2);
+                    player.SetClothes(6, 78, 2, 2);
+                    player.SetClothes(3, 3, 0, 2);
+                    player.SetClothes(11, 287, 2, 2);
+                    player.SetClothes(8, 1, 99, 2);
+                } else
                 {
                     //Weiblich
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 135, 4);
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 300, 4);
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 121, 4);
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 5, 0, 0);
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 0, 0);
-                    player.EmitLocked("Client:SpawnArea:setCharAccessory", 0, 57, 0); //hut
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 7, 0, 0);
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 14, 0);
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 8, 0);
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 1, 99);
-                    player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 82, 4);
-                }
-                HUDHandler.SendNotification(player, 4, 5000, $"Du bist nun als Admin unterwegs. (F9 aktiviert)");
+                    player.SetClothes(1, 135, 2, 2);
+                    player.SetClothes(11, 300, 2, 2);
+                    player.SetClothes(4, 121, 2, 2);
+                    player.SetClothes(3, 8, 0, 2);
+                    player.SetClothes(8, 1, 99, 2);
+                    player.SetClothes(6, 82, 2, 2);
+                }    
+                player.EmitLocked("Client:Admin:Invincible", true);
+                HUDHandler.SendNotification(player, 4, 5000, $"Du befindest dich nun im Aduty");
             }
         }
 
+        [Command("resethwid")]
+        public void CMD_ResetHwId(IPlayer player, int accountId)
+        {
+            try
+            {
+                if (player == null || !player.Exists) return;
+                if(player.GetCharacterMetaId() <= 0 || player.AdminLevel() <= 0) { HUDHandler.SendNotification(player, 4, 2500, "Keine Rechte."); return; }
+                if(!User.ExistPlayerById(accountId)) { HUDHandler.SendNotification(player, 3, 2500, "Der Spieler existiert nicht."); return; }
+                User.ResetPlayerHardwareID(accountId);
+                HUDHandler.SendNotification(player, 1, 2500, $"Hardware-ID zurückgesetzt (Acc-ID: {accountId}).");
+            }
+            catch (Exception e)
+            {
+                Alt.Log($"{e}");
+            }
+        }
+
+        [Command("testveh")]
+        public void CMD_testtest(IPlayer player)
+        {
+            VehicleHandler.testtesttest(player);
+        }
     }
 }

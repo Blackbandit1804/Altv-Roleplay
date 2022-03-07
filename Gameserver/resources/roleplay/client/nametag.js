@@ -7,12 +7,12 @@ alt.everyTick(() => {
     let players = alt.Player.all;
     if (players.length > 0) {
         let localPlayer = alt.Player.local;
-        let playerPos = game.getEntityCoords(localPlayer.scriptID);
+        let playerPos = game.getEntityCoords(localPlayer.scriptID, true);
 
         for (var i = 0; i < players.length; i++) {
             var player = players[i];
             if (!player.hasStreamSyncedMeta("sharedUsername")) continue;
-            let playerPos2 = game.getEntityCoords(player.scriptID);
+            let playerPos2 = game.getEntityCoords(player.scriptID, true);
             let distance = game.getDistanceBetweenCoords(playerPos.x, playerPos.y, playerPos.z, playerPos2.x, playerPos2.y, playerPos2.z, true);
 
             if (distance <= 40.0 && `${player.getStreamSyncedMeta("sharedUsername")}` != `${localPlayer.getStreamSyncedMeta("sharedUsername")}`) {

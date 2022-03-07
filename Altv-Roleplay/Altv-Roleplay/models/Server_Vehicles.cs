@@ -11,7 +11,7 @@ namespace Altv_Roleplay.models
         public int id { get; set; }
 
         public int charid { get; set; }
-        public ulong hash { get; set; }
+        public long hash { get; set; }
         public int vehType { get; set; } //0 Spieler, 1 Fraktion, 2 Jobfahrzeug
         public int faction { get; set; } //0 = Keine, 1  = DoJ, 2 = LSPD, 3 = LSFD, 4 = ACLS
         public float fuel { get; set; }

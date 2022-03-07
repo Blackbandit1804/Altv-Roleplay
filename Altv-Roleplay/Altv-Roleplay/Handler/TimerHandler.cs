@@ -16,20 +16,17 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Threading;
 using AltV.Net.Async;
-using Altv_Roleplay.Database;
 
 namespace Altv_Roleplay.Handler
 {
     class TimerHandler
     {
-        public static async void OnCheckTimer(object sender, ElapsedEventArgs e)
+        public static void OnCheckTimer(object sender, ElapsedEventArgs e)
         {
             try
             {
-                Console.WriteLine($"Timer - Thread = {Thread.CurrentThread.ManagedThreadId}");
+                //Console.WriteLine($"Timer - Thread = {Thread.CurrentThread.ManagedThreadId}");
                 Stopwatch stopwatch = new Stopwatch();
-
-                //CheckIfUserIsBanned
                 stopwatch.Start();
                 foreach (IPlayer player in Alt.GetAllPlayers().ToList())
                 {
@@ -41,25 +38,25 @@ namespace Altv_Roleplay.Handler
                         lock (player)
                         {
                             if (player == null || !player.Exists) continue;
-                            if (player.Dimension != 10000 && Characters.GetCharacterAccountId((int)player.GetCharacterMetaId()) == 0) player.kickWithMessage("Fehler #1339 erkannt");
+                            if (player.Dimension != 10000 && ((ClassicPlayer)player).accountId == 0) player.kickWithMessage("Fehler #1339 erkannt");
                             if (player.Dimension == 0) { if (User.GetPlayerOnline(player) <= 0 || User.GetPlayerSocialclubIdbyAccId(User.GetPlayerAccountId(player)) != player.SocialClubId || User.GetPlayerHardwareIdbyAccId(User.GetPlayerAccountId(player)) != player.HardwareIdHash) player.kickWithMessage("Fehler #1338 erkannt"); }
                         }
                     }
                 }
                 stopwatch.Stop();
-                Alt.Log($"OnCheckTimer: Player Foreach benötigte: {stopwatch.Elapsed}");
-
+                //Alt.Log($"OnCheckTimer: Player Foreach benötigte: {stopwatch.Elapsed}");
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Alt.Log($"{ex}");
             }
         }
-        
-        public static async void OnFuelTimer(object sender, ElapsedEventArgs e)
+
+        public static void OnEntityTimer(object sender, ElapsedEventArgs e)
         {
             try
             {
+                WeatherHandler.GetRealWeatherType();
                 //Console.WriteLine($"Timer - Thread = {Thread.CurrentThread.ManagedThreadId}");
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
@@ -72,194 +69,18 @@ namespace Altv_Roleplay.Handler
                         lock (Veh)
                         {
                             if (Veh == null || !Veh.Exists) continue;
-                            if (Veh.EngineOn == true) { ServerVehicles.SetVehicleFuel(Veh, ServerVehicles.GetVehicleFuel(Veh) - 0.125f); }
-                            ServerVehicles.SaveVehiclePositionAndStates(Veh);
-                            ServerVehicles.SaveVehiclePositionAndStates(Veh);
-                            ServerVehicles.SaveVehiclePositionAndStates(Veh);
-                            ServerVehicles.SaveVehiclePositionAndStates(Veh);
-                            if (Veh.BodyHealth < 150)
-                            {
-                                ServerVehicles.SetVehicleEngineHealthy(Veh, false);
-                                ServerVehicles.SetVehicleEngineState(Veh, false);
-                                ServerVehicles.SaveVehiclePositionAndStates(Veh);
-                                ServerVehicles.SetVehicleKM(Veh, ServerVehicles.GetVehicleKM(Veh));
-                            }
-                            ServerVehicles.SetVehicleKM(Veh, ServerVehicles.GetVehicleKM(Veh));
-                            ServerVehicles.SetVehicleKM(Veh, ServerVehicles.GetVehicleKM(Veh));
-                            ServerVehicles.SetVehicleKM(Veh, ServerVehicles.GetVehicleKM(Veh));
-                            ServerVehicles.SetVehicleKM(Veh, ServerVehicles.GetVehicleKM(Veh));
-                        }
-                    }
-                }
-
-                stopwatch.Stop();
-                //Alt.Log($"OnFuelTimer: VehicleFUEL AMK Foreach benötigte: {stopwatch.Elapsed}");
-
-                stopwatch.Reset();
-
-                stopwatch.Start();
-                foreach (IPlayer player in Alt.GetAllPlayers().ToList())
-                {
-                    if (player == null) continue;
-                    using (var playerReference = new PlayerRef(player))
-                    {
-                        if (!playerReference.Exists) return;
-                        if (player == null || !player.Exists) continue;
-                        lock (player)
-                        {
-                            if (player == null || !player.Exists) continue;
-                            int charId2 = User.GetPlayerOnline(player);
-                            if (charId2 != 0)
-                            {
-                                if (player.IsInVehicle)
-                                {
-                                    player.EmitLocked("Client:HUD:GetDistanceForVehicleKM"); 
-                                    HUDHandler.SendInformationToVehicleHUD(player);
-                                    Alt.Log("Vehicle KM-State-HUD updated!");
-                                }
-                            }
-
-                        }
-                        int charId = User.GetPlayerOnline(player);
-                        player.EmitLocked("Client:HUD:UpdateDesire", Characters.GetCharacterArmor(charId), Characters.GetCharacterHealth(charId), Characters.GetCharacterHunger(charId), Characters.GetCharacterThirst(charId)); //HUD updaten
-                    }
-                }
-                stopwatch.Stop();
-            }
-            catch (Exception ex)
-            {
-                Alt.Log($"{ex}");
-            }
-        }
-        public static async void OnKilometerTimer(object sender, ElapsedEventArgs e)
-        {
-            try
-            {
-                //Console.WriteLine($"Timer - Thread = {Thread.CurrentThread.ManagedThreadId}");
-                Stopwatch stopwatch = new Stopwatch();
-                stopwatch.Start();
-                foreach (IVehicle Veh in Alt.GetAllVehicles().ToList())
-                {
-                    if (Veh == null || !Veh.Exists) { continue; }
-                    using (var vRef = new VehicleRef(Veh))
-                    {
-                        if (!vRef.Exists) continue;
-                        lock (Veh)
-                        {
-                            if (Veh == null || !Veh.Exists) continue;
-                            ServerVehicles.SaveVehiclePositionAndStates(Veh);
-                            Alt.Log("Vehicle KM-State saved!");
-                        }
-                    }
-
-                }
-
-                stopwatch.Stop();
-                //Alt.Log($"OnKilometerTimer: Vehicle Foreach benötigte: {stopwatch.Elapsed}");
-
-                stopwatch.Reset();
-                stopwatch.Start();
-                foreach (IPlayer player in Alt.GetAllPlayers().ToList())
-                {
-                    if (player == null) continue;
-                    using (var playerReference = new PlayerRef(player))
-                    {
-                        if (!playerReference.Exists) return;
-                        if (player == null || !player.Exists) continue;
-                        lock (player)
-                        {
-                            if (player == null || !player.Exists) continue;
-                            int charId2 = User.GetPlayerOnline(player);
-                            if (charId2 != 0)
-                            {
-                                if (player.IsInVehicle)
-                                {
-                                    player.EmitLocked("Client:HUD:GetDistanceForVehicleKM"); HUDHandler.SendInformationToVehicleHUD(player);
-                                    Alt.Log("Vehicle KM-State-HUD updated!");
-                                }
-                            }
-
-                        }
-                        int charId = User.GetPlayerOnline(player);
-                        player.EmitLocked("Client:HUD:UpdateDesire", Characters.GetCharacterArmor(charId), Characters.GetCharacterHealth(charId), Characters.GetCharacterHunger(charId), Characters.GetCharacterThirst(charId)); //HUD updaten
-                    }
-                }
-                stopwatch.Stop();
-                //Alt.Log($"OnEntityTimer: KILOMETER AMK Foreach benötigte: {stopwatch.Elapsed}");
-            }
-            catch (Exception ex)
-            {
-                Alt.Log($"{ex}");
-            }
-        }
-        public static async void OnHUDTimer(object sender, ElapsedEventArgs e)
-        {
-            try
-            {
-                //Console.WriteLine($"Timer - Thread = {Thread.CurrentThread.ManagedThreadId}");
-                Stopwatch stopwatch = new Stopwatch();
-
-                stopwatch.Start();
-                foreach (IPlayer player in Alt.GetAllPlayers().ToList())
-                {
-                    if (player == null) continue;
-                    using (var playerReference = new PlayerRef(player))
-                    {
-                        if (!playerReference.Exists) return;
-                        if (player == null || !player.Exists) continue;
-                        lock (player)
-                        {
-                            if (player == null || !player.Exists) continue;
-                            int charId2 = User.GetPlayerOnline(player);
-                            if (charId2 > 0)
-                            {
-                                Characters.SetCharacterHealth(charId2, player.Health);
-                                Characters.SetCharacterArmor(charId2, player.Armor);
-                                //player.CurrentAmmo
-                            }
-
-                        }
-                        int charId = User.GetPlayerOnline(player);
-                        player.EmitLocked("Client:HUD:UpdateDesire", Characters.GetCharacterArmor(charId), Characters.GetCharacterHealth(charId), Characters.GetCharacterHunger(charId), Characters.GetCharacterThirst(charId)); //HUD updaten
-                        player.EmitLocked("Client:HUD:updateMoney", CharactersInventory.GetCharacterItemAmount(User.GetPlayerOnline(player), "Bargeld", "inventory"));
-                    }
-                }
-                stopwatch.Stop();
-                //Alt.Log($"OnEntityTimer: KILOMETER AMK Foreach benötigte: {stopwatch.Elapsed}");
-            }
-            catch (Exception ex)
-            {
-                Alt.Log($"{ex}");
-            }
-        }
-        public static async void OnEntityTimer(object sender, ElapsedEventArgs e)
-        {
-            try
-            {
-                Console.WriteLine($"Timer - Thread = {Thread.CurrentThread.ManagedThreadId}");
-                Stopwatch stopwatch = new Stopwatch();
-                /*stopwatch.Start();
-                foreach (IVehicle Veh in Alt.GetAllVehicles().ToList())
-                {
-                    if (Veh == null || !Veh.Exists) { continue; }
-                    using (var vRef = new VehicleRef(Veh))
-                    {
-                        if (!vRef.Exists) continue;
-                        lock (Veh)
-                        {
-                            if (Veh == null || !Veh.Exists) continue;
-                            ulong vehID = Veh.GetVehicleId();
+                            long vehID = Veh.GetVehicleId();
                             if (vehID <= 0) { continue; }
                             ServerVehicles.SaveVehiclePositionAndStates(Veh);
-*//*                            if (Veh.EngineOn == true) { ServerVehicles.SetVehicleFuel(Veh, ServerVehicles.GetVehicleFuel(Veh) - 0.01f); }
-*//*                        }
+                            if (Veh.EngineOn == true) { ServerVehicles.SetVehicleFuel(Veh, ServerVehicles.GetVehicleFuel(Veh) - 0.03f); }
+                        }
                     }
                 }
 
                 stopwatch.Stop();
-                Alt.Log($"OnEntityTimer: Vehicle Foreach benötigte: {stopwatch.Elapsed}");
+                //Alt.Log($"OnEntityTimer: Vehicle Foreach benötigte: {stopwatch.Elapsed}");
 
-                stopwatch.Reset();*/
+                stopwatch.Reset();
                 stopwatch.Start();
                 foreach (IPlayer player in Alt.GetAllPlayers().ToList())
                 {
@@ -278,9 +99,9 @@ namespace Altv_Roleplay.Handler
                                 if (User.IsPlayerBanned(player)) { player.kickWithMessage($"Du bist gebannt. (Grund: {User.GetPlayerBanReason(player)})."); }
                                 Characters.SetCharacterHealth(charId, player.Health);
                                 Characters.SetCharacterArmor(charId, player.Armor);
-/*                                WeatherHandler.SetRealTime(player);
-*//*                                if (player.IsInVehicle) { player.EmitLocked("Client:HUD:GetDistanceForVehicleKM"); HUDHandler.SendInformationToVehicleHUD(player); }
-*/                                Characters.IncreaseCharacterPaydayTime(charId);
+                                if (!WeatherHandler.isNotDifferentWeather) WeatherHandler.SetRealWeather(player);
+                                if (player.IsInVehicle) { player.EmitLocked("Client:HUD:GetDistanceForVehicleKM"); HUDHandler.SendInformationToVehicleHUD(player); }
+                                Characters.IncreaseCharacterPaydayTime(charId);
 
                                 if (Characters.IsCharacterUnconscious(charId))
                                 {
@@ -302,33 +123,11 @@ namespace Altv_Roleplay.Handler
                                     else if (fastFarmTime <= 0) Characters.SetCharacterFastFarm(charId, false, 0);
                                 }
 
-                                //WAFFEN CHANGE - AMMO
-                                //player.EmitLocked("Client:WeaponAmmoChange:ComingRespond", (ulong)wHash);
-                                string secondaryWeapon2REMOVE = (string)Characters.GetCharacterWeapon(player, "SecondaryWeapon2");
-                                string secondaryWeaponREMOVE = (string)Characters.GetCharacterWeapon(player, "SecondaryWeapon");
-                                string primaryWeaponREMOVE = (string)Characters.GetCharacterWeapon(player, "PrimaryWeapon");
-                                if (primaryWeaponREMOVE != null)
-                                {
-                                    var hash = WeaponHandler.GetWeaponModelByName(primaryWeaponREMOVE);
-                                    player.EmitLocked("Client:WeaponAmmoChange:ComingTimer", (ulong)hash);
-                                } 
-                                else if (secondaryWeaponREMOVE != null)
-                                {
-                                    var hash = WeaponHandler.GetWeaponModelByName(secondaryWeaponREMOVE);
-                                    player.EmitLocked("Client:WeaponAmmoChange:ComingTimer", (ulong)hash);
-                                } 
-                                else if (secondaryWeapon2REMOVE != null)
-                                {
-                                    var hash = WeaponHandler.GetWeaponModelByName(secondaryWeapon2REMOVE);
-                                    player.EmitLocked("Client:WeaponAmmoChange:ComingTimer", (ulong)hash);
-                                }
-
-
-                                if (Characters.IsCharacterInJail(charId))
+                                if(Characters.IsCharacterInJail(charId))
                                 {
                                     int jailTime = Characters.GetCharacterJailTime(charId);
                                     if (jailTime > 0) Characters.SetCharacterJailTime(charId, true, jailTime - 1);
-                                    else if (jailTime <= 0)
+                                    else if(jailTime <= 0)
                                     {
                                         if (CharactersWanteds.HasCharacterWanteds(charId))
                                         {
@@ -347,11 +146,11 @@ namespace Altv_Roleplay.Handler
                                             player.Position = new Position(1691.4594f, 2565.7056f, 45.556763f);
                                             if (Characters.GetCharacterGender(charId) == false)
                                             {
-                                                player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 5, 0);
-                                                player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 5, 0);
-                                                player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 7, 15);
-                                                player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 7, 0);
-                                                player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 1, 88);
+                                                player.SetClothes(11, 5, 0, 2);
+                                                player.SetClothes(3, 5, 0, 2);
+                                                player.SetClothes(4, 7, 15, 2);
+                                                player.SetClothes(6, 7, 0, 2);
+                                                player.SetClothes(8, 1, 88, 2);
                                             }
                                             else
                                             {
@@ -377,8 +176,8 @@ namespace Altv_Roleplay.Handler
                                         int accountNumber = CharactersBank.GetCharacterBankMainKonto(charId);
                                         if (!ServerFactions.IsCharacterInAnyFaction(charId) || ServerFactions.GetCharacterFactionId(charId) == 0)
                                         {
-                                            CharactersBank.SetBankAccountMoney(accountNumber, CharactersBank.GetBankAccountMoney(accountNumber) + 200); //250$ Stütze
-                                            ServerBankPapers.CreateNewBankPaper(accountNumber, DateTime.Now.ToString("d", CultureInfo.CreateSpecificCulture("de-DE")), DateTime.Now.ToString("t", CultureInfo.CreateSpecificCulture("de-DE")), "Eingehende Überweisung", "Staat", "Arbeitslosengeld", "+200$", "Unbekannt");
+                                            CharactersBank.SetBankAccountMoney(accountNumber, CharactersBank.GetBankAccountMoney(accountNumber) + 250); //250$ Stütze
+                                            ServerBankPapers.CreateNewBankPaper(accountNumber, DateTime.Now.ToString("d", CultureInfo.CreateSpecificCulture("de-DE")), DateTime.Now.ToString("t", CultureInfo.CreateSpecificCulture("de-DE")), "Eingehende Überweisung", "Staat", "Arbeitslosengeld", "+250$", "Unbekannt");
                                         }
 
                                         if (!Characters.IsCharacterCrimeFlagged(charId) && Characters.GetCharacterJob(charId) != "None" && DateTime.Now.Subtract(Convert.ToDateTime(Characters.GetCharacterLastJobPaycheck(charId))).TotalHours >= 12 && !ServerFactions.IsCharacterInAnyFaction(charId))
@@ -439,39 +238,63 @@ namespace Altv_Roleplay.Handler
                     }
                 }
                 stopwatch.Stop();
-                Alt.Log($"OnEntityTimer: Player Foreach benötigte: {stopwatch.Elapsed}");
+                //Alt.Log($"OnEntityTimer: Player Foreach benötigte: {stopwatch.Elapsed}");
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Alt.Log($"{ex}");
             }
         }
+
         internal static void VehicleAutomaticParkFetch(object sender, ElapsedEventArgs e)
         {
             try
             {
-                foreach (var hotelApartment in ServerHotels.ServerHotelsApartments_.Where(x => x.ownerId > 0))
+                //foreach(IVehicle vehicle in Alt.GetAllVehicles().ToList().Where(x => x.GetVehicleId() != 0))
+                //{
+                //    if (vehicle == null) return;
+                //    using (var vehicleRef = new VehicleRef(vehicle))
+                //    {
+                //        if (!vehicleRef.Exists) return;
+                //        lock (vehicle)
+                //        {
+                //            var dbVeh = ServerVehicles.ServerVehicles_.FirstOrDefault(v => v.id == (int)vehicle.GetVehicleId());
+                //            if (dbVeh == null) continue;
+                //            if (DateTime.Now.Subtract(Convert.ToDateTime(dbVeh.lastUsage)).TotalHours >= 3)
+                //            {
+                //                int garage = 0;
+                //                if (dbVeh.garageId == 0) { garage = 10; }
+                //                else { garage = dbVeh.garageId; }
+                //                ServerVehicles.SetVehicleInGarage(vehicle, true, garage);
+                //            }
+                //        }
+                //    }
+                //}
+
+                foreach(var hotelApartment in ServerHotels.ServerHotelsApartments_.Where(x => x.ownerId > 0))
                 {
                     if (hotelApartment == null) continue;
-                    if (DateTime.Now.Subtract(Convert.ToDateTime(hotelApartment.lastRent)).TotalHours >= hotelApartment.maxRentHours)
+                    if(DateTime.Now.Subtract(Convert.ToDateTime(hotelApartment.lastRent)).TotalHours >= hotelApartment.maxRentHours)
                     {
                         int oldOwnerId = hotelApartment.ownerId;
-                        ServerHotels.SetApartmentOwner(hotelApartment.hotelId, hotelApartment.id, 0);
-                        foreach (IPlayer players in Alt.GetAllPlayers().ToList().Where(x => x != null && x.Exists && User.GetPlayerOnline(x) == oldOwnerId))
+                        ServerHotels.SetApartmentOwner(hotelApartment.hotelId, hotelApartment.id, 0);                 
+                        foreach(IPlayer players in Alt.GetAllPlayers().ToList().Where(x => x != null && x.Exists && User.GetPlayerOnline(x) == oldOwnerId))
                         {
                             HUDHandler.SendNotification(players, 1, 5000, "Deine Mietdauer im Hotel ist ausgelaufen, dein Zimmer wurde gekündigt");
                         }
                     }
                 }
             }
-            catch (Exception ex) { Alt.Log($"{ex}"); }
+            catch(Exception ex) { Alt.Log($"{ex}"); }
         }
+
         internal static void OnDesireTimer(object sender, ElapsedEventArgs e)
         {
-            Alt.Log("OnDesireTimer Timer aufgerufen");
+            //Alt.Log("OnDesireTimer Timer aufgerufen");
             foreach (IPlayer player in Alt.GetAllPlayers().ToList())
             {
-                if (player == null || Characters.IsCharacterAnimal(((ClassicPlayer)player).CharacterId)) continue; using (var pRef = new PlayerRef(player))
+                if (player == null || Characters.IsCharacterAnimal(((ClassicPlayer)player).CharacterId)) continue;
+                using (var pRef = new PlayerRef(player))
                 {
                     if (!pRef.Exists) return;
                     lock (player)
@@ -492,11 +315,6 @@ namespace Altv_Roleplay.Handler
                                 HUDHandler.SendNotification(player, 1, 5000, $"Du hast Hunger.");
                             }
 
-                            if (Characters.GetCharacterHealth(User.GetPlayerOnline(player)) <= 15)
-                            {
-                                HUDHandler.SendNotification(player, 1, 5000, $"Su solltest einen Arzt besuchen!");
-                            }
-
                             if (Characters.GetCharacterThirst(User.GetPlayerOnline(player)) > 0)
                             {
                                 Characters.SetCharacterThirst(charId, (Characters.GetCharacterThirst(charId) - random));
@@ -508,50 +326,11 @@ namespace Altv_Roleplay.Handler
                                 Characters.SetCharacterHealth(charId, player.Health);
                                 HUDHandler.SendNotification(player, 1, 5000, $"Du hast Durst.");
                             }
-
-
-                            Alt.Log($"Essen/Durst Anzeige update: {Characters.GetCharacterArmor(charId)} | {Characters.GetCharacterHealth(charId)} | {Characters.GetCharacterHunger(charId)} | {Characters.GetCharacterThirst(charId)}");
-                            player.EmitLocked("Client:HUD:UpdateDesire", Characters.GetCharacterArmor(charId), Characters.GetCharacterHealth(charId), Characters.GetCharacterHunger(charId), Characters.GetCharacterThirst(charId)); //HUD updaten
-                            player.EmitLocked("Client:HUD:updateMoney", CharactersInventory.GetCharacterItemAmount(User.GetPlayerOnline(player), "Bargeld", "inventory"));
-
+                            //Alt.Log($"Essen/Durst Anzeige update: {Characters.GetCharacterHunger(charId)} | {Characters.GetCharacterThirst(charId)}");
+                            player.EmitLocked("Client:HUD:UpdateDesire", Characters.GetCharacterHunger(charId), Characters.GetCharacterThirst(charId)); //Hunger & Durst Anzeige aktualisieren
                         }
                     }
                 }
-            }
-        }
-        internal static void LaborTimer(Object sender, ElapsedEventArgs a)
-        {
-            try
-            {
-                Console.WriteLine("test");
-                if (DateTime.Now.Minute != 0 && DateTime.Now.Minute != 15 && DateTime.Now.Minute != 30 && DateTime.Now.Minute != 45) return;
-                Console.WriteLine("yes");
-                foreach (var faction in ServerFactions.ServerFactions_.ToList())
-                {
-                    if (faction.id < 6 || faction.id == 12) continue;
-                    foreach (var factionMember in ServerFactions.ServerFactionMembers_.ToList().Where(x => x.factionId == faction.id))
-                    {
-                        if (ServerFactions.GetLaborItemAmount(factionMember.factionId, factionMember.charId, "Batteriezellen") >= 10 && ServerFactions.GetLaborItemAmount(factionMember.factionId, factionMember.charId, "Hanfsamenpulver") >= 10 && ServerFactions.GetLaborItemAmount(factionMember.factionId, factionMember.charId, "Dünger") >= 10)
-                        {
-                            ServerFactions.RemoveLaborItemAmount(factionMember.factionId, factionMember.charId, "Batteriezellen", 10);
-                            ServerFactions.RemoveLaborItemAmount(factionMember.factionId, factionMember.charId, "Hanfsamenpulver", 10);
-                            ServerFactions.RemoveLaborItemAmount(factionMember.factionId, factionMember.charId, "Dünger", 10);
-                            ServerFactions.AddLaborItem(factionMember.factionId, factionMember.charId, "Cannabiskiste", 1);
-                        }
-
-                        if (ServerFactions.GetLaborItemAmount(factionMember.factionId, factionMember.charId, "Batteriezellen") >= 10 && ServerFactions.GetLaborItemAmount(factionMember.factionId, factionMember.charId, "Ephedrinpulver") >= 10 && ServerFactions.GetLaborItemAmount(factionMember.factionId, factionMember.charId, "Toilettenreiniger") >= 10)
-                        {
-                            ServerFactions.RemoveLaborItemAmount(factionMember.factionId, factionMember.charId, "Batteriezellen", 10);
-                            ServerFactions.RemoveLaborItemAmount(factionMember.factionId, factionMember.charId, "Ephedrinpulver", 10);
-                            ServerFactions.RemoveLaborItemAmount(factionMember.factionId, factionMember.charId, "Toilettenreiniger", 10);
-                            ServerFactions.AddLaborItem(factionMember.factionId, factionMember.charId, "Methkiste", 1);
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
             }
         }
     }

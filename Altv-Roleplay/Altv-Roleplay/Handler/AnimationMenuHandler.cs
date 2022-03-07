@@ -19,7 +19,7 @@ namespace Altv_Roleplay.Handler
     class AnimationMenuHandler : IScript
     {
         [AsyncClientEvent("Server:AnimationMenu:GetAnimationItems")]
-        public async Task GetAnimationItems(IPlayer player)
+        public void GetAnimationItems(IPlayer player)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:AnimationMenuPage2:GetAnimationItems")]
-        public async Task GetAnimationItemsPage2(IPlayer player)
+        public void GetAnimationItemsPage2(IPlayer player)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:AnimationMenuPage3:GetAnimationItems")]
-        public async Task GetAnimationItemsPage3(IPlayer player)
+        public void GetAnimationItemsPage3(IPlayer player)
         {
             try
             {

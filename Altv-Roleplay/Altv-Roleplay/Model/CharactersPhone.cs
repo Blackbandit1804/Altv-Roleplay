@@ -13,7 +13,6 @@ namespace Altv_Roleplay.Model
     class CharactersPhone : IScript
     {
         public static List<CharactersPhoneChats> CharactersPhoneChats_ = new List<CharactersPhoneChats>();
-        public static List<CharactersPhoneVerlauf> CharactersPhoneVerlauf_ = new List<CharactersPhoneVerlauf>();
         public static List<CharactersPhoneChatMessages> CharactersPhoneChatMessages_ = new List<CharactersPhoneChatMessages>();
         public static List<CharactersPhoneContacts> CharactersPhoneContacts_ = new List<CharactersPhoneContacts>();
 
@@ -31,30 +30,6 @@ namespace Altv_Roleplay.Model
                 using (gtaContext db = new gtaContext())
                 {
                     db.CharactersPhoneChats.Add(chatData);
-                    db.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                Alt.Log($"{e}");
-            }
-        }
-        public static void CreatePhoneVerlauf(ClassicPlayer player, int phoneNumber, int targetPhoneNumber)
-        {
-            try
-            {
-                var chatData = new CharactersPhoneVerlauf()
-                {
-                    charId = player.CharacterId,
-                    phoneNumber = phoneNumber,
-                    anotherNumber = targetPhoneNumber,
-                    date = DateTime.Now
-                };
-
-                CharactersPhoneVerlauf_.Add(chatData);
-                using (gtaContext db = new gtaContext())
-                {
-                    db.CharactersPhoneVerlauf.Add(chatData);
                     db.SaveChanges();
                 }
             }

@@ -210,7 +210,7 @@ namespace Altv_Roleplay.Minijobs.Pilot
         }
 
         [AsyncClientEvent("Server:MinijobPilot:StartJob")]
-        public async Task StartMiniJob(IPlayer player, int level)
+        public void StartMiniJob(IPlayer player, int level)
         {
             try
             {
@@ -267,6 +267,7 @@ namespace Altv_Roleplay.Minijobs.Pilot
                         veh.Remove();
                     }
                     HUDHandler.SendNotification(player, 2, 1500, "Du hast den Minijob: Pilot beendet.");
+                    player.EmitLocked("Client:Minijob:RemoveJobMarker");
                     player.SetPlayerCurrentMinijob("None");
                     player.SetPlayerCurrentMinijobRouteId(0);
                     player.SetPlayerCurrentMinijobStep("None");

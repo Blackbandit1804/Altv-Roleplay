@@ -15,7 +15,7 @@ namespace Altv_Roleplay.Factions.Justice
     class Functions : IScript
     {
         [AsyncClientEvent("Server:Tablet:JusticeAppGiveWeaponLicense")]
-        public async Task GiveWeaponLicense(IPlayer player, string targetCharName)
+        public void GiveWeaponLicense(IPlayer player, string targetCharName)
         {
             try
             {
@@ -23,9 +23,9 @@ namespace Altv_Roleplay.Factions.Justice
                 int charId = User.GetPlayerOnline(player);
                 if (charId <= 0) return;
                 if (player.HasPlayerHandcuffs() || player.HasPlayerRopeCuffs()) { HUDHandler.SendNotification(player, 3, 5000, "Wie willst du das gefesselt machen?"); return; }
-                if (!ServerFactions.IsCharacterInAnyFaction(charId)) { HUDHandler.SendNotification(player, 4, 5000, "Du bist in keiner Fraktion."); return; }
-                if (!ServerFactions.IsCharacterInFactionDuty(charId)) { HUDHandler.SendNotification(player, 4, 5000, "Du bist nicht im Dienst."); return; }
-                if (ServerFactions.GetCharacterFactionId(charId) != 1) { HUDHandler.SendNotification(player, 4, 5000, "Du bist kein Angehöriger der Justiz."); return; }
+                if (!ServerFactions.IsCharacterInAnyFaction(charId)) { HUDHandler.SendNotification(player, 3, 5000, "Du bist in keiner Fraktion."); return; }
+                if (!ServerFactions.IsCharacterInFactionDuty(charId)) { HUDHandler.SendNotification(player, 3, 5000, "Du bist nicht im Dienst."); return; }
+                if (ServerFactions.GetCharacterFactionId(charId) != 1) { HUDHandler.SendNotification(player, 3, 5000, "Du bist kein Angehöriger der Justiz."); return; }
                 if(!Characters.ExistCharacterName(targetCharName)) { HUDHandler.SendNotification(player, 3, 5000, $"Der angegebene Name wurde nicht gefunden ({targetCharName})."); return; }
                 int targetCharId = Characters.GetCharacterIdFromCharName(targetCharName);
                 if (targetCharId <= 0) return;
@@ -34,7 +34,6 @@ namespace Altv_Roleplay.Factions.Justice
                 if(!player.Position.IsInRange(targetPlayer.Position, 5f)) { HUDHandler.SendNotification(player, 3, 5000, "Der Spieler ist nicht in Ihrer Nähe."); return; }
                 if(CharactersLicenses.HasCharacterLicense(targetCharId, "weaponlicense")) { HUDHandler.SendNotification(player, 3, 5000, "Der Spieler hat bereits einen Waffenschein."); return; }
                 CharactersLicenses.SetCharacterLicense(targetCharId, "weaponlicense", true);
-                Characters.AddCharacterPermission(targetCharId, "weaponlicense");
                 HUDHandler.SendNotification(player, 2, 3500, $"Sie haben dem Spieler {targetCharName} den Waffenschein erfolgreich ausgestellt.");
                 HUDHandler.SendNotification(targetPlayer, 2, 3500, $"Ihnen wurde der Waffenschein erfolgreich ausgestellt.");
             }
@@ -45,7 +44,7 @@ namespace Altv_Roleplay.Factions.Justice
         }
 
         [AsyncClientEvent("Server:Tablet:JusticeAppSearchBankAccounts")]
-        public async Task SearchBankAccounts(IPlayer player, string targetCharName)
+        public void SearchBankAccounts(IPlayer player, string targetCharName)
         {
             try
             {
@@ -70,7 +69,7 @@ namespace Altv_Roleplay.Factions.Justice
         }
 
         [AsyncClientEvent("Server:Tablet:JusticeAppViewBankTransactions")]
-        public async Task ViewBankTransactions(IPlayer player, int accNumber)
+        public void ViewBankTransactions(IPlayer player, int accNumber)
         {
             try
             {

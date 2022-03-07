@@ -14,12 +14,12 @@ namespace Altv_Roleplay.Handler
     class FuelStationHandler : IScript
     {
         [AsyncClientEvent("Server:FuelStation:FuelVehicleAction")]
-        public async Task FuelVehicle(IPlayer player, int vID, int fuelstationId, string fueltype, int selectedLiterAmount, int selectedLiterPrice)
+        public async void FuelVehicle(IPlayer player, int vID, int fuelstationId, string fueltype, int selectedLiterAmount, int selectedLiterPrice)
         {
             try
             {
                 if (player == null || !player.Exists || vID == 0 || fuelstationId == 0 || fueltype == "" || selectedLiterAmount <= 0 || selectedLiterPrice == 0) return;
-                ulong vehID = Convert.ToUInt64(vID);
+                long vehID = Convert.ToInt64(vID);
                 int charId = User.GetPlayerOnline(player);
                 if (vehID <= 0 || charId <= 0) return;
                 if (player.HasPlayerHandcuffs() || player.HasPlayerRopeCuffs()) { HUDHandler.SendNotification(player, 3, 5000, "Wie willst du das mit Handschellen/Fesseln machen?"); return; }
@@ -27,7 +27,7 @@ namespace Altv_Roleplay.Handler
                 if (vehicle == null || !vehicle.Exists) { HUDHandler.SendNotification(player, 3, 5000, "Ein unerwarteter Fehler ist aufgetreten. [FEHLERCODE: FUEL-004]"); return; }
                 if (ServerVehicles.GetVehicleType(vehicle) == 0)
                 {
-                    if (!CharactersInventory.ExistCharacterItem(charId, "Bargeld", "inventory")) { HUDHandler.SendNotification(player, 4, 5000, "Du hast nicht genügend Bargeld dabei."); return; }
+                    if (!CharactersInventory.ExistCharacterItem(charId, "Bargeld", "inventory")) { HUDHandler.SendNotification(player, 3, 5000, "Du hast nicht genügend Bargeld dabei."); return; }
                     if (CharactersInventory.GetCharacterItemAmount(charId, "Bargeld", "inventory") < (selectedLiterPrice * selectedLiterAmount)) { HUDHandler.SendNotification(player, 3, 5000, "Du hast nicht genügend Bargeld dabei."); return; }
                 }
                 if (!player.Position.IsInRange(vehicle.Position, 8f)) { HUDHandler.SendNotification(player, 4, 5000, "Du hast dich zu weit vom Fahrzeug entfernt."); return; }
@@ -39,7 +39,7 @@ namespace Altv_Roleplay.Handler
                 await Task.Delay(duration);
                 lock (player)
                 {
-                    if (!player.Position.IsInRange(vehicle.Position, 10f)) { HUDHandler.SendNotification(player, 4, 5000, "Du hast dich zu weit vom Fahrzeug entfernt."); return; }
+                    if (!player.Position.IsInRange(vehicle.Position, 8f)) { HUDHandler.SendNotification(player, 4, 5000, "Du hast dich zu weit vom Fahrzeug entfernt."); return; }
                 }
                 float fuelVal = ServerVehicles.GetVehicleFuel(vehicle) + selectedLiterAmount;
                 if (fuelVal > ServerVehicles.GetVehicleFuelLimitOnHash(vehicle.Model)) { fuelVal = ServerVehicles.GetVehicleFuelLimitOnHash(vehicle.Model); }

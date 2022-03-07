@@ -38,12 +38,11 @@ namespace Altv_Roleplay.Handler
                 var inString = "";
                 var outString = "";
                 var garageName = "";
-                //0 Auto | 1 Boot | 2 Flugzeug | 3 Heli | 4 LKW
+                //0 Auto | 1 Boot | 2 Flugzeug | 3 Heli
                 if (garageInfo.type == 0) { garageName = $"Fahrzeuggarage: {garageInfo.name}"; }
                 else if (garageInfo.type == 1) { garageName = $"Bootsgarage: {garageInfo.name}"; }
                 else if (garageInfo.type == 2) { garageName = $"Flugzeuggarage: {garageInfo.name}"; }
                 else if (garageInfo.type == 3) { garageName = $"Heligarage: {garageInfo.name}"; }
-                else if (garageInfo.type == 4) { garageName = $"LkwGarage: {garageInfo.name}"; }
 
                 if (garageInfo.name.Contains("Fraktion"))
                 {
@@ -53,8 +52,16 @@ namespace Altv_Roleplay.Handler
                     /*if(!charFactionDuty) { HUDHandler.SendNotification(player, 4, 5000, $"Keine Berechtigung (nicht im Dienst)."); return; }*/
                     //inString = GetGarageParkInString(player, garageSlots, charId, garageId, true, factionCut, charFaction);
                     //outString = GetGarageParkOutString(player, garageId, charId, true, factionCut);
-                    inString = GetGarageParkInString(player, garageSlots, charId, garageId, false, "Zivilist", charFaction); //Array von Fahrzeugen die um die Garage rum zum Einparken stehen
-                    outString = GetGarageParkOutString(player, garageId, charId, false, "Zivilist");
+                    if (garageInfo.name.Contains("LSPD") || garageInfo.name.Contains("LSFD") || garageInfo.name.Contains("ACLS"))
+                    {
+                        inString = GetGarageParkInString(player, garageSlots, charId, garageId, false, "Zivilist", charFaction); //Array von Fahrzeugen die um die Garage rum zum Einparken stehen
+                        outString = GetGarageParkOutString(player, garageId, charId, false, "Zivilist");
+                    } else
+                    {
+                        inString = GetGarageParkInString(player, garageSlots, charId, garageId, true, factionCut, charFaction);
+                        outString = GetGarageParkOutString(player, garageId, charId, true, factionCut);
+                    }
+                    
                     player.EmitLocked("Client:Garage:OpenGarage", garageId, garageName, inString, outString);
                     stopwatch.Stop();
                     if (stopwatch.Elapsed.Milliseconds > 30) Alt.Log($"{charId} - OpenGarageCEF benötigte {stopwatch.Elapsed.Milliseconds}ms");
@@ -89,8 +96,8 @@ namespace Altv_Roleplay.Handler
             {
                 bool hasKey = false,
                     isOwner = ServerVehicles.GetVehicleOwner(veh) == charId;
-                if (isFaction) hasKey = CharactersInventory.ExistCharacterItem(charId, $"Fahrzeugschluessel {factionShort}", "schluessel");
-                else if (!isFaction) hasKey = CharactersInventory.ExistCharacterItem(charId, $"Fahrzeugschluessel {veh.NumberplateText}", "schluessel");
+                if (isFaction) hasKey = CharactersInventory.ExistCharacterItem(charId, $"Fahrzeugschluessel {factionShort}", "inventory");
+                else if (!isFaction) hasKey = CharactersInventory.ExistCharacterItem(charId, $"Fahrzeugschluessel {veh.NumberplateText}", "inventory");
                 if (!isOwner && !hasKey) continue;
                 entry = new JObject();
                 entry.vehid = veh.GetVehicleId();
@@ -142,8 +149,8 @@ namespace Altv_Roleplay.Handler
                 foreach (var vehicle in inGarageVehs)
                 {
                     bool hasKey = false;
-                    if (isFaction == false) { hasKey = CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel " + vehicle.plate, "schluessel"); }
-                    else if (isFaction == true) { hasKey = CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel " + factionShort, "schluessel"); }
+                    if (isFaction == false) { hasKey = CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel " + vehicle.plate, "inventory"); }
+                    else if (isFaction == true) { hasKey = CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel " + factionShort, "inventory"); }
                     bool isOwner = vehicle.charid == charId;
                     if (!hasKey && !isOwner) continue;
 
@@ -165,7 +172,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Garage:DoAction")]
-        public async Task DoGarageAction(IPlayer player, int garageid, string action, int vehID)
+        public async void DoGarageAction(IPlayer player, int garageid, string action, int vehID)
         {
             try
             {
@@ -174,7 +181,7 @@ namespace Altv_Roleplay.Handler
                 stopwatch.Start();
                 int charId = User.GetPlayerOnline(player);
                 if (charId <= 0) return;
-                var vehicle = Alt.GetAllVehicles().ToList().FirstOrDefault(x => x.GetVehicleId() == (ulong)vehID);
+                var vehicle = Alt.GetAllVehicles().ToList().FirstOrDefault(x => x.GetVehicleId() == (long)vehID);
                 if (action == "storage")
                 {
                     //Fahrzeug einparken
@@ -185,15 +192,8 @@ namespace Altv_Roleplay.Handler
                     //Position garagePos = new Position(gData.posX, gData.posY, gData.posZ);
                     //Alt.Log($"StorageVeh: {gData} - {gData.garageId} - {garagePos} - {garagePos.ToString()}");
                     //if (garagePos == null || garagePos == new Position(0, 0, 0)) return;
-                    if (vehicle.BodyHealth < 990)
-                    {
-                        HUDHandler.SendNotification(player, 2, 5000, $"Das Fahrzeug konnte nicht eingeparkt werden, da es beschädigt ist!<br>Lasse es zuvor von einem Mechaniker Reparieren.");
-                    }
-                    else
-                    {
-                        ServerVehicles.SetVehicleInGarage(vehicle, true, garageid);
-                        HUDHandler.SendNotification(player, 2, 5000, $"Fahrzeug erfolgreich eingeparkt.");
-                    }
+                    ServerVehicles.SetVehicleInGarage(vehicle, true, garageid);
+                    HUDHandler.SendNotification(player, 2, 5000, $"Fahrzeug erfolgreich eingeparkt.");
                 }
                 else if (action == "take")
                 {
@@ -223,7 +223,7 @@ namespace Altv_Roleplay.Handler
                     altVeh.LockState = VehicleLockState.Locked;
                     altVeh.EngineOn = false;
                     altVeh.NumberplateText = finalVeh.plate;
-                    altVeh.SetVehicleId((ulong)finalVeh.id);
+                    altVeh.SetVehicleId((long)finalVeh.id);
                     altVeh.SetVehicleTrunkState(false);
                     ServerVehicles.SetVehicleModsCorrectly(altVeh);
                     ServerVehicles.SetVehicleInGarage(altVeh, false, garageid);

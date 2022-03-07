@@ -51,7 +51,7 @@ namespace Altv_Roleplay.Minijobs.Busfahrer
             return false;
         }
 
-        public static ulong GetRouteVehicleHash(int routeId)
+        public static long GetRouteVehicleHash(int routeId)
         {
             try
             {

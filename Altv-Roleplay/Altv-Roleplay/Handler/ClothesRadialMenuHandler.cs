@@ -19,7 +19,7 @@ namespace Altv_Roleplay.Handler
     class ClothesRadialMenuHandler : IScript
     {
         [AsyncClientEvent("Server:ClothesRadial:GetClothesRadialItems")]
-        public async Task GetAnimationItems(IPlayer player)
+        public void GetAnimationItems(IPlayer player)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:ClothesRadial:SetNormalSkin")]
-        public static async Task SetNormalSkin(IPlayer player, string action)
+        public static void SetNormalSkin(IPlayer player, string action)
         {
             if (player == null || !player.Exists) return;
             int charid = User.GetPlayerOnline(player);
@@ -68,7 +68,8 @@ namespace Altv_Roleplay.Handler
             {
                 if (!player.HasData("HasHatOn"))
                 {
-                    player.SetProps(0, 11, 0);
+                    if (!Characters.GetCharacterGender(charid)) player.SetProps(0, 11, 0);
+                    else player.SetProps(0, 57, 0);
                     player.SetData("HasHatOn", true);
                     return;
                 }
@@ -81,7 +82,8 @@ namespace Altv_Roleplay.Handler
             {
                 if (!player.HasData("HasGlassesOn"))
                 {
-                    player.SetProps(1, 0, 0);
+                    if (!Characters.GetCharacterGender(charid)) player.SetProps(1, 0, 0);
+                    else player.SetProps(1, 12, 0);
                     player.SetData("HasGlassesOn", true);
                     return;
                 }
@@ -102,7 +104,7 @@ namespace Altv_Roleplay.Handler
                 type = 11;
                 TypeText = "Top";
                 player.DeleteData("HasShirtOn");
-                player.SetClothes(3, (byte)ServerClothes.GetClothesDraw(Characters.GetCharacterClothes(charid, "Torso"), (byte)Convert.ToInt32(Characters.GetCharacterGender(((ClassicPlayer)player).CharacterId))), (byte)ServerClothes.GetClothesTexture(Characters.GetCharacterClothes(charid, "Torso"), (byte)Convert.ToInt32(Characters.GetCharacterGender(((ClassicPlayer)player).CharacterId))), 2);
+                player.SetClothes(3, (ushort)ServerClothes.GetClothesDraw(Characters.GetCharacterClothes(charid, "Torso"), (byte)Convert.ToInt32(Characters.GetCharacterGender(((ClassicPlayer)player).CharacterId))), (byte)ServerClothes.GetClothesTexture(Characters.GetCharacterClothes(charid, "Torso"), (byte)Convert.ToInt32(Characters.GetCharacterGender(((ClassicPlayer)player).CharacterId))), 2); 
             }
             else if (action == "unterhemd")
             {
@@ -132,7 +134,8 @@ namespace Altv_Roleplay.Handler
             {
                 if (!player.HasData("HasShoesOn"))
                 {
-                    player.SetClothes(6, 34, 0, 2);
+                    if (!Characters.GetCharacterGender(charid)) player.SetClothes(6, 34, 0, 2);
+                    else player.SetClothes(6, 35, 0, 2);
                     player.SetData("HasShoesOn", true);
                     return;
                 }
@@ -154,12 +157,13 @@ namespace Altv_Roleplay.Handler
             }
 
 
-            if (TypeText == "none") return;
+            if (TypeText == "none" || Characters.GetCharacterClothes(charid, TypeText) == -2 || ServerClothes.GetClothesDraw(Characters.GetCharacterClothes(charid, TypeText), (byte)Convert.ToInt32(Characters.GetCharacterGender(((ClassicPlayer)player).CharacterId))) == 0) return;
             if (ClothesType == "Prop")
             {
-                player.SetProps((byte)type, (byte)ServerClothes.GetClothesDraw(Characters.GetCharacterClothes(charid, TypeText), (byte)Convert.ToInt32(Characters.GetCharacterGender(((ClassicPlayer)player).CharacterId))), (byte)ServerClothes.GetClothesTexture(Characters.GetCharacterClothes(charid, TypeText), (byte)Convert.ToInt32(Characters.GetCharacterGender(((ClassicPlayer)player).CharacterId)))); return;
+                player.SetProps((byte)type, (ushort)ServerClothes.GetClothesDraw(Characters.GetCharacterClothes(charid, TypeText), (byte)Convert.ToInt32(Characters.GetCharacterGender(((ClassicPlayer)player).CharacterId))), (byte)ServerClothes.GetClothesTexture(Characters.GetCharacterClothes(charid, TypeText), (byte)Convert.ToInt32(Characters.GetCharacterGender(((ClassicPlayer)player).CharacterId))));
+                return;
             }
-            player.SetClothes((byte)type, (byte)ServerClothes.GetClothesDraw(Characters.GetCharacterClothes(charid, TypeText), (byte)Convert.ToInt32(Characters.GetCharacterGender(((ClassicPlayer)player).CharacterId))), (byte)ServerClothes.GetClothesTexture(Characters.GetCharacterClothes(charid, TypeText), (byte)Convert.ToInt32(Characters.GetCharacterGender(((ClassicPlayer)player).CharacterId))), 2);
+            player.SetClothes((byte)type, (ushort)ServerClothes.GetClothesDraw(Characters.GetCharacterClothes(charid, TypeText), (byte)Convert.ToInt32(Characters.GetCharacterGender(((ClassicPlayer)player).CharacterId))), (byte)ServerClothes.GetClothesTexture(Characters.GetCharacterClothes(charid, TypeText), (byte)Convert.ToInt32(Characters.GetCharacterGender(((ClassicPlayer)player).CharacterId))), 2); 
         }
     }
 }

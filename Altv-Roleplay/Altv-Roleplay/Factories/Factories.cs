@@ -20,7 +20,7 @@ namespace Altv_Roleplay.Factories
         }
     }
 
-    public class AccountsFactory : IEntityFactory<IPlayer>
+    class AccountsFactory : IEntityFactory<IPlayer>
     {
         public IPlayer Create(IServer server, IntPtr playerPointer, ushort id)
         {

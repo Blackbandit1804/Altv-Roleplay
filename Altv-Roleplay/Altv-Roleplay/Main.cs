@@ -12,7 +12,6 @@ using System.Net;
 using System.IO;
 using Altv_Roleplay.Utils;
 using System.Linq;
-using System.Numerics;
 using AltV.Net.Async;
 using System.Threading.Tasks;
 using Altv_Roleplay.Factories;
@@ -38,33 +37,6 @@ namespace Altv_Roleplay
 
         public override void OnStart()
         {
-            AltV.Net.EntitySync.AltEntitySync.Init(7, (threadId) => 200, (threadId) => false,
-            (threadCount, repository) => new AltV.Net.EntitySync.ServerEvent.ServerEventNetworkLayer(threadCount, repository),
-            (entity, threadCount) => entity.Type,
-            (entityId, entityType, threadCount) => entityType,
-            (threadId) =>
-            {
-                return threadId switch
-                {
-                                // Marker
-                                0 => new AltV.Net.EntitySync.SpatialPartitions.LimitedGrid3(50_000, 50_000, 75, 10_000, 10_000, 64),
-                                // Text
-                                1 => new AltV.Net.EntitySync.SpatialPartitions.LimitedGrid3(50_000, 50_000, 75, 10_000, 10_000, 32),
-                                // Props
-                                2 => new AltV.Net.EntitySync.SpatialPartitions.LimitedGrid3(50_000, 50_000, 100, 10_000, 10_000, 1500),
-                                // Help Text
-                                3 => new AltV.Net.EntitySync.SpatialPartitions.LimitedGrid3(50_000, 50_000, 100, 10_000, 10_000, 1),
-                                // Blips
-                                4 => new EntityStreamer.GlobalEntity(),
-                                // Dynamic Blip
-                                5 => new AltV.Net.EntitySync.SpatialPartitions.LimitedGrid3(50_000, 50_000, 175, 10_000, 10_000, 200),
-                                // Ped
-                                6 => new AltV.Net.EntitySync.SpatialPartitions.LimitedGrid3(50_000, 50_000, 175, 10_000, 10_000, 64),
-                    _ => new AltV.Net.EntitySync.SpatialPartitions.LimitedGrid3(50_000, 50_000, 175, 10_000, 10_000, 115),
-                };
-            },
-            new AltV.Net.EntitySync.IdProvider());
-
             Environment.SetEnvironmentVariable("COMPlus_legacyCorruptedState­­ExceptionsPolicy", "1");
 
             //Datenbank laden
@@ -79,7 +51,6 @@ namespace Altv_Roleplay
             Database.DatabaseHandler.LoadAllCharacterPermissions();
             Database.DatabaseHandler.LoadAllCharacterMinijobData();
             Database.DatabaseHandler.LoadAllCharacterPhoneChats();
-            Database.DatabaseHandler.LoadAllServerStorages();
             Database.DatabaseHandler.LoadAllCharacterWanteds();
             Database.DatabaseHandler.LoadAllServerBlips();
             Database.DatabaseHandler.LoadAllServerMarkers();
@@ -129,20 +100,7 @@ namespace Altv_Roleplay
             Database.DatabaseHandler.LoadAllServerLogsCompany();
             Database.DatabaseHandler.LoadAllTattooStuff();
 
-            // Utils
-            EntityStreamer.MarkerStreamer.Create(EntityStreamer.MarkerTypes.MarkerTypeVerticalCylinder, new Vector3(Constants.Positions.weedLabor_InvPosition.X, Constants.Positions.weedLabor_InvPosition.Y, Constants.Positions.weedLabor_InvPosition.Z - 1), new Vector3(1), color: new Rgba(150, 0, 0, 100), streamRange: 15, dimension: -2147483648);
-            EntityStreamer.MarkerStreamer.Create(EntityStreamer.MarkerTypes.MarkerTypeVerticalCylinder, new Vector3(Constants.Positions.storage_ExitPosition.X, Constants.Positions.storage_ExitPosition.Y, Constants.Positions.storage_ExitPosition.Z - 1), new Vector3(1), color: new Rgba(150, 0, 0, 100), streamRange: 15, dimension: -2147483648);
-            EntityStreamer.MarkerStreamer.Create(EntityStreamer.MarkerTypes.MarkerTypeVerticalCylinder, new Vector3(Constants.Positions.storage_InvPosition.X, Constants.Positions.storage_InvPosition.Y, Constants.Positions.storage_InvPosition.Z - 1), new Vector3(1), color: new Rgba(150, 0, 0, 100), streamRange: 15, dimension: -2147483648);
-            EntityStreamer.MarkerStreamer.Create(EntityStreamer.MarkerTypes.MarkerTypeVerticalCylinder, new Vector3(Constants.Positions.storage_LSPDInvPosition.X, Constants.Positions.storage_LSPDInvPosition.Y, Constants.Positions.storage_LSPDInvPosition.Z - 1), new Vector3(1), color: new Rgba(150, 0, 0, 100), streamRange: 15, dimension: 0);
-            EntityStreamer.BlipStreamer.CreateStaticBlip("Dynasty8", 2, 0.5f, true, 374, Constants.Positions.dynasty8_pedPositionStorage, 0);
-            EntityStreamer.BlipStreamer.CreateStaticBlip("Schlüsseldienst", 39, 0.5f, true, 255, Constants.Positions.Vehicleschluesseldienst_Position, 0);
-            EntityStreamer.BlipStreamer.CreateStaticBlip("Waschstraße", 85, 0.5f, true, 100, Constants.Positions.Waschstrasse, 0);
-            EntityStreamer.BlipStreamer.CreateStaticBlip("Waschstraße", 85, 0.5f, true, 100, Constants.Positions.Waschstrasse2, 0);
-            EntityStreamer.BlipStreamer.CreateStaticBlip("Waschstraße", 85, 0.5f, true, 100, Constants.Positions.Waschstrasse3, 0);
-            EntityStreamer.BlipStreamer.CreateStaticBlip("Waschstraße", 85, 0.5f, true, 100, Constants.Positions.Waschstrasse4, 0);
-            EntityStreamer.BlipStreamer.CreateStaticBlip("Waschstraße", 85, 0.5f, true, 100, Constants.Positions.Waschstrasse5, 0);
-            EntityStreamer.BlipStreamer.CreateStaticBlip("Waschstraße", 85, 0.5f, true, 100, Constants.Positions.Waschstrasse6, 0);
-            EntityStreamer.BlipStreamer.CreateStaticBlip("Waschstraße", 85, 0.5f, true, 100, Constants.Positions.Waschstrasse7, 0);
+            WeatherHandler.GetRealWeatherType();
 
             //Database.DatabaseHandler.RenewAll();
 
@@ -271,44 +229,22 @@ namespace Altv_Roleplay
             Alt.OnClient<IPlayer, string>("Server:Utilities:BanMe", banme);
 
             //Timer initialisieren
+            System.Timers.Timer checkTimer = new System.Timers.Timer();
             System.Timers.Timer entityTimer = new System.Timers.Timer();
-            System.Timers.Timer kilometerTimer = new System.Timers.Timer();
-            System.Timers.Timer hudTimer = new System.Timers.Timer();
-            System.Timers.Timer LaborTimer = new System.Timers.Timer();
-            System.Timers.Timer fuelTimer = new System.Timers.Timer();
             System.Timers.Timer desireTimer = new System.Timers.Timer();
             System.Timers.Timer VehicleAutomaticParkFetchTimer = new System.Timers.Timer();
-            //Elapsed?
+            checkTimer.Elapsed += new ElapsedEventHandler(TimerHandler.OnCheckTimer);
             entityTimer.Elapsed += new ElapsedEventHandler(TimerHandler.OnEntityTimer);
-            kilometerTimer.Elapsed += new ElapsedEventHandler(TimerHandler.OnKilometerTimer);
-            hudTimer.Elapsed += new ElapsedEventHandler(TimerHandler.OnHUDTimer);
-            LaborTimer.Elapsed += new ElapsedEventHandler(TimerHandler.LaborTimer);
-            fuelTimer.Elapsed += new ElapsedEventHandler(TimerHandler.OnFuelTimer);
             desireTimer.Elapsed += new ElapsedEventHandler(TimerHandler.OnDesireTimer);
             VehicleAutomaticParkFetchTimer.Elapsed += new ElapsedEventHandler(TimerHandler.VehicleAutomaticParkFetch);
-            //Interval
+            checkTimer.Interval += 15000;
             entityTimer.Interval += 60000;
-            kilometerTimer.Interval += 30000;
-            hudTimer.Interval += 2500;
-            fuelTimer.Interval += 30000;
-            LaborTimer.Interval += 60000;
-            desireTimer.Interval += 200000;
+            desireTimer.Interval += 300000;
             VehicleAutomaticParkFetchTimer.Interval += 60000 * 5;
-            //enabled?
+            checkTimer.Enabled = true;
             entityTimer.Enabled = true;
-            kilometerTimer.Enabled = false;
-            hudTimer.Enabled = true;
-            fuelTimer.Enabled = true;
             desireTimer.Enabled = true;
             VehicleAutomaticParkFetchTimer.Enabled = true;
-            LaborTimer.Enabled = true;
-
-            // Dynasty8
-            EntityStreamer.PedStreamer.Create("a_m_y_business_02", Constants.Positions.dynasty8_pedPositionStorage, new System.Numerics.Vector3(0, 0, Constants.Positions.dynasty8_pedRotationStorage), 0);
-            EntityStreamer.MarkerStreamer.Create(EntityStreamer.MarkerTypes.MarkerTypeVerticalCylinder, Constants.Positions.dynasty8_positionStorage, new System.Numerics.Vector3(1), color: new Rgba(255, 51, 51, 100), dimension: 0, streamRange: 20);
-            EntityStreamer.HelpTextStreamer.Create("Drücke E um eine Lagerhalle zu erwerben oder deine zu verkaufen.", Constants.Positions.dynasty8_positionStorage, streamRange: 1);
-
-
 
             Console.WriteLine($"Main-Thread = {Thread.CurrentThread.ManagedThreadId}");
         }
@@ -337,11 +273,11 @@ namespace Altv_Roleplay
             IPlayer client = targetEntity as IPlayer;
             if (client == null || !client.Exists) return;
             string colshapeName = colShape.GetColShapeName();
-            ulong colshapeId = colShape.GetColShapeId();
+            long colshapeId = colShape.GetColShapeId();
 
             if(colshapeName == "Cardealer" && state == true)
             {
-                ulong vehprice = colShape.GetColshapeCarDealerVehPrice();
+                long vehprice = colShape.GetColshapeCarDealerVehPrice();
                 string vehname = colShape.GetColshapeCarDealerVehName();
                 HUDHandler.SendNotification(client, 1, 2500, $"Name: {vehname}<br>Preis: {vehprice}$");
                 return;

@@ -18,7 +18,6 @@ namespace Altv_Roleplay.Handler
 {
     class HouseHandler : IScript
     {
-        #region allgemein
         internal static void openEntranceCEF(IPlayer player, int houseId)
         {
             try
@@ -35,7 +34,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:House:BuyHouse")]
-        public async Task BuyHouse(IPlayer player, int houseId)
+        public void BuyHouse(IPlayer player, int houseId)
         {
             try
             {
@@ -59,6 +58,7 @@ namespace Altv_Roleplay.Handler
                 Alt.Log($"{e}");
             }
         }
+
         internal static void LockHouse(IPlayer player, int houseId)
         {
             try
@@ -78,10 +78,9 @@ namespace Altv_Roleplay.Handler
                 Alt.Log($"{e}");
             }
         }
-        
 
         [AsyncClientEvent("Server:House:EnterHouse")]
-        public async Task EnterHouse(IPlayer player, int houseId)
+        public void EnterHouse(IPlayer player, int houseId)
         {
             try
             {
@@ -126,9 +125,7 @@ namespace Altv_Roleplay.Handler
                 Alt.Log($"{e}");
             }
         }
-        #endregion
 
-        #region something
         internal static void openManageCEF(IPlayer player)
         {
             try
@@ -175,11 +172,9 @@ namespace Altv_Roleplay.Handler
                 Alt.Log($"{e}");
             }
         }
-        #endregion
 
-        #region storage
         [AsyncClientEvent("Server:HouseStorage:StorageItem")]
-        public async Task StorageItem(IPlayer player, int houseId, string itemName, int itemAmount, string fromContainer)
+        public void StorageItem(IPlayer player, int houseId, string itemName, int itemAmount, string fromContainer)
         {
             try
             {
@@ -195,8 +190,7 @@ namespace Altv_Roleplay.Handler
                 if (CharactersInventory.IsItemActive(player, itemName)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Ausgerüstete Gegenstände können nicht umgelagert werden."); return; }
                 float storageLimit = ServerHouses.GetInteriorStorageLimit(ServerHouses.GetHouseInteriorId(houseId));
                 float itemWeight = ServerItems.GetItemWeight(itemName) * itemAmount;
-                if (ServerHouses.GetHouseStorageItemWeight(houseId) >= storageLimit || (ServerHouses.GetHouseStorageItemWeight(houseId) + itemWeight >= storageLimit))
-                {
+                if(ServerHouses.GetHouseStorageItemWeight(houseId) >= storageLimit || (ServerHouses.GetHouseStorageItemWeight(houseId) + itemWeight >= storageLimit)) {
                     HUDHandler.SendNotification(player, 3, 5000, $"Fehler: Soviel passt in das Hauslager nicht rein (maximal {storageLimit}kg Lagerplatz).");
                     return;
                 }
@@ -211,9 +205,8 @@ namespace Altv_Roleplay.Handler
             }
         }
 
-
         [AsyncClientEvent("Server:HouseStorage:TakeItem")]
-        public async Task TakeItem(IPlayer player, int houseId, string itemName, int itemAmount)
+        public void TakeItem(IPlayer player, int houseId, string itemName, int itemAmount)
         {
             try
             {
@@ -228,43 +221,22 @@ namespace Altv_Roleplay.Handler
                 if (ServerHouses.GetServerHouseStorageItemAmount(houseId, itemName) < itemAmount) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Soviele Gegenstände sind nicht im Hauslager."); return; }
                 float itemWeight = ServerItems.GetItemWeight(itemName) * itemAmount;
                 float invWeight = CharactersInventory.GetCharacterItemWeight(charId, "inventory");
-                var itemType = ServerItems.GetItemType(itemName);
                 float backpackWeight = CharactersInventory.GetCharacterItemWeight(charId, "backpack");
                 if (invWeight + itemWeight > 15f && backpackWeight + itemWeight > Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId))) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast nicht genug Platz in deinen Taschen."); return; }
                ServerHouses.RemoveServerHouseStorageItemAmount(houseId, itemName, itemAmount);
                 //ToDo: Log Eintrag
-                if(itemName.Contains("Fahrzeugschluessel"))
+                if(invWeight + itemWeight <= 15f)
                 {
-                    HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus dem Hauslager genommen (Lagerort: Schluesselbund).");
-                    CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "schluessel");
+                    HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus dem Hauslager genommen (Lagerort: Inventar).");
+                    CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "inventory");
                     return;
-                } 
-                if(itemName.Contains("Handschellenschluessel"))
-                {
-                    HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus dem Hauslager genommen (Lagerort: Schluesselbund).");
-                    CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "schluessel");
-                    return;
-                } 
-                if(itemName.Contains("Generalschluessel"))
-                {
-                    HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus dem Hauslager genommen (Lagerort: Schluesselbund).");
-                    CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "schluessel");
-                    return;
-                } else
-                {
-                    if (invWeight + itemWeight <= 15f)
-                    {
-                        HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus dem Hauslager genommen (Lagerort: Inventar).");
-                        CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "inventory");
-                        return;
-                    }
+                }
 
-                    if (Characters.GetCharacterBackpack(charId) != -2 && backpackWeight + itemWeight <= Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId)))
-                    {
-                        HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus dem Hauslager genommen (Lagerort: Rucksack / Tasche).");
-                        CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "backpack");
-                        return;
-                    }
+                if (Characters.GetCharacterBackpack(charId) != -2 && backpackWeight + itemWeight <= Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId)))
+                {
+                    HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus dem Hauslager genommen (Lagerort: Rucksack / Tasche).");
+                    CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "backpack");
+                    return;
                 }
             }
             catch (Exception e)
@@ -272,7 +244,6 @@ namespace Altv_Roleplay.Handler
                 Alt.Log($"{e}");
             }
         }
-        #endregion
 
         internal static async void BreakIntoHouse(IPlayer player, int houseId)
         {
@@ -297,7 +268,7 @@ namespace Altv_Roleplay.Handler
                     var houseOwnerPlayer = Alt.GetAllPlayers().ToList().FirstOrDefault(x => x != null && x.Exists && x.GetCharacterMetaId() == (ulong)houseOwner);
                     if (ServerHouses.HasHouseAlarmUpgrade(houseId))
                     {
-                        ServerFactions.createFactionDispatch(player, 2, $"Hauseinbruch: {ServerHouses.GetHouseStreet(houseId)}", $"Ein Einbruch in ein Haus wurde gemeldet - ein Dispatch wurde dazu in der Notrufverwaltung angelegt.");
+                        ServerFactions.AddNewFactionDispatchNoName($"Hauseinbruch: {ServerHouses.GetHouseStreet(houseId)}", 2, $"Ein Einbruch in ein Haus wurde gemeldet - ein Dispatch wurde dazu in der Notrufverwaltung angelegt.", player.Position);
                         if (houseOwnerPlayer != null && (CharactersInventory.ExistCharacterItem(houseOwner, "Tablet", "inventory") || CharactersInventory.ExistCharacterItem(houseOwner, "Tablet", "backpack")))
                         {
                             HUDHandler.SendNotification(houseOwnerPlayer, 3, 3500, $"Jemand bricht in dein Haus ein: {ServerHouses.GetHouseStreet(houseId)}");
@@ -335,7 +306,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:House:setMainHouse")]
-        public async Task setMainHouse(IPlayer player, int houseId)
+        public void setMainHouse(IPlayer player, int houseId)
         {
             try
             {
@@ -353,7 +324,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:House:SellHouse")]
-        public async Task SellHouse(IPlayer player, int houseId)
+        public void SellHouse(IPlayer player, int houseId)
         {
             try
             {
@@ -378,7 +349,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:HouseManage:DepositMoney")]
-        public async Task DepositMoney(IPlayer player, int houseId, int money)
+        public void DepositMoney(IPlayer player, int houseId, int money)
         {
             if (player == null || !player.Exists || houseId <= 0 || money <= 0) return;
             int charId = (int)player.GetCharacterMetaId();
@@ -395,7 +366,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:HouseManage:WithdrawMoney")]
-        public async Task WithdrawMoney(IPlayer player, int houseId, int money)
+        public void WithdrawMoney(IPlayer player, int houseId, int money)
         {
             try
             {
@@ -419,7 +390,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:HouseManage:BuyUpgrade")]
-        public async Task BuyUpgrade(IPlayer player, int houseId, string upgrade)
+        public void BuyUpgrade(IPlayer player, int houseId, string upgrade)
         {
             try
             {
@@ -469,7 +440,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:HouseManage:RemoveRenter")]
-        public async Task RemoveRenter(IPlayer player, int houseId, int renterId)
+        public void RemoveRenter(IPlayer player, int houseId, int renterId)
         {
             try
             {
@@ -493,7 +464,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:HouseManage:setRentState")]
-        public async Task setRentState(IPlayer player, int houseId, string rentState)
+        public void setRentState(IPlayer player, int houseId, string rentState)
         {
             try
             {
@@ -518,7 +489,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:HouseManage:setRentPrice")]
-        public async Task setRentPrice(IPlayer player, int houseId, int rentPrice)
+        public void setRentPrice(IPlayer player, int houseId, int rentPrice)
         {
             try
             {
@@ -542,7 +513,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:House:RentHouse")]
-        public async Task RentHouse(IPlayer player, int houseId)
+        public void RentHouse(IPlayer player, int houseId)
         {
             try
             {
@@ -574,7 +545,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:House:UnrentHouse")]
-        public async Task UnrentHouse(IPlayer player, int houseId)
+        public void UnrentHouse(IPlayer player, int houseId)
         {
             try
             {

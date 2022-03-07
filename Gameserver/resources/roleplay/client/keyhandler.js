@@ -13,10 +13,6 @@ alt.on('keyup', (key) => {
         alt.emitServer("Server:KeyHandler:PressE");
     } else if (key == 'U'.charCodeAt(0)) {
         alt.emitServer("Server:KeyHandler:PressU");
-    }  else if (key === 117) {
-        alt.emitServer("Server:KeyHandler:PressF6");
-    }  else if (key === 118) {
-        alt.emitServer("Server:KeyHandler:PressF7");
     } 
 });
 

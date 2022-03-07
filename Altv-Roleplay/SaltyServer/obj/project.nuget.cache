@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "nxrgsoT4w+day69s2a1127YrXPye6djmAI3cS4k+QqDgK/pyAyV5SK3tnZURCMXfJD2arMVu8P+u+nzosvDMbg==",
+  "dgSpecHash": "FhteAlCgE0HfAsaLjbp2gTppW2cw21L0k84avUD6SWEiyNanUN1ULWbzip86pSNcMh/GRl2GlJhYeGdr8HNlHA==",
   "success": true,
-  "projectFilePath": "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\SaltyServer\\SaltyChat.Server.csproj",
+  "projectFilePath": "C:\\Users\\mauke\\Desktop\\main-main\\Mappe - Visual Studio\\Altv-Roleplay\\SaltyServer\\SaltyChat.Server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mauke\\.nuget\\packages\\altv.net\\9.0.2\\altv.net.9.0.2.nupkg.sha512",
     "C:\\Users\\mauke\\.nuget\\packages\\altv.net.async\\9.0.2\\altv.net.async.9.0.2.nupkg.sha512",

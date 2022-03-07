@@ -1,6 +1,4 @@
-﻿using AltV.Net;
-using AltV.Net.Async;
-using AltV.Net.Data;
+﻿using AltV.Net.Data;
 using Altv_Roleplay.models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -50,41 +48,9 @@ namespace Altv_Roleplay.Model
             return JsonConvert.SerializeObject(items);
         }
 
-
-        public static void SetVehiclePrice(ulong hash, int price)
-        {
-            var vehs = ServerVehicleShopsItems_.FirstOrDefault(v => v.hash == hash);
-            Alt.Log($"HASH >> {hash}");
-            if (vehs != null)
-            {
-                vehs.price = price;
-
-                Alt.Log($"price >> {price}");
-
-                using (gtaContext db = new gtaContext())
-                {
-                    db.Server_Vehicle_Shops_Items.Update(vehs);
-                    db.SaveChanges();
-                Alt.Log($"ReplacePrice >> DONE");
-                }
-            }
-        }
-
-        public static int GetVehicleShopPrice(int shopId, ulong hash)
+        public static int GetVehicleShopPrice(int shopId, long hash)
         {
             return ServerVehicleShopsItems_.FirstOrDefault(x => x.shopId == shopId && x.hash == hash)?.price ?? 999999;
-        }
-        public static int GetVehicleShopPrice2(long hash)
-        {
-/*            return ServerVehicleShopsItems_.FirstOrDefault(x => x.hash == hash)?.price ?? 0;
-*/            if (hash <= 0) return -1;
-            var shopItem = ServerVehicleShopsItems_.FirstOrDefault(x => (long)x.hash == hash);
-            if (shopItem == null) return -1;
-            return shopItem.price;
-        }
-        public static int GetVehicleShopId(int shopId)
-        {
-            return ServerVehicleShopsItems_.FirstOrDefault(x => x.shopId == shopId)?.id ?? 0;
         }
 
         public static Position GetVehicleShopOutPosition(int shopId)
@@ -92,13 +58,6 @@ namespace Altv_Roleplay.Model
             Position pos = new Position(0, 0, 0);
             var shop = ServerVehicleShops_.FirstOrDefault(x => x.id == shopId);
             if(shop != null) { pos = new Position(shop.parkOutX, shop.parkOutY, shop.parkOutZ); }
-            return pos;
-        }
-        public static Position GetVehicleShopSellPosition(int shopId)
-        {
-            Position pos = new Position(0, 0, 0);
-            var shop = ServerVehicleShops_.FirstOrDefault(x => x.id == shopId);
-            if(shop != null) { pos = new Position(shop.sellX, shop.sellY, shop.sellZ); }
             return pos;
         }
 

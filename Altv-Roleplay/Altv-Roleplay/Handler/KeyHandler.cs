@@ -11,45 +11,20 @@ using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
 using Altv_Roleplay.Factories;
 using Altv_Roleplay.Model;
-using Altv_Roleplay.models;
 using Altv_Roleplay.Utils;
-using Altv_Roleplay.Handler;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Globalization;
 
 namespace Altv_Roleplay.Handler
 {
     class KeyHandler : IScript
     {
         [AsyncClientEvent("Server:KeyHandler:PressE")]
-        public async Task PressE(IPlayer player)
+        public void PressE(IPlayer player)
         {
             lock (player)
             {
                 if (player == null || !player.Exists) return;
                 int charId = User.GetPlayerOnline(player);
                 if (charId == 0) return;
-
-
-                ClassicColshape serverDoorLockCol = (ClassicColshape)ServerDoors.ServerDoorsLockColshapes_.FirstOrDefault(x => ((ClassicColshape)x).IsInRange((ClassicPlayer)player));
-                if (serverDoorLockCol != null)
-                {
-                    var doorColData = ServerDoors.ServerDoors_.FirstOrDefault(x => x.id == (int)serverDoorLockCol.GetColShapeId());
-                    if (doorColData != null)
-                    {
-                        string doorKey = doorColData.doorKey;
-                        string doorKey2 = doorColData.doorKey2;
-                        if (doorKey == null || doorKey2 == null) return;
-                        if (!CharactersInventory.ExistCharacterItem(charId, doorKey, "schluessel") && !CharactersInventory.ExistCharacterItem(charId, doorKey, "schluessel") && !CharactersInventory.ExistCharacterItem(charId, doorKey2, "schluessel") && !CharactersInventory.ExistCharacterItem(charId, doorKey2, "schluessel")) return;
-
-                        if (!doorColData.state) { HUDHandler.SendNotification(player, 4, 1500, "Tür abgeschlossen."); }
-                        else { HUDHandler.SendNotification(player, 2, 1500, "Tür aufgeschlossen."); }
-                        doorColData.state = !doorColData.state;
-                        Alt.EmitAllClients("Client:DoorManager:ManageDoor", doorColData.hash, new Position(doorColData.posX, doorColData.posY, doorColData.posZ), (bool)doorColData.state);
-                        return;
-                    }
-                }
 
                 ClassicColshape farmCol = (ClassicColshape)ServerFarmingSpots.ServerFarmingSpotsColshapes_.FirstOrDefault(x => ((ClassicColshape)x).IsInRange((ClassicPlayer)player));
                 if (farmCol != null && !player.IsInVehicle)
@@ -60,21 +35,9 @@ namespace Altv_Roleplay.Handler
 
                     if (farmColData != null)
                     {
-                        if (farmColData.itemName.Contains("Eisenerz") && farmColData.neededItemToFarm != "None")
+                        if (farmColData.neededItemToFarm != "None")
                         {
-                            if (!CharactersInventory.ExistCharacterItem(charId, "Spitzhacke", "inventory") && !CharactersInventory.ExistCharacterItem(charId, "Spitzhacke", "backpack")) 
-                            { 
-                                HUDHandler.SendNotification(player, 3, 3500, $"Zum Farmen benötigst du: *Spitzhacke*."); 
-                                return; 
-                            }
-                        }
-                        if (farmColData.itemName.Contains("Kupfererz") && farmColData.neededItemToFarm != "None")
-                        {
-                            if (!CharactersInventory.ExistCharacterItem(charId, "Spitzhacke", "inventory") && !CharactersInventory.ExistCharacterItem(charId, "Spitzhacke", "backpack")) 
-                            { 
-                                HUDHandler.SendNotification(player, 3, 3500, $"Zum Farmen benötigst du: *Spitzhacke*."); 
-                                return; 
-                            }
+                            if (!CharactersInventory.ExistCharacterItem(charId, farmColData.neededItemToFarm, "inventory") && !CharactersInventory.ExistCharacterItem(charId, farmColData.neededItemToFarm, "backpack")) { HUDHandler.SendNotification(player, 3, 3500, $"Zum Farmen benötigst du: {farmColData.neededItemToFarm}."); return; }
                         }
                         player.SetPlayerFarmingActionMeta("farm");
                         FarmingHandler.FarmFieldAction(player, farmColData.itemName, farmColData.itemMinAmount, farmColData.itemMaxAmount, farmColData.animation, farmColData.duration);
@@ -89,8 +52,7 @@ namespace Altv_Roleplay.Handler
                     var farmColData = ServerFarmingSpots.ServerFarmingProducer_.FirstOrDefault(x => x.id == (int)farmProducerCol.GetColShapeId());
                     if (farmColData != null)
                     {
-                        //FarmingHandler.ProduceItem(player, farmColData.neededItem, farmColData.producedItem, farmColData.neededItemAmount, farmColData.producedItemAmount, farmColData.duration);
-                        FarmingHandler.openFarmingCEF(player, farmColData.neededItem, farmColData.producedItem, farmColData.neededItemAmount, farmColData.producedItemAmount, farmColData.duration, farmColData.neededItemTWO, farmColData.neededItemTHREE, farmColData.neededItemTWOAmount, farmColData.neededItemTHREEAmount);
+                        FarmingHandler.ProduceItem(player, farmColData.neededItem, farmColData.producedItem, farmColData.neededItemAmount, farmColData.producedItemAmount, farmColData.duration);
                         return;
                     }
                 }        
@@ -120,7 +82,7 @@ namespace Altv_Roleplay.Handler
                 }
 
                 var houseEntrance = ServerHouses.ServerHouses_.FirstOrDefault(x => ((ClassicColshape)x.entranceShape).IsInRange((ClassicPlayer)player));
-                if (houseEntrance != null && player.Dimension == 0)
+                if(houseEntrance != null && player.Dimension == 0)
                 {
                     HouseHandler.openEntranceCEF(player, houseEntrance.id);
                     return;
@@ -193,124 +155,23 @@ namespace Altv_Roleplay.Handler
                     return;
                 }
 
-                var schluesselPos = player.Position.IsInRange(Constants.Positions.Vehicleschluesseldienst_Position, 3f);
-                if (schluesselPos != false && !player.IsInVehicle)
-                {
-/*                    HUDHandler.SendNotification(player, 2, 3500, "Schluesseldienst oeffnet...! Bitte Warten!");
-*/                    ShopHandler.openschluesselShop((ClassicPlayer)player);
-                    return;
-                }
-
-                var waschPos = player.Position.IsInRange(Constants.Positions.Waschstrasse, 7.5f);
-                var waschPos2 = player.Position.IsInRange(Constants.Positions.Waschstrasse2, 7.5f);
-                var waschPos3 = player.Position.IsInRange(Constants.Positions.Waschstrasse3, 7.5f);
-                var waschPos4 = player.Position.IsInRange(Constants.Positions.Waschstrasse4, 7.5f);
-                var waschPos5 = player.Position.IsInRange(Constants.Positions.Waschstrasse5, 7.5f);
-                var waschPos6 = player.Position.IsInRange(Constants.Positions.Waschstrasse6, 7.5f);
-                var waschPos7 = player.Position.IsInRange(Constants.Positions.Waschstrasse7, 7.5f);
-                if (waschPos != false && player.IsInVehicle)
-                {
-                    /*                  HUDHandler.SendNotification(player, 2, 3500, "Fahrzeug wird gewaschen! Bitte Warten!");
-                    */
-                    ShopHandler.usewaschstrasse(player);
-                    return;
-                }
-                if (waschPos2 != false && player.IsInVehicle)
-                {
-                    /*                  HUDHandler.SendNotification(player, 2, 3500, "Fahrzeug wird gewaschen! Bitte Warten!");
-                    */
-                    ShopHandler.usewaschstrasse(player);
-                    return;
-                }
-                if (waschPos3 != false && player.IsInVehicle)
-                {
-                    /*                  HUDHandler.SendNotification(player, 2, 3500, "Fahrzeug wird gewaschen! Bitte Warten!");
-                    */
-                    ShopHandler.usewaschstrasse(player);
-                    return;
-                }
-                if (waschPos4 != false && player.IsInVehicle)
-                {
-                    /*                  HUDHandler.SendNotification(player, 2, 3500, "Fahrzeug wird gewaschen! Bitte Warten!");
-                    */
-                    ShopHandler.usewaschstrasse(player);
-                    return;
-                }
-                if (waschPos5 != false && player.IsInVehicle)
-                {
-                    /*                  HUDHandler.SendNotification(player, 2, 3500, "Fahrzeug wird gewaschen! Bitte Warten!");
-                    */
-                    ShopHandler.usewaschstrasse(player);
-                    return;
-                }
-                if (waschPos6 != false && player.IsInVehicle)
-                {
-                    /*                  HUDHandler.SendNotification(player, 2, 3500, "Fahrzeug wird gewaschen! Bitte Warten!");
-                    */
-                    ShopHandler.usewaschstrasse(player);
-                    return;
-                }
-                if (waschPos7 != false && player.IsInVehicle)
-                {
-                    /*                  HUDHandler.SendNotification(player, 2, 3500, "Fahrzeug wird gewaschen! Bitte Warten!");
-                    */
-                    ShopHandler.usewaschstrasse(player);
-                    return;
-                }
-
                 var clothesShopPos = ServerClothesShops.ServerClothesShops_.FirstOrDefault(x => player.Position.IsInRange(new Position(x.posX, x.posY, x.posZ), 2f));
                 if(clothesShopPos != null && !player.IsInVehicle)
                 {
-/*                    HUDHandler.SendNotification(player, 2, 3500, "Kleidungsladen oeffnet...! Bitte Warten!");
-*/                    ShopHandler.openClothesShop((ClassicPlayer)player, clothesShopPos.id);
+                    ShopHandler.openClothesShop((ClassicPlayer)player, clothesShopPos.id);
                     return;
                 }
 
                 var vehicleShopPos = ServerVehicleShops.ServerVehicleShops_.FirstOrDefault(x => player.Position.IsInRange(new Position(x.pedX, x.pedY, x.pedZ), 2f));
                 if (vehicleShopPos != null && !player.IsInVehicle)
                 {
-                    if (vehicleShopPos.neededLicense != "None" && !Characters.HasCharacterPermission(charId, vehicleShopPos.neededLicense)) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast nicht die benötigte Lizenz."); return; }
-                    //LSPD
-                    if (vehicleShopPos.id == 6 && ServerFactions.GetCharacterFactionId(charId) != 1 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel LSPD", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [LSPD]"); return; }
-                    if (vehicleShopPos.id == 7 && ServerFactions.GetCharacterFactionId(charId) != 1 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel LSPD", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [LSPD]"); return; }
-                    //MD
-                    if (vehicleShopPos.id == 8 && ServerFactions.GetCharacterFactionId(charId) != 4 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel MD", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [MD]"); return; }
-                    if (vehicleShopPos.id == 9 && ServerFactions.GetCharacterFactionId(charId) != 4 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel MD", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [MD]"); return; }
-                    //ACLS
-                    if (vehicleShopPos.id == 10 && ServerFactions.GetCharacterFactionId(charId) != 5 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel ACLS", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [ACLS]"); return; }
-                    //LSF
-                    if (vehicleShopPos.id == 23 && ServerFactions.GetCharacterFactionId(charId) != 6 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel LSF", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [LSF]"); return; }
-                    if (vehicleShopPos.id == 24 && ServerFactions.GetCharacterFactionId(charId) != 6 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel LSF", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [LSF]"); return; }
-                    if (vehicleShopPos.id == 99999 && ServerFactions.GetCharacterFactionId(charId) != 6 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel LSF", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [LSF]"); return; }
-                    if (vehicleShopPos.id == 99998 && ServerFactions.GetCharacterFactionId(charId) != 6 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel LSF", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [LSF]"); return; }
-                    //VUC
-                    if (vehicleShopPos.id == 1000 && player.AdminLevel() <= 7) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [ADMINSHOP]"); return; }
-                    //REST
+                    if (vehicleShopPos.neededLicense != "None" && !Characters.HasCharacterPermission(charId, vehicleShopPos.neededLicense)) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf."); return; }
+                    if (vehicleShopPos.id == 6 && ServerFactions.GetCharacterFactionId(charId) != 2) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf."); return; }
+                    if (vehicleShopPos.id == 7 && ServerFactions.GetCharacterFactionId(charId) != 2) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf."); return; }
+                    if (vehicleShopPos.id == 8 && ServerFactions.GetCharacterFactionId(charId) != 3) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf."); return; }
+                    if (vehicleShopPos.id == 9 && ServerFactions.GetCharacterFactionId(charId) != 3) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf."); return; }
+                    if (vehicleShopPos.id == 10 && ServerFactions.GetCharacterFactionId(charId) != 4) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf."); return; }
                     ShopHandler.OpenVehicleShop(player, vehicleShopPos.name, vehicleShopPos.id);
-                    return;
-                }
-
-                var vehicleSellPos = ServerVehicleShops.ServerVehicleShops_.FirstOrDefault(x => player.Position.IsInRange(new Position(x.sellX, x.sellY, x.sellZ), 10f));
-                if (vehicleSellPos != null && player.IsInVehicle)
-                {
-                    if (vehicleSellPos.neededLicense != "None" && !Characters.HasCharacterPermission(charId, vehicleSellPos.neededLicense)) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast nicht die benötigte Lizenz."); return; }
-                    //LSPD
-                    if (vehicleSellPos.id == 6 && ServerFactions.GetCharacterFactionId(charId) != 1 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel LSPD", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [LSPD]"); return; }
-                    if (vehicleSellPos.id == 7 && ServerFactions.GetCharacterFactionId(charId) != 1 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel LSPD", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [LSPD]"); return; }
-                    //MD
-                    if (vehicleSellPos.id == 8 && ServerFactions.GetCharacterFactionId(charId) != 4 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel MD", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [MD]"); return; }
-                    if (vehicleSellPos.id == 9 && ServerFactions.GetCharacterFactionId(charId) != 4 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel MD", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [MD]"); return; }
-                    //ACLS
-                    if (vehicleSellPos.id == 10 && ServerFactions.GetCharacterFactionId(charId) != 5 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel ACLS", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [ACLS]"); return; }
-                    //LSF
-                    if (vehicleSellPos.id == 23 && ServerFactions.GetCharacterFactionId(charId) != 6 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel LSF", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [LSF]"); return; }
-                    if (vehicleSellPos.id == 24 && ServerFactions.GetCharacterFactionId(charId) != 6 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel LSF", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [LSF]"); return; }
-                    if (vehicleSellPos.id == 99999 && ServerFactions.GetCharacterFactionId(charId) != 6 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel LSF", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [LSF]"); return; }
-                    if (vehicleSellPos.id == 99998 && ServerFactions.GetCharacterFactionId(charId) != 6 && !CharactersInventory.ExistCharacterItem(charId, "Fahrzeugschluessel LSF", "schluessel")) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [LSF]"); return; }
-                    //VUC
-                    if (vehicleSellPos.id == 1000 && player.AdminLevel() <= 7) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast hier keinen Zugriff drauf. [ADMINSHOP]"); return; }
-                    //REST
-                    ShopHandler.SellVehicle(player, vehicleSellPos.name, vehicleSellPos.id);
                     return;
                 }
 
@@ -319,23 +180,8 @@ namespace Altv_Roleplay.Handler
                 {
                     if (bankPos.zoneName == "Maze Bank Fraktion")
                     {
-                        if (!ServerFactions.IsCharacterInAnyFaction(charId)) return;
-                        if (ServerFactions.GetCharacterFactionRank(charId) != ServerFactions.GetFactionMaxRankCount(ServerFactions.GetCharacterFactionId(charId)) && ServerFactions.GetCharacterFactionRank(charId) != ServerFactions.GetFactionMaxRankCount(ServerFactions.GetCharacterFactionId(charId)) - 1) { return; }
-                        player.EmitLocked("Client:FactionBank:createCEF", "faction", ServerFactions.GetCharacterFactionId(charId), ServerFactions.GetFactionBankMoney(ServerFactions.GetCharacterFactionId(charId)));
-                        return;
-                    }
-                    if (bankPos.zoneName == "LSPD Bank Fraktion")
-                    {
-                        if (!ServerFactions.IsCharacterInAnyFaction(charId)) return;
-                        if (ServerFactions.GetCharacterFactionId(charId) != 1) { HUDHandler.SendNotification(player, 4, 5000, "Fraktionsbank vom LSPD - Zugriff verweiget"); return; }
-                        if (ServerFactions.GetCharacterFactionRank(charId) != ServerFactions.GetFactionMaxRankCount(ServerFactions.GetCharacterFactionId(charId)) && ServerFactions.GetCharacterFactionRank(charId) != ServerFactions.GetFactionMaxRankCount(ServerFactions.GetCharacterFactionId(charId)) - 1) { return; }
-                        player.EmitLocked("Client:FactionBank:createCEF", "faction", ServerFactions.GetCharacterFactionId(charId), ServerFactions.GetFactionBankMoney(ServerFactions.GetCharacterFactionId(charId)));
-                        return;
-                    }if (bankPos.zoneName == "LSMD Bank Fraktion")
-                    {
-                        if (!ServerFactions.IsCharacterInAnyFaction(charId)) return;
-                        if (ServerFactions.GetCharacterFactionId(charId) != 4) { HUDHandler.SendNotification(player, 4, 5000, "Fraktionsbank vom LSMD - Zugriff verweiget"); return; }
-                        if (ServerFactions.GetCharacterFactionRank(charId) != ServerFactions.GetFactionMaxRankCount(ServerFactions.GetCharacterFactionId(charId)) && ServerFactions.GetCharacterFactionRank(charId) != ServerFactions.GetFactionMaxRankCount(ServerFactions.GetCharacterFactionId(charId)) - 1) { return; }
+                        if(!ServerFactions.IsCharacterInAnyFaction(charId)) return;
+                        if(ServerFactions.GetCharacterFactionRank(charId) != ServerFactions.GetFactionMaxRankCount(ServerFactions.GetCharacterFactionId(charId)) && ServerFactions.GetCharacterFactionRank(charId) != ServerFactions.GetFactionMaxRankCount(ServerFactions.GetCharacterFactionId(charId)) - 1) { return; }
                         player.EmitLocked("Client:FactionBank:createCEF", "faction", ServerFactions.GetCharacterFactionId(charId), ServerFactions.GetFactionBankMoney(ServerFactions.GetCharacterFactionId(charId)));
                         return;
                     }
@@ -357,7 +203,7 @@ namespace Altv_Roleplay.Handler
                 var barberPos = ServerBarbers.ServerBarbers_.FirstOrDefault(x => player.Position.IsInRange(new Position(x.posX, x.posY, x.posZ), 2f));
                 if (barberPos != null && !player.IsInVehicle)
                 {
-                    player.EmitLocked("Client:Barber:barberCreateCEF", Characters.GetCharacterHeadOverlays(charId));
+                    player.EmitLocked("Client:Barber:barberCreateCEF", Characters.GetCharacterHeadOverlay1(charId), Characters.GetCharacterHeadOverlay2(charId), Characters.GetCharacterHeadOverlay3(charId));
                     return;
                 }
 
@@ -368,28 +214,21 @@ namespace Altv_Roleplay.Handler
                     return;
                 }
 
-                if(player.Position.IsInRange(Constants.Positions.Schwarzwasch, 5f))
-                {
-                    if (player.HasPlayerHandcuffs() || player.HasPlayerRopeCuffs()) { HUDHandler.SendNotification(player, 3, 5000, "Wie willst du das mit Handschellen/Fesseln machen?"); return; }
-                    RobberyHandler.washmoney(player);
-                    return;
-                }
-
                 if (ServerFactions.IsCharacterInAnyFaction(charId))
                 {
                     int factionId = ServerFactions.GetCharacterFactionId(charId);
-                    var factionDutyPos = ServerFactions.ServerFactionPositions_.FirstOrDefault(x => x.factionId == factionId && x.posType == "duty" && player.Position.IsInRange(new Position(x.posX, x.posY, x.posZ), 5f));
+                    var factionDutyPos = ServerFactions.ServerFactionPositions_.FirstOrDefault(x => x.factionId == factionId && x.posType == "duty" && player.Position.IsInRange(new Position(x.posX, x.posY, x.posZ), 2f));
                     if (factionDutyPos != null && !player.IsInVehicle)
                     {
                         bool isDuty = ServerFactions.IsCharacterInFactionDuty(charId);
                         ServerFactions.SetCharacterInFactionDuty(charId, !isDuty);
                         if (isDuty) { 
-                            HUDHandler.SendNotification(player, 4, 5000, "Du hast dich erfolgreich vom Dienst abgemeldet."); 
+                            HUDHandler.SendNotification(player, 2, 5000, "Du hast dich erfolgreich vom Dienst abgemeldet."); 
                         }
                         else { 
                             HUDHandler.SendNotification(player, 2, 5000, "Du hast dich erfolgreich zum Dienst angemeldet."); 
                         }
-                        if(factionId == 1 || factionId == 12) SmartphoneHandler.RequestLSPDIntranet((ClassicPlayer)player);
+                        if(factionId == 2 || factionId == 12) SmartphoneHandler.RequestLSPDIntranet((ClassicPlayer)player);
                         return;
                     }
 
@@ -398,69 +237,7 @@ namespace Altv_Roleplay.Handler
                     {
                         if (player.HasPlayerHandcuffs() || player.HasPlayerRopeCuffs()) { HUDHandler.SendNotification(player, 3, 5000, "Wie willst du das mit Handschellen/Fesseln machen?"); return; }
                         bool isDuty = ServerFactions.IsCharacterInFactionDuty(charId);
-                        if(isDuty && factionId == 1)
-                        {
-                            var factionStorageContent = ServerFactions.GetServerFactionStorageItems(factionId, charId); //Fraktionsspind Items
-                            var CharacterInvArray = CharactersInventory.GetCharacterInventory(charId); //Spieler Inventar
-                            player.EmitLocked("Client:FactionStorage:openCEF", charId, factionId, "faction", CharacterInvArray, factionStorageContent);
-                            return;
-                        }
-                        if(isDuty && factionId == 2)
-                        {
-                            var factionStorageContent = ServerFactions.GetServerFactionStorageItems(factionId, charId); //Fraktionsspind Items
-                            var CharacterInvArray = CharactersInventory.GetCharacterInventory(charId); //Spieler Inventar
-                            player.EmitLocked("Client:FactionStorage:openCEF", charId, factionId, "faction", CharacterInvArray, factionStorageContent);
-                            return;
-                        }
-                        if(isDuty && factionId == 3)
-                        {
-                            var factionStorageContent = ServerFactions.GetServerFactionStorageItems(factionId, charId); //Fraktionsspind Items
-                            var CharacterInvArray = CharactersInventory.GetCharacterInventory(charId); //Spieler Inventar
-                            player.EmitLocked("Client:FactionStorage:openCEF", charId, factionId, "faction", CharacterInvArray, factionStorageContent);
-                            return;
-                        }
-                        if(isDuty && factionId == 4)
-                        {
-                            var factionStorageContent = ServerFactions.GetServerFactionStorageItems(factionId, charId); //Fraktionsspind Items
-                            var CharacterInvArray = CharactersInventory.GetCharacterInventory(charId); //Spieler Inventar
-                            player.EmitLocked("Client:FactionStorage:openCEF", charId, factionId, "faction", CharacterInvArray, factionStorageContent);
-                            return;
-                        }
-                        if(isDuty && factionId == 5)
-                        {
-                            var factionStorageContent = ServerFactions.GetServerFactionStorageItems(factionId, charId); //Fraktionsspind Items
-                            var CharacterInvArray = CharactersInventory.GetCharacterInventory(charId); //Spieler Inventar
-                            player.EmitLocked("Client:FactionStorage:openCEF", charId, factionId, "faction", CharacterInvArray, factionStorageContent);
-                            return;
-                        }
-                        if(isDuty && factionId == 6)
-                        {
-                            var factionStorageContent = ServerFactions.GetServerFactionStorageItems(factionId, charId); //Fraktionsspind Items
-                            var CharacterInvArray = CharactersInventory.GetCharacterInventory(charId); //Spieler Inventar
-                            player.EmitLocked("Client:FactionStorage:openCEF", charId, factionId, "faction", CharacterInvArray, factionStorageContent);
-                            return;
-                        }
-                        if(isDuty && factionId == 7)
-                        {
-                            var factionStorageContent = ServerFactions.GetServerFactionStorageItems(factionId, charId); //Fraktionsspind Items
-                            var CharacterInvArray = CharactersInventory.GetCharacterInventory(charId); //Spieler Inventar
-                            player.EmitLocked("Client:FactionStorage:openCEF", charId, factionId, "faction", CharacterInvArray, factionStorageContent);
-                            return;
-                        }
-                        if(isDuty && factionId == 8)
-                        {
-                            var factionStorageContent = ServerFactions.GetServerFactionStorageItems(factionId, charId); //Fraktionsspind Items
-                            var CharacterInvArray = CharactersInventory.GetCharacterInventory(charId); //Spieler Inventar
-                            player.EmitLocked("Client:FactionStorage:openCEF", charId, factionId, "faction", CharacterInvArray, factionStorageContent);
-                            return;
-                        }
-                        if(isDuty && factionId == 9)
-                        {
-                            var factionStorageContent = ServerFactions.GetServerFactionStorageItems(factionId, charId); //Fraktionsspind Items
-                            var CharacterInvArray = CharactersInventory.GetCharacterInventory(charId); //Spieler Inventar
-                            player.EmitLocked("Client:FactionStorage:openCEF", charId, factionId, "faction", CharacterInvArray, factionStorageContent);
-                            return;
-                        } else
+                        if(isDuty)
                         {
                             var factionStorageContent = ServerFactions.GetServerFactionStorageItems(factionId, charId); //Fraktionsspind Items
                             var CharacterInvArray = CharactersInventory.GetCharacterInventory(charId); //Spieler Inventar
@@ -496,7 +273,6 @@ namespace Altv_Roleplay.Handler
 
                 if (player.Position.IsInRange(Constants.Positions.Jobcenter_Position, 2.5f) && !Characters.IsCharacterCrimeFlagged(charId) && !player.IsInVehicle) //Arbeitsamt
                 {
-                    if (ServerFactions.GetCharacterFactionId(charId) > 0) { HUDHandler.SendNotification(player, 4, 7500, "Da du in einer Legalen Fraktion bist, kannst du vom Jobcenter kein Jobangebot bekommen!"); return; }
                     TownhallHandler.createJobcenterBrowser(player);
                     return;
                 }
@@ -516,47 +292,30 @@ namespace Altv_Roleplay.Handler
                 if (player.Position.IsInRange(Constants.Positions.Clothes_Police, 2.5f) && !player.IsInVehicle)
                 {
                     int factionId = ServerFactions.GetCharacterFactionId(charId);
-                    if(factionId == 1)
+                    if(factionId == 2)
                     {
                         if (!player.HasData("HasPDClothesOn"))
                         {
-                            if (!Characters.GetCharacterGender((int)player.GetCharacterMetaId()))
-                            {
-                   
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 0, 0);         //  Sonnenbrille
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 55, 0);       //  Oberbekleidung
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 0, 0);         //  Körper
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 58, 0);       //  Unterbekleidung
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 121, 0);       //  Hose 
-                                player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, 0, 0);       //  Gürtel
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 10, 8, 1);        //  Decals
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 24, 0);        //  Schuhe
-                               //player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 57, 0);      // Schutzweste
-                               
-                            }
-                            else
-                            {
-                                //Weiblich
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 0, 0);         //  Sonnenbrille
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 330, 0);       //  Oberbekleidung
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 0, 0);         //  Körper
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 35, 0);       //  Unterbekleidung
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 112, 0);       //  Hose 
-                                player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, 0, 0);       //  Gürtel
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 10, 8, 1);        //  Decals
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 25, 0);        //  Schuhe
-                                //player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 57, 0);      // Schutzweste
+                            player.SetClothes(4, 31, 0, 2);
+                            player.SetClothes(11, 55, 0, 2);
+                            player.SetClothes(8, 58, 0, 2);
+                            //player.SetClothes(9, 12, 1, 2); // WESTE
+                            player.SetClothes(10, 8, 1, 2);
+                            player.SetClothes(6, 25, 0, 2);
+                            player.SetProps(2, 2, 0);
+                            player.SetClothes(3, 43, 0, 2);
+                            player.SetProps(0, 46, 0);
 
-                            }
-
+                            player.SetProps(7, 0, 0);
+                            player.SetClothes(1, 0, 0, 2);
+                            player.SetClothes(9, 0, 0, 2);
                             HUDHandler.SendNotification(player, 2, 2500, "Du hast deine Arbeitsklamotten angezogen.");
                             player.SetData("HasPDClothesOn", true);
                             Characters.SetCharacterArmor(charId, 100);
-                        }
-                        else
+                        } else
                         {
                             Characters.SetCharacterCorrectClothes(player);
-                            HUDHandler.SendNotification(player, 4, 2500, "Du hast deine Arbeitsklamotten ausgezogen.");
+                            HUDHandler.SendNotification(player, 2, 2500, "Du hast deine Arbeitsklamotten ausgezogen.");
                             player.DeleteData("HasPDClothesOn");
                         }
                     } else
@@ -569,21 +328,22 @@ namespace Altv_Roleplay.Handler
                 if (player.Position.IsInRange(Constants.Positions.Clothes_Medic, 2.5f) && !player.IsInVehicle)
                 {
                     int factionId = ServerFactions.GetCharacterFactionId(charId);
-                    if (factionId == 4)
+                    if (factionId == 3)
                     {
                         if (!player.HasData("HasMedicClothesOn"))
                         {
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 24, 2);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 250, 0);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 155, 0);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 10, 58, 1);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 25, 0);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 87, 0);
-                            player.EmitLocked("Client:SpawnArea:setCharAccessory", 2, 2, 0);
-                            player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, 0, 0);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 0, 0);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 0, 0);
+                            player.SetClothes(4, 24, 2, 2);
+                            player.SetClothes(11, 250, 0, 2);
+                            player.SetClothes(8, 155, 0, 2);
+                            //player.SetClothes(9, 12, 1, 2); // WESTE
+                            player.SetClothes(10, 58, 1, 2);
+                            player.SetClothes(6, 25, 0, 2);
+                            player.SetClothes(3, 87, 0, 2);
+                            player.SetProps(2, 2, 0);
 
+                            player.SetProps(7, 0, 0);
+                            player.SetClothes(1, 0, 0, 2);
+                            player.SetClothes(9, 0, 0, 2);
                             HUDHandler.SendNotification(player, 2, 2500, "Du hast deine Arbeitsklamotten angezogen.");
                             player.SetData("HasMedicClothesOn", true);
                             Characters.SetCharacterArmor(charId, 100);
@@ -605,20 +365,20 @@ namespace Altv_Roleplay.Handler
                 if (player.Position.IsInRange(Constants.Positions.Clothes_ACLS, 2.5f) && !player.IsInVehicle)
                 {
                     int factionId = ServerFactions.GetCharacterFactionId(charId);
-                    if (factionId == 5)
+                    if (factionId == 4)
                     {
                        if (!player.HasData("HasMechanicClothesOn"))
                             {
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 98, 6);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 248, 14);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 153, 0);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 25, 0);
-                            player.EmitLocked("Client:SpawnArea:setCharAccessory", 2, 2, 0);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 43, 0);
+                            player.SetClothes(4, 98, 6, 2);
+                            player.SetClothes(11, 248, 14, 2);
+                            player.SetClothes(8, 153, 0, 2);
+                            player.SetClothes(6, 25, 0, 2);
+                            player.SetProps(2, 2, 0);
+                            player.SetClothes(3, 43, 0, 2);
 
-                            player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, 0, 0);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 0, 0);
-                            player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 0, 0);
+                            player.SetProps(7, 0, 0);
+                            player.SetClothes(1, 0, 0, 2);
+                            player.SetClothes(9, 0, 0, 2);
                             HUDHandler.SendNotification(player, 2, 2500, "Du hast deine Arbeitsklamotten angezogen.");
                             player.SetData("HasMechanicClothesOn", true);
                             Characters.SetCharacterArmor(charId, 100);
@@ -636,58 +396,6 @@ namespace Altv_Roleplay.Handler
                     }
                     return;
                 }
-                if (player.Position.IsInRange(Constants.Positions.Clothes_VUC, 2.5f) && !player.IsInVehicle)
-                {
-                    int factionId = ServerFactions.GetCharacterFactionId(charId);
-                    if (factionId == 9)
-                    {
-                        if (!player.HasData("HasVUCClothesOn"))
-                        {
-                            if (!Characters.GetCharacterGender((int)player.GetCharacterMetaId()))
-                            {
-
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 0, 0);         //  Sonnenbrille
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 58, 0);       //  Oberbekleidung
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 0, 0);         //  Körper
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 4, 0);       //  Unterbekleidung
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 35, 0);       //  Hose 
-                                player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, 0, 0);       //  Gürtel
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 10, 8, 1);        //  Decals
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 21, 0);        //  Schuhe
-                                                                                                       
-
-                            }
-                            else
-                            {
-                                //Weiblich
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 0, 0);         //  Sonnenbrille
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 13, 0);       //  Oberbekleidung
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 211, 0);         //  Körper
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 8, 0);       //  Unterbekleidung
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 20, 2);       //  Hose 
-                                player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, 0, 0);       //  Gürtel
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 10, 0, 0);        //  Decals
-                                player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 7, 0);        //  Schuhe
-                              
-
-                            }
-                            HUDHandler.SendNotification(player, 2, 2500, "Du hast deine Arbeitsklamotten angezogen.");
-                            player.SetData("HasVUCClothesOn", true);
-                            Characters.SetCharacterArmor(charId, 100);
-                        }
-                        else
-                        {
-                            player.DeleteData("HasVUCClothesOn");
-                            Characters.SetCharacterCorrectClothes(player);
-                            HUDHandler.SendNotification(player, 2, 2500, "Du hast deine Arbeitsklamotten ausgezogen.");
-                        }
-                    }
-                    else
-                    {
-                        HUDHandler.SendNotification(player, 2, 2500, "Du darfst den Kleiderschrank nicht nutzen!");
-                    }
-                    return;
-                }
 
                 var tattooShop = ServerTattooShops.ServerTattooShops_.ToList().FirstOrDefault(x => x.owner != 0 && player.Position.IsInRange(new Position(x.pedX, x.pedY, x.pedZ), 2.5f));
                 if (tattooShop != null && !player.IsInVehicle)
@@ -695,87 +403,11 @@ namespace Altv_Roleplay.Handler
                     ShopHandler.openTattooShop((ClassicPlayer)player, tattooShop);
                     return;
                 }
-
-                if (player.Position.IsInRange(RobberyHandler.bankRobPosition, 2f) || player.Position.IsInRange(RobberyHandler.bankExitPosition, 2f))
-                {
-                    RobberyHandler.EnterExitBank((ClassicPlayer)player);
-                    return;
-                }
-
-                var bankRobPosGold = RobberyHandler.bankPickUpPositions.ToList().FirstOrDefault(x => player.Position.IsInRange(x.position, 1f));
-                if (bankRobPosGold != null)
-                {
-                    RobberyHandler.pickUpBankGold((ClassicPlayer)player, bankRobPosGold);
-                    return;
-                }
-
-                if (player.Position.IsInRange(RobberyHandler.jeweleryRobPosition, 2f))
-                {
-                    RobberyHandler.robJewelery((ClassicPlayer)player);
-                    return;
-                }
-
-                var laborEntry = ServerFactions.ServerFactions_.FirstOrDefault(x => player.Position.IsInRange(x.laborPos, 2.5f) && !x.isLaborLocked);
-                if (laborEntry != null)
-                {
-                    player.Dimension = laborEntry.id;
-                    player.Position = ServerFactions.GetLaborExitPosition(laborEntry.id);
-                    return;
-                }
-
-                if (player.Position.IsInRange(Constants.Positions.weedLabor_ExitPosition, 2.5f) && player.Dimension != 0)
-                {
-                    Server_Factions faction = ServerFactions.ServerFactions_.ToList().FirstOrDefault(x => x.id == player.Dimension);
-                    if (faction == null || faction.laborPos == new Position(0, 0, 0) || faction.isLaborLocked) return;
-                    player.Position = faction.laborPos;
-                    player.Dimension = 0;
-                    return;
-                }
-
-                if (player.Position.IsInRange(Constants.Positions.weedLabor_InvPosition, 2.5f) && player.Dimension != 0 && ServerFactions.GetCharacterFactionId(User.GetPlayerOnline(player)) == player.Dimension)
-                {
-                    LaborHandler.openLabor((ClassicPlayer)player);
-                    return;
-                }
-
-                Server_Storages storageEntry = ServerStorages.ServerStorages_.ToList().FirstOrDefault(x => player.Position.IsInRange(x.entryPos, 2f) && !x.isLocked);
-                if (storageEntry != null && !player.IsInVehicle)
-                {
-                    player.Dimension = storageEntry.id;
-                    player.Position = Constants.Positions.storage_ExitPosition;
-                    return;
-                }
-
-                if (player.Position.IsInRange(Constants.Positions.storage_ExitPosition, 2f) && player.Dimension != 0)
-                {
-                    Server_Storages storage = ServerStorages.ServerStorages_.ToList().FirstOrDefault(x => x.id == player.Dimension);
-                    if (storage == null || storage.entryPos == new Position(0, 0, 0) || storage.isLocked) return;
-                    player.Position = storage.entryPos;
-                    player.Dimension = 0;
-                    return;
-                }
-
-                if (player.Position.IsInRange(Constants.Positions.storage_InvPosition, 2.5f) && player.Dimension != 0)
-                {
-                    StorageHandler.openStorage((ClassicPlayer)player);
-                    return;
-                }
-                if (player.Position.IsInRange(Constants.Positions.storage_LSPDInvPosition, 2.5f) && ServerStorages.ExistStorage(player.Dimension))
-                {
-                    StorageHandler.openStorage2((ClassicPlayer)player);
-                    return;
-                }
-
-                if (player.Position.IsInRange(Constants.Positions.dynasty8_positionStorage, 2f))
-                {
-                    player.Emit("Client:Dynasty8:create", "storages", ServerStorages.GetAccountStorages(User.GetPlayerOnline(player)), ServerStorages.GetFreeStorages());
-                    return;
-                }
             }
         }
 
         [AsyncClientEvent("Server:KeyHandler:PressU")]
-        public async Task PressU(IPlayer player)
+        public void PressU(IPlayer player)
         {
             try
             {
@@ -786,7 +418,7 @@ namespace Altv_Roleplay.Handler
                     if (charId <= 0) return;
                     if (player.HasPlayerHandcuffs() || player.HasPlayerRopeCuffs()) { HUDHandler.SendNotification(player, 3, 5000, "Wie willst du das mit Handschellen/Fesseln machen?"); return; }
 
-                    /*ClassicColshape serverDoorLockCol = (ClassicColshape)ServerDoors.ServerDoorsLockColshapes_.FirstOrDefault(x => ((ClassicColshape)x).IsInRange((ClassicPlayer)player));
+                    ClassicColshape serverDoorLockCol = (ClassicColshape)ServerDoors.ServerDoorsLockColshapes_.FirstOrDefault(x => ((ClassicColshape)x).IsInRange((ClassicPlayer)player));
                     if (serverDoorLockCol != null)
                     {
                         var doorColData = ServerDoors.ServerDoors_.FirstOrDefault(x => x.id == (int)serverDoorLockCol.GetColShapeId());
@@ -795,7 +427,7 @@ namespace Altv_Roleplay.Handler
                             string doorKey = doorColData.doorKey;
                             string doorKey2 = doorColData.doorKey2;
                             if (doorKey == null || doorKey2 == null) return;
-                            if (!CharactersInventory.ExistCharacterItem(charId, doorKey, "schluessel") && !CharactersInventory.ExistCharacterItem(charId, doorKey, "schluessel") && !CharactersInventory.ExistCharacterItem(charId, doorKey2, "schluessel") && !CharactersInventory.ExistCharacterItem(charId, doorKey2, "schluessel")) return;
+                            if (!CharactersInventory.ExistCharacterItem(charId, doorKey, "inventory") && !CharactersInventory.ExistCharacterItem(charId, doorKey, "backpack") && !CharactersInventory.ExistCharacterItem(charId, doorKey2, "inventory") && !CharactersInventory.ExistCharacterItem(charId, doorKey2, "backpack")) return;
 
                             if (!doorColData.state) { HUDHandler.SendNotification(player, 4, 1500, "Tür abgeschlossen."); }
                             else { HUDHandler.SendNotification(player, 2, 1500, "Tür aufgeschlossen."); }
@@ -803,32 +435,32 @@ namespace Altv_Roleplay.Handler
                             Alt.EmitAllClients("Client:DoorManager:ManageDoor", doorColData.hash, new Position(doorColData.posX, doorColData.posY, doorColData.posZ), (bool)doorColData.state);
                             return;
                         }
-                    }*/
+                    }
 
-                    if (player.Dimension >= 5000)
+                    if(player.Dimension >= 5000)
                     {
                         int houseInteriorCount = ServerHouses.GetMaxInteriorsCount();
-                        for (var i = 1; i <= houseInteriorCount; i++)
+                        for(var i = 1; i <= houseInteriorCount; i++)
                         {
-                            if (player.Dimension >= 5000 && player.Dimension < 10000 && player.Position.IsInRange(ServerHouses.GetInteriorExitPosition(i), 2f))
+                            if(player.Dimension >= 5000 && player.Dimension < 10000 && player.Position.IsInRange(ServerHouses.GetInteriorExitPosition(i), 2f))
                             {
                                 //Hotel abschließen / aufschließen
                                 if (player.Dimension - 5000 <= 0) continue;
                                 int apartmentId = player.Dimension - 5000;
                                 int hotelId = ServerHotels.GetHotelIdByApartmentId(apartmentId);
                                 if (hotelId <= 0 || apartmentId <= 0) continue;
-                                if (!ServerHotels.ExistHotelApartment(hotelId, apartmentId)) { HUDHandler.SendNotification(player, 3, 5000, "Ein unerwarteter Fehler ist aufgetreten [HOTEL-001]."); return; }
+                                if(!ServerHotels.ExistHotelApartment(hotelId, apartmentId)) { HUDHandler.SendNotification(player, 3, 5000, "Ein unerwarteter Fehler ist aufgetreten [HOTEL-001]."); return; }
                                 if (ServerHotels.GetApartmentOwner(hotelId, apartmentId) != charId) { HUDHandler.SendNotification(player, 3, 5000, "Du hast keinen Schlüssel."); return; }
                                 HotelHandler.LockHotel(player, hotelId, apartmentId);
                                 return;
                             }
-                            else if (player.Dimension >= 10000 && player.Position.IsInRange(ServerHouses.GetInteriorExitPosition(i), 2f))
+                            else if(player.Dimension >= 10000 && player.Position.IsInRange(ServerHouses.GetInteriorExitPosition(i), 2f))
                             {
                                 //Haus abschließen / aufschließen
                                 if (player.Dimension - 10000 <= 0) continue;
                                 int houseId = player.Dimension - 10000;
                                 if (houseId <= 0) continue;
-                                if (!ServerHouses.ExistHouse(houseId)) { HUDHandler.SendNotification(player, 3, 5000, "Ein unerwarteter Fehler ist aufgetreten [HOUSE-001]."); return; }
+                                if(!ServerHouses.ExistHouse(houseId)) { HUDHandler.SendNotification(player, 3, 5000, "Ein unerwarteter Fehler ist aufgetreten [HOUSE-001]."); return; }
                                 if (ServerHouses.GetHouseOwner(houseId) != charId && !ServerHouses.IsCharacterRentedInHouse(charId, houseId)) { HUDHandler.SendNotification(player, 3, 5000, "Dieses Haus gehört nicht dir und / oder du bist nicht eingemietet."); return; }
                                 HouseHandler.LockHouse(player, houseId);
                                 return;
@@ -841,147 +473,12 @@ namespace Altv_Roleplay.Handler
                     {
                         HouseHandler.LockHouse(player, houseEntrance.id);
                     }
-
-
-                    if (player == null || !player.Exists || User.GetPlayerOnline(player) <= 0) return;
-                    var laborEntry = ServerFactions.ServerFactions_.FirstOrDefault(x => x.laborPos.IsInRange(player.Position, 2.5f));
-                    if (laborEntry != null && !player.IsInVehicle && ServerFactions.IsCharacterInAnyFaction(User.GetPlayerOnline(player)) && ServerFactions.GetCharacterFactionId(User.GetPlayerOnline(player)) == laborEntry.id)
-                    {
-                        if (laborEntry.isLaborLocked) HUDHandler.SendNotification(player, 2, 2500, "Du hast das Labor aufgeschlossen.");
-                        else HUDHandler.SendNotification(player, 4, 2500, "Du hast das Labor abgeschlossen.");
-                        ServerFactions.SetLaborLocked(laborEntry.id, !laborEntry.isLaborLocked);
-                        return;
-                    }
-
-                    if (player.Position.IsInRange(Constants.Positions.weedLabor_ExitPosition, 2.5f) && player.Dimension != 0 && ServerFactions.IsCharacterInAnyFaction(User.GetPlayerOnline(player)) && ServerFactions.GetCharacterFactionId(User.GetPlayerOnline(player)) == player.Dimension)
-                    {
-                        Server_Factions labor = ServerFactions.ServerFactions_.ToList().FirstOrDefault(x => x.id == player.Dimension);
-                        if (labor == null) return;
-                        if (labor.isLaborLocked) HUDHandler.SendNotification(player, 2, 2500, "Du hast das Labor aufgeschlossen.");
-                        else HUDHandler.SendNotification(player, 4, 2500, "Du hast das Labor abgeschlossen.");
-                        ServerFactions.SetLaborLocked(labor.id, !labor.isLaborLocked);
-                        return;
-                    }
-
-                    Server_Storages storage = ServerStorages.ServerStorages_.FirstOrDefault(x => player.Position.IsInRange(x.entryPos, 2f) && (x.owner == User.GetPlayerOnline(player) || x.secondOwner == User.GetPlayerOnline(player) || x.factionid == ServerFactions.GetCharacterFactionId(charId)));
-                    if (storage != null && !player.IsInVehicle && player.Dimension == 0)
-                    {
-                        storage.isLocked = !storage.isLocked;
-                        if (storage.isLocked) HUDHandler.SendNotification(player, 4, 2500, "[LaVie Lagersystem] <br><br> Du hast die Lagerhalle abgeschlossen.");
-                        else HUDHandler.SendNotification(player, 2, 2500, "[LaVie Lagersystem] <br><br> Du hast die Lagerhalle aufgeschlossen.");
-                        return;
-                    }
-
-                    if (player.Position.IsInRange(Constants.Positions.storage_ExitPosition, 2f) && player.Dimension != 0 && (ServerStorages.GetOwner(player.Dimension) == User.GetPlayerOnline(player) || ServerStorages.GetSecondOwner(player.Dimension) == User.GetPlayerOnline(player)))
-                    {
-                        Server_Storages storages = ServerStorages.ServerStorages_.FirstOrDefault(x => x.id == player.Dimension);
-                        if (storages == null) return;
-                        storages.isLocked = !storages.isLocked;
-                        if (storages.isLocked) HUDHandler.SendNotification(player, 4, 2500, "[LaVie Lagersystem] <br><br> Du hast die Lagerhalle abgeschlossen.");
-                        else HUDHandler.SendNotification(player, 2, 2500, "[LaVie Lagersystem] <br><br> Du hast die Lagerhalle aufgeschlossen.");
-                        return;
-                    }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Alt.Log($"{e}");
             }
         }
-
-
-
-        public static bool isVerbandused = false;
-        public static bool isschwestused = false;
-
-        [AsyncClientEvent("Server:KeyHandler:PressF6")]
-        public async Task PressF6(IPlayer player)
-        {
-            try
-            {
-                if (player == null && !player.Exists && player.GetCharacterMetaId() == 0 && Characters.GetCharacterAccountId((int)player.GetCharacterMetaId()) == 0 && player.IsInVehicle == true) return;
-                if (isVerbandused == true) return;
-                if (!CharactersInventory.ExistCharacterItem2((int)player.GetCharacterMetaId(), "Verbandskasten")) return;
-
-                HUDHandler.SendNotification(player, 2, 3000, "Du hast ein Verbandskasten benutzt. <br><br> -1 Verbandskasten");
-                InventoryHandler.InventoryAnimation(player, "verband", 3000);
-                isVerbandused = true;
-                await Task.Delay(3000);
-                isVerbandused = false;
-                Characters.SetCharacterHealth((int)player.GetCharacterMetaId(), 200);
-                player.Health = 200;
-                player.EmitLocked("Client:HUD:UpdateDesire", Characters.GetCharacterArmor((int)player.GetCharacterMetaId()), Characters.GetCharacterHealth((int)player.GetCharacterMetaId()), Characters.GetCharacterHunger((int)player.GetCharacterMetaId()), Characters.GetCharacterThirst((int)player.GetCharacterMetaId())); //HUD updaten
-                CharactersInventory.RemoveCharacterItemAmount2((int)player.GetCharacterMetaId(), "Verbandskasten", 1);
-            }
-            catch (Exception e)
-            {
-                Alt.Log($"{e}");
-            }
-        }
-
-        [AsyncClientEvent("Server:KeyHandler:PressF7")]
-        public async Task PressF7(IPlayer player)
-        {
-            try
-            {
-                if (player == null && !player.Exists && player.GetCharacterMetaId() == 0 && Characters.GetCharacterAccountId((int)player.GetCharacterMetaId()) == 0 && player.IsInVehicle == true) return;
-                if (isschwestused == true) return;
-                if (CharactersInventory.ExistCharacterItem2((int)player.GetCharacterMetaId(), "Schutzweste")) 
-                {
-                    HUDHandler.SendNotification(player, 2, 3000, "Du hast ein Schutzweste benutzt. <br><br> -1 Schutzweste");
-                    InventoryHandler.InventoryAnimation(player, "weste", 3000);
-                    isschwestused = true;
-                    await Task.Delay(3000);
-                    isschwestused = false;
-                    Characters.SetCharacterArmor((int)player.GetCharacterMetaId(), 100);
-                    player.Armor = 100;
-                    player.EmitLocked("Client:HUD:UpdateDesire", Characters.GetCharacterArmor((int)player.GetCharacterMetaId()), Characters.GetCharacterHealth((int)player.GetCharacterMetaId()), Characters.GetCharacterHunger((int)player.GetCharacterMetaId()), Characters.GetCharacterThirst((int)player.GetCharacterMetaId())); //HUD updaten
-                    CharactersInventory.RemoveCharacterItemAmount2((int)player.GetCharacterMetaId(), "Schutzweste", 1);
-                } 
-                else if (CharactersInventory.ExistCharacterItem2((int)player.GetCharacterMetaId(), "Beamtenschutzweste"))
-                {
-                    HUDHandler.SendNotification(player, 2, 3000, "Du hast ein Beamtenschutzweste benutzt. <br><br> -1 Beamtenschutzweste");
-                    InventoryHandler.InventoryAnimation(player, "weste", 3000);
-                    isschwestused = true;
-                    await Task.Delay(3000);
-                    isschwestused = false;
-                    Characters.SetCharacterArmor((int)player.GetCharacterMetaId(), 100);
-                    player.Armor = 100;
-                    if (Characters.GetCharacterGender((int)player.GetCharacterMetaId())) player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 17, 2);
-                    else player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 57, 0); // Schutzweste
-                    CharactersInventory.RemoveCharacterItemAmount2((int)player.GetCharacterMetaId(), "Beamtenschutzweste", 1);
-                }
-            }
-            catch (Exception e)
-            {
-                Alt.Log($"{e}");
-            }
-        }
-
-
-        [AsyncClientEvent("Server:KeyHandler:PressO")]
-        public async Task PressO(ClassicPlayer player)
-        {
-            try
-            {
-                if (player == null && !player.Exists && player.GetCharacterMetaId() == 0 && Characters.GetCharacterAccountId((int)player.GetCharacterMetaId()) == 0) return;
-                if (ServerFactions.GetCharacterFactionId((int)player.GetCharacterMetaId()) != 2) return;
-                if (player.CurrentWeapon == 0) return;
-                if (player.Gummigeschoss)
-                {
-                    player.Gummigeschoss = false;
-                    HUDHandler.SendNotification(player, 4, 5000, "Du hast die Gummigeschoss - Funktion deaktiviert");
-                } else if (!player.Gummigeschoss)
-                {
-                    player.Gummigeschoss = true;
-                    HUDHandler.SendNotification(player, 2, 5000, "Du hast die Gummigeschoss - Funktion aktiviert");
-                }
-            }
-            catch (Exception e)
-            {
-                Alt.Log($"{e}");
-            }
-        }
-
     }
 }

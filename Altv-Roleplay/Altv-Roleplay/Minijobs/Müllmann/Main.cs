@@ -150,7 +150,7 @@ namespace Altv_Roleplay.Minijobs.Müllmann
                     var spot = Model.GetCharacterMinijobNextSpot(client);
                     if (spot == null) return;
                     if (colShape != spot.destinationColshape) return;
-                    var personalThrowCol = Alt.GetAllColShapes().Where(x => x.Exists && x != null).ToList().FirstOrDefault(x => x != null && x.Exists && x.GetColShapeName() == "GarbageMinijobThrowInVehicle" && x.GetColShapeId() == (ulong)charId);
+                    var personalThrowCol = Alt.GetAllColShapes().Where(x => x.Exists && x != null).ToList().FirstOrDefault(x => x != null && x.Exists && x.GetColShapeName() == "GarbageMinijobThrowInVehicle" && x.GetColShapeId() == (long)charId);
                     if (personalThrowCol != null && personalThrowCol.Exists) personalThrowCol.Remove();
                     //ToDo: Objeklt in Hand geben
                     InventoryHandler.InventoryAnimation(client, "farmPickup", 1100);
@@ -164,13 +164,13 @@ namespace Altv_Roleplay.Minijobs.Müllmann
                     client.EmitLocked("Client:Minijob:CreateJobMarker", "Minijob: Müll einladen", 3, 514, 22, MMThrowPos.X, MMThrowPos.Y, MMThrowPos.Z, true);
                     ClassicColshape throwCol = (ClassicColshape)Alt.CreateColShapeSphere(MMThrowPos, 2.5f);
                     throwCol.SetColShapeName("GarbageMinijobThrowInVehicle");
-                    throwCol.SetColShapeId((ulong)charId);
+                    throwCol.SetColShapeId((long)charId);
                     throwCol.Radius = 2.5f;
                     return;
                 }
                 else if(client.GetPlayerCurrentMinijobStep() == "THROW_TRASH_IN_VEHICLE" && state && !client.IsInVehicle)
                 {
-                    var personalThrowCol = Alt.GetAllColShapes().Where(x => x.Exists && x != null).ToList().FirstOrDefault(x => x != null && x.Exists && x.GetColShapeName() == "GarbageMinijobThrowInVehicle" && x.GetColShapeId() == (ulong)charId);
+                    var personalThrowCol = Alt.GetAllColShapes().Where(x => x.Exists && x != null).ToList().FirstOrDefault(x => x != null && x.Exists && x.GetColShapeName() == "GarbageMinijobThrowInVehicle" && x.GetColShapeId() == (long)charId);
                     if (personalThrowCol == null || !personalThrowCol.Exists) return;
                     if (!((ClassicColshape)personalThrowCol).IsInRange((ClassicPlayer)client)) return;
                     client.EmitLocked("Client:Minijob:RemoveJobMarker");
@@ -191,8 +191,8 @@ namespace Altv_Roleplay.Minijobs.Müllmann
                     else if((int)client.GetPlayerCurrentMinijobActionCount() >= maxSpots)
                     {
                         //zurueck zum Depot
-/*                        HUDHandler.SendNotification(client, 1, 2222, "VERSUCH: Colshape entfernen [003]");
-*/                        if (personalThrowCol != null && personalThrowCol.Exists) personalThrowCol.Remove();
+                        HUDHandler.SendNotification(client, 1, 2222, "VERSUCH: Colshape entfernen [003]");
+                        if (personalThrowCol != null && personalThrowCol.Exists) personalThrowCol.Remove();
                         HUDHandler.SendNotification(client, 1, 6000, "Alles aufgesammelt mein Jung. Zurück zur Mülldeponie - das Zeug abgeben, stell das Fahrzeug einfach dort ab wo du es bekommen hast.");
                         client.SetPlayerCurrentMinijobStep("DRIVE_BACK_TO_START");
                         client.EmitLocked("Client:Minijob:CreateJobMarker", "Minijob: Fahrzeug abgeben", 3, 514, 30, Constants.Positions.Minijob_Müllmann_VehOutPos.X, Constants.Positions.Minijob_Müllmann_VehOutPos.Y, Constants.Positions.Minijob_Müllmann_VehOutPos.Z, false);
@@ -223,7 +223,7 @@ namespace Altv_Roleplay.Minijobs.Müllmann
                         ServerVehicles.RemoveVehiclePermanently(veh);
                         veh.Remove();
                     }
-                    var personalThrowCol = Alt.GetAllColShapes().Where(x => x.Exists && x != null).ToList().FirstOrDefault(x => x.GetColShapeName() == "GarbageMinijobThrowInVehicle" && x.GetColShapeId() == (ulong)charId);
+                    var personalThrowCol = Alt.GetAllColShapes().Where(x => x.Exists && x != null).ToList().FirstOrDefault(x => x.GetColShapeName() == "GarbageMinijobThrowInVehicle" && x.GetColShapeId() == (long)charId);
                     if (personalThrowCol != null && personalThrowCol.Exists) personalThrowCol.Remove();
                     HUDHandler.SendNotification(player, 2, 1500, "Du hast den Minijob: Müllmann beendet.");
                     player.SetPlayerCurrentMinijob("None");
@@ -246,7 +246,7 @@ namespace Altv_Roleplay.Minijobs.Müllmann
                     int routeId = generatorId.Next(1, Model.GetMinijobGarbageMaxRoutes());
                     player.SetPlayerCurrentMinijob("Müllmann");
                     player.SetPlayerCurrentMinijobStep("FirstStepInVehicle");
-                    player.SetPlayerCurrentMinijobRouteId((ulong)routeId);
+                    player.SetPlayerCurrentMinijobRouteId((long)routeId);
                     player.SetPlayerCurrentMinijobActionCount(1);
                     HUDHandler.SendNotification(player, 1, 2500, "Du hast den Minijob begonnen. Wir haben dir ein Fahrzeug zur Verfügung gestellt, steige in dies ein um zu beginnen.");
                     Alt.Log($"Max Routes: {Model.GetMinijobGarbageMaxRoutes()}"); //2

@@ -204,7 +204,7 @@ namespace Altv_Roleplay.Minijobs.Busfahrer
         }
 
         [AsyncClientEvent("Server:MinijobBusdriver:StartJob")]
-        public async Task StartMiniJob(IPlayer player, int routeId)
+        public void StartMiniJob(IPlayer player, int routeId)
         {
             try
             {
@@ -219,9 +219,10 @@ namespace Altv_Roleplay.Minijobs.Busfahrer
                     if (veh == null || !veh.Exists) continue;
                     if (veh.Position.IsInRange(Constants.Positions.Minijob_Busdriver_VehOutPos, 8f)) { HUDHandler.SendNotification(player, 3, 5000, "Der Ausparkpunkt ist blockiert."); return; }
                 }
-                ServerVehicles.CreateVehicle(Model.GetRouteVehicleHash(routeId), charId, 2, 0, false, 0, Constants.Positions.Minijob_Busdriver_VehOutPos, Constants.Positions.Minijob_Busdriver_VehOutRot, $"BUS-{charId}", 255, 255, 255); player.SetPlayerCurrentMinijob("Busfahrer");
+                ServerVehicles.CreateVehicle(Model.GetRouteVehicleHash(routeId), charId, 2, 0, false, 0, Constants.Positions.Minijob_Busdriver_VehOutPos, Constants.Positions.Minijob_Busdriver_VehOutRot, $"BUS-{charId}", 255, 255, 255);
+                player.SetPlayerCurrentMinijob("Busfahrer");
                 player.SetPlayerCurrentMinijobStep("FirstStepInVehicle");
-                player.SetPlayerCurrentMinijobRouteId((ulong)routeId);
+                player.SetPlayerCurrentMinijobRouteId((long)routeId);
                 player.SetPlayerCurrentMinijobActionCount(1);
                 HUDHandler.SendNotification(player, 1, 2500, "Du hast den Minijob begonnen. Wir haben dir einen Bus am Tor ausgeparkt, steige ein.");
                 return;

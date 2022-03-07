@@ -10,7 +10,6 @@ using Altv_Roleplay.Utils;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Globalization;
-using AltV.Net.Elements.Entities;
 
 namespace Altv_Roleplay.Handler
 {
@@ -18,12 +17,11 @@ namespace Altv_Roleplay.Handler
     {
         #region Anrufsystem
         [AsyncClientEvent("Server:Smartphone:tryCall")]
-        public async Task tryCall(ClassicPlayer player, int targetPhoneNumber)
+        public void tryCall(ClassicPlayer player, int targetPhoneNumber)
         {
             try
             {
                 if (player == null || !player.Exists || player.CharacterId <= 0 || targetPhoneNumber <= 0 || !CharactersInventory.ExistCharacterItem(player.CharacterId, "Smartphone", "inventory") || CharactersInventory.GetCharacterItemAmount(player.CharacterId, "Smartphone", "inventory") <= 0 || !Characters.IsCharacterPhoneEquipped(player.CharacterId) || Characters.IsCharacterPhoneFlyModeEnabled(player.CharacterId) || Characters.GetCharacterPhonenumber(player.CharacterId) <= 0 || Characters.IsCharacterUnconscious(player.CharacterId) || player.HasPlayerHandcuffs() || player.HasPlayerRopeCuffs() || Characters.GetCharacterCurrentlyRecieveCaller(player.CharacterId) != 0 || Characters.GetCharacterPhoneTargetNumber(player.CharacterId) != 0) return;
-
                 if (ServerFactions.IsNumberAFactionNumber(targetPhoneNumber))
                 {
                     int factionId = ServerFactions.GetFactionIdByServiceNumber(targetPhoneNumber);
@@ -49,57 +47,10 @@ namespace Altv_Roleplay.Handler
                         player.EmitLocked("Client:Smartphone:ShowPhoneCallError", 3);
                         return;
                     }
-
                     Characters.SetCharacterCurrentlyRecieveCallState(currentOwnerId, player.CharacterId);
                     Characters.SetCharacterCurrentlyRecieveCallState(player.CharacterId, currentOwnerId);
                     targetServicePlayer.EmitLocked("Client:Smartphone:showPhoneReceiveCall", Characters.GetCharacterPhonenumber(player.CharacterId));
                     return;
-                }
-
-                if (ServerFactions.GetCurrentServicePhoneOwner(ServerFactions.GetFactionIdByServiceNumber(911)) == (int)player.GetCharacterMetaId())
-                {
-                    CharactersPhone.CreatePhoneVerlauf(player, 911, targetPhoneNumber);
-                }
-                else if (ServerFactions.GetCurrentServicePhoneOwner(ServerFactions.GetFactionIdByServiceNumber(912)) == (int)player.GetCharacterMetaId())
-                {
-                    CharactersPhone.CreatePhoneVerlauf(player, 912, targetPhoneNumber);
-                }
-                else if (ServerFactions.GetCurrentServicePhoneOwner(ServerFactions.GetFactionIdByServiceNumber(913)) == (int)player.GetCharacterMetaId())
-                {
-                    CharactersPhone.CreatePhoneVerlauf(player, 913, targetPhoneNumber);
-                }
-                else if (ServerFactions.GetCurrentServicePhoneOwner(ServerFactions.GetFactionIdByServiceNumber(914)) == (int)player.GetCharacterMetaId())
-                {
-                    CharactersPhone.CreatePhoneVerlauf(player, 914, targetPhoneNumber);
-                }
-                else if (ServerFactions.GetCurrentServicePhoneOwner(ServerFactions.GetFactionIdByServiceNumber(915)) == player.CharacterId)
-                {
-                    CharactersPhone.CreatePhoneVerlauf(player, 915, targetPhoneNumber);
-                }
-                else if (ServerFactions.GetCurrentServicePhoneOwner(ServerFactions.GetFactionIdByServiceNumber(916)) == (int)player.GetCharacterMetaId())
-                {
-                    CharactersPhone.CreatePhoneVerlauf(player, 916, targetPhoneNumber);
-                }
-                else if (ServerFactions.GetCurrentServicePhoneOwner(ServerFactions.GetFactionIdByServiceNumber(917)) == (int)player.GetCharacterMetaId())
-                {
-                    CharactersPhone.CreatePhoneVerlauf(player, 917, targetPhoneNumber);
-                }
-                else if (ServerFactions.GetCurrentServicePhoneOwner(ServerFactions.GetFactionIdByServiceNumber(918)) == (int)player.GetCharacterMetaId())
-                {
-                    CharactersPhone.CreatePhoneVerlauf(player, 918, targetPhoneNumber);
-                }
-                else if (ServerFactions.GetCurrentServicePhoneOwner(ServerFactions.GetFactionIdByServiceNumber(919)) == (int)player.GetCharacterMetaId())
-                {
-                    CharactersPhone.CreatePhoneVerlauf(player, 919, targetPhoneNumber);
-                }
-                else if (ServerFactions.GetCurrentServicePhoneOwner(ServerFactions.GetFactionIdByServiceNumber(187)) == (int)player.GetCharacterMetaId())
-                {
-                    CharactersPhone.CreatePhoneVerlauf(player, 187, targetPhoneNumber);
-                }
-                else
-                {
-                    CharactersPhone.CreatePhoneVerlauf(player, Characters.GetCharacterPhonenumber((int)player.GetCharacterMetaId()), targetPhoneNumber);
-                    Alt.Log($"Characters Nummer: {Characters.GetCharacterPhonenumber((int)player.GetCharacterMetaId())}");
                 }
 
                 if (!Characters.ExistPhoneNumber(targetPhoneNumber))
@@ -112,7 +63,6 @@ namespace Altv_Roleplay.Handler
                 ClassicPlayer targetPlayer = (ClassicPlayer)Alt.GetAllPlayers().ToList().FirstOrDefault(x => x != null && x.Exists && ((ClassicPlayer)x).CharacterId > 0 && Characters.GetCharacterPhonenumber(((ClassicPlayer)x).CharacterId) == targetPhoneNumber);
                 if (targetPlayer == null || !targetPlayer.Exists || !Characters.IsCharacterPhoneEquipped(targetPlayer.CharacterId) || Characters.IsCharacterPhoneFlyModeEnabled(targetPlayer.CharacterId))
                 {
-
                     player.EmitLocked("Client:Smartphone:ShowPhoneCallError", 2);
                     //HUDHandler.SendNotification(player, 4, 2500, "Der angerufene Teilnehmer ist nicht erreichbar..");
                     return;
@@ -120,7 +70,6 @@ namespace Altv_Roleplay.Handler
 
                 if (Characters.GetCharacterPhoneTargetNumber(targetPlayer.CharacterId) != 0 || Characters.GetCharacterCurrentlyRecieveCaller(targetPlayer.CharacterId) != 0)
                 {
-
                     player.EmitLocked("Client:Smartphone:ShowPhoneCallError", 3);
                     //HUDHandler.SendNotification(player, 4, 2500, "Der angegebene Anschluss ist besetzt..");
                     return;
@@ -138,7 +87,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Smartphone:acceptCall")]
-        public async Task acceptCall(ClassicPlayer player)
+        public void acceptCall(ClassicPlayer player)
         {
             try
             {
@@ -162,8 +111,8 @@ namespace Altv_Roleplay.Handler
             }
         }
 
-        [AsyncScriptEvent(ScriptEventType.PlayerDisconnect)]
-        public async Task PlayerDisconnect(ClassicPlayer player, string reason)
+        [ScriptEvent(ScriptEventType.PlayerDisconnect)]
+        public void PlayerDisconnect(ClassicPlayer player, string reason)
         {
             try
             {
@@ -180,7 +129,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Smartphone:denyCall")]
-        public async Task denyCall(ClassicPlayer player)
+        public static void denyCall(ClassicPlayer player)
         {
             try
             {
@@ -189,7 +138,7 @@ namespace Altv_Roleplay.Handler
                 {
                     var callerId = Characters.GetCharacterCurrentlyRecieveCaller(player.CharacterId); //ID vom Spieler der Anruft
                     ClassicPlayer targetPlayer = (ClassicPlayer)Alt.GetAllPlayers().ToList().FirstOrDefault(x => x != null && x.Exists && ((ClassicPlayer)x).CharacterId == callerId);
-                    if (targetPlayer != null && targetPlayer.Exists && targetPlayer.CharacterId > 0)
+                    if(targetPlayer != null && targetPlayer.Exists && targetPlayer.CharacterId > 0)
                     {
                         Characters.SetCharacterTargetPhoneNumber(targetPlayer.CharacterId, 0);
                         Characters.SetCharacterCurrentlyRecieveCallState(targetPlayer.CharacterId, 0);
@@ -209,11 +158,10 @@ namespace Altv_Roleplay.Handler
                     var phoneNumber = Characters.GetCharacterPhoneTargetNumber(player.CharacterId);
                     if (!Characters.ExistPhoneNumber(phoneNumber)) return;
                     ClassicPlayer targetPlayer = (ClassicPlayer)Alt.GetAllPlayers().ToList().FirstOrDefault(x => x != null && x.Exists && ((ClassicPlayer)x).CharacterId > 0 && Characters.GetCharacterPhonenumber(((ClassicPlayer)x).CharacterId) == phoneNumber && Characters.GetCharacterPhoneTargetNumber(((ClassicPlayer)x).CharacterId) == Characters.GetCharacterPhonenumber(player.CharacterId));
-                    if (targetPlayer != null && targetPlayer.Exists && targetPlayer.CharacterId > 0)
+                    if(targetPlayer != null && targetPlayer.Exists && targetPlayer.CharacterId > 0)
                     {
                         Characters.SetCharacterTargetPhoneNumber(targetPlayer.CharacterId, 0);
                         Characters.SetCharacterCurrentlyRecieveCallState(targetPlayer.CharacterId, 0);
-                        targetPlayer.EmitLocked("SaltyChat_EndCall", player);
                         targetPlayer.EmitLocked("Client:Smartphone:ShowPhoneCallError", 4);
                         HUDHandler.SendNotification(targetPlayer, 3, 2000, "Anruf beendet");
                     }
@@ -235,7 +183,7 @@ namespace Altv_Roleplay.Handler
 
         #region SMS System
         [AsyncClientEvent("Server:Smartphone:requestChats")]
-        public async Task requestSmartphoneChats(ClassicPlayer player)
+        public void requestSmartphoneChats(ClassicPlayer player)
         {
             try
             {
@@ -244,14 +192,14 @@ namespace Altv_Roleplay.Handler
                 if (!Characters.ExistPhoneNumber(playerNumber)) return;
                 CharactersPhone.RequestChatJSON(player, playerNumber);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Alt.Log($"{e}");
             }
         }
 
         [AsyncClientEvent("Server:Smartphone:requestChatMessages")]
-        public static async Task requestChatMessages(ClassicPlayer player, int chatId)
+        public static void requestChatMessages(ClassicPlayer player, int chatId)
         {
             try
             {
@@ -269,7 +217,7 @@ namespace Altv_Roleplay.Handler
                 var itemCount = (int)messages.Count;
                 var iterations = Math.Floor((decimal)(itemCount / 5));
                 var rest = itemCount % 5;
-                for (var i = 0; i < iterations; i++)
+                for(var i = 0; i < iterations; i++)
                 {
                     var skip = i * 5;
                     player.EmitLocked("Client:Smartphone:addMessageJSON", JsonConvert.SerializeObject(messages.Skip(skip).Take(5).ToList()));
@@ -284,7 +232,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Smartphone:createNewChat")]
-        public async Task createNewChat(ClassicPlayer player, int targetPhoneNumber)
+        public void createNewChat(ClassicPlayer player, int targetPhoneNumber)
         {
             try
             {
@@ -301,7 +249,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Smartphone:sendChatMessage")]
-        public async Task sendChatMessage(ClassicPlayer player, int chatId, int phoneNumber, int targetPhoneNumber, int unix, string message)
+        public void sendChatMessage(ClassicPlayer player, int chatId, int phoneNumber, int targetPhoneNumber, int unix, string message)
         {
             try
             {
@@ -320,7 +268,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Smartphone:deleteChat")]
-        public async Task deleteChat(ClassicPlayer player, int chatId)
+        public void deleteChat(ClassicPlayer player, int chatId)
         {
             try
             {
@@ -337,7 +285,7 @@ namespace Altv_Roleplay.Handler
 
         #region Kontaktesystem
         [AsyncClientEvent("Server:Smartphone:requestPhoneContacts")]
-        public async Task requestPhoneContacts(ClassicPlayer player)
+        public void requestPhoneContacts(ClassicPlayer player)
         {
             try
             {
@@ -352,7 +300,7 @@ namespace Altv_Roleplay.Handler
                 var itemCount = (int)contacts.Count;
                 var iterations = Math.Floor((decimal)(itemCount / 10));
                 var rest = itemCount % 10;
-                for (var i = 0; i < iterations; i++)
+                for(var i = 0; i < iterations; i++)
                 {
                     var skip = i * 10;
                     player.EmitLocked("Client:Smartphone:addContactJSON", JsonConvert.SerializeObject(contacts.Skip(skip).Take(10).ToList()));
@@ -367,12 +315,12 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Smartphone:editContact")]
-        public async Task editContact(ClassicPlayer player, int contactId, string name, int contactNumber)
+        public void editContact(ClassicPlayer player, int contactId, string name, int contactNumber)
         {
             if (player == null || !player.Exists || player.CharacterId <= 0 || contactId <= 0 || name == "" || contactNumber <= 0) return;
             int phoneNumber = Characters.GetCharacterPhonenumber(player.CharacterId);
             if (phoneNumber <= 0) return;
-            if (!CharactersPhone.ExistContactById(contactId, phoneNumber))
+            if(!CharactersPhone.ExistContactById(contactId, phoneNumber))
             {
                 player.EmitLocked("Client:Smartphone:showNotification", "Kontakt konnte nicht bearbeitet werden.", "error", null, "error");
                 return;
@@ -382,7 +330,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Smartphone:addNewContact")]
-        public async Task addNewContact(ClassicPlayer player, string name, int contactNumber)
+        public void addNewContact(ClassicPlayer player, string name, int contactNumber)
         {
             try
             {
@@ -404,7 +352,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Smartphone:deleteContact")]
-        public async Task deleteContact(ClassicPlayer player, int contactId)
+        public void deleteContact(ClassicPlayer player, int contactId)
         {
             try
             {
@@ -421,91 +369,13 @@ namespace Altv_Roleplay.Handler
         }
         #endregion
 
-        #region Businesssystem
-        [AsyncClientEvent("Server:Smartphone:requestPhonebusiness")]
-        public async Task requestPhonebusiness(IPlayer player)
-        {
-            try
-            {
-                if (player == null || !player.Exists || player.GetCharacterMetaId() <= 0) return;
-                int factionID = ServerFactions.GetCharacterFactionId((int)player.GetCharacterMetaId());
-                var business = ServerFactions.ServerFactionMembers_.ToList().Where(x => x.factionId == factionID).Select(x => new
-                {
-                    x.charId,
-                    x.charname,
-                    x.rankname,
-                    x.phone,
-                    x.factionname,
-                    x.rank
-                }).OrderByDescending(x => x.rank).ToList();
-                var itemCount = (int)business.Count;
-                var iterations = Math.Floor((decimal)(itemCount / 10));
-                var rest = itemCount % 10;
-                for (var i = 0; i < iterations; i++)
-                {
-                    var skip = i * 10;
-                    player.EmitLocked("Client:Smartphone:addbusinessJSON", JsonConvert.SerializeObject(business.Skip(skip).Take(10).ToList()));
-                }
-                if (rest != 0) player.EmitLocked("Client:Smartphone:addbusinessJSON", JsonConvert.SerializeObject(business.Skip((int)iterations * 10).ToList()));
-                player.EmitLocked("Client:Smartphone:setAllbusiness");
-            }
-            catch (Exception e)
-            {
-                Alt.Log($"{e}");
-            }
-        }
-        #endregion
-
-        #region Verlaufsystem
-        [AsyncClientEvent("Server:Smartphone:requestPhoneVerlauf")]
-        public async Task requestPhoneVerlauf(IPlayer player)
-        {
-            try
-            {
-                if (player == null || !player.Exists || player.GetCharacterMetaId() <= 0) return;
-                Alt.Log($"player-characterid = {player.GetCharacterMetaId()}");
-                var Verlauf = CharactersPhone.CharactersPhoneVerlauf_.ToList().Where(x => x.phoneNumber == Characters.GetCharacterPhonenumber((int)player.GetCharacterMetaId()) || x.anotherNumber == Characters.GetCharacterPhonenumber((int)player.GetCharacterMetaId())).Select(x => new
-                {
-                    x.id,
-                    x.charId,
-                    x.phoneNumber,
-                    x.anotherNumber,
-                    x.date,
-                }).OrderBy(x => x.id).ToList();
-                Alt.Log($"{Verlauf.Count}");
-                var itemCount = (int)Verlauf.Count;
-                var iterations = Math.Floor((decimal)(itemCount / 10));
-                var rest = itemCount % 10;
-                for (var i = 0; i < iterations; i++)
-                {
-                    var skip = i * 10;
-                    player.EmitLocked("Client:Smartphone:addVerlaufJSON", JsonConvert.SerializeObject(Verlauf.Skip(skip).Take(10).ToList()));
-                    Alt.Log($"1. Verlauf: Gesendet");
-                }
-
-                if (rest != 0) player.EmitLocked("Client:Smartphone:addVerlaufJSON", JsonConvert.SerializeObject(Verlauf.Skip((int)iterations * 10).ToList()));
-                Alt.Log($"2. Verlauf: Gesendet");
-
-                player.EmitLocked("Client:Smartphone:setAllVerlauf");
-                Alt.Log($"3. Verlauf: Gesendet");
-
-
-                Alt.Log($"Verlauf: Done");
-            }
-            catch (Exception e)
-            {
-                Alt.Log($"{e}");
-            }
-        }
-        #endregion
-
         #region LSPD Intranet
-        public static async Task RequestLSPDIntranet(ClassicPlayer player)
+        public static void RequestLSPDIntranet(ClassicPlayer player)
         {
             try
             {
                 if (player == null || !player.Exists || player.CharacterId <= 0) return;
-                if (!ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 1 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 2) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId))
+                if(!ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 2 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 12) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId))
                 {
                     player.EmitLocked("Client:Smartphone:ShowLSPDIntranetApp", false, "[]");
                     return;
@@ -529,11 +399,11 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Smartphone:SearchLSPDIntranetPeople")]
-        public async Task SearchLSPDIntranetPeople(ClassicPlayer player, string name)
+        public void SearchLSPDIntranetPeople(ClassicPlayer player, string name)
         {
             try
             {
-                if (player == null || !player.Exists || player.CharacterId <= 0 || string.IsNullOrWhiteSpace(name) || !ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 1 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 2)) return;
+                if (player == null || !player.Exists || player.CharacterId <= 0 || string.IsNullOrWhiteSpace(name) || !ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 2 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 12)) return;
                 var containedPlayers = Characters.PlayerCharacters.ToList().Where(x => x.charname.ToLower().Contains(name.ToLower()) && User.IsCharacterOnline(x.charId)).Select(x => new
                 {
                     x.charId,
@@ -549,15 +419,15 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Smartphone:GiveLSPDIntranetWanteds")]
-        public async Task GiveLSPDIntranetWanteds(ClassicPlayer player, int selectedCharId, string wanteds)
+        public void GiveLSPDIntranetWanteds(ClassicPlayer player, int selectedCharId, string wanteds)
         {
             try
             {
-                if (player == null || !player.Exists || player.CharacterId <= 0 || selectedCharId <= 0 || string.IsNullOrWhiteSpace(wanteds) || !ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 1 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 2)) return;
+                if (player == null || !player.Exists || player.CharacterId <= 0 || selectedCharId <= 0 || string.IsNullOrWhiteSpace(wanteds) || !ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 2 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 12)) return;
                 List<int> decompiledWanteds = JsonConvert.DeserializeObject<List<int>>(wanteds);
                 if (decompiledWanteds == null) return;
                 ClassicPlayer targetPlayer = (ClassicPlayer)Alt.GetAllPlayers().ToList().FirstOrDefault(x => x != null && x.Exists && ((ClassicPlayer)x).CharacterId == selectedCharId);
-                if (targetPlayer == null || !targetPlayer.Exists)
+                if(targetPlayer == null || !targetPlayer.Exists)
                 {
                     HUDHandler.SendNotification(player, 3, 2500, $"Der Spieler ist nicht online ({selectedCharId})");
                     return;
@@ -568,8 +438,7 @@ namespace Altv_Roleplay.Handler
                 CharactersWanteds.CreateCharacterWantedEntry(selectedCharId, givenString, decompiledWanteds);
                 requestLSPDIntranetPersonWanteds(player, selectedCharId);
 
-                foreach (ClassicPlayer policeMember in Alt.GetAllPlayers().ToList().Where(x => x != null && x.Exists && ((ClassicPlayer)x).CharacterId > 0 && ServerFactions.IsCharacterInAnyFaction(((ClassicPlayer)x).CharacterId) && (ServerFactions.GetCharacterFactionId(((ClassicPlayer)x).CharacterId) == 1 || ServerFactions.GetCharacterFactionId(((ClassicPlayer)x).CharacterId) == 2)))
-                {
+                foreach(ClassicPlayer policeMember in Alt.GetAllPlayers().ToList().Where(x => x != null && x.Exists && ((ClassicPlayer)x).CharacterId > 0 && ServerFactions.IsCharacterInAnyFaction(((ClassicPlayer)x).CharacterId) && (ServerFactions.GetCharacterFactionId(((ClassicPlayer)x).CharacterId) == 2 || ServerFactions.GetCharacterFactionId(((ClassicPlayer)x).CharacterId) == 12))) {
                     HUDHandler.SendNotification(policeMember, 1, 3000, $"{Characters.GetCharacterName(player.CharacterId)} hat die Akte von {Characters.GetCharacterName(selectedCharId)} bearbeitet.");
                 }
             }
@@ -580,11 +449,11 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Smartphone:requestLSPDIntranetPersonWanteds")]
-        public static async Task requestLSPDIntranetPersonWanteds(ClassicPlayer player, int selectedCharId)
+        public static void requestLSPDIntranetPersonWanteds(ClassicPlayer player, int selectedCharId)
         {
             try
             {
-                if (player == null || !player.Exists || player.CharacterId <= 0 || selectedCharId <= 0 || !ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 1 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 2)) return;
+                if (player == null || !player.Exists || player.CharacterId <= 0 || selectedCharId <= 0 || !ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 2 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 12)) return;
                 string wantedList = JsonConvert.SerializeObject(CharactersWanteds.CharactersWanteds_.Where(x => x.charId == selectedCharId).Select(x => new
                 {
                     x.id,
@@ -601,12 +470,12 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Smartphone:requestPoliceAppMostWanteds")]
-        public async Task requestPoliceAppMostWanteds(ClassicPlayer player)
+        public void requestPoliceAppMostWanteds(ClassicPlayer player)
         {
             try
             {
-                if (player == null || !player.Exists || player.CharacterId <= 0 || !ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 1 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 2)) return;
-                if (ServerFactions.GetCharacterFactionId(player.CharacterId) == 1 && ServerFactions.GetCharacterFactionRank(player.CharacterId) < 8) { HUDHandler.SendNotification(player, 4, 2500, "Keine Berechtigung: ab Rang 8."); return; }
+                if (player == null || !player.Exists || player.CharacterId <= 0 || !ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 2 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 12)) return;
+                if (ServerFactions.GetCharacterFactionId(player.CharacterId) == 2 && ServerFactions.GetCharacterFactionRank(player.CharacterId) < 6) { HUDHandler.SendNotification(player, 3, 2500, "Keine Berechtigung: ab Rang 6."); return; }
                 string mostWantedList = JsonConvert.SerializeObject(Characters.PlayerCharacters.ToList().Where(x => User.IsCharacterOnline(x.charId) && CharactersWanteds.HasCharacterWanteds(x.charId) && Characters.IsCharacterPhoneEquipped(x.charId)).Select(x => new
                 {
                     description = $"{x.charname} - {CharactersWanteds.GetCharacterWantedFinalJailTime(x.charId)} Hafteinheiten",
@@ -622,15 +491,15 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Smartphone:DeleteLSPDIntranetWanted")]
-        public async Task DeleteLSPDIntranetWanted(ClassicPlayer player, int dbId, int selectedCharId)
+        public void DeleteLSPDIntranetWanted(ClassicPlayer player, int dbId, int selectedCharId)
         {
             try
             {
-                if (player == null || !player.Exists || player.CharacterId <= 0 || dbId <= 0 || !CharactersWanteds.ExistWantedEntry(dbId) || !ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 1 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 2)) return;
+                if (player == null || !player.Exists || player.CharacterId <= 0 || dbId <= 0 || !CharactersWanteds.ExistWantedEntry(dbId) || !ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 2 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 12)) return;
                 CharactersWanteds.RemoveWantedEntry(dbId);
                 requestLSPDIntranetPersonWanteds(player, selectedCharId);
 
-                foreach (ClassicPlayer policeMember in Alt.GetAllPlayers().ToList().Where(x => x != null && x.Exists && ((ClassicPlayer)x).CharacterId > 0 && ServerFactions.IsCharacterInAnyFaction(((ClassicPlayer)x).CharacterId) && (ServerFactions.GetCharacterFactionId(((ClassicPlayer)x).CharacterId) == 1 || ServerFactions.GetCharacterFactionId(((ClassicPlayer)x).CharacterId) == 2)))
+                foreach (ClassicPlayer policeMember in Alt.GetAllPlayers().ToList().Where(x => x != null && x.Exists && ((ClassicPlayer)x).CharacterId > 0 && ServerFactions.IsCharacterInAnyFaction(((ClassicPlayer)x).CharacterId) && (ServerFactions.GetCharacterFactionId(((ClassicPlayer)x).CharacterId) == 2 || ServerFactions.GetCharacterFactionId(((ClassicPlayer)x).CharacterId) == 12)))
                 {
                     HUDHandler.SendNotification(policeMember, 1, 3000, $"{Characters.GetCharacterName(player.CharacterId)} hat die Akte von {Characters.GetCharacterName(selectedCharId)} bearbeitet.");
                 }
@@ -644,7 +513,7 @@ namespace Altv_Roleplay.Handler
 
         #region Funksystem
         [AsyncClientEvent("Server:Smartphone:joinRadioFrequence")]
-        public async Task joinRadioFrequence(ClassicPlayer player, string radioFrequence)
+        public void joinRadioFrequence(ClassicPlayer player, string radioFrequence)
         {
             try
             {
@@ -657,9 +526,9 @@ namespace Altv_Roleplay.Handler
                         Characters.SetCharacterCurrentFunkFrequence(player.CharacterId, null);
                         player.EmitLocked("Client:Smartphone:setCurrentFunkFrequence", "null");
                         Alt.Emit("SaltyChat:LeaveRadioChannel", player, radioFrequence);
-                        return;
+                        return; 
                     }
-                    if (!ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 1 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 2) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId))
+                    if (!ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 2 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 12) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId)) 
                     {
                         HUDHandler.SendNotification(player, 4, 5000, "Dieser Funk ist Verschlüsselt!");
                         Characters.SetCharacterCurrentFunkFrequence(player.CharacterId, null);
@@ -678,64 +547,7 @@ namespace Altv_Roleplay.Handler
                         Alt.Emit("SaltyChat:LeaveRadioChannel", player, radioFrequence);
                         return;
                     }
-                    if (!ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 1 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 4) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId))
-                    {
-                        HUDHandler.SendNotification(player, 4, 5000, "Dieser Funk ist Verschlüsselt!");
-                        Characters.SetCharacterCurrentFunkFrequence(player.CharacterId, null);
-                        player.EmitLocked("Client:Smartphone:setCurrentFunkFrequence", "null");
-                        Alt.Emit("SaltyChat:LeaveRadioChannel", player, radioFrequence);
-                        return;
-                    }
-                }
-                if (radioFrequence == "452000" || radioFrequence == "452100" || radioFrequence == "452200" || radioFrequence == "452300")
-                {
-                    if (!ServerFactions.IsCharacterInFactionDuty(player.CharacterId))
-                    {
-                        HUDHandler.SendNotification(player, 4, 5000, "Dieser Funk ist Verschlüsselt!");
-                        Characters.SetCharacterCurrentFunkFrequence(player.CharacterId, null);
-                        player.EmitLocked("Client:Smartphone:setCurrentFunkFrequence", "null");
-                        Alt.Emit("SaltyChat:LeaveRadioChannel", player, radioFrequence);
-                        return;
-                    }
-                    if (!ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 5 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 1) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId))
-                    {
-                        HUDHandler.SendNotification(player, 4, 5000, "Dieser Funk ist Verschlüsselt!");
-                        Characters.SetCharacterCurrentFunkFrequence(player.CharacterId, null);
-                        player.EmitLocked("Client:Smartphone:setCurrentFunkFrequence", "null");
-                        Alt.Emit("SaltyChat:LeaveRadioChannel", player, radioFrequence);
-                        return;
-                    }
-                }
-                if (radioFrequence == "453000" || radioFrequence == "453100" || radioFrequence == "453200" || radioFrequence == "453300")
-                {
-                    if (!ServerFactions.IsCharacterInFactionDuty(player.CharacterId))
-                    {
-                        HUDHandler.SendNotification(player, 4, 5000, "Dieser Funk ist Verschlüsselt!");
-                        Characters.SetCharacterCurrentFunkFrequence(player.CharacterId, null);
-                        player.EmitLocked("Client:Smartphone:setCurrentFunkFrequence", "null");
-                        Alt.Emit("SaltyChat:LeaveRadioChannel", player, radioFrequence);
-                        return;
-                    }
-                    if (!ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 6 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 1) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId))
-                    {
-                        HUDHandler.SendNotification(player, 4, 5000, "Dieser Funk ist Verschlüsselt!");
-                        Characters.SetCharacterCurrentFunkFrequence(player.CharacterId, null);
-                        player.EmitLocked("Client:Smartphone:setCurrentFunkFrequence", "null");
-                        Alt.Emit("SaltyChat:LeaveRadioChannel", player, radioFrequence);
-                        return;
-                    }
-                }
-                if (radioFrequence == "666000" || radioFrequence == "666100" || radioFrequence == "666200" || radioFrequence == "666300")
-                {
-                    if (!ServerFactions.IsCharacterInFactionDuty(player.CharacterId))
-                    {
-                        HUDHandler.SendNotification(player, 4, 5000, "Dieser Funk ist Verschlüsselt!");
-                        Characters.SetCharacterCurrentFunkFrequence(player.CharacterId, null);
-                        player.EmitLocked("Client:Smartphone:setCurrentFunkFrequence", "null");
-                        Alt.Emit("SaltyChat:LeaveRadioChannel", player, radioFrequence);
-                        return;
-                    }
-                    if (!ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 9) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId))
+                    if (!ServerFactions.IsCharacterInAnyFaction(player.CharacterId) || (ServerFactions.GetCharacterFactionId(player.CharacterId) != 3 && ServerFactions.GetCharacterFactionId(player.CharacterId) != 4) || !ServerFactions.IsCharacterInFactionDuty(player.CharacterId))
                     {
                         HUDHandler.SendNotification(player, 4, 5000, "Dieser Funk ist Verschlüsselt!");
                         Characters.SetCharacterCurrentFunkFrequence(player.CharacterId, null);
@@ -748,7 +560,7 @@ namespace Altv_Roleplay.Handler
                 if (Characters.GetCharacterCurrentFunkFrequence(player.CharacterId) != null)
                 {
                     string currentFrequence = Characters.GetCharacterCurrentFunkFrequence(player.CharacterId);
-                    Alt.Emit("SaltyChat:LeaveRadioChannel", player, radioFrequence);
+                    Alt.Emit("SaltyChat:LeaveRadioChannel", player, currentFrequence);
                     player.EmitLocked("Client:Smartphone:setCurrentFunkFrequence", null);
                 }
 
@@ -763,14 +575,13 @@ namespace Altv_Roleplay.Handler
         }
 
         [ServerEvent("Server:Smartphone:leaveRadioFrequence")]
-        public async Task leaveRadioFrequenceServer(ClassicPlayer player)
-        {
+        public void leaveRadioFrequenceServer(ClassicPlayer player) {
             leaveRadioFrequence(player);
         }
 
 
         [AsyncClientEvent("Server:Smartphone:leaveRadioFrequence")]
-        public async Task leaveRadioFrequence(ClassicPlayer player)
+        public void leaveRadioFrequence(ClassicPlayer player)
         {
             try
             {
@@ -789,7 +600,7 @@ namespace Altv_Roleplay.Handler
 
         #region Utilities
         [AsyncClientEvent("Server:Smartphone:setFlyModeEnabled")]
-        public async Task setFlyModeEnabled(ClassicPlayer player, bool isEnabled)
+        public void setFlyModeEnabled(ClassicPlayer player, bool isEnabled)
         {
             try
             {
@@ -801,7 +612,23 @@ namespace Altv_Roleplay.Handler
                 Alt.Log($"{e}");
             }
         }
+
+        [AsyncClientEvent("Server:Smartphone:setWallpaperId")]
+        public void setWallpaperId(ClassicPlayer player, int wallpaperId)
+        {
+            try
+            {
+                if (player == null || !player.Exists || player.CharacterId <= 0) return;
+
+                Characters.SetCharacterPhoneWallpaper(player.CharacterId, wallpaperId);
+            }
+            catch (Exception e)
+            {
+                Alt.Log($"{e}");
+            }
+        }
         #endregion
     }
 }
-
+ 
+ 

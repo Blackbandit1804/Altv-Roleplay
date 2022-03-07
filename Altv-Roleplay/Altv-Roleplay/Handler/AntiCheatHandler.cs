@@ -17,8 +17,8 @@ namespace Altv_Roleplay.Handler
 {
     public class AntiCheatHandler : IScript
     {     
-        [AsyncScriptEvent(ScriptEventType.WeaponDamage)]
-        public async Task WeaponDamageEvent(ClassicPlayer player, ClassicPlayer target, uint weapon, ushort dmg, Position offset, BodyPart bodypart)
+        [ScriptEvent(ScriptEventType.WeaponDamage)]
+        public void WeaponDamageEvent(ClassicPlayer player, ClassicPlayer target, uint weapon, ushort dmg, Position offset, BodyPart bodypart)
         {
             try
             {
@@ -27,11 +27,11 @@ namespace Altv_Roleplay.Handler
                 if (weaponModel == WeaponModel.Fist) return;
                 if(Enum.IsDefined(typeof(AntiCheat.forbiddenWeapons), (Utils.AntiCheat.forbiddenWeapons)weaponModel))
                 {
-                    User.SetPlayerBanned(player, true, $"Blacklisted Weaponkill: {weaponModel}");
+                    User.SetPlayerBanned(player, true, $"Waffen Hack[2]: {weaponModel}");
                     player.Kick("");
                     foreach(IPlayer p in Alt.GetAllPlayers().ToList().Where(x => x != null && x.Exists && ((ClassicPlayer)x).CharacterId > 0 && x.AdminLevel() > 0))
                     {
-                        HUDHandler.SendNotification(player, 4, 2500, $"{Characters.GetCharacterName(player.CharacterId)} wurde gebannt: Waffenhack[2] - {weaponModel}");
+                        p.SendChatMessage($"{Characters.GetCharacterName(player.CharacterId)} wurde gebannt: Waffenhack[2] - {weaponModel}");
                     }
                     return;
                 }

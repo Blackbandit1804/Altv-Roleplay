@@ -2,25 +2,15 @@
 using AltV.Net.Async;
 using AltV.Net.Elements.Entities;
 using AltV.Net.Enums;
-using Altv_Roleplay.Factories;
 using Altv_Roleplay.Model;
-using Altv_Roleplay.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Altv_Roleplay.Handler
 {
     class WeaponHandler : IScript
     {
-
-        [ClientEvent("Server:SetAmmo")]
-        public void SetAmmo(ClassicPlayer player, int ammo)
-        {
-
-        }
-
         public static void EquipCharacterWeapon(IPlayer player, string type, string wName, int amount, string fromContainer)
         {
             try
@@ -40,67 +30,6 @@ namespace Altv_Roleplay.Handler
                         ammoWName = "Pistolen";
                         wHash = (WeaponModel)0x1B06D571;
                         break;
-                    case "MiniMP":
-                    case "MiniMP Munition":
-                        wType = "Secondary";
-                        normalWName = "MiniMP";
-                        ammoWName = "MiniMP";
-                        wHash = WeaponModel.MicroSMG;
-                        break;
-                    case "Gusenberg":
-                    case "Gusenberg Munition":
-                        wType = "Primary";
-                        normalWName = "Gusenberg";
-                        ammoWName = "Gusenberg";
-                        wHash = WeaponModel.GusenbergSweeper;
-                        break;
-                    case "Revolver":
-                    case "Revolver Munition":
-                        wType = "Secondary";
-                        normalWName = "Revolver";
-                        ammoWName = "Revolver";
-                        wHash = WeaponModel.HeavyRevolver;
-                        break;
-                    case "Bullpup":
-                    case "Bullpup Munition":
-                        wType = "Primary";
-                        normalWName = "Bullpup";
-                        ammoWName = "Bullpup";
-                        wHash = WeaponModel.BullpupRifle;
-                        break;
-                    case "Doppelschrotflinte":
-                    case "Doppelschrotflinte Munition":
-                        wType = "Primary";
-                        normalWName = "Doppelschrotflinte";
-                        ammoWName = "Doppelschrotflinte";
-                        wHash = WeaponModel.DoubleBarrelShotgun;
-                        break;
-                    case "Dolch":
-                        wType = "Fist";
-                        normalWName = "Dolch";
-                        wHash = WeaponModel.AntiqueCavalryDagger;
-                        break;
-                    case "MiniAK":
-                    case "MiniAK Munition":
-                        wType = "Primary";
-                        normalWName = "MiniAK";
-                        ammoWName = "MiniAK";
-                        wHash = WeaponModel.CompactRifle;
-                        break;
-                    case "Sniper":
-                    case "Sniper Munition":
-                        wType = "Primary";
-                        normalWName = "Sniper";
-                        ammoWName = "Sniper";
-                        wHash = WeaponModel.SniperRifle;
-                        break;
-                    case "Gefechtspistole":
-                    case "Gefechtspistole Munition":
-                        wType = "Secondary";
-                        normalWName = "Gefechtspistole";
-                        ammoWName = "Gefechtspistole";
-                        wHash = (WeaponModel)0x5EF9FEC4;
-                        break;
                     case "MkII Pistole":
                     case "MkII Pistolen Munition":
                         wType = "Secondary";
@@ -115,7 +44,14 @@ namespace Altv_Roleplay.Handler
                         ammoWName = "Pistole .50";
                         wHash = (WeaponModel)0x99AEEB3B;
                         break;
-                    case "Tazer":
+                    case "Revolver":
+                    case "Revolver Munition":
+                        wType = "Secondary";
+                        normalWName = "Revolver";
+                        ammoWName = "Revolver";
+                        wHash = (WeaponModel)0xC1B3C3D1;
+                        break;
+                    case "Elektroschocker":
                         wType = "Secondary";
                         wHash = WeaponModel.StunGun;
                         break;
@@ -167,6 +103,11 @@ namespace Altv_Roleplay.Handler
                         normalWName = "Baseballschlaeger";
                         wHash = (WeaponModel)0x958A4A8F;
                         break;
+                    case "Dolch":
+                        wType = "Fist";
+                        normalWName = "Dolch";
+                        wHash = (WeaponModel)0x92A27487;
+                        break;
                     case "Hammer":
                         wType = "Fist";
                         normalWName = "Hammer";
@@ -182,9 +123,9 @@ namespace Altv_Roleplay.Handler
                         normalWName = "Machete";
                         wHash = (WeaponModel)0xDD5DF8D9;
                         break;
-                    case "Klappmesser":
+                    case "Springmesser":
                         wType = "Fist";
-                        normalWName = "Klappmesser";
+                        normalWName = "Springmesser";
                         wHash = (WeaponModel)0xDFE37640;
                         break;
                     case "Schlagring":
@@ -197,26 +138,26 @@ namespace Altv_Roleplay.Handler
                         normalWName = "Taschenlampe";
                         wHash = (WeaponModel)0x8BB05FD7;
                         break;
-                    case "Feuerlöscher":
+                    case "Golfschlaeger":
                         wType = "Fist";
-                        wHash = WeaponModel.FireExtinguisher;
+                        normalWName = "Golfschlaeger";
+                        wHash = (WeaponModel)0x440E4788;
                         break;
                 }
-
 
                 if (type == "Weapon")
                 {
                     if (wType == "Primary")
                     {
                         string primWeapon = (string)Characters.GetCharacterWeapon(player, "PrimaryWeapon");
-
-                        if (primWeapon == "None")
-                        {
+                        if (primWeapon == "None") {
                             player.GiveWeapon(wHash, 0, true);
-                            Characters.SetCharacterWeapon(player, "PrimaryWeapon", wName);
+                            player.Emit("Client:Weapon:SetWeaponAmmo", (uint)wHash, 0);
+                            Characters.SetCharacterWeapon(player, "PrimaryWeapon", wName); 
                             Characters.SetCharacterWeapon(player, "PrimaryAmmo", 0);
-                            HUDHandler.SendNotification(player, 2, 5000, $"{wName} erfolgreich ausgerüstet.");
-                            return;
+                            SetWeaponComponents(player, wName);
+                            HUDHandler.SendNotification(player, 2, 5000, $"{wName} erfolgreich ausgerüstet.");                             
+                            return; 
                         }
                         else if (primWeapon == wName)
                         {
@@ -228,14 +169,17 @@ namespace Altv_Roleplay.Handler
                             float multiWeight = itemWeight * wAmmoAmount;
                             float finalWeight = bigWeight + multiWeight;
                             float helpWeight = 15f + Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId));
-                            bool inBackpack = false;
 
                             if (invWeight + multiWeight > 15f && backpackWeight + multiWeight > Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId))) { HUDHandler.SendNotification(player, 4, 5000, "Nicht genügend Platz."); return; }
+
+                            if (wAmmoAmount >= 1 && ammoWName != "None" && finalWeight <= helpWeight) player.Emit("Client:Weapon:GetWeaponAmmo", (uint)wHash, ammoWName);
 
                             if (finalWeight <= helpWeight)
                             {
                                 HUDHandler.SendNotification(player, 2, 5000, $"{wName} erfolgreich abgelegt.");
-                                player.EmitLocked("Client:WeaponAmmoChange:ComingRespond", (ulong)wHash);
+                                Characters.SetCharacterWeapon(player, "PrimaryWeapon", "None");
+                                Characters.SetCharacterWeapon(player, "PrimaryAmmo", 0);
+                                player.RemoveWeapon(wHash);
                             }
                         }
                         else
@@ -249,6 +193,7 @@ namespace Altv_Roleplay.Handler
                         if (fistWeapon == "None")
                         {
                             player.GiveWeapon(wHash, 0, false);
+                            player.Emit("Client:Weapon:SetWeaponAmmo", (uint)wHash, 0);
                             Characters.SetCharacterWeapon(player, "FistWeapon", wName);
                             Characters.SetCharacterWeapon(player, "FistWeaponAmmo", 0);
                             HUDHandler.SendNotification(player, 2, 500, $"{wName} erfolgreich ausgerüstet.");
@@ -257,42 +202,7 @@ namespace Altv_Roleplay.Handler
                         {
                             float curWeight = CharactersInventory.GetCharacterItemWeight(charId, "inventory") + CharactersInventory.GetCharacterItemWeight(charId, "backpack");
                             float maxWeight = 15f + Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId));
-                            if (curWeight < maxWeight)
-                            {
-                                Characters.SetCharacterWeapon(player, "FistWeapon", "None");
-                                Characters.SetCharacterWeapon(player, "FistWeaponAmmo", 0);
-                                player.RemoveWeapon(wHash);
-                                player.RemoveAllWeapons();
-
-                                string secondaryWeapon2REMOVE = (string)Characters.GetCharacterWeapon(player, "SecondaryWeapon2");
-                                string secondaryWeaponREMOVE = (string)Characters.GetCharacterWeapon(player, "SecondaryWeapon");
-                                string primaryWeaponREMOVE = (string)Characters.GetCharacterWeapon(player, "PrimaryWeapon");
-                                string FistWeaponRemove = (string)Characters.GetCharacterWeapon(player, "FistWeapon");
-
-                                if (secondaryWeaponREMOVE != "None") //Wenn nur Sekündär1
-                                {
-                                    int ammodiS1 = (int)Characters.GetCharacterWeapon(player, "SecondaryAmmo");
-                                    player.GiveWeapon(GetWeaponModelByName(secondaryWeaponREMOVE), ammodiS1, false);
-                                }
-
-                                if (secondaryWeapon2REMOVE != "None") //Wenn nur Sekündär2
-                                {
-                                    int ammodiS2 = (int)Characters.GetCharacterWeapon(player, "SecondaryAmmo2");
-                                    player.GiveWeapon(GetWeaponModelByName(secondaryWeapon2REMOVE), ammodiS2, false);
-                                }
-
-                                if (secondaryWeapon2REMOVE != "None") //Wenn nur Primär1
-                                {
-                                    int ammodiP = (int)Characters.GetCharacterWeapon(player, "PrimaryAmmo");
-                                    player.GiveWeapon(GetWeaponModelByName(primaryWeaponREMOVE), ammodiP, false);
-                                }
-
-                                if (FistWeaponRemove != "None") //Wenn nur FAUST
-                                {
-                                    player.GiveWeapon(GetWeaponModelByName(primaryWeaponREMOVE), 0, false);
-                                }
-                                HUDHandler.SendNotification(player, 2, 5000, $"{wName} erfolgreich abgelegt.");
-                            }
+                            if (curWeight < maxWeight) { Characters.SetCharacterWeapon(player, "FistWeapon", "None"); Characters.SetCharacterWeapon(player, "FistWeaponAmmo", 0); player.RemoveWeapon(wHash); HUDHandler.SendNotification(player, 2, 5000, $"{wName} erfolgreich abgelegt."); }
                             else { HUDHandler.SendNotification(player, 4, 5000, "Du hast nicht genügend Platz."); }
                         }
                         else
@@ -305,7 +215,7 @@ namespace Altv_Roleplay.Handler
                         string secondaryWeapon = (string)Characters.GetCharacterWeapon(player, "SecondaryWeapon");
                         string secondaryWeapon2 = (string)Characters.GetCharacterWeapon(player, "SecondaryWeapon2");
 
-                        if (secondaryWeapon == "None" && wName != "Tazer")
+                        if (secondaryWeapon == "None")
                         {
                             if (secondaryWeapon2 == wName)
                             {
@@ -317,21 +227,26 @@ namespace Altv_Roleplay.Handler
                                 float multiWeight = itemWeight * ammoAmount;
                                 float finalWeight = bigWeight + multiWeight;
                                 float helpWeight = 15f + Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId));
-                                bool inBackpack = false;
+
                                 if (invWeight + multiWeight > 15f && backpackWeight + multiWeight > Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId))) { HUDHandler.SendNotification(player, 4, 5000, "Nicht genügend Platz."); return; }
+
+                                if (ammoAmount >= 1 && ammoWName != "None" && finalWeight <= helpWeight) player.Emit("Client:Weapon:GetWeaponAmmo", (uint)wHash, ammoWName);
 
                                 if (finalWeight <= helpWeight)
                                 {
                                     HUDHandler.SendNotification(player, 2, 5000, $"{wName} erfolgreich abgelegt.");
-                                    player.EmitLocked("Client:WeaponAmmoChange:ComingRespond", (ulong)wHash);
-
+                                    Characters.SetCharacterWeapon(player, "SecondaryWeapon2", "None");
+                                    Characters.SetCharacterWeapon(player, "SecondaryAmmo2", "None");
+                                    player.RemoveWeapon(wHash);
                                 }
                             }
                             else
                             {
                                 player.GiveWeapon(wHash, 0, true);
+                                player.Emit("Client:Weapon:SetWeaponAmmo", (uint)wHash, 0);
                                 Characters.SetCharacterWeapon(player, "SecondaryWeapon", wName);
                                 Characters.SetCharacterWeapon(player, "SecondaryAmmo", 0);
+                                SetWeaponComponents(player, wName);
                                 HUDHandler.SendNotification(player, 2, 5000, $"{wName} erfolgreich ausgerüstet.");
                             }
                         }
@@ -345,24 +260,31 @@ namespace Altv_Roleplay.Handler
                             float multiWeight = itemWeight * ammoAmount;
                             float finalWeight = bigWeight + multiWeight;
                             float helpWeight = 15f + Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId));
-                            bool inBackpack = false;
+
                             if (invWeight + multiWeight > 15f && backpackWeight + multiWeight > Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId))) { HUDHandler.SendNotification(player, 4, 5000, "Nicht genügend Platz."); return; }
+
+                            if (ammoAmount >= 1 && ammoWName != "None" && finalWeight <= helpWeight) player.Emit("Client:Weapon:GetWeaponAmmo", (uint)wHash, ammoWName);
+
                             if (finalWeight <= helpWeight)
                             {
                                 HUDHandler.SendNotification(player, 2, 5000, $"{wName} erfolgreich abgelegt.");
-                                player.EmitLocked("Client:WeaponAmmoChange:ComingRespond", (ulong)wHash);
+                                Characters.SetCharacterWeapon(player, "SecondaryWeapon", "None");
+                                Characters.SetCharacterWeapon(player, "SecondaryAmmo", 0);
+                                player.RemoveWeapon(wHash);
                             }
                         }
                         else
                         {
-                            if (secondaryWeapon2 == "None" && wName == "Tazer")
+                            if (secondaryWeapon2 == "None")
                             {
                                 player.GiveWeapon(wHash, 0, true);
+                                player.Emit("Client:Weapon:SetWeaponAmmo", (uint)wHash, 0);
                                 Characters.SetCharacterWeapon(player, "SecondaryWeapon2", wName);
                                 Characters.SetCharacterWeapon(player, "SecondaryAmmo2", 0);
+                                SetWeaponComponents(player, wName);
                                 HUDHandler.SendNotification(player, 2, 5000, $"{wName} erfolgreich ausgerüstet.");
                             }
-                            else if (secondaryWeapon2 == wName && wName == "Tazer")
+                            else if (secondaryWeapon2 == wName)
                             {
                                 int ammoAmount = (int)Characters.GetCharacterWeapon(player, "SecondaryAmmo2");
                                 float invWeight = CharactersInventory.GetCharacterItemWeight(charId, "inventory");
@@ -372,13 +294,15 @@ namespace Altv_Roleplay.Handler
                                 float multiWeight = itemWeight * ammoAmount;
                                 float finalWeight = bigWeight + multiWeight;
                                 float helpWeight = 15f + Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId));
-                                bool inBackpack = false;
+
+                                if (ammoAmount >= 1 && ammoWName != "None" && finalWeight <= helpWeight) player.Emit("Client:Weapon:GetWeaponAmmo", (uint)wHash, ammoWName);
 
                                 if (finalWeight <= helpWeight)
                                 {
                                     HUDHandler.SendNotification(player, 2, 5000, $"{wName} erfolgreich abgelegt.");
-                                    player.EmitLocked("Client:WeaponAmmoChange:ComingRespond", (ulong)wHash); //Do In Timer Too
-
+                                    Characters.SetCharacterWeapon(player, "SecondaryWeapon2", "None");
+                                    Characters.SetCharacterWeapon(player, "SecondaryAmmo2", 0);
+                                    player.RemoveWeapon(wHash);
                                 }
                             }
                             else { HUDHandler.SendNotification(player, 3, 5000, "Du musst zuerst deine Sekundärwaffe ablegen bevor du eine neue anlegen kannst."); }
@@ -394,7 +318,7 @@ namespace Altv_Roleplay.Handler
                         else if (primaryWeapon == normalWName)
                         {
                             int newAmmo = (int)Characters.GetCharacterWeapon(player, "PrimaryAmmo") + amount;
-                            player.GiveWeapon(wHash, amount, true);
+                            player.Emit("Client:Weapon:SetWeaponAmmo", (uint)wHash, newAmmo);
                             Characters.SetCharacterWeapon(player, "PrimaryAmmo", newAmmo);
                             HUDHandler.SendNotification(player, 2, 5000, $"Du hast {wName} in deine Waffe geladen.");
 
@@ -415,7 +339,7 @@ namespace Altv_Roleplay.Handler
                         else if (secondaryWeapon == normalWName)
                         {
                             int newAmmo = (int)Characters.GetCharacterWeapon(player, "SecondaryAmmo") + amount;
-                            player.GiveWeapon(wHash, amount, true);
+                            player.Emit("Client:Weapon:SetWeaponAmmo", (uint)wHash, newAmmo);
                             Characters.SetCharacterWeapon(player, "SecondaryAmmo", newAmmo);
                             HUDHandler.SendNotification(player, 2, 5000, $"Du hast {wName} in deine Waffe geladen.");
 
@@ -431,7 +355,7 @@ namespace Altv_Roleplay.Handler
                             else if (secondary2Weapon == normalWName)
                             {
                                 int newAmmo = (int)Characters.GetCharacterWeapon(player, "SecondaryAmmo2") + amount;
-                                player.GiveWeapon(wHash, amount, true);
+                                player.Emit("Client:Weapon:SetWeaponAmmo", (uint)wHash, newAmmo);
                                 Characters.SetCharacterWeapon(player, "SecondaryAmmo2", newAmmo);
                                 HUDHandler.SendNotification(player, 2, 5000, $"Du hast {wName} in deine Waffe geladen.");
 
@@ -457,7 +381,7 @@ namespace Altv_Roleplay.Handler
         public static void SetWeaponComponents(IPlayer player, string wName)
         {
             if (player == null || !player.Exists) return;
-            switch (wName)
+            switch(wName)
             {
                 case "PDW":
                     player.AddWeaponComponent(WeaponModel.CombatPDW, 0x7BC4CDDC); //Flashlight
@@ -465,19 +389,25 @@ namespace Altv_Roleplay.Handler
                     player.AddWeaponComponent(WeaponModel.CombatPDW, 0xC164F53); //Grip
                     player.AddWeaponComponent(WeaponModel.CombatPDW, 0x4317F19E); //Magazin
                     break;
+                case "MkII Pistole":
+                    player.AddWeaponComponent(WeaponModel.PistolMkII, 0x43FD595B); //Flashlight
+                    player.AddWeaponComponent(WeaponModel.PistolMkII, 0x21E34793); //Mündungsbremse
+                    break;
             }
         }
 
         public static WeaponModel GetWeaponModelByName(string wName)
         {
             WeaponModel wHash = 0;
-            switch (wName)
+            switch(wName)
             {
                 case "Pistole": wHash = WeaponModel.Pistol; break;
-                case "Gefechtspistole": wHash = WeaponModel.CombatPistol; break;
-                case "Tazer": wHash = WeaponModel.StunGun; break;
+                case "MkII Pistole": wHash = WeaponModel.PistolMkII; break;
+                case "Pistole .50": wHash = WeaponModel.Pistol50; break;
+                case "Revolver": wHash = WeaponModel.HeavyRevolver; break;
+                case "Elektroschocker": wHash = WeaponModel.StunGun; break;
+                case "Flaregun": wHash = WeaponModel.FlareGun; break;
                 case "PDW": wHash = WeaponModel.CombatPDW; break;
-                case "SMG": wHash = WeaponModel.SMG; break;
                 case "Schlagstock": wHash = WeaponModel.Nightstick; break;
                 case "Messer": wHash = WeaponModel.Knife; break;
                 case "Brecheisen": wHash = WeaponModel.Crowbar; break;
@@ -486,316 +416,88 @@ namespace Altv_Roleplay.Handler
                 case "Hammer": wHash = WeaponModel.Hammer; break;
                 case "Axt": wHash = WeaponModel.Hatchet; break;
                 case "Machete": wHash = WeaponModel.Machete; break;
-                case "Klappmesser": wHash = WeaponModel.Switchblade; break;
-                case "Feuerlöscher": wHash = WeaponModel.FireExtinguisher; break;
+                case "Springmesser": wHash = WeaponModel.Switchblade; break;
+                case "Schlagring": wHash = WeaponModel.BrassKnuckles; break;
                 case "Taschenlampe": wHash = WeaponModel.Flashlight; break;
-                case "MiniMP": wHash = WeaponModel.MicroSMG; break;
-                case "Gusenberg": wHash = WeaponModel.GusenbergSweeper; break;
-                case "Bullpup": wHash = WeaponModel.BullpupRifle; break;
-                case "Doppelschrotflinte": wHash = WeaponModel.DoubleBarrelShotgun; break;
-                case "MiniAK": wHash = WeaponModel.CompactRifle; break;
-                case "Sniper": wHash = WeaponModel.SniperRifle; break;
-                case "Revolver": wHash = WeaponModel.HeavyRevolver; break;
+                case "SMG": wHash = WeaponModel.SMG; break;
             }
             return wHash;
         }
 
-        [AsyncClientEvent("Server:WeaponAmmoChange:SecondRespond")]
-        public static async Task WeaponAmmoChange(IPlayer player, int ammo, int hash)
-        {
+        [AsyncClientEvent("Server:Weapon:SendWeaponAmmo")]
+        public static void SetWeaponAmmo(IPlayer player, string name, int ammo)
+        { 
             try
             {
-                if (WeaponHandler.GetWeaponModelByName((string)Characters.GetCharacterWeapon(player, "PrimaryWeapon")) == (WeaponModel)hash)
-                {
-                    var wName = Characters.GetCharacterWeapon(player, "PrimaryWeapon");
-                } else if (WeaponHandler.GetWeaponModelByName((string)Characters.GetCharacterWeapon(player, "PrimaryWeapon")) == (WeaponModel)hash)
-                {
-                    var wName = Characters.GetCharacterWeapon(player, "SecondaryWeapon");
-                } else if (WeaponHandler.GetWeaponModelByName((string)Characters.GetCharacterWeapon(player, "PrimaryWeapon")) == (WeaponModel)hash)
-                {
-                    var wName = Characters.GetCharacterWeapon(player, "SecondaryWeapon2");
-                }
+                int charId = User.GetPlayerOnline(player);
 
+                float invWeight = CharactersInventory.GetCharacterItemWeight(charId, "inventory");
+                float backpackWeight = CharactersInventory.GetCharacterItemWeight(charId, "backpack");
+                float itemWeight = ServerItems.GetItemWeight($"{name} Munition");
+                float multiWeight = itemWeight * ammo;
 
-
-                if (WeaponHandler.GetWeaponModelByName((string)Characters.GetCharacterWeapon(player, "PrimaryWeapon")) == (WeaponModel)hash)
-                {
-                    var wName = Characters.GetCharacterWeapon(player, "PrimaryWeapon");
-
-                    string wType = "None";
-                    string normalWName = "None";
-                    string ammoWName = "None";
-                    WeaponModel wHash = 0;
-
-                    switch (wName)
-                    {
-                        case "Gusenberg":
-                        case "Gusenberg Munition":
-                            wType = "Primary";
-                            normalWName = "Gusenberg";
-                            ammoWName = "Gusenberg";
-                            wHash = WeaponModel.GusenbergSweeper;
-                            break;
-                        case "Bullpup":
-                        case "Bullpup Munition":
-                            wType = "Primary";
-                            normalWName = "Bullpup";
-                            ammoWName = "Bullpup";
-                            wHash = WeaponModel.BullpupRifle;
-                            break;
-                        case "Doppelschrotflinte":
-                        case "Doppelschrotflinte Munition":
-                            wType = "Primary";
-                            normalWName = "Doppelschrotflinte";
-                            ammoWName = "Doppelschrotflinte";
-                            wHash = WeaponModel.DoubleBarrelShotgun;
-                            break;
-                        case "MiniAK":
-                        case "MiniAK Munition":
-                            wType = "Primary";
-                            normalWName = "MiniAK";
-                            ammoWName = "MiniAK";
-                            wHash = WeaponModel.CompactRifle;
-                            break;
-                        case "Sniper":
-                        case "Sniper Munition":
-                            wType = "Primary";
-                            normalWName = "Sniper";
-                            ammoWName = "Sniper";
-                            wHash = WeaponModel.SniperRifle;
-                            break;
-                        case "Karabiner":
-                        case "Karabiner Munition":
-                            wType = "Primary";
-                            normalWName = "Karabiner";
-                            ammoWName = "Karabiner";
-                            wHash = (WeaponModel)0x83BF0278;
-                            break;
-                        case "SMG":
-                        case "SMG Munition":
-                            wType = "Primary";
-                            normalWName = "SMG";
-                            ammoWName = "SMG";
-                            wHash = (WeaponModel)0x2BE6766B;
-                            break;
-                    }
-
-
-                    CharactersInventory.AddCharacterItem((int)player.GetCharacterMetaId(), $"{ammoWName} Munition", ammo, "inventory");
-                    Characters.SetCharacterWeapon(player, "PrimaryWeapon", "None");
-                    Characters.SetCharacterWeapon(player, "PrimaryAmmo", 0);
-
-                    player.RemoveWeapon((uint)hash);
-                    player.RemoveAllWeapons();
-
-
-                    string secondaryWeapon2REMOVE = (string)Characters.GetCharacterWeapon(player, "SecondaryWeapon2");
-                    string secondaryWeaponREMOVE = (string)Characters.GetCharacterWeapon(player, "SecondaryWeapon");
-                    string primaryWeaponREMOVE = (string)Characters.GetCharacterWeapon(player, "PrimaryWeapon");
-                    string FistWeaponRemove = (string)Characters.GetCharacterWeapon(player, "FistWeapon");
-
-                    if (secondaryWeaponREMOVE != "None") //Wenn nur Sekündär1
-                    {
-                        int ammodiS1 = (int)Characters.GetCharacterWeapon(player, "SecondaryAmmo");
-                        player.GiveWeapon(GetWeaponModelByName(secondaryWeaponREMOVE), ammodiS1, false);
-                    }
-
-                    if (secondaryWeapon2REMOVE != "None") //Wenn nur Sekündär2
-                    {
-                        int ammodiS1 = (int)Characters.GetCharacterWeapon(player, "SecondaryAmmo2");
-                        player.GiveWeapon(GetWeaponModelByName(secondaryWeapon2REMOVE), ammodiS1, false);
-                    }
-
-                    if (primaryWeaponREMOVE != "None") //Wenn nur Primär1
-                    {
-                        int ammodiS1 = (int)Characters.GetCharacterWeapon(player, "PrimaryAmmo");
-                        player.GiveWeapon(GetWeaponModelByName(primaryWeaponREMOVE), ammodiS1, false);
-                    }
-
-                    if (FistWeaponRemove != "None") //Wenn nur FAUST
-                    {
-                        player.GiveWeapon(GetWeaponModelByName(FistWeaponRemove), 0, false);
-                    }
-                }
-                else if (WeaponHandler.GetWeaponModelByName((string)Characters.GetCharacterWeapon(player, "SecondaryWeapon")) == (WeaponModel)hash)
-                {
-                    var wName = Characters.GetCharacterWeapon(player, "SecondaryWeapon");
-
-                    string wType = "None";
-                    string normalWName = "None";
-                    string ammoWName = "None";
-                    WeaponModel wHash = 0;
-
-                    switch (wName)
-                    {
-                        case "Pistole":
-                        case "Pistolen Munition":
-                            wType = "Secondary";
-                            normalWName = "Pistole";
-                            ammoWName = "Pistolen";
-                            wHash = (WeaponModel)0x1B06D571;
-                            break;
-                        case "MiniMP":
-                        case "MiniMP Munition":
-                            wType = "Secondary";
-                            normalWName = "MiniMP";
-                            ammoWName = "MiniMP";
-                            wHash = WeaponModel.MicroSMG;
-                            break;
-                        case "Revolver":
-                        case "Revolver Munition":
-                            wType = "Secondary";
-                            normalWName = "Revolver";
-                            ammoWName = "Revolver";
-                            wHash = WeaponModel.HeavyRevolver;
-                            break;
-                        case "Gefechtspistole":
-                        case "Gefechtspistole Munition":
-                            wType = "Secondary";
-                            normalWName = "Gefechtspistole";
-                            ammoWName = "Gefechtspistole";
-                            wHash = (WeaponModel)0x5EF9FEC4;
-                            break;
-                        case "MkII Pistole":
-                        case "MkII Pistolen Munition":
-                            wType = "Secondary";
-                            normalWName = "MkII Pistole";
-                            ammoWName = "MkII Pistolen";
-                            wHash = (WeaponModel)0xBFE256D4;
-                            break;
-                        case "Pistole .50":
-                        case "Pistole .50 Munition":
-                            wType = "Secondary";
-                            normalWName = "Pistole .50";
-                            ammoWName = "Pistole .50";
-                            wHash = (WeaponModel)0x99AEEB3B;
-                            break;
-                        case "Tazer":
-                            wType = "Secondary";
-                            wHash = WeaponModel.StunGun;
-                            break;
-                        case "Flaregun":
-                        case "Flaregun Munition":
-                            wType = "Secondary";
-                            normalWName = "Flaregun";
-                            ammoWName = "Flaregun";
-                            wHash = (WeaponModel)0x47757124;
-                            break;
-                    }
-
-                    CharactersInventory.AddCharacterItem((int)player.GetCharacterMetaId(), $"{ammoWName} Munition", ammo, "inventory");
-                    Characters.SetCharacterWeapon(player, "SecondaryWeapon", "None");
-                    Characters.SetCharacterWeapon(player, "SecondaryAmmo", 0);
-
-                    player.RemoveWeapon((uint)hash);
-                    player.RemoveAllWeapons();
-
-                    string secondaryWeapon2REMOVE = (string)Characters.GetCharacterWeapon(player, "SecondaryWeapon2");
-                    string secondaryWeaponREMOVE = (string)Characters.GetCharacterWeapon(player, "SecondaryWeapon");
-                    string primaryWeaponREMOVE = (string)Characters.GetCharacterWeapon(player, "PrimaryWeapon");
-                    string FistWeaponRemove = (string)Characters.GetCharacterWeapon(player, "FistWeapon");
-
-                    if (secondaryWeaponREMOVE != "None") //Wenn nur Sekündär1
-                    {
-                        int ammodiS1 = (int)Characters.GetCharacterWeapon(player, "SecondaryAmmo");
-                        player.GiveWeapon(GetWeaponModelByName(secondaryWeaponREMOVE), ammodiS1, false);
-                    }
-
-                    if (secondaryWeapon2REMOVE != "None") //Wenn nur Sekündär2
-                    {
-                        int ammodiS1 = (int)Characters.GetCharacterWeapon(player, "SecondaryAmmo2");
-                        player.GiveWeapon(GetWeaponModelByName(secondaryWeapon2REMOVE), ammodiS1, false);
-                    }
-
-                    if (primaryWeaponREMOVE != "None") //Wenn nur Primär1
-                    {
-                        int ammodiS1 = (int)Characters.GetCharacterWeapon(player, "PrimaryAmmo");
-                        player.GiveWeapon(GetWeaponModelByName(primaryWeaponREMOVE), ammodiS1, false);
-                    }
-
-                    if (FistWeaponRemove != "None") //Wenn nur FAUST
-                    {
-                        player.GiveWeapon(GetWeaponModelByName(FistWeaponRemove), 0, false);
-                    }
-                }
-                else if (WeaponHandler.GetWeaponModelByName((string)Characters.GetCharacterWeapon(player, "SecondaryWeapon2")) == (WeaponModel)hash)
-                {
-                    var wName = Characters.GetCharacterWeapon(player, "SecondaryWeapon2");
-
-                    string wType = "None";
-                    string normalWName = "None";
-                    string ammoWName = "None";
-                    WeaponModel wHash = 0;
-
-                    switch (wName)
-                    {
-                        case "Tazer":
-                            wType = "Secondary";
-                            wHash = WeaponModel.StunGun;
-                            break;
-                    }
-
-                    Characters.SetCharacterWeapon(player, "SecondaryWeapon2", "None");
-                    Characters.SetCharacterWeapon(player, "SecondaryAmmo2", 0);
-                    player.RemoveWeapon((uint)hash);
-                    player.RemoveAllWeapons();
-
-
-                    string secondaryWeapon2REMOVE = (string)Characters.GetCharacterWeapon(player, "SecondaryWeapon2");
-                    string secondaryWeaponREMOVE = (string)Characters.GetCharacterWeapon(player, "SecondaryWeapon");
-                    string primaryWeaponREMOVE = (string)Characters.GetCharacterWeapon(player, "PrimaryWeapon");
-                    string FistWeaponRemove = (string)Characters.GetCharacterWeapon(player, "FistWeapon");
-
-                    if (secondaryWeaponREMOVE != "None") //Wenn nur Sekündär1
-                    {
-                        int ammodiS1 = (int)Characters.GetCharacterWeapon(player, "SecondaryAmmo");
-                        player.GiveWeapon(GetWeaponModelByName(secondaryWeaponREMOVE), ammodiS1, false);
-                    }
-
-                    if (secondaryWeapon2REMOVE != "None") //Wenn nur Sekündär2
-                    {
-                        int ammodiS1 = (int)Characters.GetCharacterWeapon(player, "SecondaryAmmo2");
-                        player.GiveWeapon(GetWeaponModelByName(secondaryWeapon2REMOVE), ammodiS1, false);
-                    }
-
-                    if (primaryWeaponREMOVE != "None") //Wenn nur Primär1
-                    {
-                        int ammodiS1 = (int)Characters.GetCharacterWeapon(player, "PrimaryAmmo");
-                        player.GiveWeapon(GetWeaponModelByName(primaryWeaponREMOVE), ammodiS1, false);
-                    }
-
-                    if (FistWeaponRemove != "None") //Wenn nur FAUST
-                    {
-                        player.GiveWeapon(GetWeaponModelByName(FistWeaponRemove), 0, false);
-                    }
-                }
+                if (invWeight + multiWeight <= 15f) CharactersInventory.AddCharacterItem(charId, $"{name} Munition", ammo, "inventory");
+                else if (backpackWeight + multiWeight <= Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId))) CharactersInventory.AddCharacterItem(charId, $"{name} Munition", ammo, "backpack");
+                InventoryHandler.RequestInventoryItems(player);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Alt.Log($"{e}");
             }
         }
 
-
-        [AsyncClientEvent("Server:WeaponAmmoChange:ChangeRespond")]
-        public static async Task WeaponAmmoChangeTimer(IPlayer player, int ammo, int hash)
+            [AsyncClientEvent("Server:Weapon:UpdateAmmo")]
+        public static void UpdateWeaponAmmo(IPlayer player, uint hash, int ammo)
         {
             try
             {
-                if (WeaponHandler.GetWeaponModelByName((string)Characters.GetCharacterWeapon(player, "PrimaryWeapon")) == (WeaponModel)hash)
-                {
-                    Characters.SetCharacterWeapon(player, "PrimaryAmmo", ammo);
-                }else if (WeaponHandler.GetWeaponModelByName((string)Characters.GetCharacterWeapon(player, "SecondaryWeapon")) == (WeaponModel)hash)
-                {
-                    Characters.SetCharacterWeapon(player, "SecondaryAmmo", ammo);
-                }else if (WeaponHandler.GetWeaponModelByName((string)Characters.GetCharacterWeapon(player, "SecondaryWeapon2")) == (WeaponModel)hash)
-                {
-                    Characters.SetCharacterWeapon(player, "SecondaryAmmo2", ammo);
-                }
+                string wType = "None";
+                string normalWName = "None";
+
+                switch (hash)
+                    {
+                        case 453432689:
+                            wType = "Secondary";
+                            normalWName = "Pistole";
+                            break;
+                        case 3219281620:
+                            wType = "Secondary";
+                            normalWName = "MkII Pistole";
+                            break;
+                        case 2578377531:
+                            wType = "Secondary";
+                            normalWName = "Pistole .50";
+                            break;
+                        case 3249783761:
+                            wType = "Secondary";
+                            normalWName = "Revolver";
+                            break;
+                        case 1198879012:
+                            wType = "Secondary";
+                            normalWName = "Flaregun";
+                            break;
+                        case 171789620:
+                            wType = "Primary";
+                            normalWName = "PDW";
+                            break;
+                        case 2210333304:
+                            wType = "Primary";
+                            normalWName = "Karabiner";
+                            break;
+                        case 736523883:
+                            wType = "Primary";
+                            normalWName = "SMG";
+                            break;
+                    }
+
+                if (wType == "Primary") Characters.SetCharacterWeapon(player, "PrimaryAmmo", ammo);
+                else if (wType == "Fist") Characters.SetCharacterWeapon(player, "FistWeaponAmmo", ammo);
+                else if (normalWName == (string)Characters.GetCharacterWeapon(player, "SecondaryWeapon")) Characters.SetCharacterWeapon(player, "SecondaryAmmo", ammo);
+                else if (wType != "None") Characters.SetCharacterWeapon(player, "SecondaryAmmo2", ammo);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Alt.Log($"{e}");
             }
         }
     }

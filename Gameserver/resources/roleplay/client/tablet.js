@@ -28,7 +28,7 @@ alt.onServer('Client:Tablet:createCEF', () => {
     if (tablet) return;
     let tabletModel = game.getHashKey('prop_cs_tablet');
     game.requestAnimDict("cellphone@");
-    alt.loadModel(tabletModel);
+    game.requestModel(tabletModel);
     let animInterval = alt.setInterval(() => {
         if (!game.hasAnimDictLoaded("cellphone@")) return;
         game.taskPlayAnim(alt.Player.local.scriptID, "cellphone@", "cellphone_cellphone_intro", 1.0, -1, -1, 50, 0, false, false, false);
@@ -101,9 +101,9 @@ alt.onServer("Client:Tablet:SetFactionManagerAppContent", (factionId, infoArray,
     }
 });
 
-alt.onServer("Client:Tablet:SetFactionAppContent", (dutyMemberCount, vehicleArray) => {
+alt.onServer("Client:Tablet:SetFactionAppContent", (dutyMemberCount, dispatchCount, vehicleArray) => {
     if (tabletBrowser != null) {
-        tabletBrowser.emit("CEF:Tablet:SetFactionAppContent", dutyMemberCount, vehicleArray);
+        tabletBrowser.emit("CEF:Tablet:SetFactionAppContent", dutyMemberCount, dispatchCount, vehicleArray);
     }
 });
 
@@ -160,12 +160,12 @@ alt.onServer('Client:Tablet:closeCEF', () => {
 });
 
 let openTabletCEF = function() {
-    if (tabletBrowser == null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && alt.Player.local.getSyncedMeta("PLAYER_SPAWNED") == true) {
+    if (tabletBrowser == null && alt.Player.local.getMeta("IsCefOpen") == false && alt.Player.local.getSyncedMeta("PLAYER_SPAWNED") == true) {
         alt.showCursor(true);
         alt.toggleGameControls(false);
         tabletBrowser = new alt.WebView("http://resource/client/cef/tablet/index.html");
         tabletBrowser.focus();
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         tabletBrowser.on("Client:Tablet:cefIsReady", () => {
             tabletReady = true;
             alt.emitServer("Server:Tablet:RequestTabletData");
@@ -345,7 +345,7 @@ function sendDispatchToFaction(factionId, msg) {
 
 export function closeTabletCEF() {
     if (tabletBrowser != null) {
-        alt.emitServer("Server:CEF:setCefStatus", false);
+        alt.emit("Client:HUD:setCefStatus", false);
         tabletBrowser.off("Client:Tablet:AppStoreInstallUninstallApp", AppStoreInstallUninstallApp);
         tabletBrowser.off("Client:Tablet:BankingAppnewTransaction", BankingAppnewTransaction);
         tabletBrowser.off("Client:Tablet:EventsAppNewEntry", EventsAppNewEntry);

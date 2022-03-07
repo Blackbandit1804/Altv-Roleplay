@@ -347,7 +347,7 @@ namespace Altv_Roleplay.Model
             }
         }
 
-        public static async Task SetPlayerOnline(ClassicPlayer player, int charId)
+        public static void SetPlayerOnline(ClassicPlayer player, int charId)
         {
             if (player == null || !player.Exists) return;
             player.SetCharacterMetaId(Convert.ToUInt64(charId));

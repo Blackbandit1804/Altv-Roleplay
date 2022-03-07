@@ -28,7 +28,7 @@ namespace Altv_Roleplay.Model
         {
             try
             {
-                var clothes = ServerClothesShops.ServerClothesShopsItems_.ToList().FirstOrDefault(x => x.id == clothesId && x.gender == gender);
+                var clothes = ServerClothesShops.ServerClothesShopsItems_.ToList().FirstOrDefault(x => x.id == clothesId  && x.gender == gender);
                 if (clothes != null) return clothes.componentId;
             }
             catch (Exception e)

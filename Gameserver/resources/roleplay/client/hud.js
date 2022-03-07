@@ -46,79 +46,43 @@ let isPlayerDead = false;
 let currentRadioFrequence = null;
 let isTattooShopOpened = false;
 let isPlayerUsingMegaphone = false;
-let changeVehOwnerCefOpened = false;
-let isLaptopActivated = false;
-let isLaptopCEFOpened = false;
-let playerSeat  = null;
-let playerVehicle = null;
-let hasHandsUp = false;
-let bankdooropened = false;
+let lastInteract = 0;
 
-alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmoney, currentmoneyblack) => {
+alt.onServer("Client:HUD:CreateCEF", (hunger, thirst, currentmoney) => {
     if (hudBrowser == null) {
         hudBrowser = new alt.WebView("http://resource/client/cef/hud/index.html");
 
         hudBrowser.on("Client:HUD:cefIsReady", () => {
             alt.setTimeout(function() {
-                hudBrowser.emit("CEF:HUD:updateDesireHUD", armor, health, hunger, thirst);
+                hudBrowser.emit("CEF:HUD:updateDesireHUD", hunger, thirst);
                 hudBrowser.emit("CEF:HUD:updateMoney", currentmoney);
                 browserReady = true;
             }, 1000);
         });
 
-        hudBrowser.on("Client:Farming:StartProcessing", (neededItem, producedItem, neededItemAmount, producedItemAmount, duration, neededItemTWO, neededItemTHREE, neededItemTWOAmount, neededItemTHREEAmount) => {
-            alt.emitServer("Server:Farming:StartProcessing", neededItem, producedItem, neededItemAmount, producedItemAmount, duration, neededItemTWO, neededItemTHREE, neededItemTWOAmount, neededItemTHREEAmount);
-        });
-
-        hudBrowser.on("Client:Farming:closeCEF", () => {
-            closeFarmingCEF();
-        });
-
-        alt.onServer("Client:Farming:createCEF", (neededItem, producedItem, neededItemAmount, producedItemAmount, duration, neededItemTWO, neededItemTHREE, neededItemTWOAmount, neededItemTHREEAmount) => {
-            if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && ShopCefOpened == false) {
-                if (alt.Player.local.getSyncedMeta("HasHandcuffs") == true || alt.Player.local.getSyncedMeta("HasRopeCuffs") == true) return;
-                hudBrowser.emit("CEF:Farming:createCEF", neededItem, producedItem, neededItemAmount, producedItemAmount, duration, neededItemTWO, neededItemTHREE, neededItemTWOAmount, neededItemTHREEAmount);
-                alt.emitServer("Server:CEF:setCefStatus", true);
-                alt.showCursor(true);
-                alt.toggleGameControls(false);
-                hudBrowser.focus();
-            }
-        });
-
-        
-        alt.onServer("Client:SaltychatBlockscreen:RestartGame", () => {
-            native.restartGame();
-        });
-
-        hudBrowser.on("Client:Vehicle:changeVehOwner", (targetId) => {
-            alt.emitServer("Server:Vehicle:changeVehOwner", parseInt(targetId));
-        });
-        
-        hudBrowser.on("Client:Vehicle:closeChangeVehOwnerHUD", () => {
-            alt.emitServer("Server:CEF:setCefStatus", false);
-            game.freezeEntityPosition(alt.Player.local.scriptID, false);
-            alt.showCursor(false);
-            alt.toggleGameControls(true);
-            hudBrowser.unfocus();
-            changeVehOwnerCefOpened = false;
-        });
         //Tattoo Shop
         hudBrowser.on("Client:TattooShop:closeShop", () => {
             isTattooShopOpened = false;
             alt.showCursor(false);
             alt.toggleGameControls(true);
             hudBrowser.unfocus();
-            alt.emitServer("Server:CEF:setCefStatus", false);
+            alt.emit("Client:HUD:setCefStatus", false);
             alt.emitServer("Server:ClothesShop:RequestCurrentSkin");
             clearTattoos(alt.Player.local.scriptID);
             setCorrectTattoos();
         });
 
         hudBrowser.on("Client:TattooShop:buyTattoo", (shopId, tattooId) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:TattooShop:buyTattoo", parseInt(shopId), parseInt(tattooId));
         });
 
         hudBrowser.on("Client:TattooShop:deleteTattoo", (id) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:TattooShop:deleteTattoo", parseInt(id));
         });
 
@@ -127,20 +91,17 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
             setTattoo(alt.Player.local.scriptID, collection, hash);
         });
 
-        hudBrowser.on("Client:bank:openclose", () => {
-            if (bankdooropened == false) {
-                native.doorControl(alt.hash("prop_bank_vaultdoor"), -2148.653, 1101.464, -23.5492, true, 0, 0, -10);
-            }
-        });
-
         //Rotation HUD
         hudBrowser.on("Client:Utilities:setRotation", (rotZ) => {
-            game.setEntityRotation(alt.Player.local.scriptID, game.getEntityPitch(alt.Player.local.scriptID), game.getEntityRoll(alt.Player.local.scriptID), parseFloat(rotZ), 2, true);
+            game.setEntityHeading(alt.Player.local.scriptID, parseFloat(rotZ));
         });
 
         hudBrowser.on("Client:HUD:sendIdentityCardApplyForm", (birthplace) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:HUD:sendIdentityCardApplyForm", birthplace);
-            alt.emitServer("Server:CEF:setCefStatus", false);
+            alt.emit("Client:HUD:setCefStatus", false);
             game.freezeEntityPosition(game.playerPedId(), false);
             alt.showCursor(false);
             alt.toggleGameControls(true);
@@ -153,11 +114,17 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:Bank:BankAccountCreateNewAccount", (selectedBank) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Bank:CreateNewBankAccount", selectedBank);
             closeBankCEF();
         });
 
         hudBrowser.on("Client:Bank:BankAccountAction", (action, accountNumber) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Bank:BankAccountAction", action, accountNumber);
             closeBankCEF();
         });
@@ -167,18 +134,30 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:ATM:WithdrawMoney", (accountNr, amount, zoneName) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:ATM:WithdrawMoney", accountNr, parseInt(amount), zoneName);
         });
 
         hudBrowser.on("Client:ATM:DepositMoney", (accountNr, amount, zoneName) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:ATM:DepositMoney", accountNr, parseInt(amount), zoneName);
         });
 
         hudBrowser.on("Client:ATM:TransferMoney", (accountNr, targetNr, amount, zoneName) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:ATM:TransferMoney", accountNr, parseInt(targetNr), parseInt(amount), zoneName);
         });
 
         hudBrowser.on("Client:ATM:TryPin", (action, curATMAccountNumber) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:ATM:TryPin", action, curATMAccountNumber);
         });
 
@@ -187,10 +166,16 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:Shop:buyItem", (shopId, amount, itemname) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Shop:buyItem", parseInt(shopId), parseInt(amount), itemname);
         });
 
         hudBrowser.on("Client:Shop:sellItem", (shopId, amount, itemname) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Shop:sellItem", parseInt(shopId), parseInt(amount), itemname);
         });
 
@@ -217,12 +202,17 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
             game.setPedHairColor(alt.Player.local.scriptID, parseInt(headoverlays[2][13]), parseInt(headoverlays[1][13]));
         });
 
-        hudBrowser.on("Client:Barber:finishBarber", (headoverlayarray) => {
-            alt.emitServer("Server:Barber:finishBarber", headoverlayarray);
-            closeBarberCEF();
+        hudBrowser.on("Client:Barber:finishBarber", (headoverlayarray1, headoverlayarray2, headoverlayarray3) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
+            alt.emitServer("Server:Barber:finishBarber", headoverlayarray1, headoverlayarray2, headoverlayarray3);
         });
 
         hudBrowser.on("Client:Barber:RequestCurrentSkin", () => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Barber:RequestCurrentSkin");
         });
 
@@ -239,11 +229,16 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:Smartphone:joinRadioFrequence", (currentRadioFrequence) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:joinRadioFrequence", `${currentRadioFrequence}`);
         });
 
         hudBrowser.on("Client:Smartphone:leaveRadioFrequence", () => {
-            if (currentRadioFrequence == null) return;
+            if (currentRadioFrequence == null || lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:leaveRadioFrequence");
         });
 
@@ -252,14 +247,23 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:VehicleShop:BuyVehicle", (shopId, hash) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:VehicleShop:BuyVehicle", parseInt(shopId), hash);
         });
 
         hudBrowser.on("Client:Garage:DoAction", (garageid, action, vehid) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Garage:DoAction", parseInt(garageid), action, parseInt(vehid));
         });
 
         hudBrowser.on("Client:Jobcenter:SelectJob", (jobName) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Jobcenter:SelectJob", jobName);
             closeJobcenterCEF();
         });
@@ -269,6 +273,9 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:FuelStation:FuelVehicleAction", (vehID, fuelStationId, fueltype, selectedLiterAmount, selectedLiterPrice) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:FuelStation:FuelVehicleAction", parseInt(vehID), parseInt(fuelStationId), fueltype, parseInt(selectedLiterAmount), parseInt(selectedLiterPrice));
         });
 
@@ -285,6 +292,9 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:ClothesShop:RequestCurrentSkin", () => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:ClothesShop:RequestCurrentSkin");
         });
 
@@ -297,6 +307,9 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:ClothesShop:buyItem", (shopId, itemName) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:ClothesShop:buyItem", parseInt(shopId), parseInt(1), itemName);
         });
 
@@ -325,14 +338,23 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:FactionBank:DepositMoney", (type, factionId, amount) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:FactionBank:DepositMoney", type, parseInt(factionId), parseInt(amount));
         });
 
         hudBrowser.on("Client:FactionBank:WithdrawMoney", (type, factionId, amount) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:FactionBank:WithdrawMoney", type, parseInt(factionId), parseInt(amount));
         });
 
         hudBrowser.on("Client:GivePlayerBill:giveBill", (type, targetCharId, reason, moneyamount) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:PlayerBill:giveBill", type, reason, parseInt(targetCharId), parseInt(moneyamount));
         });
 
@@ -341,6 +363,9 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:PlayerBill:BillAction", (action, billType, factionCompanyId, moneyAmount, reason, charId) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:PlayerBill:BillAction", action, billType, parseInt(factionCompanyId), parseInt(moneyAmount), reason, parseInt(charId));
         });
 
@@ -353,6 +378,9 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:FactionStorage:FactionStorageAction", (action, factionId, charId, type, itemName, amount, fromContainer) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             if (action == "storage") {
                 if (type == "faction") {
                     alt.emitServer("Server:FactionStorage:StorageItem", parseInt(factionId), parseInt(charId), itemName, parseInt(amount), fromContainer);
@@ -377,6 +405,9 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:VehicleTrunk:VehicleTrunkAction", (action, vehId, charId, itemName, itemAmount, fromContainer, type) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             if (action == "storage") {
                 alt.emitServer("Server:VehicleTrunk:StorageItem", parseInt(vehId), parseInt(charId), itemName, parseInt(itemAmount), fromContainer, type);
             } else if (action == "take") {
@@ -385,6 +416,9 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:VehicleLicensing:LicensingAction", (action, vehId, vehPlate, newPlate) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:VehicleLicensing:LicensingAction", action, parseInt(vehId), vehPlate, newPlate);
         });
 
@@ -393,6 +427,9 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:PlayerSearch:TakeItem", (targetCharId, itemName, itemLocation, itemAmount) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:PlayerSearch:TakeItem", parseInt(targetCharId), itemName, itemLocation, parseInt(itemAmount));
         });
 
@@ -405,10 +442,16 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:GivePlayerLicense:GiveLicense", (targetCharId, licname) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:GivePlayerLicense:GiveLicense", parseInt(targetCharId), licname);
         });
 
         hudBrowser.on("Client:MinijobPilot:SelectJob", (level) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:MinijobPilot:StartJob", parseInt(level));
         });
 
@@ -417,6 +460,9 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:MinijobBusdriver:StartJob", (routeId) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:MinijobBusdriver:StartJob", parseInt(routeId));
         });
 
@@ -429,14 +475,23 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:Hotel:RentHotel", (hotelId, apartmentId) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Hotel:RentHotel", parseInt(hotelId), parseInt(apartmentId));
         });
 
         hudBrowser.on("Client:Hotel:LockHotel", (hotelId, apartmentId) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Hotel:LockHotel", parseInt(hotelId), parseInt(apartmentId));
         });
 
         hudBrowser.on("Client:Hotel:EnterHotel", (hotelId, apartmentId) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Hotel:EnterHotel", parseInt(hotelId), parseInt(apartmentId));
         });
 
@@ -449,26 +504,44 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:HouseEntrance:BuyHouse", (houseId) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:House:BuyHouse", parseInt(houseId));
         });
 
         hudBrowser.on("Client:HouseEntrance:EnterHouse", (houseId) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:House:EnterHouse", parseInt(houseId));
         });
 
         hudBrowser.on("Client:HouseEntrance:RentHouse", (houseId) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:House:RentHouse", parseInt(houseId));
         });
 
         hudBrowser.on("Client:HouseEntrance:UnrentHouse", (houseId) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:House:UnrentHouse", parseInt(houseId));
         });
 
         hudBrowser.on("Client:House:SellHouse", (houseId) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:House:SellHouse", parseInt(houseId));
         });
 
         hudBrowser.on("Client:House:setMainHouse", (houseId) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:House:setMainHouse", parseInt(houseId));
         });
 
@@ -477,22 +550,37 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:HouseManage:setRentPrice", (houseId, rentPrice) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:HouseManage:setRentPrice", parseInt(houseId), parseInt(rentPrice));
         });
 
         hudBrowser.on("Client:HouseManage:setRentState", (houseId, rentState) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:HouseManage:setRentState", parseInt(houseId), `${rentState}`);
         });
 
         hudBrowser.on("Client:HouseManage:RemoveRenter", (houseId, renterId) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:HouseManage:RemoveRenter", parseInt(houseId), parseInt(renterId));
         });
 
         hudBrowser.on("Client:HouseManage:BuyUpgrade", (houseId, upgrade) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:HouseManage:BuyUpgrade", parseInt(houseId), upgrade);
         });
 
         hudBrowser.on("Client:HouseManage:TresorAction", (houseId, action, money) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             if (action == "withdraw") {
                 alt.emitServer("Server:HouseManage:WithdrawMoney", parseInt(houseId), parseInt(money));
             } else if (action == "deposit") {
@@ -516,7 +604,6 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
             alt.LocalStorage.set(`${hotkey}AnimFlag`, animFlag);
             alt.LocalStorage.set(`${hotkey}AnimDuration`, animDuration);
             alt.LocalStorage.save();
-
             alt.emit("Client:HUD:sendNotification", 2, 2500, `Hotkey ${hotkey} erfolgreich belegt - AnimationsID: ${animId}.`);
         });
 
@@ -525,7 +612,7 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
             if (hotkey != "Num1" && hotkey != "Num2" && hotkey != "Num3" && hotkey != "Num4" && hotkey != "Num5" && hotkey != "Num6" && hotkey != "Num7" && hotkey != "Num8" && hotkey != "Num9") {
                 alt.emit("Client:HUD:sendNotification", 4, 3500, "Der Inhalt des Hotkeys darf nur aus Num1 bis Num9 bestehen.");
                 return;
-            }            
+            }
             alt.LocalStorage.delete(`${hotkey}Hotkey`);
             alt.LocalStorage.delete(`${hotkey}AnimName`);
             alt.LocalStorage.delete(`${hotkey}AnimDict`);
@@ -547,51 +634,80 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:Tuning:switchTuningColor", (type, action, r, g, b) => {
-            if (curTuningVeh == null) return;
+            if (curTuningVeh == null || lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Tuning:switchTuningColor", curTuningVeh, type, action, parseInt(r), parseInt(g), parseInt(b));
         });
 
         hudBrowser.on("Client:Tuning:switchTuning", (type, id, action) => {
-            if (curTuningVeh == null) return;
+            if (curTuningVeh == null || lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Tuning:switchTuning", curTuningVeh, type, parseInt(id), action);
         });
 
         hudBrowser.on("Client:Tuning:closeCEF", () => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             closeTuningCEF();
         });
 
         /* Smartphone */
         hudBrowser.on("Client:Smartphone:tryCall", (number) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:tryCall", parseInt(number));
         });
 
         hudBrowser.on("Client:Smartphone:denyCall", () => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:denyCall");
         });
 
         hudBrowser.on("Client:Smartphone:acceptCall", () => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:acceptCall");
         });
 
         hudBrowser.on("Client:Smartphone:requestChats", () => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:requestChats");
         });
 
         hudBrowser.on("Client:Smartphone:requestChatMessages", (chatId) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:requestChatMessages", parseInt(chatId));
         });
 
         hudBrowser.on("Client:Smartphone:createNewChat", (targetNumber) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:createNewChat", parseInt(targetNumber));
         });
 
         hudBrowser.on("Client:Smartphone:sendChatMessage", (selectedChatId, userPhoneNumber, targetMessageUser, unix, encodedText) => {
-            if (selectedChatId <= 0 || userPhoneNumber <= 0 || targetMessageUser <= 0) return;
+            if (selectedChatId <= 0 || userPhoneNumber <= 0 || targetMessageUser <= 0 || lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:sendChatMessage", parseInt(selectedChatId), parseInt(userPhoneNumber), parseInt(targetMessageUser), parseInt(unix), encodedText);
         });
 
         hudBrowser.on("Client:Smartphone:deleteChat", (chatId) => {
-            if (chatId <= 0) return;
+            if (chatId <= 0 || lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:deleteChat", parseInt(chatId));
         });
 
@@ -600,63 +716,87 @@ alt.onServer("Client:HUD:CreateCEF", (armor, health, hunger, thirst, currentmone
         });
 
         hudBrowser.on("Client:Smartphone:requestPhoneContacts", () => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:requestPhoneContacts");
-        });
-        hudBrowser.on("Client:Smartphone:requestPhonebusiness", () => {
-            alt.emitServer("Server:Smartphone:requestPhonebusiness");
-        });
-        hudBrowser.on("Client:Smartphone:requestPhoneVerlauf", () => {
-            alt.emitServer("Server:Smartphone:requestPhoneVerlauf");
         });
 
         hudBrowser.on("Client:Smartphone:deleteContact", (contactId) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:deleteContact", parseInt(contactId));
         });
 
         hudBrowser.on("Client:Smartphone:addNewContact", (name, number) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:addNewContact", name, parseInt(number));
         });
 
         hudBrowser.on("Client:Smartphone:editContact", (id, name, number) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:editContact", parseInt(id), name, parseInt(number));
         });
 
         hudBrowser.on("Client:ClothesStorage:setCharacterClothes", (clothesName, clothesTyp) => {
-            if (clothesName == undefined || clothesTyp == undefined) return;
+            if (clothesName == undefined || clothesTyp == undefined || lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:ClothesStorage:setCharacterClothes", clothesTyp, clothesName);
         });
 
         hudBrowser.on("Client:Smartphone:SearchLSPDIntranetPeople", (name) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:SearchLSPDIntranetPeople", name);
         });
 
         hudBrowser.on("Client:Smartphone:GiveLSPDIntranetWanteds", (selectedCharId, wantedList) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:GiveLSPDIntranetWanteds", parseInt(selectedCharId), wantedList);
         });
 
         hudBrowser.on("Client:Smartphone:requestLSPDIntranetPersonWanteds", (charid) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:requestLSPDIntranetPersonWanteds", parseInt(charid));
         });
 
         hudBrowser.on("Client:Smartphone:DeleteLSPDIntranetWanted", (id, charid) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:DeleteLSPDIntranetWanted", parseInt(id), parseInt(charid));
         });
 
         hudBrowser.on("Client:Smartphone:requestPoliceAppMostWanteds", () => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
             alt.emitServer("Server:Smartphone:requestPoliceAppMostWanteds");
         });
 
         hudBrowser.on("Client:Smartphone:locateMostWanted", (X, Y) => {
             game.setNewWaypoint(parseFloat(X), parseFloat(Y));
         });
+
+        hudBrowser.on("Client:Smartphone:setWallpaperId", (wallpaperId) => {
+            if(lastInteract + 500 > Date.now()) return;
+            lastInteract = Date.now();
+
+            alt.emitServer("Server:Smartphone:setWallpaperId", `${wallpaperId}`);
+        });
     }
 });
-
-alt.onServer("Client:HUD:setIntoVehicle", (vehicle) => {
-    alt.setTimeout(() => {
-      native.setPedIntoVehicle(alt.Player.local.scriptID, vehicle.scriptID, -1);
-    }, 400);
-  })
 
 // Geld-HUD
 alt.onServer("Client:HUD:updateMoney", (currentMoney) => {
@@ -673,9 +813,9 @@ alt.onServer("Client:Smartphone:setCurrentFunkFrequence", (funkfrequence) => {
     currentRadioFrequence = funkfrequence;
 });
 
-alt.onServer("Client:HUD:UpdateDesire", (armor, health, hunger, thirst) => {
+alt.onServer("Client:HUD:UpdateDesire", (hunger, thirst) => {
     if (hudBrowser != null) {
-        hudBrowser.emit("CEF:HUD:updateDesireHUD", armor, health, hunger, thirst);
+        hudBrowser.emit("CEF:HUD:updateDesireHUD", hunger, thirst);
     }
 });
 
@@ -709,17 +849,18 @@ alt.onServer("client::updateVoiceRange", (voiceRange) => {
     if (hudBrowser == null || !browserReady) return;
     hudBrowser.emit("CEF:HUD:updateHUDVoice", voiceRange);
     let drawmarkertick = alt.everyTick(() => {
-        native.drawMarker(28, alt.Player.local.pos.x, alt.Player.local.pos.y, alt.Player.local.pos.z - 0.95, 0, 0, 0, 0, 0, 0, voiceRange, voiceRange, 0.2, 52, 152, 219, 50, 0, false, 2, false, undefined, undefined, false);
-    })
+		if(voiceRange != 0)
+        game.drawMarker(1, alt.Player.local.pos.x, alt.Player.local.pos.y, alt.Player.local.pos.z - 0.95, 0, 0, 0, 0, 0, 0, voiceRange*2, voiceRange*2, 0.2, 52, 152, 219, 50, 0, false, 2, false, undefined, undefined, false);
+	})
     alt.setTimeout(() => {
         alt.clearEveryTick(drawmarkertick);
-    }, 100);
+    }, 500);
 });
 
 alt.onServer("Client:HUD:createIdentityCardApplyForm", (charname, gender, adress, birthdate, curBirthpl) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && curBirthpl == "None" && identityCardApplyCEFopened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && curBirthpl == "None" && identityCardApplyCEFopened == false) {
         hudBrowser.emit("CEF:HUD:createIdentityCardApplyForm", charname, gender, adress, birthdate);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -735,9 +876,9 @@ alt.onServer("Client:IdentityCard:showIdentityCard", (type, infoArray) => {
 });
 
 alt.onServer("Client:Bank:createBankAccountManageForm", (bankArray, curBank) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && BankAccountManageFormOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && BankAccountManageFormOpened == false) {
         hudBrowser.emit("CEF:Bank:createBankAccountManageForm", bankArray, curBank);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -747,11 +888,11 @@ alt.onServer("Client:Bank:createBankAccountManageForm", (bankArray, curBank) => 
 });
 
 alt.onServer("Client:ATM:BankATMcreateCEF", (pin, accNumber, zoneName) => {
-    alt.emitServer("Server:Inventory:closeCEF");
+    alt.emit("Client:Inventory:closeCEF");
     alt.setTimeout(function() {
         if (alt.Player.local.getSyncedMeta("HasHandcuffs") == true || alt.Player.local.getSyncedMeta("HasRopeCuffs") == true) return;
         hudBrowser.emit("CEF:ATM:BankATMcreateCEF", pin, accNumber, zoneName);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -773,10 +914,10 @@ alt.onServer("Client:ATM:BankATMdestroyCEFBrowser", () => {
 });
 
 alt.onServer("Client:Shop:shopCEFCreateCEF", (itemArray, shopId, isOnlySelling) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && ShopCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && ShopCefOpened == false) {
         if (alt.Player.local.getSyncedMeta("HasHandcuffs") == true || alt.Player.local.getSyncedMeta("HasRopeCuffs") == true) return;
         hudBrowser.emit("CEF:Shop:shopCEFBoxCreateCEF", itemArray, shopId, isOnlySelling);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -785,10 +926,10 @@ alt.onServer("Client:Shop:shopCEFCreateCEF", (itemArray, shopId, isOnlySelling) 
     }
 });
 
-alt.onServer("Client:Barber:barberCreateCEF", (headoverlayarray) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && BarberCefOpened == false) {
-        hudBrowser.emit("CEF:Barber:barberCEFBoxCreateCEF", headoverlayarray);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+alt.onServer("Client:Barber:barberCreateCEF", (headoverlayarray1, headoverlayarray2, headoverlayarray3) => {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && BarberCefOpened == false) {
+        hudBrowser.emit("CEF:Barber:barberCEFBoxCreateCEF", headoverlayarray1, headoverlayarray2, headoverlayarray3);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -806,9 +947,9 @@ alt.onServer("Client:Barber:barberCreateCEF", (headoverlayarray) => {
 
 
 alt.onServer("Client:Garage:OpenGarage", (garageId, garagename, garageInArray, garageOutArray) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && GarageCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && GarageCefOpened == false) {
         hudBrowser.emit("CEF:Garage:OpenGarage", garageId, garagename, garageInArray, garageOutArray);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -818,9 +959,9 @@ alt.onServer("Client:Garage:OpenGarage", (garageId, garagename, garageInArray, g
 });
 
 alt.onServer("Client:VehicleShop:OpenCEF", (shopId, shopname, itemArray) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && VehicleShopCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && VehicleShopCefOpened == false) {
         hudBrowser.emit("CEF:VehicleShop:SetListContent", shopId, shopname, itemArray);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -830,9 +971,9 @@ alt.onServer("Client:VehicleShop:OpenCEF", (shopId, shopname, itemArray) => {
 });
 
 alt.onServer("Client:Jobcenter:OpenCEF", (jobArray) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && JobcenterCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && JobcenterCefOpened == false) {
         hudBrowser.emit("CEF:Jobcenter:OpenCEF", jobArray);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -842,10 +983,10 @@ alt.onServer("Client:Jobcenter:OpenCEF", (jobArray) => {
 });
 
 alt.onServer("Client:FuelStation:OpenCEF", (fuelStationId, stationName, owner, maxFuel, availableLiter, fuelArray, vehID) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && FuelStationCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && FuelStationCefOpened == false) {
         if (alt.Player.local.getSyncedMeta("HasHandcuffs") == true || alt.Player.local.getSyncedMeta("HasRopeCuffs") == true) return;
         hudBrowser.emit("CEF:FuelStation:OpenCEF", fuelStationId, stationName, owner, maxFuel, availableLiter, fuelArray, vehID);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -855,10 +996,10 @@ alt.onServer("Client:FuelStation:OpenCEF", (fuelStationId, stationName, owner, m
 });
 
 alt.onServer("Client:ClothesShop:createCEF", (shopId) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && ClothesShopCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && ClothesShopCefOpened == false) {
         if (alt.Player.local.getSyncedMeta("HasHandcuffs") == true || alt.Player.local.getSyncedMeta("HasRopeCuffs") == true) return;
         hudBrowser.emit("CEF:ClothesShop:createCEF", shopId);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -874,10 +1015,10 @@ alt.onServer("Client:ClothesShop:createCEF", (shopId) => {
 });
 
 alt.onServer("Client:ClothesStorage:createCEF", () => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && ClothesStorageCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && ClothesStorageCefOpened == false) {
         if (alt.Player.local.getSyncedMeta("HasHandcuffs") == true || alt.Player.local.getSyncedMeta("HasRopeCuffs") == true) return;
         hudBrowser.emit("CEF:ClothesStorage:createCEF");
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.toggleGameControls(false);
         hudBrowser.focus();
@@ -904,10 +1045,10 @@ alt.onServer("Client:ClothesStorage:sendItemsToClient", (items) => {
 });
 
 alt.onServer("Client:FactionBank:createCEF", (type, factionId, factionBalance) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && bankFactionATMCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && bankFactionATMCefOpened == false) {
         if (alt.Player.local.getSyncedMeta("HasHandcuffs") == true || alt.Player.local.getSyncedMeta("HasRopeCuffs") == true) return;
         hudBrowser.emit("CEF:FactionBank:createCEF", type, factionId, factionBalance);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -916,24 +1057,11 @@ alt.onServer("Client:FactionBank:createCEF", (type, factionId, factionBalance) =
     }
 });
 
-
-alt.onServer("Client:Vehicle:showChangeOwnerHUD", (vehName) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && changeVehOwnerCefOpened == false) {
-        hudBrowser.emit("CEF:Vehicle:showChangeOwnerHUD", vehName);
-        alt.emitServer("Server:CEF:setCefStatus", true);
-        game.freezeEntityPosition(alt.Player.local.scriptID, true);
-        alt.showCursor(true);
-        alt.toggleGameControls(false);
-        hudBrowser.focus();
-        changeVehOwnerCefOpened = true;
-    }
-});
-
 alt.onServer("Client:GivePlayerBill:openCEF", (type, targetCharId) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && GivePlayerBillCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && GivePlayerBillCefOpened == false) {
         if (alt.Player.local.getSyncedMeta("HasHandcuffs") == true || alt.Player.local.getSyncedMeta("HasRopeCuffs") == true) return;
         hudBrowser.emit("CEF:GivePlayerBill:openCEF", type, targetCharId);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -943,9 +1071,9 @@ alt.onServer("Client:GivePlayerBill:openCEF", (type, targetCharId) => {
 });
 
 alt.onServer("Client:RecievePlayerBill:openCEF", (type, factionCompanyId, moneyAmount, reason, factionCompanyName, charId) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && RecievePlayerBillCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && RecievePlayerBillCefOpened == false) {
         hudBrowser.emit("CEF:RecievePlayerBill:openCEF", type, factionCompanyId, moneyAmount, reason, factionCompanyName, charId);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -955,11 +1083,10 @@ alt.onServer("Client:RecievePlayerBill:openCEF", (type, factionCompanyId, moneyA
 });
 
 alt.onServer("Client:FactionStorage:openCEF", (charId, factionId, type, invArray, storageArray) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && FactionStorageCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && FactionStorageCefOpened == false) {
         if (alt.Player.local.getSyncedMeta("HasHandcuffs") == true || alt.Player.local.getSyncedMeta("HasRopeCuffs") == true) return;
-        alt.log("storageOpenClientside");
         hudBrowser.emit("CEF:FactionStorage:openCEF", charId, factionId, type, invArray, storageArray);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -969,9 +1096,9 @@ alt.onServer("Client:FactionStorage:openCEF", (charId, factionId, type, invArray
 });
 
 alt.onServer("Client:VehicleTrunk:openCEF", (charId, vehID, type, invArray, storageArray, currentweight, maxweight) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && VehicleTrunkCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && VehicleTrunkCefOpened == false) {
         hudBrowser.emit("CEF:VehicleTrunk:openCEF", charId, vehID, type, invArray, storageArray, currentweight, maxweight);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -981,9 +1108,9 @@ alt.onServer("Client:VehicleTrunk:openCEF", (charId, vehID, type, invArray, stor
 });
 
 alt.onServer("Client:VehicleLicensing:openCEF", (vehArray) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && VehicleLicensingCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && VehicleLicensingCefOpened == false) {
         hudBrowser.emit("CEF:VehicleLicensing:openCEF", vehArray);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -993,9 +1120,9 @@ alt.onServer("Client:VehicleLicensing:openCEF", (vehArray) => {
 });
 
 alt.onServer("Client:PlayerSearch:openCEF", (targetCharId, invArray) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && PlayerSearchInventoryCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && PlayerSearchInventoryCefOpened == false) {
         hudBrowser.emit("CEF:PlayerSearch:openCEF", targetCharId, invArray);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -1005,9 +1132,9 @@ alt.onServer("Client:PlayerSearch:openCEF", (targetCharId, invArray) => {
 });
 
 alt.onServer("Client:GivePlayerLicense:openCEF", (targetCharId, licArray) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && GivePlayerLicenseCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && GivePlayerLicenseCefOpened == false) {
         hudBrowser.emit("CEF:GivePlayerLicense:SetGivePlayerLicenseCEFContent", targetCharId, licArray);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -1017,9 +1144,9 @@ alt.onServer("Client:GivePlayerLicense:openCEF", (targetCharId, licArray) => {
 });
 
 alt.onServer("Client:MinijobPilot:openCEF", () => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && MinijobPilotCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && MinijobPilotCefOpened == false) {
         hudBrowser.emit("CEF:MinijobPilot:openCEF");
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -1029,9 +1156,9 @@ alt.onServer("Client:MinijobPilot:openCEF", () => {
 });
 
 alt.onServer("Client:MinijobBusdriver:openCEF", (routeArray) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && MinijobBusdriverCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && MinijobBusdriverCefOpened == false) {
         hudBrowser.emit("CEF:MinijobBusdriver:openCEF", routeArray);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -1041,9 +1168,9 @@ alt.onServer("Client:MinijobBusdriver:openCEF", (routeArray) => {
 });
 
 alt.onServer("Client:HouseManage:openCEF", (houseInfoArray, renterArray) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && HouseManageCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && HouseManageCefOpened == false) {
         hudBrowser.emit("CEF:HouseManage:openCEF", houseInfoArray, renterArray);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -1059,10 +1186,10 @@ alt.onServer("Client:Hotel:setApartmentItems", (array) => {
 });
 
 alt.onServer("Client:Hotel:openCEF", (hotelname) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && HotelRentCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && HotelRentCefOpened == false) {
         HotelRentCefOpened = true;
         hudBrowser.emit("CEF:Hotel:openCEF", hotelname);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -1071,9 +1198,9 @@ alt.onServer("Client:Hotel:openCEF", (hotelname) => {
 });
 
 alt.onServer("Client:HouseEntrance:openCEF", (charId, houseArray, isRentedIn) => {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && HouseEntranceCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && HouseEntranceCefOpened == false) {
         hudBrowser.emit("CEF:HouseEntrance:openCEF", charId, houseArray, isRentedIn);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -1086,7 +1213,7 @@ alt.onServer("Client:Tuning:openTuningMenu", (veh, Items) => {
     if (hudBrowser != null && TuningMenuCefOpened == false) {
         curTuningVeh = veh;
         hudBrowser.emit("CEF:Tuning:openTuningMenu", Items);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         alt.toggleGameControls(false);
         alt.showCursor(true);
         hudBrowser.focus();
@@ -1097,7 +1224,7 @@ alt.onServer("Client:Tuning:openTuningMenu", (veh, Items) => {
 alt.onServer("Client:Deathscreen:openCEF", () => {
     if (hudBrowser != null && DeathscreenCefOpened == false) {
         closeAllCEFs();
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.setEntityInvincible(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -1113,10 +1240,10 @@ alt.onServer("Client:Deathscreen:openCEF", () => {
 });
 
 alt.onServer("Client:Deathscreen:closeCEF", () => {
-    if (hudBrowser != null) {
+    if (hudBrowser != null || deathScreen != null) {
         deathScreen.destroy();
         hudBrowser.emit("CEF:Deathscreen:closeCEF");
-        alt.emitServer("Server:CEF:setCefStatus", false);
+        alt.emit("Client:HUD:setCefStatus", false);
         game.freezeEntityPosition(alt.Player.local.scriptID, false);
         game.setEntityInvincible(alt.Player.local.scriptID, false);
         alt.showCursor(false);
@@ -1131,7 +1258,7 @@ alt.onServer("Client:Deathscreen:closeCEF", () => {
 alt.onServer("Client:Townhall:openHouseSelector", (array) => {
     if (hudBrowser != null && !TownhallHouseSelectorCefOpened) {
         hudBrowser.emit("CEF:Townhall:openHouseSelector", array);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         game.freezeEntityPosition(alt.Player.local.scriptID, true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
@@ -1140,11 +1267,11 @@ alt.onServer("Client:Townhall:openHouseSelector", (array) => {
     }
 });
 
-alt.onServer("Client:Smartphone:equipPhone", (isEquipped, phoneNumber, isFlyModeEnabled) => {
+alt.onServer("Client:Smartphone:equipPhone", (isEquipped, phoneNumber, isFlyModeEnabled, wallpaperId) => {
     let interval = alt.setInterval(() => {
         if (hudBrowser != null && browserReady) {
             alt.clearInterval(interval);
-            hudBrowser.emit("CEF:Smartphone:equipPhone", isEquipped, phoneNumber, isFlyModeEnabled);
+            hudBrowser.emit("CEF:Smartphone:equipPhone", isEquipped, phoneNumber, isFlyModeEnabled, wallpaperId);
             isPhoneEquipped = isEquipped;
         }
     }, 0);
@@ -1199,26 +1326,6 @@ alt.onServer("Client:Smartphone:setAllContacts", () => {
     if (hudBrowser == null || !browserReady) return;
     hudBrowser.emit("CEF:Smartphone:setAllContacts");
 });
-//////////////////////////////////////////////
-alt.onServer("Client:Smartphone:addbusinessJSON", (json) => {
-    if (hudBrowser == null && !browserReady) return;
-    hudBrowser.emit("CEF:Smartphone:addbusinessJSON", json);
-});
-
-alt.onServer("Client:Smartphone:setAllbusiness", () => {
-    if (hudBrowser == null || !browserReady) return;
-    hudBrowser.emit("CEF:Smartphone:setAllbusiness");
-});
-//////////////////////////////////////////////
-alt.onServer("Client:Smartphone:addVerlaufJSON", (json) => {
-    if (hudBrowser == null && !browserReady) return;
-    hudBrowser.emit("CEF:Smartphone:addVerlaufJSON", json);
-});
-
-alt.onServer("Client:Smartphone:setAllVerlauf", () => {
-    if (hudBrowser == null || !browserReady) return;
-    hudBrowser.emit("CEF:Smartphone:setAllVerlauf");
-});
 
 alt.onServer("Client:Smartphone:ShowLSPDIntranetApp", (shouldBeVisible, serverWanteds) => {
     let interval = alt.setInterval(() => {
@@ -1268,18 +1375,6 @@ let OldVehKMPos,
     curVehKMid = 0,
     GetVehKMPos = false;
 
-
-    
-//Laptop
-alt.onServer("Client:Laptop:activateLaptop", (isActivated) => {
-    isLaptopActivated = isActivated;
-});
-
-alt.onServer("Client:Laptop:updateApps", (LSPDApp) => {
-    if (hudBrowser == null || !browserReady) return;
-    hudBrowser.emit("CEF:Laptop:updateApps", LSPDApp);
-});
-
 alt.onServer("Client:HUD:GetDistanceForVehicleKM", () => {
     if (hudBrowser != null && alt.Player.local.vehicle != null) {
         if (curVehKMid == 0) { curVehKMid = alt.Player.local.vehicle.scriptID; }
@@ -1299,7 +1394,6 @@ alt.onServer("Client:HUD:GetDistanceForVehicleKM", () => {
         }
     }
 });
-//laptop ends
 
 let vehicle = null;
 let interactVehicle = null;
@@ -1348,7 +1442,9 @@ alt.onServer("Client:ClothesRadial:SetMenuItems", (itemArray) => {
 
 alt.on('keydown', (key) => {
     if (key == 'X'.charCodeAt(0)) {
-        if (alt.Player.local.getSyncedMeta("IsCefOpen")) return;
+        if (alt.Player.local.getMeta("IsCefOpen") || lastInteract + 500 > Date.now()) return;
+        lastInteract = Date.now();
+
         let result = Raycast.line(1.5, 2.5);
         if (result == undefined && !alt.Player.local.vehicle) return;
         if (!alt.Player.local.vehicle) {
@@ -1392,7 +1488,9 @@ alt.on('keydown', (key) => {
             return;
         }
     } else if (key == 'M'.charCodeAt(0)) {
-        if (alt.Player.local.getSyncedMeta("IsCefOpen") || alt.Player.local.vehicle) return;
+        if (alt.Player.local.getMeta("IsCefOpen") || alt.Player.local.vehicle || lastInteract + 500 > Date.now()) return;
+        lastInteract = Date.now();
+
         AnimationMenuUsing = true;
         hudBrowser.focus();
         alt.showCursor(true);
@@ -1400,13 +1498,12 @@ alt.on('keydown', (key) => {
         alt.emitServer("Server:AnimationMenu:GetAnimationItems");
         return;
     } 
-
-    else if (key == 122) {
-        closeAllCEFs;
-    }
     
     else if (key === 39) { 
         if (AnimationMenuUsing == false && AnimationMenuUsingPage2 == false && AnimationMenuUsingPage3 == false) return;
+
+        if (lastInteract + 500 > Date.now()) return;
+        lastInteract = Date.now();
 
         if (AnimationMenuUsing == false) { 
             if (AnimationMenuUsingPage2 == true) {
@@ -1424,6 +1521,9 @@ alt.on('keydown', (key) => {
     else if (key === 37) {
         if (AnimationMenuUsing == false && AnimationMenuUsingPage2 == false && AnimationMenuUsingPage3 == false) return;
 
+        if (lastInteract + 500 > Date.now()) return;
+        lastInteract = Date.now();
+
         if (AnimationMenuUsing == false) {
             if (AnimationMenuUsingPage2 == true) {
                 AnimationMenuUsing = true;
@@ -1438,21 +1538,31 @@ alt.on('keydown', (key) => {
     }
     
     else if (key == 'K'.charCodeAt(0)) {
-        if (alt.Player.local.getSyncedMeta("IsCefOpen")) return;
+        if (alt.Player.local.getMeta("IsCefOpen") || lastInteract + 500 > Date.now()) return;
+        lastInteract = Date.now();
+
         ClothesRadialMenuUsing = true;
         hudBrowser.focus();
         alt.showCursor(true);
         alt.toggleGameControls(false);
         alt.emitServer("Server:ClothesRadial:GetClothesRadialItems");
         return;
-    } 
+    }
     // SALTYCHAT 
     else if (key === 'N'.charCodeAt(0)) {
-        if (currentRadioFrequence == null || currentRadioFrequence == undefined  || alt.Player.local.getSyncedMeta("IsCefOpen")) return;
+        if (currentRadioFrequence == null || currentRadioFrequence == undefined  || alt.Player.local.getMeta("IsCefOpen") || lastInteract + 500 > Date.now()) return;
+        lastInteract = Date.now();
+
         alt.emit("SaltyChat:UseRadio", true, true);
-    }  else if (key === 90 && !alt.Player.local.getSyncedMeta("IsCefOpen")) { // Z (Y auf englischer Tastatur)
+    }  else if (key === 90 && !alt.Player.local.getMeta("IsCefOpen")) { // Z (Y auf englischer Tastatur)
+        if (lastInteract + 250 > Date.now()) return;
+        lastInteract = Date.now();
+
         alt.emit("SaltyChat:ToggleRange");
-    } else if (key === 'B'.charCodeAt(0) && alt.Player.local.vehicle && alt.Player.local.scriptID == game.getPedInVehicleSeat(alt.Player.local.vehicle.scriptID, -1) && game.getVehicleClass(alt.Player.local.vehicle.scriptID) == 18) {
+    } else if (key === 'B'.charCodeAt(0) && alt.Player.local.vehicle && alt.Player.local.scriptID == game.getPedInVehicleSeat(alt.Player.local.vehicle.scriptID, -1, false) && game.getVehicleClass(alt.Player.local.vehicle.scriptID) == 18) {
+        if (lastInteract + 500 > Date.now()) return;
+        lastInteract = Date.now();
+        
         isPlayerUsingMegaphone = true;
         alt.emit("SaltyChat:UseMegaphone", true);
     }
@@ -1486,19 +1596,15 @@ alt.on('keyup', (key) => {
         hudBrowser.unfocus();
         alt.showCursor(false);
         alt.toggleGameControls(true);
-    }/* else if (key == 116) { //F5
+    /*} else if (key == 116) { //F5
         if (hudBrowser == null) return;
         if (!AnimationMenuCefOpened) {
-			(!Animation.MenuCefOpened) {
-				alt.showCursor(false)
-			alt.log("Fehler gefunden Hud");
             initializeFavouriteAnims();
         } else {
             hudBrowser.emit("CEF:Animations:hideAnimationMenu");
         }
-        AnimationMenuCefOpened != AnimationMenuCefOpened;
-    } */
-    else if (key == 'K'.charCodeAt(0)) {
+        AnimationMenuCefOpened != AnimationMenuCefOpened;*/
+    } else if (key == 'K'.charCodeAt(0)) {
         if (hudBrowser == null || ClothesRadialMenuUsing == false) return;
         hudBrowser.emit("CEF:ClothesRadial:requestAction");
         hudBrowser.emit("CEF:ClothesRadial:toggleInteractionMenu", false);
@@ -1506,28 +1612,13 @@ alt.on('keyup', (key) => {
         hudBrowser.unfocus();
         alt.showCursor(false);
         alt.toggleGameControls(true);
-    } else  if (key == 'H'.charCodeAt(0)) {
-        if (!hasHandsUp && !alt.Player.local.vehicle) {
-            game.requestAnimDict("missminuteman_1ig_2");
-            let interval = alt.setInterval(() => {
-                if (game.hasAnimDictLoaded("missminuteman_1ig_2")) {
-                    alt.clearInterval(interval);
-                    game.taskPlayAnim(alt.Player.local.scriptID, "missminuteman_1ig_2", "handsup_enter", 8.0, 8.0, -1, 50, 0, false, false, false);
-                }
-            }, 0);
-
-            hasHandsUp = true;
-       } else {
-            native.clearPedTasks(alt.Player.local.scriptID);
-            hasHandsUp = false;
-        };
     } else if (key == 33) {
         //Smartphone Bild hoch
-        if (hudBrowser == null || !browserReady || isPlayerDead || !isPhoneEquipped || alt.Player.local.getSyncedMeta("IsCefOpen") == true || alt.Player.local.getSyncedMeta("HasHandcuffs") == true || alt.Player.local.getSyncedMeta("HasRopeCuffs") == true) return;
+        if (hudBrowser == null || !browserReady || isPlayerDead || !isPhoneEquipped || alt.Player.local.getMeta("IsCefOpen") == true || alt.Player.local.getSyncedMeta("HasHandcuffs") == true || alt.Player.local.getSyncedMeta("HasRopeCuffs") == true) return;
         hudBrowser.emit("CEF:Smartphone:togglePhone", true);
         playAnimation("cellphone@in_car@ds", "cellphone_text_read_base", 49, -1);
         alt.showCursor(true);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         alt.toggleGameControls(false);
         hudBrowser.focus();
     } else if (key == 34) {
@@ -1535,11 +1626,11 @@ alt.on('keyup', (key) => {
         if (hudBrowser == null || !browserReady || !isPhoneEquipped) return;
         if (alt.Player.local.getSyncedMeta("HasHandcuffs") == false && alt.Player.local.getSyncedMeta("HasRopeCuffs") == false) game.clearPedTasks(alt.Player.local.scriptID);
         hudBrowser.emit("CEF:Smartphone:togglePhone", false);
-        alt.emitServer("Server:CEF:setCefStatus", false);
+        alt.emit("Client:HUD:setCefStatus", false);
         alt.showCursor(false);
         alt.toggleGameControls(true);
         hudBrowser.unfocus();
-    }
+    } 
     // SALTYCHAT
     else if (key === 'N'.charCodeAt(0)) {
         if (currentRadioFrequence == null || currentRadioFrequence == undefined) return;
@@ -1547,22 +1638,6 @@ alt.on('keyup', (key) => {
     } else if (key === 'B'.charCodeAt(0) && isPlayerUsingMegaphone) {
         isPlayerUsingMegaphone = false;
         alt.emit("SaltyChat:UseMegaphone", false);
-    }else if (key == 114) {
-        if (!isLaptopActivated) return;
-        if (isLaptopCEFOpened) {
-            hudBrowser.emit("CEF:Laptop:hideLaptop");
-            alt.showCursor(false);
-            alt.toggleGameControls(true);
-            alt.emitServer("Server:CEF:setCefStatus", false);
-            hudBrowser.unfocus();
-        } else {
-            hudBrowser.emit("CEF:Laptop:showLaptop");
-            alt.showCursor(true);
-            alt.toggleGameControls(false);
-            alt.emitServer("Server:CEF:setCefStatus", true);
-            hudBrowser.focus();
-        }
-        isLaptopCEFOpened = !isLaptopCEFOpened;
     }
 });
 
@@ -1590,12 +1665,6 @@ function InterActionMenuDoAction(type, action) {
                 alt.emitServer("Server:Raycast:towVehicle", vehicle);
             } else if (action == "vehTuning") {
                 alt.emitServer("Server:Raycast:tuneVehicle", vehicle);
-            } else if (action == "vehchangeowner") {
-                alt.emitServer("Server:Raycast:showChangeOwnerHUD", vehicle);
-            } else if (action == "vehBreakVehicle") {
-                alt.emitServer("Server:Raycast:BreakVehicle", vehicle);
-            } else if (action == "vehbreakEngine") {
-                alt.emitServer("Server:Raycast:BreakVehicleEngine", vehicle);
             }
             vehicle = null;
         } else if (type == "player") {
@@ -1657,8 +1726,6 @@ function InterActionMenuDoActionAnimationMenu(action) {
         } else if (action = 'close') {
             resolve(game.clearPedTasks(alt.Player.local.scriptID));
         }
-    }).then(() => {
-        console.log("Fehler aufgetreten...")
     });
 }
 
@@ -1687,8 +1754,6 @@ function InterActionMenuDoActionAnimationMenuPage2(action) {
         } else if (action = 'close') {
             resolve(game.clearPedTasks(alt.Player.local.scriptID));
         }
-    }).then(() => {
-        console.log("Fehler aufgetreten...")
     });
 }
 
@@ -1717,40 +1782,14 @@ function InterActionMenuDoActionAnimationMenuPage3(action) {
         } else if (action = 'close') {
             resolve(playWalking("normal"));
         }
-    }).then(() => {
-        console.log("Fehler aufgetreten...")
     });
 }
 
 function InterActionMenuDoActionClothesRadialMenu(action) {
     new Promise((resolve, reject) => {
         alt.emitServer("Server:ClothesRadial:SetNormalSkin", action);
-    }).then(() => {
-        console.log("Fehler aufgetreten...")
     });
 }
-
-
-//FÜR WEAPONHANDLER
-alt.onServer("Client:WeaponAmmoChange:ComingRespond", (weaponhash) => {
-    if (alt.Player.local.currentWeapon != null && alt.Player.local.currentWeapon == weaponhash) {
-        const ammo = game.getAmmoInPedWeapon(alt.Player.local.scriptID, weaponhash);
-        alt.emitServer("Server:WeaponAmmoChange:SecondRespond", parseInt(ammo), parseInt(weaponhash));
-        alt.emit("Client:HUD:sendNotification", 4, 4500, "Done: Waffe abgelegt! (+" + ammo + " Schuss)");
-    }
-    else {
-        alt.emit("Client:HUD:sendNotification", 4, 4500, "Fehler: Du musst die Waffe in der Hand halten");
-    }
-});
-
-//FÜR TIMER
-alt.onServer("Client:WeaponAmmoChange:ComingTimer", (weaponhash) => {
-        if (alt.Player.local.currentWeapon != null && alt.Player.local.currentWeapon == weaponhash) {
-            const ammo = game.getAmmoInPedWeapon(alt.Player.local.scriptID, weaponhash);
-            alt.emitServer("Server:WeaponAmmoChange:ChangeRespond", parseInt(ammo), parseInt(weaponhash));
-        }
-});
-
 
 alt.everyTick(() => {
     if (alt.Player.local.getSyncedMeta("HasHandcuffs") == true || alt.Player.local.getSyncedMeta("HasRopeCuffs") == true) {
@@ -1802,22 +1841,13 @@ alt.everyTick(() => {
         game.setPedConfigFlag(alt.Player.local.scriptID, 429, 1);
     } else {
         game.setPedConfigFlag(alt.Player.local.scriptID, 429, 0);
-        game.setPedConfigFlag(alt.Player.local.scriptID, 35, false);
     }
     game.setPedConfigFlag(alt.Player.local.scriptID, 184, true);
-    game.setDisableAmbientMeleeMove(alt.Player.local.scriptID, false);
     game.setAudioFlag("DisableFlightMusic", true);
 });
 
-let closeFarmingCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
-    alt.toggleGameControls(true);
-    alt.showCursor(false);
-    hudBrowser.unfocus();
-}
-
 let closeBankCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(game.playerPedId(), false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1826,7 +1856,7 @@ let closeBankCEF = function() {
 }
 
 let closeATMCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(game.playerPedId(), false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1835,7 +1865,7 @@ let closeATMCEF = function() {
 }
 
 let closeShopCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(game.playerPedId(), false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1844,7 +1874,7 @@ let closeShopCEF = function() {
 }
 
 let closeBarberCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1853,7 +1883,7 @@ let closeBarberCEF = function() {
 }
 
 let closeGarageCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1862,7 +1892,7 @@ let closeGarageCEF = function() {
 }
 
 let closeVehicleShopCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1871,7 +1901,7 @@ let closeVehicleShopCEF = function() {
 }
 
 let closeJobcenterCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1880,7 +1910,7 @@ let closeJobcenterCEF = function() {
 }
 
 let closeFuelstationCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1889,7 +1919,7 @@ let closeFuelstationCEF = function() {
 }
 
 let closeClothesShopCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1899,7 +1929,7 @@ let closeClothesShopCEF = function() {
 
 let closeClothesStorageCEF = function() {
     alt.emitServer("Server:ClothesShop:RequestCurrentSkin");
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.toggleGameControls(true);
     hudBrowser.unfocus();
@@ -1907,7 +1937,7 @@ let closeClothesStorageCEF = function() {
 }
 
 let closeBankFactionATMCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1916,7 +1946,7 @@ let closeBankFactionATMCEF = function() {
 }
 
 let closeGivePlayerBillCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1925,7 +1955,7 @@ let closeGivePlayerBillCEF = function() {
 }
 
 let closeRecievePlayerBillCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1934,7 +1964,7 @@ let closeRecievePlayerBillCEF = function() {
 }
 
 let closeFactionStorageCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1943,7 +1973,7 @@ let closeFactionStorageCEF = function() {
 }
 
 let closeVehicleTrunkCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1952,7 +1982,7 @@ let closeVehicleTrunkCEF = function() {
 }
 
 let closeVehicleLicensingCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1961,7 +1991,7 @@ let closeVehicleLicensingCEF = function() {
 }
 
 let closePlayerSearchCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1970,7 +2000,7 @@ let closePlayerSearchCEF = function() {
 }
 
 let closeGivePlayerLicenseCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1979,7 +2009,7 @@ let closeGivePlayerLicenseCEF = function() {
 }
 
 let closeMinijobPilotCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1988,7 +2018,7 @@ let closeMinijobPilotCEF = function() {
 }
 
 let closeMinijobBusdriverCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -1997,7 +2027,7 @@ let closeMinijobBusdriverCEF = function() {
 }
 
 let closeHotelRentCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -2006,7 +2036,7 @@ let closeHotelRentCEF = function() {
 }
 
 let closeHouseEntranceCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -2015,7 +2045,7 @@ let closeHouseEntranceCEF = function() {
 }
 
 let closeHouseManageCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -2024,7 +2054,7 @@ let closeHouseManageCEF = function() {
 }
 
 let destroyTownHallHouseSelector = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     game.freezeEntityPosition(alt.Player.local.scriptID, false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
@@ -2033,7 +2063,7 @@ let destroyTownHallHouseSelector = function() {
 }
 
 let destroyAnimationMenu = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
     hudBrowser.unfocus();
@@ -2041,7 +2071,7 @@ let destroyAnimationMenu = function() {
 }
 
 let destroyClothesRadialMenu = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     alt.showCursor(false);
     alt.toggleGameControls(true);
     hudBrowser.unfocus();
@@ -2050,7 +2080,7 @@ let destroyClothesRadialMenu = function() {
 
 
 let closeTuningCEF = function() {
-    alt.emitServer("Server:CEF:setCefStatus", false);
+    alt.emit("Client:HUD:setCefStatus", false);
     alt.toggleGameControls(true);
     alt.showCursor(false);
     hudBrowser.unfocus();
@@ -2090,7 +2120,7 @@ let closeAllCEFs = function() {
             TuningMenuCefOpened = false,
             AnimationMenuCefOpened = false,
             ClothesStorageCefOpened = false;
-        alt.emitServer("Server:CEF:setCefStatus", false);
+        alt.emit("Client:HUD:setCefStatus", false);
         alt.showCursor(false);
         alt.toggleGameControls(true);
         hudBrowser.unfocus();
@@ -2107,7 +2137,7 @@ function GetVehicleSpeed() {
 
 /* */
 function initializeFavouriteAnims() {
-    if (hudBrowser != null && alt.Player.local.getSyncedMeta("IsCefOpen") == false && AnimationMenuCefOpened == false) {
+    if (hudBrowser != null && alt.Player.local.getMeta("IsCefOpen") == false && AnimationMenuCefOpened == false) {
         if (alt.Player.local.getSyncedMeta("HasHandcuffs") == true || alt.Player.local.getSyncedMeta("HasRopeCuffs") == true) return;
         var animStuff = {
             'Num1': alt.LocalStorage.get('Num1Hotkey'),
@@ -2121,7 +2151,7 @@ function initializeFavouriteAnims() {
             'Num9': alt.LocalStorage.get('Num9Hotkey')
         };
         hudBrowser.emit("CEF:Animations:setupAnimationMenu", animStuff);
-        alt.emitServer("Server:CEF:setCefStatus", true);
+        alt.emit("Client:HUD:setCefStatus", true);
         alt.showCursor(true);
         alt.toggleGameControls(false);
         hudBrowser.focus();
@@ -2157,7 +2187,8 @@ function playWalking(anim) {
 
 //Tattoo Shop
 alt.onServer("Client:TattooShop:openShop", (gender, shopId, ownTattoosJSON) => {
-    if (hudBrowser == null || isTattooShopOpened) return;
+    if (hudBrowser == null || isTattooShopOpened || alt.Player.local.getMeta("IsCefOpen")) return;
+    alt.emit("Client:HUD:setCefStatus", true);
     isTattooShopOpened = true;
     hudBrowser.emit("CEF:TattooShop:openShop", shopId, ownTattoosJSON);
     alt.showCursor(true);
@@ -2177,4 +2208,10 @@ alt.onServer("Client:TattooShop:openShop", (gender, shopId, ownTattoosJSON) => {
 alt.onServer("Client:TattooShop:sendItemsToClient", (items) => {
     if (hudBrowser == null) return;
     hudBrowser.emit("CEF:TattooShop:sendItemsToClient", items);
+});
+
+alt.on("Client:HUD:setCefStatus", (state) => {
+    if (state == alt.Player.local.getMeta("IsCefOpen")) return;
+
+    alt.Player.local.setMeta("IsCefOpen", state);
 });

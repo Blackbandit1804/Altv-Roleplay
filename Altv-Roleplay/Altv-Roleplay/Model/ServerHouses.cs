@@ -43,26 +43,22 @@ namespace Altv_Roleplay.Model
                     isLocked = true,
                     entranceShape = Alt.CreateColShapeSphere(entrancePos, 2f)
                 };
-                houseData.entranceShape.SetColShapeId((ulong)id);
+                houseData.entranceShape.SetColShapeId((long)id);
                 ((ClassicColshape)houseData.entranceShape).Radius = 2f;
                 ServerHouses_.Add(houseData);
 
-                var markerData = new Server_Markers
+                var blipData = new Server_Blips
                 {
-                    type = 0,
-                    bobUpAndDown = true,
-                    scaleX = 1,
-                    scaleY = 1,
-                    scaleZ = 1,
-                    alpha = 50,
+                    name = "Haus",
                     posX = entrancePos.X,
                     posY = entrancePos.Y,
-                    posZ = entrancePos.Z + 0.15f,
-                    red = 242,
-                    green = 58,
-                    blue = 58
+                    posZ = entrancePos.Z,
+                    scale = 0.2f,
+                    shortRange = true,
+                    sprite = 40,
+                    color = 0
                 };
-                ServerBlips.ServerMarkers_.Add(markerData);
+                ServerBlips.ServerBlips_.Add(blipData);
             }
             catch (Exception e)
             {

@@ -16,7 +16,6 @@ namespace Altv_Roleplay.Handler
 {
     class HotelHandler : IScript
     {
-        #region all
         internal static void openCEF(IPlayer player, Server_Hotels hotelPos)
         {
             try
@@ -35,7 +34,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Hotel:RentHotel")]
-        public async Task RentHotel(IPlayer player, int hotelId, int apartmentId)
+        public void RentHotel(IPlayer player, int hotelId, int apartmentId)
         {
             try
             {
@@ -62,7 +61,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Hotel:LockHotel")]
-        public static async Task LockHotel(IPlayer player, int hotelId, int apartmentId)
+        public static void LockHotel(IPlayer player, int hotelId, int apartmentId)
         {
             try
             {
@@ -85,7 +84,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Hotel:EnterHotel")]
-        public async Task EnterHotel(IPlayer player, int hotelId, int apartmentId)
+        public void EnterHotel(IPlayer player, int hotelId, int apartmentId)
         {
             try
             {
@@ -128,9 +127,7 @@ namespace Altv_Roleplay.Handler
                 Alt.Log($"{e}");
             }
         }
-        #endregion
 
-        #region storage
         internal static void openStorage(IPlayer player)
         {
             try
@@ -155,11 +152,11 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:HotelStorage:StorageItem")]
-        public async Task StorageHotelItem(IPlayer player, int apartmentId, string itemName, int itemAmount, string fromContainer)
+        public void StorageHotelItem(IPlayer player, int apartmentId, string itemName, int itemAmount, string fromContainer)
         {
             try
             {
-                if (player == null || !player.Exists || apartmentId <= 0 || itemName == "" || itemName == "undefined" || itemAmount <= 0 || fromContainer == "none" || fromContainer == "") return;
+                if (player == null || !player.Exists || apartmentId <= 0 ||itemName == "" || itemName == "undefined" || itemAmount <= 0 || fromContainer == "none" || fromContainer == "") return;
                 int cCharId = User.GetPlayerOnline(player);
                 if (cCharId <= 0) return;
                 if (player.HasPlayerHandcuffs() || player.HasPlayerRopeCuffs()) { HUDHandler.SendNotification(player, 3, 5000, "Wie willst du das mit Handschellen/Fesseln machen?"); return; }
@@ -167,8 +164,7 @@ namespace Altv_Roleplay.Handler
                 if (CharactersInventory.GetCharacterItemAmount(cCharId, itemName, fromContainer) < itemAmount) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du hast nicht genügend Gegenstände davon dabei."); return; }
                 if (CharactersInventory.IsItemActive(player, itemName)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Ausgerüstete Gegenstände können nicht umgelagert werden."); return; }
                 float itemWeight = ServerItems.GetItemWeight(itemName) * itemAmount;
-                if (ServerHotels.GetHotelStorageItemWeight(apartmentId) >= 15f || (ServerHotels.GetHotelStorageItemWeight(apartmentId) + itemWeight) >= 15f)
-                {
+                if(ServerHotels.GetHotelStorageItemWeight(apartmentId) >= 15f || (ServerHotels.GetHotelStorageItemWeight(apartmentId) + itemWeight) >= 15f) {
                     HUDHandler.SendNotification(player, 3, 5000, "Fehler: Soviel passt in das Lager nicht rein (maximal 15kg Lagerplatz).");
                     return;
                 }
@@ -183,9 +179,8 @@ namespace Altv_Roleplay.Handler
             }
         }
 
-
         [AsyncClientEvent("Server:HotelStorage:TakeItem")]
-        public async Task TakeHotelItem(IPlayer player, int apartmentId, string itemName, int itemAmount)
+        public void TakeHotelItem(IPlayer player, int apartmentId, string itemName, int itemAmount)
         {
             try
             {
@@ -198,41 +193,21 @@ namespace Altv_Roleplay.Handler
                 float itemWeight = ServerItems.GetItemWeight(itemName) * itemAmount;
                 float invWeight = CharactersInventory.GetCharacterItemWeight(charId, "inventory");
                 float backpackWeight = CharactersInventory.GetCharacterItemWeight(charId, "backpack");
-                var itemType = ServerItems.GetItemType(itemName);
                 if (invWeight + itemWeight > 15f && backpackWeight + itemWeight > Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId))) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast nicht genug Platz in deinen Taschen."); return; }
                 ServerHotels.RemoveServerHotelStorageItemAmount(apartmentId, itemName, itemAmount);
                 //LoggingService.NewFactionLog(factionId, charId, 0, "storage", $"{Characters.GetCharacterName(charId)} ({charId}) hat den Gegenstand '{itemName} ({amount}x)' aus seinem Spind entnommen."); // ToDo: Hotel Log
-                if(itemName.Contains("Fahrzeugschluessel"))
+                if(invWeight + itemWeight <= 15f)
                 {
-                    HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus deinem Lager genommen (Lagerort: Schluesselbund).");
-                    CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "schluessel");
-                    return;
-                }if(itemName.Contains("Handschellenschluessel"))
-                {
-                    HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus deinem Lager genommen (Lagerort: Schluesselbund).");
-                    CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "schluessel");
-                    return;
-                }if (itemName.Contains("Generalschluessel"))
-                {
-                    HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus deinem Lager genommen (Lagerort: Schluesselbund).");
-                    CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "schluessel");
+                    HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus deinem Lager genommen (Lagerort: Inventar).");
+                    CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "inventory");
                     return;
                 }
-                else
-                {
-                    if (invWeight + itemWeight <= 15f)
-                    {
-                        HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus deinem Lager genommen (Lagerort: Inventar).");
-                        CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "inventory");
-                        return;
-                    }
 
-                    if (Characters.GetCharacterBackpack(charId) != -2 && backpackWeight + itemWeight <= Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId)))
-                    {
-                        HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus deinem Lager genommen (Lagerort: Rucksack / Tasche).");
-                        CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "backpack");
-                        return;
-                    }
+                if (Characters.GetCharacterBackpack(charId) != -2 && backpackWeight + itemWeight <= Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId)))
+                {
+                    HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus deinem Lager genommen (Lagerort: Rucksack / Tasche).");
+                    CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "backpack");
+                    return;
                 }
             }
             catch (Exception e)
@@ -240,6 +215,5 @@ namespace Altv_Roleplay.Handler
                 Alt.Log($"{e}");
             }
         }
-        #endregion
     }
 }
