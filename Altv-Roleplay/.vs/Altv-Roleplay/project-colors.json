@@ -15,7 +15,12 @@
       "ProjectGuid": "11c71b78-004a-471f-b29d-c2cbe4673579",
       "DisplayName": "DiscordLog",
       "ColorIndex": 2
+    },
+    "5b615905-f549-4699-be74-670eef90154b": {
+      "ProjectGuid": "5b615905-f549-4699-be74-670eef90154b",
+      "DisplayName": "SaltyChat.Server",
+      "ColorIndex": 3
     }
   },
-  "NextColorIndex": 3
+  "NextColorIndex": 4
 }
