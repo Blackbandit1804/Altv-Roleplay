@@ -5397,11 +5397,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mauke\\Desktop\\main-main\\Mappe - Visual Studio\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj",
+      "projectUniqueName": "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj",
       "projectName": "Altv-Roleplay",
-      "projectPath": "C:\\Users\\mauke\\Desktop\\main-main\\Mappe - Visual Studio\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj",
+      "projectPath": "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj",
       "packagesPath": "C:\\Users\\mauke\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mauke\\Desktop\\main-main\\Mappe - Visual Studio\\Altv-Roleplay\\Altv-Roleplay\\obj\\",
+      "outputPath": "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "D:\\Microsoft\\Shared\\NuGetPackages"
@@ -5422,8 +5422,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\mauke\\Desktop\\main-main\\Mappe - Visual Studio\\Altv-Roleplay\\DiscordLog\\DiscordLog.csproj": {
-              "projectPath": "C:\\Users\\mauke\\Desktop\\main-main\\Mappe - Visual Studio\\Altv-Roleplay\\DiscordLog\\DiscordLog.csproj"
+            "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\DiscordLog\\DiscordLog.csproj": {
+              "projectPath": "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\DiscordLog\\DiscordLog.csproj"
             }
           }
         }

@@ -24,3 +24,11 @@ C:\Users\mauke\Desktop\main-main\Mappe - Visual Studio\Altv-Roleplay\DiscordLog\
 C:\Users\mauke\Desktop\main-main\Mappe - Visual Studio\Altv-Roleplay\DiscordLog\obj\Debug\DiscordLog.csproj.CopyComplete
 C:\Users\mauke\Desktop\main-main\Mappe - Visual Studio\Altv-Roleplay\DiscordLog\obj\Debug\DiscordLog.dll
 C:\Users\mauke\Desktop\main-main\Mappe - Visual Studio\Altv-Roleplay\DiscordLog\obj\Debug\DiscordLog.pdb
+D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\DiscordLog\bin\Debug\DiscordLog.dll
+D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\DiscordLog\bin\Debug\DiscordLog.pdb
+D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\DiscordLog\bin\Debug\Newtonsoft.Json.dll
+D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\DiscordLog\bin\Debug\Newtonsoft.Json.xml
+D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\DiscordLog\obj\Debug\DiscordLog.csproj.CoreCompileInputs.cache
+D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\DiscordLog\obj\Debug\DiscordLog.csproj.CopyComplete
+D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\DiscordLog\obj\Debug\DiscordLog.dll
+D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\DiscordLog\obj\Debug\DiscordLog.pdb

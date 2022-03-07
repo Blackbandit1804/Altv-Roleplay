@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0n5gK+CE7ZaRd2gbwgQnaq+VnnOGYgCKCXVKT56Jp0wmyMhSLDr9oQIn0domygza5dK9IFP4lN8AlLBSNGnqBA==",
+  "dgSpecHash": "T8ntUkMPOR6GJoleM0B9juFiSfq3BgRGQ3nChdtEAMfvFegh01g8yYa4MFbfY38h2bgUMHlfga8WYTfbQ5hMAA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\mauke\\Desktop\\main-main\\Mappe - Visual Studio\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj",
+  "projectFilePath": "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay\\Altv-Roleplay.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mauke\\.nuget\\packages\\altv.net\\9.0.2\\altv.net.9.0.2.nupkg.sha512",
     "C:\\Users\\mauke\\.nuget\\packages\\altv.net.async\\9.0.2\\altv.net.async.9.0.2.nupkg.sha512",
