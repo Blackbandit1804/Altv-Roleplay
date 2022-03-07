@@ -9,18 +9,18 @@ export class SoundState {
     }
     get microphone() {
         if (!this.microphoneEnabled)
-            return DeviceState.disabled;
+            return DeviceState.Disabled;
         else if (this.microphoneMuted)
-            return DeviceState.muted;
+            return DeviceState.Muted;
         else
-            return DeviceState.enabled;
+            return DeviceState.Enabled;
     }
     get speaker() {
         if (!this.soundEnabled)
-            return DeviceState.disabled;
+            return DeviceState.Disabled;
         else if (this.soundMuted)
-            return DeviceState.muted;
+            return DeviceState.Muted;
         else
-            return DeviceState.enabled;
+            return DeviceState.Enabled;
     }
 }

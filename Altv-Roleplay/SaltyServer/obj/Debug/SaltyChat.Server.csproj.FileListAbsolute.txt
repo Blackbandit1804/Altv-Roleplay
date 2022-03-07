@@ -13,11 +13,11 @@ D:\Github\script-a-rework\Mappe - Visual Studio\Altv-Roleplay\SaltyServer\obj\De
 D:\Github\script-a-rework\Mappe - Visual Studio\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.GeneratedMSBuildEditorConfig.editorconfig
 D:\Github\script-a-rework\Mappe - Visual Studio\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.csproj.CopyComplete
 D:\Github\script-a-rework\Mappe - Visual Studio\Altv-Roleplay\SaltyServer\obj\Debug\ref\SaltyChat.Server.dll
-D:\GitHub\Github-master\Server\resources\SaltyClient\Server\SaltyChat.Server.deps.json
-D:\GitHub\Github-master\Server\resources\SaltyClient\Server\SaltyChat.Server.runtimeconfig.json
-D:\GitHub\Github-master\Server\resources\SaltyClient\Server\SaltyChat.Server.dll
-D:\GitHub\Github-master\Server\resources\SaltyClient\Server\ref\SaltyChat.Server.dll
-D:\GitHub\Github-master\Server\resources\SaltyClient\Server\SaltyChat.Server.pdb
+D:\GitHub\Github-master\Gameserver\resources\SaltyClient\Server\SaltyChat.Server.deps.json
+D:\GitHub\Github-master\Gameserver\resources\SaltyClient\Server\SaltyChat.Server.runtimeconfig.json
+D:\GitHub\Github-master\Gameserver\resources\SaltyClient\Server\SaltyChat.Server.dll
+D:\GitHub\Github-master\Gameserver\resources\SaltyClient\Server\ref\SaltyChat.Server.dll
+D:\GitHub\Github-master\Gameserver\resources\SaltyClient\Server\SaltyChat.Server.pdb
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.GeneratedMSBuildEditorConfig.editorconfig
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.AssemblyInfoInputs.cache
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.AssemblyInfo.cs
@@ -27,19 +27,8 @@ D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\SaltyServer\obj\Debug\SaltyC
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\SaltyServer\obj\Debug\ref\SaltyChat.Server.dll
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.pdb
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.genruntimeconfig.cache
-D:\GitHub\Github-master\Gameserver\resources\SaltyClient\Serverr\SaltyChat.Server.deps.json
-D:\GitHub\Github-master\Gameserver\resources\SaltyClient\Serverr\SaltyChat.Server.runtimeconfig.json
-D:\GitHub\Github-master\Gameserver\resources\SaltyClient\Serverr\SaltyChat.Server.dll
-D:\GitHub\Github-master\Gameserver\resources\SaltyClient\Serverr\ref\SaltyChat.Server.dll
-D:\GitHub\Github-master\Gameserver\resources\SaltyClient\Serverr\SaltyChat.Server.pdb
-D:\GitHub\Github-master\Gameserver\resources\SaltyClient\Server\SaltyChat.Server.deps.json
-D:\GitHub\Github-master\Gameserver\resources\SaltyClient\Server\SaltyChat.Server.runtimeconfig.json
-D:\GitHub\Github-master\Gameserver\resources\SaltyClient\Server\SaltyChat.Server.dll
-D:\GitHub\Github-master\Gameserver\resources\SaltyClient\Server\ref\SaltyChat.Server.dll
-D:\GitHub\Github-master\Gameserver\resources\SaltyClient\Server\SaltyChat.Server.pdb
 D:\GitHub\Github-master\Altv-Roleplay\Gameserver\resources\SaltyClient\Server\SaltyChat.Server.deps.json
 D:\GitHub\Github-master\Altv-Roleplay\Gameserver\resources\SaltyClient\Server\SaltyChat.Server.runtimeconfig.json
 D:\GitHub\Github-master\Altv-Roleplay\Gameserver\resources\SaltyClient\Server\SaltyChat.Server.dll
 D:\GitHub\Github-master\Altv-Roleplay\Gameserver\resources\SaltyClient\Server\ref\SaltyChat.Server.dll
 D:\GitHub\Github-master\Altv-Roleplay\Gameserver\resources\SaltyClient\Server\SaltyChat.Server.pdb
-D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.csproj.AssemblyReference.cache

@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "307fb1cc-1a7f-48ba-8a73-e07241e73eab": {
+      "ProjectGuid": "307fb1cc-1a7f-48ba-8a73-e07241e73eab",
+      "DisplayName": "SaltyChat.Server",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}

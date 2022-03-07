@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     "net6.0": {
-      "AltV.Net/9.0.4": {
+      "AltV.Net/9.0.2": {
         "type": "package",
         "compile": {
           "lib/net6.0/AltV.Net.dll": {}
@@ -11,10 +11,10 @@
           "lib/net6.0/AltV.Net.dll": {}
         }
       },
-      "AltV.Net.Async/9.0.4": {
+      "AltV.Net.Async/9.0.2": {
         "type": "package",
         "dependencies": {
-          "AltV.Net": "9.0.4",
+          "AltV.Net": "9.0.2",
           "System.Threading.Channels": "5.0.0"
         },
         "compile": {
@@ -45,28 +45,28 @@
     }
   },
   "libraries": {
-    "AltV.Net/9.0.4": {
-      "sha512": "nBCzW5LeK8BThi7qM0D36t5c0LCdxGUxPW4Lcs0mf3EVjnrcsBu1u3VJwoR4FK3Hj41XsRQWszqZqRTcqL114w==",
+    "AltV.Net/9.0.2": {
+      "sha512": "gwMqeImXaE2Gf0ZjSlxaeiwYiYz4fRC3sANMyxLyrJ62CaH3Gn75c3W/MQ6X0k5EI3tzbH46dTxS3UfX9g4jew==",
       "type": "package",
-      "path": "altv.net/9.0.4",
+      "path": "altv.net/9.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "altv.net.9.0.4.nupkg.sha512",
+        "altv.net.9.0.2.nupkg.sha512",
         "altv.net.nuspec",
         "icon.png",
         "lib/net6.0/AltV.Net.dll",
         "license.txt"
       ]
     },
-    "AltV.Net.Async/9.0.4": {
-      "sha512": "4bzJz2e36CXRFEXPdfHKPf56uqxHaCa1UsJbMJJ6TbF9r44cG2sGL0cpjaKnTJGLcJ/AVRliUHC9HARid/11LQ==",
+    "AltV.Net.Async/9.0.2": {
+      "sha512": "Xi+ryN1YF3mcZltHWRPHX32UgxsofRd+bJefOC6m5TIydWhWBaSP8QqzYp09+9UZh7NzcMTbN+8vU1lyyWnESA==",
       "type": "package",
-      "path": "altv.net.async/9.0.4",
+      "path": "altv.net.async/9.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "altv.net.async.9.0.4.nupkg.sha512",
+        "altv.net.async.9.0.2.nupkg.sha512",
         "altv.net.async.nuspec",
         "icon.png",
         "lib/net6.0/AltV.Net.Async.dll",
@@ -129,7 +129,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "AltV.Net.Async >= 9.0.4",
+      "AltV.Net.Async >= 9.0.2",
       "Newtonsoft.Json >= 13.0.1"
     ]
   },
@@ -179,7 +179,7 @@
         "dependencies": {
           "AltV.Net.Async": {
             "target": "Package",
-            "version": "[9.0.4, )"
+            "version": "[9.0.2, )"
           },
           "Newtonsoft.Json": {
             "target": "Package",
