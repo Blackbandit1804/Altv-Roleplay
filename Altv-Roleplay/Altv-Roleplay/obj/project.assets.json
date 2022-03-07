@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     "net6.0": {
-      "AltV.Net/9.0.2": {
+      "AltV.Net/9.0.4": {
         "type": "package",
         "compile": {
           "lib/net6.0/AltV.Net.dll": {}
@@ -11,10 +11,10 @@
           "lib/net6.0/AltV.Net.dll": {}
         }
       },
-      "AltV.Net.Async/9.0.2": {
+      "AltV.Net.Async/9.0.4": {
         "type": "package",
         "dependencies": {
-          "AltV.Net": "9.0.2",
+          "AltV.Net": "9.0.4",
           "System.Threading.Channels": "5.0.0"
         },
         "compile": {
@@ -36,11 +36,11 @@
           "lib/net5.0/AltV.Net.EntitySync.dll": {}
         }
       },
-      "AltV.Net.EntitySync.ServerEvent/9.0.2": {
+      "AltV.Net.EntitySync.ServerEvent/9.0.4": {
         "type": "package",
         "dependencies": {
-          "AltV.Net": "9.0.2",
-          "AltV.Net.Async": "9.0.2",
+          "AltV.Net": "9.0.4",
+          "AltV.Net.Async": "9.0.4",
           "AltV.Net.EntitySync": "1.13.0",
           "System.Threading.Channels": "5.0.0"
         },
@@ -51,10 +51,10 @@
           "lib/net6.0/AltV.Net.EntitySync.ServerEvent.dll": {}
         }
       },
-      "AltV.Net.Resources.Chat.Api/9.0.2": {
+      "AltV.Net.Resources.Chat.Api/9.0.4": {
         "type": "package",
         "dependencies": {
-          "AltV.Net": "9.0.2"
+          "AltV.Net": "9.0.4"
         },
         "compile": {
           "lib/net6.0/AltV.Net.Resources.Chat.Api.dll": {}
@@ -63,13 +63,13 @@
           "lib/net6.0/AltV.Net.Resources.Chat.Api.dll": {}
         }
       },
-      "BCrypt.Net-Next/4.0.2": {
+      "BCrypt.Net-Next/4.0.3": {
         "type": "package",
         "compile": {
-          "lib/net5.0/BCrypt.Net-Next.dll": {}
+          "lib/net6.0/BCrypt.Net-Next.dll": {}
         },
         "runtime": {
-          "lib/net5.0/BCrypt.Net-Next.dll": {}
+          "lib/net6.0/BCrypt.Net-Next.dll": {}
         }
       },
       "BouncyCastle.NetCore/1.8.5": {
@@ -1823,28 +1823,28 @@
     }
   },
   "libraries": {
-    "AltV.Net/9.0.2": {
-      "sha512": "gwMqeImXaE2Gf0ZjSlxaeiwYiYz4fRC3sANMyxLyrJ62CaH3Gn75c3W/MQ6X0k5EI3tzbH46dTxS3UfX9g4jew==",
+    "AltV.Net/9.0.4": {
+      "sha512": "nBCzW5LeK8BThi7qM0D36t5c0LCdxGUxPW4Lcs0mf3EVjnrcsBu1u3VJwoR4FK3Hj41XsRQWszqZqRTcqL114w==",
       "type": "package",
-      "path": "altv.net/9.0.2",
+      "path": "altv.net/9.0.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "altv.net.9.0.2.nupkg.sha512",
+        "altv.net.9.0.4.nupkg.sha512",
         "altv.net.nuspec",
         "icon.png",
         "lib/net6.0/AltV.Net.dll",
         "license.txt"
       ]
     },
-    "AltV.Net.Async/9.0.2": {
-      "sha512": "Xi+ryN1YF3mcZltHWRPHX32UgxsofRd+bJefOC6m5TIydWhWBaSP8QqzYp09+9UZh7NzcMTbN+8vU1lyyWnESA==",
+    "AltV.Net.Async/9.0.4": {
+      "sha512": "4bzJz2e36CXRFEXPdfHKPf56uqxHaCa1UsJbMJJ6TbF9r44cG2sGL0cpjaKnTJGLcJ/AVRliUHC9HARid/11LQ==",
       "type": "package",
-      "path": "altv.net.async/9.0.2",
+      "path": "altv.net.async/9.0.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "altv.net.async.9.0.2.nupkg.sha512",
+        "altv.net.async.9.0.4.nupkg.sha512",
         "altv.net.async.nuspec",
         "icon.png",
         "lib/net6.0/AltV.Net.Async.dll",
@@ -1865,51 +1865,48 @@
         "license.txt"
       ]
     },
-    "AltV.Net.EntitySync.ServerEvent/9.0.2": {
-      "sha512": "1K4gmhN8F2Ioj2p4F3alEu1CP/iZU0nGiDZ7Zl3CbiUflkYsMoYmJrbmNXc28AqJgX5aS6h7u4NxrOWPM6K+IA==",
+    "AltV.Net.EntitySync.ServerEvent/9.0.4": {
+      "sha512": "08hzGvMDOxe6xXAKYqw8SCEfbP5Pg4g7FdxUN4NSmabeLN6aZs7/kyEl1Xj2cd54Oi7tk1ocw17TJQS8BUn0LA==",
       "type": "package",
-      "path": "altv.net.entitysync.serverevent/9.0.2",
+      "path": "altv.net.entitysync.serverevent/9.0.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "altv.net.entitysync.serverevent.9.0.2.nupkg.sha512",
+        "altv.net.entitysync.serverevent.9.0.4.nupkg.sha512",
         "altv.net.entitysync.serverevent.nuspec",
         "icon.png",
         "lib/net6.0/AltV.Net.EntitySync.ServerEvent.dll",
         "license.txt"
       ]
     },
-    "AltV.Net.Resources.Chat.Api/9.0.2": {
-      "sha512": "fIyB5n6Vi5Zp8Wjklo/DxPbysWw/If6jCLF2O/bfbc2B5JgZun4PoAqCLZPK5/CSxLFYmbuIDKi7HQYhwDcHaQ==",
+    "AltV.Net.Resources.Chat.Api/9.0.4": {
+      "sha512": "ut3EJfAmzD2FQVHcRas+JozldBtoQJC0jSBpM0S11lum8wShWzMWq2cu6y26IsoPH4pPu7KSH/+v+XNDyTuGlA==",
       "type": "package",
-      "path": "altv.net.resources.chat.api/9.0.2",
+      "path": "altv.net.resources.chat.api/9.0.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "altv.net.resources.chat.api.9.0.2.nupkg.sha512",
+        "altv.net.resources.chat.api.9.0.4.nupkg.sha512",
         "altv.net.resources.chat.api.nuspec",
         "icon.png",
         "lib/net6.0/AltV.Net.Resources.Chat.Api.dll",
         "license.txt"
       ]
     },
-    "BCrypt.Net-Next/4.0.2": {
-      "sha512": "LyNKpIpr4GraRD9+xlTviyxxbZpF6J4xJf7DvraC1mR8PSN/KonGc4rt8C/fjkD3vaEvgA7BcvsbHFCOjgczyQ==",
+    "BCrypt.Net-Next/4.0.3": {
+      "sha512": "W+U9WvmZQgi5cX6FS5GDtDoPzUCV4LkBLkywq/kRZhuDwcbavOzcDAr3LXJFqHUi952Yj3LEYoWW0jbEUQChsA==",
       "type": "package",
-      "path": "bcrypt.net-next/4.0.2",
+      "path": "bcrypt.net-next/4.0.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "bcrypt.net-next.4.0.2.nupkg.sha512",
+        "bcrypt.net-next.4.0.3.nupkg.sha512",
         "bcrypt.net-next.nuspec",
+        "ico.png",
         "lib/net20/BCrypt.Net-Next.dll",
         "lib/net20/BCrypt.Net-Next.xml",
         "lib/net35/BCrypt.Net-Next.dll",
         "lib/net35/BCrypt.Net-Next.xml",
-        "lib/net40/BCrypt.Net-Next.dll",
-        "lib/net40/BCrypt.Net-Next.xml",
-        "lib/net452/BCrypt.Net-Next.dll",
-        "lib/net452/BCrypt.Net-Next.xml",
         "lib/net462/BCrypt.Net-Next.dll",
         "lib/net462/BCrypt.Net-Next.xml",
         "lib/net472/BCrypt.Net-Next.dll",
@@ -1918,12 +1915,13 @@
         "lib/net48/BCrypt.Net-Next.xml",
         "lib/net5.0/BCrypt.Net-Next.dll",
         "lib/net5.0/BCrypt.Net-Next.xml",
-        "lib/netcoreapp3.1/BCrypt.Net-Next.dll",
-        "lib/netcoreapp3.1/BCrypt.Net-Next.xml",
+        "lib/net6.0/BCrypt.Net-Next.dll",
+        "lib/net6.0/BCrypt.Net-Next.xml",
         "lib/netstandard2.0/BCrypt.Net-Next.dll",
         "lib/netstandard2.0/BCrypt.Net-Next.xml",
         "lib/netstandard2.1/BCrypt.Net-Next.dll",
-        "lib/netstandard2.1/BCrypt.Net-Next.xml"
+        "lib/netstandard2.1/BCrypt.Net-Next.xml",
+        "readme.md"
       ]
     },
     "BouncyCastle.NetCore/1.8.5": {
@@ -6166,11 +6164,11 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "AltV.Net.Async >= 9.0.2",
+      "AltV.Net.Async >= 9.0.4",
       "AltV.Net.EntitySync >= 1.13.0",
-      "AltV.Net.EntitySync.ServerEvent >= 9.0.2",
-      "AltV.Net.Resources.Chat.Api >= 9.0.2",
-      "BCrypt.Net-Next >= 4.0.2",
+      "AltV.Net.EntitySync.ServerEvent >= 9.0.4",
+      "AltV.Net.Resources.Chat.Api >= 9.0.4",
+      "BCrypt.Net-Next >= 4.0.3",
       "Microsoft.EntityFrameworkCore >= 6.0.2",
       "Microsoft.EntityFrameworkCore.Tools >= 6.0.2",
       "MySql.Data >= 8.0.28",
@@ -6225,7 +6223,7 @@
         "dependencies": {
           "AltV.Net.Async": {
             "target": "Package",
-            "version": "[9.0.2, )"
+            "version": "[9.0.4, )"
           },
           "AltV.Net.EntitySync": {
             "target": "Package",
@@ -6233,15 +6231,15 @@
           },
           "AltV.Net.EntitySync.ServerEvent": {
             "target": "Package",
-            "version": "[9.0.2, )"
+            "version": "[9.0.4, )"
           },
           "AltV.Net.Resources.Chat.Api": {
             "target": "Package",
-            "version": "[9.0.2, )"
+            "version": "[9.0.4, )"
           },
           "BCrypt.Net-Next": {
             "target": "Package",
-            "version": "[4.0.2, )"
+            "version": "[4.0.3, )"
           },
           "Microsoft.EntityFrameworkCore": {
             "target": "Package",

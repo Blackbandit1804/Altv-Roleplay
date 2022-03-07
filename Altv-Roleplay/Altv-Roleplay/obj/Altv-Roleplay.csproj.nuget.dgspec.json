@@ -46,7 +46,7 @@
           "dependencies": {
             "AltV.Net.Async": {
               "target": "Package",
-              "version": "[9.0.2, )"
+              "version": "[9.0.4, )"
             },
             "AltV.Net.EntitySync": {
               "target": "Package",
@@ -54,15 +54,15 @@
             },
             "AltV.Net.EntitySync.ServerEvent": {
               "target": "Package",
-              "version": "[9.0.2, )"
+              "version": "[9.0.4, )"
             },
             "AltV.Net.Resources.Chat.Api": {
               "target": "Package",
-              "version": "[9.0.2, )"
+              "version": "[9.0.4, )"
             },
             "BCrypt.Net-Next": {
               "target": "Package",
-              "version": "[4.0.2, )"
+              "version": "[4.0.3, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",

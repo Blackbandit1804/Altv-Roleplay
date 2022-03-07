@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "nxrgsoT4w+day69s2a1127YrXPye6djmAI3cS4k+QqDgK/pyAyV5SK3tnZURCMXfJD2arMVu8P+u+nzosvDMbg==",
+  "dgSpecHash": "HupYM2zWsLUFN5z1hKDvL4+YtkomJUZWWYbJ1qw2RoXzFvmS3gtD9CC1VwjxJEEmK6Qehm6O+AffiTIauh3/NQ==",
   "success": true,
   "projectFilePath": "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\SaltyServer\\SaltyChat.Server.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\mauke\\.nuget\\packages\\altv.net\\9.0.2\\altv.net.9.0.2.nupkg.sha512",
-    "C:\\Users\\mauke\\.nuget\\packages\\altv.net.async\\9.0.2\\altv.net.async.9.0.2.nupkg.sha512",
+    "C:\\Users\\mauke\\.nuget\\packages\\altv.net\\9.0.4\\altv.net.9.0.4.nupkg.sha512",
+    "C:\\Users\\mauke\\.nuget\\packages\\altv.net.async\\9.0.4\\altv.net.async.9.0.4.nupkg.sha512",
     "C:\\Users\\mauke\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\mauke\\.nuget\\packages\\system.threading.channels\\5.0.0\\system.threading.channels.5.0.0.nupkg.sha512"
   ],
