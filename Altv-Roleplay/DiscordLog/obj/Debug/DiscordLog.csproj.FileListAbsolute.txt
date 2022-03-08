@@ -32,3 +32,4 @@ D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\DiscordLog\obj\Debug\Discord
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\DiscordLog\obj\Debug\DiscordLog.csproj.CopyComplete
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\DiscordLog\obj\Debug\DiscordLog.dll
 D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\DiscordLog\obj\Debug\DiscordLog.pdb
+D:\GitHub\Github-master\Altv-Roleplay\Altv-Roleplay\DiscordLog\obj\Debug\DiscordLog.csproj.AssemblyReference.cache
