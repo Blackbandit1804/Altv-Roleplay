@@ -1,4 +1,4 @@
-const token = "TOKEN";
+const token = "ODU0MzY0NjU1NjE4NDkwMzk4.YMi3Fw.VDnxwBrmOWXDEpXp-3_0QrvcX24";
 
 const Discord = require("discord.js");
 const client = new Discord.Client();
@@ -20,7 +20,7 @@ client.on("ready", () => {
 	.setThumbnail('https://media.discordapp.net/attachments/737017783186882700/747544875834277898/image0.png?width=1025&height=599')
 	.setTimestamp();
 
-	const channel = client.channels.cache.get('737017794763292791');
+	const channel = client.channels.cache.get('951939131779452928');
 	channel.send(StartupEmbed);		
 
 	client.user.setPresence({ game: { name: 'alt:V Multiplayer' }, status: 'online' });
