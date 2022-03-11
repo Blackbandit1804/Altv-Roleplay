@@ -1,3 +1,4 @@
 
 Gameserver/cache/*
-Gameserver/resources/DiscordLog/*
+Gameserver/resources/DiscordLog/server/*
+Gameserver/resources/DiscordLog/server/server.js
