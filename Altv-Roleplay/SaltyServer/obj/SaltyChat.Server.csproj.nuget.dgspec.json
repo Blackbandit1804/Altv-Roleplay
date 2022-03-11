@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\SaltyServer\\SaltyChat.Server.csproj": {}
+    "E:\\Git-Hub\\Altv-Roleplay\\Altv-Roleplay\\SaltyServer\\SaltyChat.Server.csproj": {}
   },
   "projects": {
-    "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\SaltyServer\\SaltyChat.Server.csproj": {
+    "E:\\Git-Hub\\Altv-Roleplay\\Altv-Roleplay\\SaltyServer\\SaltyChat.Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\SaltyServer\\SaltyChat.Server.csproj",
+        "projectUniqueName": "E:\\Git-Hub\\Altv-Roleplay\\Altv-Roleplay\\SaltyServer\\SaltyChat.Server.csproj",
         "projectName": "SaltyChat.Server",
-        "projectPath": "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\SaltyServer\\SaltyChat.Server.csproj",
+        "projectPath": "E:\\Git-Hub\\Altv-Roleplay\\Altv-Roleplay\\SaltyServer\\SaltyChat.Server.csproj",
         "packagesPath": "C:\\Users\\mauke\\.nuget\\packages\\",
-        "outputPath": "D:\\GitHub\\Github-master\\Altv-Roleplay\\Altv-Roleplay\\SaltyServer\\obj\\",
+        "outputPath": "E:\\Git-Hub\\Altv-Roleplay\\Altv-Roleplay\\SaltyServer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "D:\\Microsoft\\Shared\\NuGetPackages"
+          "E:\\Programme\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
           "C:\\Users\\mauke\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -68,7 +68,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
