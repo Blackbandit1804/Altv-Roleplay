@@ -1,4 +1,4 @@
-const token = "Change Me";
+const token = "Chansge Me";
 
 const Discord = require("discord.js");
 const client = new Discord.Client();
