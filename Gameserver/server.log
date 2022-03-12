@@ -147,3 +147,32 @@
 [15:50:07] Console thread started (ThreadId: 26776)
 [15:50:07] Network thread started (ThreadId: 21208)
 [15:50:07][Warning] Server started in debug mode
+[15:51:06] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000054
+[15:52:06] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[15:53:06] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[15:53:26] OnDesireTimer Timer aufgerufen
+[15:54:06] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[15:54:30] ValidateLoginCredentials benötigte 210ms
+[15:54:33] Eingeloggt mauke509
+[15:54:33] 1 - CharacterSelectedSpawnPlace benötigte 55ms
+[15:55:06] OnEntityTimer: Player Foreach benötigte: 00:00:00.0125378
+[15:55:30] [chat:cmd] mauke509: /tppos -355 152 40
+[15:55:33] [chat:cmd] mauke509: /a
+[15:55:35] [chat:cmd] mauke509: /a
+[15:55:38] [chat:cmd] mauke509: /am
+[15:55:41] [chat:cmd] mauke509: /tppos -355 152 40
+[15:56:07] OnEntityTimer: Player Foreach benötigte: 00:00:00.0309718
+[15:56:20] [chat:cmd] mauke509: /ReloadDB 4
+[15:56:20] 10 Server-Vehicle-Shops wurden geladen.
+[15:56:20] 51 Server-Vehicle-ShopItems wurden geladen.
+[15:56:45] [chat:cmd] mauke509: /faction 1 4
+[15:56:46] OnDesireTimer Timer aufgerufen
+[15:56:46] Essen/Durst Anzeige update: 0 | 98 | 92 | 92
+[15:56:50] [chat:cmd] mauke509: /faction 1 5
+[15:57:07] OnEntityTimer: Player Foreach benötigte: 00:00:00.0108639
+[15:57:25] [chat:cmd] mauke509: /tppos 452 -1007 30
+[15:58:02] [chat:cmd] mauke509: /money 5000000
+[15:58:03] 1 - BuyVehicle benötigte 33ms
+[15:58:07] OnEntityTimer: Player Foreach benötigte: 00:00:00.0067725
+[15:58:08] GetVehicleItems: 2 - 1
+[15:59:07] OnEntityTimer: Player Foreach benötigte: 00:00:00.0078783
