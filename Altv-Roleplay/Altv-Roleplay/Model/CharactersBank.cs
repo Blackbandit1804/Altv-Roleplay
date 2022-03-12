@@ -2,12 +2,9 @@
 using AltV.Net.Elements.Entities;
 using Altv_Roleplay.models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Altv_Roleplay.Model
 {
@@ -38,7 +35,7 @@ namespace Altv_Roleplay.Model
                     db.SaveChanges();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -57,7 +54,7 @@ namespace Altv_Roleplay.Model
                     db.SaveChanges();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -69,8 +66,8 @@ namespace Altv_Roleplay.Model
             {
                 var charBankAcc = CharactersBank_.FirstOrDefault(x => x.accountNumber == accountNumber);
                 if (charBankAcc == null) return;
-                if(charBankAcc.closed) { charBankAcc.closed = false; }
-                else if(!charBankAcc.closed) { charBankAcc.closed = true; }
+                if (charBankAcc.closed) { charBankAcc.closed = false; }
+                else if (!charBankAcc.closed) { charBankAcc.closed = true; }
 
                 using (gtaContext db = new gtaContext())
                 {
@@ -78,7 +75,7 @@ namespace Altv_Roleplay.Model
                     db.SaveChanges();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -98,7 +95,7 @@ namespace Altv_Roleplay.Model
                     db.SaveChanges();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -108,7 +105,7 @@ namespace Altv_Roleplay.Model
         {
             if (charId <= 0) return 0;
             var charBankAcc = CharactersBank_.FirstOrDefault(x => x.charId == charId && x.mainAccount == true);
-            if(charBankAcc != null)
+            if (charBankAcc != null)
             {
                 return charBankAcc.accountNumber;
             }
@@ -119,7 +116,7 @@ namespace Altv_Roleplay.Model
         {
             if (charId == 0) return false;
             var charBankAcc = CharactersBank_.FirstOrDefault(x => x.charId == charId && x.mainAccount == true);
-            if(charBankAcc != null) { return true; }
+            if (charBankAcc != null) { return true; }
             return false;
         }
 
@@ -138,7 +135,7 @@ namespace Altv_Roleplay.Model
                     db.SaveChanges();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -184,9 +181,9 @@ namespace Altv_Roleplay.Model
             try
             {
                 var charBankAcc = CharactersBank_.FirstOrDefault(x => x.accountNumber == accountNumber);
-                if(charBankAcc != null) return charBankAcc.closed;
+                if (charBankAcc != null) return charBankAcc.closed;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -198,9 +195,9 @@ namespace Altv_Roleplay.Model
             try
             {
                 var charBankAcc = CharactersBank_.FirstOrDefault(x => x.accountNumber == accountNumber);
-                if(charBankAcc != null) return charBankAcc.pin;
+                if (charBankAcc != null) return charBankAcc.pin;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -212,9 +209,9 @@ namespace Altv_Roleplay.Model
             try
             {
                 var charBankAcc = CharactersBank_.FirstOrDefault(x => x.accountNumber == accountNumber);
-                if(charBankAcc != null) return charBankAcc.money;
+                if (charBankAcc != null) return charBankAcc.money;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -226,7 +223,7 @@ namespace Altv_Roleplay.Model
             try
             {
                 var charBankAcc = CharactersBank_.FirstOrDefault(x => x.accountNumber == accountNumber);
-                if(charBankAcc != null)
+                if (charBankAcc != null)
                 {
                     charBankAcc.money = money;
                     using (gtaContext db = new gtaContext())
@@ -236,7 +233,7 @@ namespace Altv_Roleplay.Model
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -247,9 +244,9 @@ namespace Altv_Roleplay.Model
             try
             {
                 var charBankAcc = CharactersBank_.FirstOrDefault(x => x.accountNumber == accountNumber);
-                if(charBankAcc != null)  return charBankAcc.pinTrys;
+                if (charBankAcc != null) return charBankAcc.pinTrys;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -261,7 +258,7 @@ namespace Altv_Roleplay.Model
             try
             {
                 var charBankAcc = CharactersBank_.FirstOrDefault(x => x.accountNumber == accountNumber);
-                if(charBankAcc != null)
+                if (charBankAcc != null)
                 {
                     charBankAcc.pinTrys = Trys;
                     using (gtaContext db = new gtaContext())
@@ -271,7 +268,7 @@ namespace Altv_Roleplay.Model
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }

@@ -2,9 +2,6 @@
 using Altv_Roleplay.Model;
 using Altv_Roleplay.models;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Altv_Roleplay.Services
 {
@@ -43,14 +40,14 @@ namespace Altv_Roleplay.Services
                 };
 
                 ServerFactions.LogsFaction_.Add(logData);
-                
+
                 using (gtaContext db = new gtaContext())
                 {
                     db.LogsFaction.Add(logData);
                     db.SaveChanges();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }

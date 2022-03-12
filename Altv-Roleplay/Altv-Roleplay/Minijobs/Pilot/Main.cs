@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Altv_Roleplay.Minijobs.Pilot
@@ -34,19 +33,19 @@ namespace Altv_Roleplay.Minijobs.Pilot
             Alt.OnPlayerLeaveVehicle += PlayerExitVehicle;
             Alt.OnPlayerDisconnect += PlayerDisconnectedHandler;
 
-            var data = new Server_Peds { model = "s_m_m_pilot_01", posX = startJobShape.Position.X, posY = startJobShape.Position.Y, posZ = startJobShape.Position.Z - 1, rotation =  -24f};
+            var data = new Server_Peds { model = "s_m_m_pilot_01", posX = startJobShape.Position.X, posY = startJobShape.Position.Y, posZ = startJobShape.Position.Z - 1, rotation = -24f };
             ServerPeds.ServerPeds_.Add(data);
             var markerData = new Server_Markers { type = 33, posX = Constants.Positions.Minijob_Pilot_VehOutPos.X, posY = Constants.Positions.Minijob_Pilot_VehOutPos.Y, posZ = Constants.Positions.Minijob_Pilot_VehOutPos.Z + 0.25f, scaleX = 1, scaleY = 1, scaleZ = 1, red = 46, green = 133, blue = 232, alpha = 150, bobUpAndDown = true };
             ServerBlips.ServerMarkers_.Add(markerData);
 
             startJobShape.Radius = 2f;
 
-            MinijobSpots_.Add(new Minijob_Spots() {id = 1, depositShape = Alt.CreateColShapeSphere(new Position((float)-991.3714, (float)-3147.745, (float)14.873291), 2.5f) }); //International Airport
-            MinijobSpots_.Add(new Minijob_Spots() {id = 2, depositShape = Alt.CreateColShapeSphere(new Position((float)2011.5601806640625, (float)4743.40966796875, (float)41.199241638183594), 2.5f) }); //Grapeseed
-            MinijobSpots_.Add(new Minijob_Spots() {id = 3, depositShape = Alt.CreateColShapeSphere(new Position((float)1303.2792, (float)3075.178, (float)41.37805), 2.5f) }); //Sandy Shores
+            MinijobSpots_.Add(new Minijob_Spots() { id = 1, depositShape = Alt.CreateColShapeSphere(new Position((float)-991.3714, (float)-3147.745, (float)14.873291), 2.5f) }); //International Airport
+            MinijobSpots_.Add(new Minijob_Spots() { id = 2, depositShape = Alt.CreateColShapeSphere(new Position((float)2011.5601806640625, (float)4743.40966796875, (float)41.199241638183594), 2.5f) }); //Grapeseed
+            MinijobSpots_.Add(new Minijob_Spots() { id = 3, depositShape = Alt.CreateColShapeSphere(new Position((float)1303.2792, (float)3075.178, (float)41.37805), 2.5f) }); //Sandy Shores
             Alt.Log("Minijob: Pilot geladen...");
 
-            foreach(var item in MinijobSpots_)
+            foreach (var item in MinijobSpots_)
             {
                 ((ClassicColshape)item.depositShape).Radius = 2.5f;
             }
@@ -87,10 +86,11 @@ namespace Altv_Roleplay.Minijobs.Pilot
                 if (player.GetPlayerCurrentMinijobStep() == "DRIVE_BACK_TO_START" && vehicle.Position.IsInRange(Constants.Positions.Minijob_Pilot_VehOutPos, 10f))
                 {
                     var model = vehicle.Model;
-                    foreach (var veh in Alt.GetAllVehicles().Where(x => x.NumberplateText == $"PL-{charId}").ToList()) {
+                    foreach (var veh in Alt.GetAllVehicles().Where(x => x.NumberplateText == $"PL-{charId}").ToList())
+                    {
                         if (veh == null || !veh.Exists) continue;
                         ServerVehicles.RemoveVehiclePermanently(veh);
-                        veh.Remove(); 
+                        veh.Remove();
                     }
                     player.SetPlayerCurrentMinijob("None");
                     player.SetPlayerCurrentMinijobRouteId(0);
@@ -98,7 +98,7 @@ namespace Altv_Roleplay.Minijobs.Pilot
                     player.SetPlayerCurrentMinijobActionCount(0);
                     int rnd = 0;
                     int rndExp = 0;
-                    switch(model)
+                    switch (model)
                     {
                         case 2621610858: //Velum
                             rnd = new Random().Next(250, 500);
@@ -142,7 +142,7 @@ namespace Altv_Roleplay.Minijobs.Pilot
                 if (player.GetPlayerCurrentMinijob() == "None") return;
                 if (player.GetPlayerCurrentMinijobStep() == "None") return;
                 if (player.GetPlayerCurrentMinijob() != "Pilot") return;
-                if(player.GetPlayerCurrentMinijobStep() == "FirstStepInVehicle")
+                if (player.GetPlayerCurrentMinijobStep() == "FirstStepInVehicle")
                 {
                     player.SetPlayerCurrentMinijobStep("DRIVE_TO_DESTINATION");
                     player.SetPlayerCurrentMinijobActionCount(1);
@@ -165,16 +165,16 @@ namespace Altv_Roleplay.Minijobs.Pilot
                 if (!colShape.Exists) return;
                 IPlayer client = targetEntity as IPlayer;
                 if (client == null || !client.Exists) return;
-                if(colShape == startJobShape && state)
+                if (colShape == startJobShape && state)
                 {
-                    if(client.GetPlayerCurrentMinijob() == "Pilot") { HUDHandler.SendNotification(client, 1, 2500, "Drücke E um den Piloten Minijob zu beenden."); }
-                    else if(client.GetPlayerCurrentMinijob() == "None") { HUDHandler.SendNotification(client, 1, 2500, "Drücke E um den Piloten Minijob zu starten."); }
-                    else if(client.GetPlayerCurrentMinijob() != "None") { HUDHandler.SendNotification(client, 3, 25000, "Du bist bereits in einem Minijob."); }
+                    if (client.GetPlayerCurrentMinijob() == "Pilot") { HUDHandler.SendNotification(client, 1, 2500, "Drücke E um den Piloten Minijob zu beenden."); }
+                    else if (client.GetPlayerCurrentMinijob() == "None") { HUDHandler.SendNotification(client, 1, 2500, "Drücke E um den Piloten Minijob zu starten."); }
+                    else if (client.GetPlayerCurrentMinijob() != "None") { HUDHandler.SendNotification(client, 3, 25000, "Du bist bereits in einem Minijob."); }
                     return;
                 }
 
                 if (client.GetPlayerCurrentMinijob() != "Pilot") return;
-                if(colShape == MinijobSpots_[0].depositShape && state && client.IsInVehicle)
+                if (colShape == MinijobSpots_[0].depositShape && state && client.IsInVehicle)
                 {
                     if (client.GetPlayerCurrentMinijobStep() != "DRIVE_TO_DESTINATION" || client.GetPlayerCurrentMinijobActionCount() != 1) return;
                     client.SetPlayerCurrentMinijobActionCount(2);
@@ -183,7 +183,7 @@ namespace Altv_Roleplay.Minijobs.Pilot
                     client.EmitLocked("Client:Minijob:CreateJobMarker", "Grapeseed Airport", 3, 514, 30, MinijobSpots_[1].depositShape.Position.X, MinijobSpots_[1].depositShape.Position.Y, MinijobSpots_[1].depositShape.Position.Z, true);
                     return;
                 }
-                else if(colShape == MinijobSpots_[1].depositShape && state && client.IsInVehicle)
+                else if (colShape == MinijobSpots_[1].depositShape && state && client.IsInVehicle)
                 {
                     if (client.GetPlayerCurrentMinijobStep() != "DRIVE_TO_DESTINATION" || client.GetPlayerCurrentMinijobActionCount() != 2) return;
                     client.EmitLocked("Client:Minijob:RemoveJobMarkerWithFreeze", 15000);
@@ -192,7 +192,7 @@ namespace Altv_Roleplay.Minijobs.Pilot
                     client.EmitLocked("Client:Minijob:CreateJobMarker", "Sandy Shores Airport", 3, 514, 30, MinijobSpots_[2].depositShape.Position.X, MinijobSpots_[2].depositShape.Position.Y, MinijobSpots_[2].depositShape.Position.Z, true);
                     return;
                 }
-                else if(colShape == MinijobSpots_[2].depositShape && state && client.IsInVehicle)
+                else if (colShape == MinijobSpots_[2].depositShape && state && client.IsInVehicle)
                 {
                     if (client.GetPlayerCurrentMinijobStep() != "DRIVE_TO_DESTINATION" || client.GetPlayerCurrentMinijobActionCount() != 3) return;
                     client.EmitLocked("Client:Minijob:RemoveJobMarkerWithFreeze", 15000);
@@ -210,26 +210,26 @@ namespace Altv_Roleplay.Minijobs.Pilot
         }
 
         [AsyncClientEvent("Server:MinijobPilot:StartJob")]
-        public void StartMiniJob(IPlayer player, int level)
+        public async Task StartMiniJob(IPlayer player, int level)
         {
             try
             {
                 if (player == null || !player.Exists || level <= 0) return;
                 int charId = User.GetPlayerOnline(player);
                 if (charId <= 0) return;
-                if (player.GetPlayerCurrentMinijob() != "None") return;                
-                foreach(var veh in Alt.GetAllVehicles().ToList())
+                if (player.GetPlayerCurrentMinijob() != "None") return;
+                foreach (var veh in Alt.GetAllVehicles().ToList())
                 {
                     if (veh == null || !veh.Exists) continue;
-                    if(veh.Position.IsInRange(Constants.Positions.Minijob_Pilot_VehOutPos, 8f)) { HUDHandler.SendNotification(player, 3, 5000, "Der Hangar ist blockiert."); return; }
+                    if (veh.Position.IsInRange(Constants.Positions.Minijob_Pilot_VehOutPos, 8f)) { HUDHandler.SendNotification(player, 3, 5000, "Der Hangar ist blockiert."); return; }
                 }
-                switch(level)
+                switch (level)
                 {
                     case 1:
                         ServerVehicles.CreateVehicle(2621610858, charId, 2, 0, false, 0, Constants.Positions.Minijob_Pilot_VehOutPos, Constants.Positions.Minijob_Pilot_VehOutRot, $"PL-{charId}", 255, 255, 255);
                         break;
                     case 2:
-                        if(CharactersMinijobs.GetCharacterMinijobEXP(charId, "Pilot") < 50) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast nicht die nötigen EXP für diese Stufe (50 EXP - du hast {CharactersMinijobs.GetCharacterMinijobEXP(charId, "Pilot")}EXP)."); return; }
+                        if (CharactersMinijobs.GetCharacterMinijobEXP(charId, "Pilot") < 50) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast nicht die nötigen EXP für diese Stufe (50 EXP - du hast {CharactersMinijobs.GetCharacterMinijobEXP(charId, "Pilot")}EXP)."); return; }
                         ServerVehicles.CreateVehicle(1341619767, charId, 2, 0, false, 0, Constants.Positions.Minijob_Pilot_VehOutPos, Constants.Positions.Minijob_Pilot_VehOutRot, $"PL-{charId}", 255, 255, 255);
                         break;
                     case 3:
@@ -257,27 +257,26 @@ namespace Altv_Roleplay.Minijobs.Pilot
                 if (player == null || !player.Exists || !((ClassicColshape)startJobShape).IsInRange((ClassicPlayer)player)) return;
                 int charId = User.GetPlayerOnline(player);
                 if (charId <= 0) return;
-                if(player.GetPlayerCurrentMinijob() == "Pilot")
+                if (player.GetPlayerCurrentMinijob() == "Pilot")
                 {
                     //Job abbrechen
-                    foreach(var veh in Alt.GetAllVehicles().Where(x => x.NumberplateText == $"PL-{charId}").ToList())
+                    foreach (var veh in Alt.GetAllVehicles().Where(x => x.NumberplateText == $"PL-{charId}").ToList())
                     {
                         if (veh == null || !veh.Exists) continue;
                         ServerVehicles.RemoveVehiclePermanently(veh);
                         veh.Remove();
                     }
                     HUDHandler.SendNotification(player, 2, 1500, "Du hast den Minijob: Pilot beendet.");
-                    player.EmitLocked("Client:Minijob:RemoveJobMarker");
                     player.SetPlayerCurrentMinijob("None");
                     player.SetPlayerCurrentMinijobRouteId(0);
                     player.SetPlayerCurrentMinijobStep("None");
                     player.SetPlayerCurrentMinijobActionCount(0);
                     return;
                 }
-                else if(player.GetPlayerCurrentMinijob() == "None")
+                else if (player.GetPlayerCurrentMinijob() == "None")
                 {
                     //Levelauswahl anzeigen
-                    if(!CharactersMinijobs.ExistCharacterMinijobEntry(charId, "Pilot"))
+                    if (!CharactersMinijobs.ExistCharacterMinijobEntry(charId, "Pilot"))
                     {
                         CharactersMinijobs.CreateCharacterMinijobEntry(charId, "Pilot");
                     }

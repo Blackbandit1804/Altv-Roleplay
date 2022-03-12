@@ -1,15 +1,14 @@
-﻿using Altv_Roleplay.models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using Newtonsoft.Json;
-using Altv_Roleplay.Model;
-using AltV.Net;
+﻿using AltV.Net;
 using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
-using Altv_Roleplay.Utils;
 using Altv_Roleplay.Factories;
+using Altv_Roleplay.Model;
+using Altv_Roleplay.models;
+using Altv_Roleplay.Utils;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Altv_Roleplay.Minijobs.Busfahrer
 {
@@ -51,7 +50,7 @@ namespace Altv_Roleplay.Minijobs.Busfahrer
             return false;
         }
 
-        public static long GetRouteVehicleHash(int routeId)
+        public static ulong GetRouteVehicleHash(int routeId)
         {
             try
             {
@@ -127,12 +126,12 @@ namespace Altv_Roleplay.Minijobs.Busfahrer
                 };
                 ServerMinijobBusdriverSpots_.Add(spotData);
 
-                foreach(var item in ServerMinijobBusdriverSpots_)
+                foreach (var item in ServerMinijobBusdriverSpots_)
                 {
                     ((ClassicColshape)item.destinationColshape).Radius = 3f;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }

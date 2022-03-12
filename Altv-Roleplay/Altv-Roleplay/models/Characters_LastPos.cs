@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Altv_Roleplay.models
+﻿namespace Altv_Roleplay.models
 {
     public partial class Characters_LastPos
     {

@@ -1,11 +1,8 @@
 ﻿using AltV.Net.Data;
 using Altv_Roleplay.Utils;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Altv_Roleplay.models
 {
@@ -20,12 +17,15 @@ namespace Altv_Roleplay.models
         public virtual DbSet<Characters_LastPos> Characters_LastPos { get; set; }
         public virtual DbSet<Characters_Licenses> Characters_Licenses { get; set; }
         public virtual DbSet<Characters_Minijobs> Characters_Minijobs { get; set; }
+        public virtual DbSet<Server_Faction_Labor_Items> Server_Faction_Labor_Items { get; set; }
         public virtual DbSet<Characters_Permissions> Characters_Permissions { get; set; }
+        public virtual DbSet<Server_Storages> Server_Storages { get; set; }
         public virtual DbSet<Characters_Inventory> Characters_Inventory { get; set; }
         public virtual DbSet<Characters_Wanteds> Characters_Wanteds { get; set; }
         public virtual DbSet<Characters_Tablet_Apps> Characters_Tablet_Apps { get; set; }
         public virtual DbSet<Characters_Tablet_Tutorial> Characters_Tablet_Tutorials { get; set; }
         public virtual DbSet<CharactersPhoneChats> CharactersPhoneChats { get; set; }
+        public virtual DbSet<CharactersPhoneVerlauf> CharactersPhoneVerlauf { get; set; }
         public virtual DbSet<CharactersPhoneChatMessages> CharactersPhoneChatMessages { get; set; }
         public virtual DbSet<CharactersPhoneContacts> CharactersPhoneContacts { get; set; }
         public virtual DbSet<CharactersOwnedClothes> CharactersOwnedClothes { get; set; }
@@ -48,8 +48,7 @@ namespace Altv_Roleplay.models
         public virtual DbSet<Server_Faction_Ranks> Server_Faction_Ranks { get; set; }
         public virtual DbSet<Server_Faction_Storage_Items> Server_Faction_Storage_Items { get; set; }
         public virtual DbSet<Server_Faction_Positions> Server_Faction_Positions { get; set; }
-        public virtual DbSet<ServerFaction_Dispatch> Server_Faction_Dispatch { get; set; }
-        public virtual DbSet<Server_Farming_Producer> Server_Farming_Producer { get; set;}
+        public virtual DbSet<Server_Farming_Producer> Server_Farming_Producer { get; set; }
         public virtual DbSet<Server_Farming_Spots> Server_Farming_Spots { get; set; }
         public virtual DbSet<Server_Fuel_Stations> Server_Fuel_Stations { get; set; }
         public virtual DbSet<Server_Fuel_Spots> Server_Fuel_Spots { get; set; }
@@ -90,7 +89,7 @@ namespace Altv_Roleplay.models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if(!optionsBuilder.IsConfigured)
+            if (!optionsBuilder.IsConfigured)
             {
                 //Lokal
                 string connectionStr = $"server={Constants.DatabaseConfig.Host};port={Constants.DatabaseConfig.Port};user={Constants.DatabaseConfig.User};password={Constants.DatabaseConfig.Password};database={Constants.DatabaseConfig.Database}";
@@ -107,7 +106,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.playerid);
                 entity.ToTable("accounts", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.playerid).HasDatabaseName("id");
+                entity.HasIndex(e => e.playerid).HasName("id");
                 entity.Property(e => e.playerid).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.playerName).IsRequired().HasColumnName("username").HasMaxLength(64).IsUnicode(false).HasDefaultValueSql("N/A");
                 entity.Property(e => e.Email).IsRequired().HasColumnName("email").HasMaxLength(64);
@@ -125,7 +124,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("characters_tattoos", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
                 entity.Property(e => e.tattooId).HasColumnName("tattooId").HasColumnType("int(11)");
@@ -135,7 +134,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_tattoos", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.collection).HasColumnName("collection").HasMaxLength(64);
                 entity.Property(e => e.nameHash).HasColumnName("nameHash").HasMaxLength(64);
@@ -149,7 +148,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_tattooshops", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.name).HasColumnName("name");
                 entity.Property(e => e.owner).HasColumnName("owner").HasColumnType("int(11)");
@@ -166,7 +165,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.charId);
                 entity.ToTable("accounts_characters", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.charId).HasDatabaseName("id");
+                entity.HasIndex(e => e.charId).HasName("id");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
                 entity.Property(e => e.accountId).IsRequired().HasColumnName("accountId").HasColumnType("int(11)");
                 entity.Property(e => e.charname).IsRequired().HasColumnName("charname").HasMaxLength(35);
@@ -206,16 +205,16 @@ namespace Altv_Roleplay.models
                 entity.Property(e => e.playtimeHours).HasColumnName("playtimeHours");
                 entity.Property(e => e.isInJail).HasColumnName("isInJail");
                 entity.Property(e => e.jailTime).HasColumnName("jailTime");
-                entity.Property(e => e.wallpaper).HasColumnName("wallpaper").HasColumnType("int(11)");
                 entity.Property(e => e.pedName).HasColumnName("pedName").HasMaxLength(64);
                 entity.Property(e => e.isAnimalPed).HasColumnName("isAnimalPed").HasColumnType("int(11)");
+                entity.Property(e => e.isLaptopEquipped).HasColumnName("isLaptopEquipped");
             });
 
             modelBuilder.Entity<Characters_Bank>(entity =>
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("characters_bank", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charid").HasColumnType("int(11)");
                 entity.Property(e => e.accountNumber).HasColumnName("accountnumber").HasColumnType("int(11)");
@@ -242,7 +241,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("characters_licenses", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
                 entity.Property(e => e.PKW).HasColumnName("pkw");
@@ -259,7 +258,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("characters_minijobs", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
                 entity.Property(e => e.jobName).HasColumnName("jobName").HasMaxLength(64);
@@ -270,7 +269,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("characters_permissions", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
                 entity.Property(e => e.permissionName).HasColumnName("permissionName").HasMaxLength(64);
@@ -280,14 +279,12 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("characters_skin", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
                 entity.Property(e => e.facefeatures).HasColumnName("facefeatures");
                 entity.Property(e => e.headblendsdata).HasColumnName("headblendsdata");
-                entity.Property(e => e.headoverlays1).HasColumnName("headoverlays1");
-                entity.Property(e => e.headoverlays2).HasColumnName("headoverlays2");
-                entity.Property(e => e.headoverlays3).HasColumnName("headoverlays3");
+                entity.Property(e => e.headoverlays).HasColumnName("headoverlays");
                 entity.Property(e => e.clothesTop).HasColumnName("clothesTop").HasColumnType("int(11)");
                 entity.Property(e => e.clothesTorso).HasColumnName("clothesTorso").HasColumnType("int(11)");
                 entity.Property(e => e.clothesLeg).HasColumnName("clothesLeg").HasColumnType("int(11)");
@@ -309,7 +306,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("characters_inventory", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charid").HasColumnType("int(11)");
                 entity.Property(e => e.itemName).HasColumnName("itemName").HasMaxLength(128);
@@ -321,7 +318,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("characters_wanteds", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
                 entity.Property(e => e.wantedId).HasColumnName("wantedId").HasColumnType("int(11)");
@@ -332,7 +329,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("characters_tablet_apps", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
                 entity.Property(e => e.weather).HasColumnName("weather");
@@ -349,7 +346,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("characters_tablet_tutorial", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
                 entity.Property(e => e.openTablet).HasColumnName("openTablet");
@@ -364,17 +361,29 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.chatId);
                 entity.ToTable("characters_phone_chats", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.chatId).HasDatabaseName("chatId");
+                entity.HasIndex(e => e.chatId).HasName("chatId");
                 entity.Property(e => e.chatId).HasColumnName("chatId").HasColumnType("int(11)");
                 entity.Property(e => e.phoneNumber).HasColumnName("phoneNumber").HasColumnType("int(11)");
                 entity.Property(e => e.anotherNumber).HasColumnName("anotherNumber").HasColumnType("int(11)");
+            });
+
+            modelBuilder.Entity<CharactersPhoneVerlauf>(entity =>
+            {
+                entity.HasKey(e => e.id);
+                entity.ToTable("characters_phone_verlauf", Constants.DatabaseConfig.Database);
+                entity.HasIndex(e => e.id).HasName("id");
+                entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
+                entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
+                entity.Property(e => e.phoneNumber).HasColumnName("phoneNumber").HasColumnType("int(11)");
+                entity.Property(e => e.anotherNumber).HasColumnName("anotherNumber").HasColumnType("int(11)");
+                entity.Property(e => e.date).HasColumnName("date");
             });
 
             modelBuilder.Entity<CharactersPhoneChatMessages>(entity =>
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("characters_phone_chatmessages", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.chatId).HasColumnName("chatId").HasColumnType("int(11)");
                 entity.Property(e => e.fromNumber).HasColumnName("fromNumber").HasColumnType("int(11)");
@@ -387,7 +396,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.contactId);
                 entity.ToTable("characters_phone_contacts", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.contactId).HasDatabaseName("contactId");
+                entity.HasIndex(e => e.contactId).HasName("contactId");
                 entity.Property(e => e.contactId).HasColumnName("contactId").HasColumnType("int(11)");
                 entity.Property(e => e.phoneNumber).HasColumnName("phoneNumber").HasColumnType("int(11)");
                 entity.Property(e => e.contactName).HasColumnName("contactName");
@@ -398,7 +407,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("characters_ownedclothes", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
                 entity.Property(e => e.clothId).HasColumnName("clothId").HasColumnType("int(11)");
@@ -408,7 +417,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_all_vehicles", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.category).HasColumnName("category").HasMaxLength(64);
                 entity.Property(e => e.manufactor).HasColumnName("manufactor").HasMaxLength(64);
@@ -427,7 +436,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.animId);
                 entity.ToTable("server_animations", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.animId).HasDatabaseName("animId");
+                entity.HasIndex(e => e.animId).HasName("animId");
                 entity.Property(e => e.animId).HasColumnName("animId");
                 entity.Property(e => e.displayName).HasColumnName("displayName").HasMaxLength(64);
                 entity.Property(e => e.animDict).HasColumnName("animDict").HasMaxLength(64);
@@ -440,7 +449,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_atm", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.posX).HasColumnName("posX");
                 entity.Property(e => e.posY).HasColumnName("posY");
@@ -452,7 +461,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_banks", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.posX).HasColumnName("posX");
                 entity.Property(e => e.posY).HasColumnName("posY");
@@ -464,7 +473,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_bank_paper", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.accountNumber).HasColumnName("accountNumber");
                 entity.Property(e => e.Date).HasColumnName("Date");
@@ -480,7 +489,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_blips", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.name).HasColumnName("name").HasMaxLength(64);
                 entity.Property(e => e.color).HasColumnName("color");
@@ -496,7 +505,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_barbers", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.posX).HasColumnName("posX");
                 entity.Property(e => e.posY).HasColumnName("posY");
@@ -512,7 +521,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_companys", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.companyName).HasColumnName("companyName").HasMaxLength(64);
                 entity.Property(e => e.companyOwnerId).HasColumnName("companyOwnerId").HasColumnType("int(11)");
@@ -528,7 +537,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_company_members", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.companyId).HasColumnName("companyId").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
@@ -540,7 +549,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_clothesshops", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.name).HasColumnName("name");
                 entity.Property(e => e.posX).HasColumnName("posX");
@@ -557,7 +566,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_clothesshops_items", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.componentId).HasColumnName("componentId").HasColumnType("int(11)");
                 entity.Property(e => e.drawableId).HasColumnName("drawableId").HasColumnType("int(11)");
@@ -570,7 +579,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_doors", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.name).HasColumnName("name").HasMaxLength(64);
                 entity.Property(e => e.posX).HasColumnName("posX");
@@ -590,18 +599,33 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_factions", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.factionName).HasColumnName("factionName").HasMaxLength(128);
                 entity.Property(e => e.factionShort).HasColumnName("factionShort").HasMaxLength(64);
                 entity.Property(e => e.factionMoney).HasColumnName("factionMoney");
+                entity.Property(e => e.laborPos).HasColumnName("laborPos").HasConversion(
+                     v => JsonConvert.SerializeObject(v),
+                     v => JsonConvert.DeserializeObject<Position>(v));
+            });
+
+            modelBuilder.Entity<Server_Faction_Labor_Items>(entity =>
+            {
+                entity.HasKey(e => e.id);
+                entity.ToTable("server_faction_labor_items", Constants.DatabaseConfig.Database);
+                entity.HasIndex(e => e.id).HasName("id");
+                entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
+                entity.Property(e => e.factionId).HasColumnName("factionId").HasColumnType("int(11)");
+                entity.Property(e => e.accountId).HasColumnName("accountId").HasColumnType("int(11)");
+                entity.Property(e => e.itemName).HasColumnName("itemName").HasMaxLength(64);
+                entity.Property(e => e.itemAmount).HasColumnName("itemAmount").HasColumnType("int(11)");
             });
 
             modelBuilder.Entity<Server_Faction_Clothes>(entity =>
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_faction_clothes", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.faction).HasColumnName("faction").HasColumnType("int(11)");
                 entity.Property(e => e.clothesName).HasColumnName("clothesName").HasMaxLength(128);
@@ -611,7 +635,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_faction_members", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
                 entity.Property(e => e.factionId).HasColumnName("factionId").HasColumnType("int(11)");
@@ -625,7 +649,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_faction_ranks", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.factionId).HasColumnName("factionId").HasColumnType("int(11)");
                 entity.Property(e => e.rankId).HasColumnName("rankId").HasColumnType("int(11)");
@@ -637,7 +661,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_faction_storage_items", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
                 entity.Property(e => e.factionId).HasColumnName("factionId").HasColumnType("int(11)");
@@ -649,7 +673,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_faction_positions", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.factionId).HasColumnName("factionId").HasColumnType("int(11)");
                 entity.Property(e => e.posType).HasColumnName("posType").HasMaxLength(64);
@@ -659,27 +683,11 @@ namespace Altv_Roleplay.models
                 entity.Property(e => e.rotation).HasColumnName("rotation");
             });
 
-            modelBuilder.Entity<ServerFaction_Dispatch>(entity =>
-            {
-                entity.HasKey(e => e.id);
-                entity.ToTable("server_faction_dispatches", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
-                entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
-                entity.Property(e => e.factionId).HasColumnName("factionId").HasColumnType("int(11)");
-                entity.Property(e => e.senderCharId).HasColumnName("senderCharId").HasColumnType("int(11)");
-                entity.Property(e => e.message).HasColumnName("message");
-                entity.Property(e => e.Date).HasColumnName("date");
-                entity.Property(e => e.Destination).HasColumnName("destination").HasConversion(
-                    v => JsonConvert.SerializeObject(v),
-                    v => JsonConvert.DeserializeObject<Position>(v));
-                entity.Property(e => e.altname).HasColumnName("altname");
-            });
-
             modelBuilder.Entity<Server_Farming_Producer>(entity =>
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_farming_producer", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.posX).HasColumnName("posX");
                 entity.Property(e => e.posY).HasColumnName("posY");
@@ -687,20 +695,45 @@ namespace Altv_Roleplay.models
                 entity.Property(e => e.pedRotation).HasColumnName("pedRotation");
                 entity.Property(e => e.pedModel).HasColumnName("pedModel").HasMaxLength(64);
                 entity.Property(e => e.neededItem).HasColumnName("neededItem").HasMaxLength(64);
+                entity.Property(e => e.neededItemTWO).HasColumnName("neededItemTWO").HasMaxLength(64);
+                entity.Property(e => e.neededItemTHREE).HasColumnName("neededItemTHREE").HasMaxLength(64);
                 entity.Property(e => e.producedItem).HasColumnName("producedItem").HasMaxLength(64);
                 entity.Property(e => e.range).HasColumnName("range");
                 entity.Property(e => e.duration).HasColumnName("duration");
                 entity.Property(e => e.neededItemAmount).HasColumnName("neededItemAmount").HasColumnType("int(11)");
                 entity.Property(e => e.producedItemAmount).HasColumnName("producedItemAmount").HasColumnType("int(11)");
+                entity.Property(e => e.neededItemTWOAmount).HasColumnName("neededItemTWOAmount").HasColumnType("int(11)");
+                entity.Property(e => e.neededItemTHREEAmount).HasColumnName("neededItemTHREEAmount").HasColumnType("int(11)");
                 entity.Property(e => e.blipName).HasColumnName("blipName").HasMaxLength(64);
                 entity.Property(e => e.isBlipVisible).HasColumnName("isBlipVisible");
+            });
+
+
+            modelBuilder.Entity<Server_Storages>(entity =>
+            {
+                entity.HasKey(e => e.id);
+                entity.ToTable("server_storages", Constants.DatabaseConfig.Database);
+                entity.HasIndex(e => e.id);
+                entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
+                entity.Property(e => e.owner).HasColumnName("owner").HasColumnType("int(11)");
+                entity.Property(e => e.secondOwner).HasColumnName("secondOwner").HasColumnType("int(11)");
+                entity.Property(e => e.entryPos).HasColumnName("entryPos").HasConversion(
+                     v => JsonConvert.SerializeObject(v),
+                     v => JsonConvert.DeserializeObject<Position>(v));
+                entity.Property(e => e.items).HasColumnName("items").HasConversion(
+                     v => JsonConvert.SerializeObject(v),
+                     v => JsonConvert.DeserializeObject<List<Server_Storage_Item>>(v));
+                entity.Property(e => e.maxSize).HasColumnName("maxSize");
+                entity.Property(e => e.price).HasColumnName("price").HasColumnType("int(11)");
+                entity.Property(e => e.isfaction).HasColumnName("isfaction").HasColumnType("int(11)");
+                entity.Property(e => e.factionid).HasColumnName("factionid").HasColumnType("int(11)");
             });
 
             modelBuilder.Entity<Server_Farming_Spots>(entity =>
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_farming_spots", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.posX).HasColumnName("posX");
                 entity.Property(e => e.posY).HasColumnName("posY");
@@ -723,7 +756,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_fuel_stations", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.name).HasColumnName("name").HasMaxLength(64);
                 entity.Property(e => e.owner).HasColumnName("owner").HasColumnType("int(11)");
@@ -736,7 +769,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_fuel_spots", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.fuelStationId).HasColumnName("fuelStationId").HasColumnType("int(11)");
                 entity.Property(e => e.posX).HasColumnName("posX");
@@ -748,7 +781,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_garages", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.name).HasColumnName("name").HasMaxLength(64);
                 entity.Property(e => e.posX).HasColumnName("posX");
@@ -763,7 +796,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_garage_slots", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.garageId).HasColumnName("garageId").HasColumnType("int(11)");
                 entity.Property(e => e.parkId).HasColumnName("parkid").HasColumnType("int(11)");
@@ -779,7 +812,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_hotels", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.name).HasColumnName("name").HasMaxLength(64);
                 entity.Property(e => e.posX).HasColumnName("posX");
@@ -791,7 +824,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_hotels_apartments", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.hotelId).HasColumnName("hotelId").HasColumnType("int(11)");
                 entity.Property(e => e.interiorId).HasColumnName("interiorId").HasColumnType("int(11)");
@@ -805,7 +838,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_hotels_storage", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.apartmentId).HasColumnName("apartmentId").HasColumnType("int(11)");
                 entity.Property(e => e.itemName).HasColumnName("itemName").HasMaxLength(64);
@@ -816,7 +849,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.interiorId);
                 entity.ToTable("server_houses_interior", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.interiorId).HasDatabaseName("interiorId");
+                entity.HasIndex(e => e.interiorId).HasName("interiorId");
                 entity.Property(e => e.interiorId).HasColumnName("interiorId");
                 entity.Property(e => e.exitX).HasColumnName("exitX");
                 entity.Property(e => e.exitY).HasColumnName("exitY");
@@ -834,7 +867,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_houses_storage", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.houseId).HasColumnName("houseId").HasColumnType("int(11)");
                 entity.Property(e => e.itemName).HasColumnName("itemName").HasMaxLength(128);
@@ -845,7 +878,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_houses_renter", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
                 entity.Property(e => e.houseId).HasColumnName("houseId").HasColumnType("int(11)");
@@ -855,7 +888,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_houses", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.interiorId).HasColumnName("interiorId").HasColumnType("int(11)");
                 entity.Property(e => e.ownerId).HasColumnName("ownerId").HasColumnType("int(11)");
@@ -876,7 +909,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_items", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.itemName).HasColumnName("itemName").HasMaxLength(64);
                 entity.Property(e => e.itemType).HasColumnName("itemType").HasMaxLength(64);
@@ -905,7 +938,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_jobs", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.jobName).HasColumnName("jobName").HasMaxLength(64);
                 entity.Property(e => e.jobPaycheck).HasColumnName("jobPaycheck").HasColumnType("int(11)");
@@ -917,7 +950,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_licenses", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.licCut).HasColumnName("licCut").HasMaxLength(64);
                 entity.Property(e => e.licName).HasColumnName("licName").HasMaxLength(64);
@@ -928,7 +961,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_markers", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.type).HasColumnName("type").HasColumnType("int(11)");
                 entity.Property(e => e.posX).HasColumnName("posX");
@@ -948,7 +981,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_minijob_busdriver_routes", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.routeId).HasColumnName("routeId").HasColumnType("int(11)");
                 entity.Property(e => e.routeName).HasColumnName("routeName").HasMaxLength(64);
@@ -963,7 +996,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_minijob_busdriver_spots", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.routeId).HasColumnName("routeId").HasColumnType("int(11)");
                 entity.Property(e => e.spotId).HasColumnName("spotId").HasColumnType("int(11)");
@@ -976,7 +1009,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_minijob_garbage_spots", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.routeId).HasColumnName("routeId").HasColumnType("int(11)");
                 entity.Property(e => e.spotId).HasColumnName("spotId").HasColumnType("int(11)");
@@ -989,7 +1022,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_peds", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.model).HasColumnName("model").HasMaxLength(64);
                 entity.Property(e => e.posX).HasColumnName("posX");
@@ -1002,7 +1035,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.shopId);
                 entity.ToTable("server_shops", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.shopId).HasDatabaseName("shopid");
+                entity.HasIndex(e => e.shopId).HasName("shopid");
                 entity.Property(e => e.shopId).HasColumnName("shopid").HasColumnType("int(11)");
                 entity.Property(e => e.name).HasColumnName("name").HasMaxLength(64);
                 entity.Property(e => e.posX).HasColumnName("posX");
@@ -1023,7 +1056,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_shop_items", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.shopId).HasColumnName("shopid").HasColumnType("int(11)");
                 entity.Property(e => e.itemName).HasColumnName("itemName").HasMaxLength(128);
@@ -1036,7 +1069,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_tablet_apps", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.appName).HasColumnName("appName").HasMaxLength(64);
                 entity.Property(e => e.appPrice).HasColumnName("appPrice").HasColumnType("int(11)");
@@ -1046,7 +1079,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_tablet_events", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
                 entity.Property(e => e.title).HasColumnName("title").HasMaxLength(64);
@@ -1064,7 +1097,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_tablet_notes", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
                 entity.Property(e => e.color).HasColumnName("color").HasMaxLength(64);
@@ -1077,7 +1110,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_teleports", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.name).HasColumnName("name").HasMaxLength(64);
                 entity.Property(e => e.posX).HasColumnName("posX");
@@ -1093,7 +1126,7 @@ namespace Altv_Roleplay.models
             {
                 entity.ToTable("logs_login", Constants.DatabaseConfig.Database);
                 entity.HasKey(e => e.id);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.username).IsRequired().HasColumnName("username").HasMaxLength(64);
                 entity.Property(e => e.socialclub).IsRequired().HasColumnName("socialclub").HasMaxLength(64);
@@ -1108,7 +1141,7 @@ namespace Altv_Roleplay.models
             {
                 entity.ToTable("logs_company", Constants.DatabaseConfig.Database);
                 entity.HasKey(e => e.id);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.companyId).HasColumnName("companyId").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
@@ -1122,7 +1155,7 @@ namespace Altv_Roleplay.models
             {
                 entity.ToTable("logs_faction", Constants.DatabaseConfig.Database);
                 entity.HasKey(e => e.id);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.factionId).HasColumnName("factionId").HasColumnType("int(11)");
                 entity.Property(e => e.charId).HasColumnName("charId").HasColumnType("int(11)");
@@ -1136,7 +1169,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_vehicles", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.charid).HasColumnName("charid").HasColumnType("int(11)");
                 entity.Property(e => e.hash).HasColumnName("hash");
@@ -1164,13 +1197,13 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_vehicles_mod", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.vehId).HasColumnName("vehId").HasColumnType("int(11)");
                 entity.Property(e => e.colorPrimaryType).HasColumnName("colorPrimaryType");
                 entity.Property(e => e.colorPrimary_r).HasColumnName("colorPrimary_r");
                 entity.Property(e => e.colorPrimary_g).HasColumnName("colorPrimary_g");
-                entity.Property(e => e.colorPrimary_b).HasColumnName("colorPrimary_b"); 
+                entity.Property(e => e.colorPrimary_b).HasColumnName("colorPrimary_b");
                 entity.Property(e => e.colorSecondaryType).HasColumnName("colorSecondaryType");
                 entity.Property(e => e.colorSecondary_r).HasColumnName("colorSecondary_r");
                 entity.Property(e => e.colorSecondary_g).HasColumnName("colorSecondary_g");
@@ -1225,7 +1258,7 @@ namespace Altv_Roleplay.models
                 entity.Property(e => e.rear_hydraulics).HasColumnName("rear_hydraulics").HasColumnType("int(11)");
                 entity.Property(e => e.livery).HasColumnName("livery").HasColumnType("int(11)");
                 entity.Property(e => e.plate).HasColumnName("plate").HasColumnType("int(11)");
-                entity.Property(e => e.plate_color).HasColumnName("plate_color").HasColumnType("int(11)"); 
+                entity.Property(e => e.plate_color).HasColumnName("plate_color").HasColumnType("int(11)");
                 entity.Property(e => e.interior_color).HasColumnName("interior_color");
                 entity.Property(e => e.neon).HasColumnName("neon");
                 entity.Property(e => e.neon_r).HasColumnName("neon_r");
@@ -1236,6 +1269,7 @@ namespace Altv_Roleplay.models
                 entity.Property(e => e.smoke_b).HasColumnName("smoke_b");
                 entity.Property(e => e.smoke).HasColumnName("smoke");
             });
+
 
             modelBuilder.Entity<Server_Vehicle_Items>(entity =>
             {
@@ -1253,7 +1287,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_vehicle_shops", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.name).HasColumnName("name").HasMaxLength(64);
                 entity.Property(e => e.pedX).HasColumnName("pedX");
@@ -1273,7 +1307,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.id);
                 entity.ToTable("server_vehicle_shops_items", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.id).HasDatabaseName("id");
+                entity.HasIndex(e => e.id).HasName("id");
                 entity.Property(e => e.id).HasColumnName("id").HasColumnType("int(11)");
                 entity.Property(e => e.shopId).HasColumnName("shopid").HasColumnType("int(11)");
                 entity.Property(e => e.hash).HasColumnName("hash");
@@ -1291,7 +1325,7 @@ namespace Altv_Roleplay.models
             {
                 entity.HasKey(e => e.wantedId);
                 entity.ToTable("server_wanteds", Constants.DatabaseConfig.Database);
-                entity.HasIndex(e => e.wantedId).HasDatabaseName("wantedId");
+                entity.HasIndex(e => e.wantedId).HasName("wantedId");
                 entity.Property(e => e.wantedId).HasColumnName("wantedId").HasColumnType("int(11)");
                 entity.Property(e => e.category).HasColumnName("category").HasColumnType("int(11)");
                 entity.Property(e => e.wantedName).HasColumnName("wantedName").HasMaxLength(128);

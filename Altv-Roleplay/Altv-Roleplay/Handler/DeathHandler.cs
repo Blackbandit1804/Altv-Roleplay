@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AltV.Net;
+﻿using AltV.Net;
 using AltV.Net.Async;
 using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
@@ -11,16 +6,18 @@ using AltV.Net.Enums;
 using AltV.Net.Resources.Chat.Api;
 using Altv_Roleplay.Factories;
 using Altv_Roleplay.Model;
-using Altv_Roleplay.models;
 using Altv_Roleplay.Utils;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 
 namespace Altv_Roleplay.Handler
 {
     class DeathHandler : IScript
     {
-        [ScriptEvent(ScriptEventType.PlayerDead)]
-        public void OnPlayerDeath(ClassicPlayer player, IEntity killer, uint weapon)
+        [AsyncScriptEvent(ScriptEventType.PlayerDead)]
+        public async Task OnPlayerDeath(ClassicPlayer player, IEntity killer, uint weapon)
         {
             try
             {
@@ -36,17 +33,15 @@ namespace Altv_Roleplay.Handler
                 }
                 openDeathscreen(player);
                 Characters.SetCharacterUnconscious(charId, true, 10); // Von 15 auf 10 geändert.
-                ServerFactions.AddNewFactionDispatchNoName("Handy Notruf", 3, $"Eine Verletzte Person wurde gemeldet", player.Position);
+                ServerFactions.createFactionDispatch(player, 3, $"HandyNotruf", $"Eine Verletzte Person wurde gemeldet");
 
                 Alt.Emit("Server:Smartphone:leaveRadioFrequence", player);
-
-                SmartphoneHandler.denyCall(player);
 
                 ClassicPlayer killerPlayer = (ClassicPlayer)killer;
                 if (killerPlayer == null || !killerPlayer.Exists) return;
                 WeaponModel weaponModel = (WeaponModel)weapon;
                 if (weaponModel == WeaponModel.Fist) return;
-                foreach (IPlayer p in Alt.GetAllPlayers().ToList().Where(x => x != null && x.Exists && ((ClassicPlayer)x).CharacterId > 0 && x.AdminLevel() > 0))
+                foreach (IPlayer p in Alt.Server.GetPlayers().ToList().Where(x => x != null && x.Exists && ((ClassicPlayer)x).CharacterId > 0 && x.AdminLevel() > 0))
                 {
                     p.SendChatMessage($"{Characters.GetCharacterName(killerPlayer.CharacterId)} ({killerPlayer.CharacterId}) hat {Characters.GetCharacterName(player.CharacterId)} ({player.CharacterId}) getötet. Waffe: {weaponModel}");
                 }
@@ -55,7 +50,7 @@ namespace Altv_Roleplay.Handler
                     User.SetPlayerBanned(killerPlayer, true, $"Waffen Hack[2]: {weaponModel}");
                     killerPlayer.Kick("");
                     player.Health = 200;
-                    foreach (IPlayer p in Alt.GetAllPlayers().ToList().Where(x => x != null && x.Exists && ((ClassicPlayer)x).CharacterId > 0 && x.AdminLevel() > 0))
+                    foreach (IPlayer p in Alt.Server.GetPlayers().ToList().Where(x => x != null && x.Exists && ((ClassicPlayer)x).CharacterId > 0 && x.AdminLevel() > 0))
                     {
                         p.SendChatMessage($"{Characters.GetCharacterName(killerPlayer.CharacterId)} wurde gebannt: Waffenhack[2] - {weaponModel}");
                     }
@@ -99,10 +94,10 @@ namespace Altv_Roleplay.Handler
                 player.SetPlayerIsFastFarm(false);
                 player.EmitLocked("Client:Ragdoll:SetPedToRagdoll", false, 2000);
                 Characters.SetCharacterUnconscious(charId, false, 0);
-                Characters.SetCharacterFastFarm(charId,false,0);
+                Characters.SetCharacterFastFarm(charId, false, 0);
                 player.EmitLocked("Client:Inventory:StopEffect", "DrugsMichaelAliensFight");
 
-                foreach(var item in CharactersInventory.CharactersInventory_.ToList().Where(x => x.charId == charId))
+                foreach (var item in CharactersInventory.CharactersInventory_.ToList().Where(x => x.charId == charId))
                 {
                     if (item.itemName.Contains("EC Karte") || item.itemName.Contains("Ausweis") || item.itemName.Contains("Fahrzeugschluessel") || ServerItems.GetItemType(ServerItems.ReturnNormalItemName(item.itemName)) == "clothes") continue;
                     CharactersInventory.RemoveCharacterItem(charId, item.itemName, item.itemLocation);
@@ -116,7 +111,7 @@ namespace Altv_Roleplay.Handler
                 Characters.SetCharacterWeapon(player, "SecondaryAmmo", 0);
                 Characters.SetCharacterWeapon(player, "FistWeapon", "None");
                 Characters.SetCharacterWeapon(player, "FistWeaponAmmo", 0);
-                player.EmitLocked("Client:Smartphone:equipPhone", false, Characters.GetCharacterPhonenumber(charId), Characters.IsCharacterPhoneFlyModeEnabled(charId), Characters.GetCharacterPhoneWallpaper(charId));
+                player.EmitLocked("Client:Smartphone:equipPhone", false, Characters.GetCharacterPhonenumber(charId), Characters.IsCharacterPhoneFlyModeEnabled(charId));
                 Characters.SetCharacterPhoneEquipped(charId, false);
                 player.RemoveAllWeaponsAsync();
             }

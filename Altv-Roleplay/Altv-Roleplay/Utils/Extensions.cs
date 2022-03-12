@@ -3,16 +3,12 @@ using AltV.Net;
 using AltV.Net.Async;
 using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
-using AltV.Net.Enums;
 using Altv_Roleplay.Factories;
 using Altv_Roleplay.Handler;
 using Altv_Roleplay.Model;
 using Altv_Roleplay.models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Altv_Roleplay.Utils
 {
@@ -21,9 +17,17 @@ namespace Altv_Roleplay.Utils
         public static bool IsInRange(this Position currentPosition, Position otherPosition, float distance)
             => currentPosition.Distance(otherPosition) <= distance;
 
-        public static void kickWithMessage(this IPlayer player, string reason) {
+        public static void kickWithMessage(this IPlayer player, string reason)
+        {
             HUDHandler.SendNotification(player, 3, 250000, $"Du wurdest vom Server gekickt. Grund: {reason}");
             player.Kick(reason);
+        }
+
+        public static bool IsCefOpen(this ClassicPlayer player)
+        {
+            if (player == null || !player.Exists) return false;
+            player.GetSyncedMetaData("IsCefOpen", out bool isCefOpened);
+            return isCefOpened;
         }
 
         public static void updateTattoos(this ClassicPlayer player)
@@ -39,7 +43,7 @@ namespace Altv_Roleplay.Utils
             return myVehicle.VehicleId != 0;
         }
 
-        public static void SetVehicleId(this IVehicle vehicle, long vehicleId)
+        public static void SetVehicleId(this IVehicle vehicle, ulong vehicleId)
         {
             var myVehicle = (ClassicVehicle)vehicle;
             if (myVehicle == null || !myVehicle.Exists) return;
@@ -60,11 +64,11 @@ namespace Altv_Roleplay.Utils
             return myVehicle.Trunkstate;
         }
 
-        public static long GetVehicleId(this IVehicle vehicle)
+        public static ulong GetVehicleId(this IVehicle vehicle)
         {
             var myVehicle = (ClassicVehicle)vehicle;
             if (myVehicle == null || !myVehicle.Exists) return 0;
-            return (long)myVehicle.VehicleId;
+            return (ulong)myVehicle.VehicleId;
         }
 
         public static ulong GetCharacterMetaId(this IPlayer player)
@@ -88,7 +92,7 @@ namespace Altv_Roleplay.Utils
             myColshape.ColshapeName = name;
         }
 
-        public static long GetColshapeCarDealerVehPrice(this IColShape cols)
+        public static ulong GetColshapeCarDealerVehPrice(this IColShape cols)
         {
             var myColshape = (ClassicColshape)cols;
             if (myColshape == null || !myColshape.Exists) return 0;
@@ -109,18 +113,18 @@ namespace Altv_Roleplay.Utils
             return myColshape.ColshapeName;
         }
 
-        public static void SetColShapeId(this IColShape cols, long id)
+        public static void SetColShapeId(this IColShape cols, ulong id)
         {
             var myColshape = (ClassicColshape)cols;
             if (myColshape == null || !myColshape.Exists) return;
             myColshape.ColshapeId = (int)id;
         }
 
-        public static long GetColShapeId(this IColShape cols)
+        public static ulong GetColShapeId(this IColShape cols)
         {
             var myColshape = (ClassicColshape)cols;
             if (myColshape == null || !myColshape.Exists) return 0;
-            return (long)myColshape.ColshapeId;
+            return (ulong)myColshape.ColshapeId;
         }
 
         public static string GetPlayerFarmingActionMeta(this IPlayer player)
@@ -144,7 +148,8 @@ namespace Altv_Roleplay.Utils
             if (cuffType == "handcuffs")
             {
                 AltAsync.Do(() => player.SetSyncedMetaData("HasHandcuffs", isCuffed));
-            } else if(cuffType == "ropecuffs")
+            }
+            else if (cuffType == "ropecuffs")
             {
                 AltAsync.Do(() => player.SetSyncedMetaData("HasRopeCuffs", isCuffed));
             }
@@ -250,33 +255,33 @@ namespace Altv_Roleplay.Utils
             return myPlayer.CurrentMinijobStep;
         }
 
-        public static void SetPlayerCurrentMinijobActionCount(this IPlayer player, long count) //Verwendung: ATM aufgefüllt => Count 1 höher => next ATM => Count höhr => Count == max == fertig.
+        public static void SetPlayerCurrentMinijobActionCount(this IPlayer player, ulong count) //Verwendung: ATM aufgefüllt => Count 1 höher => next ATM => Count höhr => Count == max == fertig.
         {
             var myPlayer = (ClassicPlayer)player;
             if (myPlayer == null || !myPlayer.Exists) return;
             myPlayer.CurrentMinijobActionCount = (int)count;
         }
 
-        public static long GetPlayerCurrentMinijobActionCount(this IPlayer player)
+        public static ulong GetPlayerCurrentMinijobActionCount(this IPlayer player)
         {
             var myPlayer = (ClassicPlayer)player;
             if (myPlayer == null || !myPlayer.Exists) return 0;
-            return (long)myPlayer.CurrentMinijobActionCount;
+            return (ulong)myPlayer.CurrentMinijobActionCount;
         }
 
         //Miniob: Müllmann
-        public static void SetPlayerCurrentMinijobRouteId(this IPlayer player, long routeId)
+        public static void SetPlayerCurrentMinijobRouteId(this IPlayer player, ulong routeId)
         {
             var myPlayer = (ClassicPlayer)player;
             if (myPlayer == null || !myPlayer.Exists) return;
             myPlayer.CurrentMinijobRouteId = (int)routeId;
         }
 
-        public static long GetPlayerCurrentMinijobRouteId(this IPlayer player)
+        public static ulong GetPlayerCurrentMinijobRouteId(this IPlayer player)
         {
             var myPlayer = (ClassicPlayer)player;
             if (myPlayer == null || !myPlayer.Exists) return 0;
-            return (long)myPlayer.CurrentMinijobRouteId;
+            return (ulong)myPlayer.CurrentMinijobRouteId;
         }
 
         public static Position getPositionInBackOfPosition(this Position pos, float rotation, float distance)

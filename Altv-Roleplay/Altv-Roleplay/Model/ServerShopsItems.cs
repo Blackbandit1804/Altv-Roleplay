@@ -1,14 +1,10 @@
 ﻿using AltV.Net;
-using AltV.Net.Async;
 using AltV.Net.Elements.Entities;
-using Altv_Roleplay.Handler;
 using Altv_Roleplay.models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Altv_Roleplay.Model
 {
@@ -70,7 +66,7 @@ namespace Altv_Roleplay.Model
             }).ToList();
 
             return JsonConvert.SerializeObject(items);
-        } 
+        }
 
         public static void RemoveShopItemAmount(int shopId, string itemName, int itemAmount)
         {

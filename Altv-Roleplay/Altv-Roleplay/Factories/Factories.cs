@@ -2,8 +2,6 @@
 using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Altv_Roleplay.Factories
 {
@@ -20,7 +18,7 @@ namespace Altv_Roleplay.Factories
         }
     }
 
-    class AccountsFactory : IEntityFactory<IPlayer>
+    public class AccountsFactory : IEntityFactory<IPlayer>
     {
         public IPlayer Create(IServer server, IntPtr playerPointer, ushort id)
         {

@@ -5,8 +5,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Altv_Roleplay.Model
 {
@@ -52,7 +50,7 @@ namespace Altv_Roleplay.Model
             {
                 if (companyId == 0 || charId == 0) return;
                 var companyData = ServerCompanysData_.FirstOrDefault(x => x.id == companyId);
-                if(companyData != null)
+                if (companyData != null)
                 {
                     var companyMemberList = ServerCompanysMember_.FirstOrDefault(x => x.charId == charId);
                     if (companyMemberList != null) return;
@@ -86,7 +84,7 @@ namespace Altv_Roleplay.Model
             {
                 if (companyId == 0 || charId == 0) return;
                 var companyMemberData = ServerCompanysMember_.FirstOrDefault(x => x.companyId == companyId && x.charId == charId);
-                if(companyMemberData != null)
+                if (companyMemberData != null)
                 {
                     ServerCompanysMember_.Remove(companyMemberData);
                     using (gtaContext db = new gtaContext())
@@ -97,7 +95,7 @@ namespace Altv_Roleplay.Model
                     CharactersTablet.ChangeCharacterTabletAppInstallState(charId, "company", false);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -109,7 +107,7 @@ namespace Altv_Roleplay.Model
             {
                 if (companyId == 0 || newOwner == 0) return;
                 var companyData = ServerCompanysData_.FirstOrDefault(x => x.id == companyId);
-                if(companyData != null)
+                if (companyData != null)
                 {
                     companyData.companyOwnerId = newOwner;
                     using (gtaContext db = new gtaContext())
@@ -119,7 +117,7 @@ namespace Altv_Roleplay.Model
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -131,7 +129,7 @@ namespace Altv_Roleplay.Model
             {
                 if (companyId == 0 || charId == 0) return;
                 var companyMemberData = ServerCompanysMember_.FirstOrDefault(x => x.companyId == companyId && x.charId == charId);
-                if(companyMemberData != null)
+                if (companyMemberData != null)
                 {
                     companyMemberData.rank = newRank;
                     using (gtaContext db = new gtaContext())
@@ -141,7 +139,7 @@ namespace Altv_Roleplay.Model
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -153,12 +151,12 @@ namespace Altv_Roleplay.Model
             {
                 if (charId == 0) return false;
                 var companyMemberData = ServerCompanysMember_.FirstOrDefault(x => x.charId == charId);
-                if(companyMemberData != null)
+                if (companyMemberData != null)
                 {
                     return true;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -171,12 +169,12 @@ namespace Altv_Roleplay.Model
             {
                 if (charId == 0) return 0;
                 var companyMemberData = ServerCompanysMember_.FirstOrDefault(x => x.charId == charId);
-                if(companyMemberData != null)
+                if (companyMemberData != null)
                 {
                     return companyMemberData.companyId;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -195,7 +193,7 @@ namespace Altv_Roleplay.Model
                 x.rank,
                 date = x.invitedTimestamp.ToString("dd.MM.yyyy"),
                 time = x.invitedTimestamp.ToString("HH.mm"),
-            }).OrderBy(x => x.charName).ToList();            
+            }).OrderBy(x => x.charName).ToList();
 
             return JsonConvert.SerializeObject(items);
         }
@@ -226,7 +224,7 @@ namespace Altv_Roleplay.Model
         {
             if (charId == 0) return 0;
             var memberData = ServerCompanysMember_.FirstOrDefault(x => x.charId == charId);
-            if(memberData != null)
+            if (memberData != null)
             {
                 return memberData.rank;
             }
@@ -237,7 +235,7 @@ namespace Altv_Roleplay.Model
         {
             if (companyId <= 0) return 0;
             var companyData = ServerCompanysData_.FirstOrDefault(x => x.id == companyId);
-            if(companyData != null)
+            if (companyData != null)
             {
                 return companyData.companyMoney;
             }
@@ -250,7 +248,7 @@ namespace Altv_Roleplay.Model
             {
                 if (companyId <= 0) return;
                 var companyData = ServerCompanysData_.FirstOrDefault(x => x.id == companyId);
-                if(companyData != null)
+                if (companyData != null)
                 {
                     companyData.companyMoney = money;
                     using (gtaContext db = new gtaContext())
@@ -260,7 +258,7 @@ namespace Altv_Roleplay.Model
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -271,7 +269,7 @@ namespace Altv_Roleplay.Model
             Position pos = new Position(0, 0, 0);
             if (companyId == 0) return pos;
             var companyData = ServerCompanysData_.FirstOrDefault(x => x.id == companyId);
-            if(companyData != null)
+            if (companyData != null)
             {
                 pos = new Position(companyData.posX, companyData.posY, companyData.posZ);
             }
@@ -283,7 +281,7 @@ namespace Altv_Roleplay.Model
             string License = "None";
             if (companyId <= 0) return License;
             var companyData = ServerCompanysData_.FirstOrDefault(x => x.id == companyId);
-            if(companyData != null)
+            if (companyData != null)
             {
                 return companyData.givenLicense;
             }
@@ -294,7 +292,7 @@ namespace Altv_Roleplay.Model
         {
             if (companyId == 0) return "";
             var companyData = ServerCompanysData_.FirstOrDefault(x => x.id == companyId);
-            if(companyData != null)
+            if (companyData != null)
             {
                 return companyData.companyName;
             }
@@ -303,7 +301,7 @@ namespace Altv_Roleplay.Model
 
         public static string GetServerCompanyRankName(int rankId)
         {
-            switch(rankId)
+            switch (rankId)
             {
                 case 0: return "Mitarbeiter";
                 case 1: return "Stelv. Geschäftsführer";

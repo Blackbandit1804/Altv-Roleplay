@@ -6,7 +6,6 @@ using Altv_Roleplay.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Altv_Roleplay.Model
 {
@@ -117,7 +116,7 @@ namespace Altv_Roleplay.Model
         {
             if (shopId <= 0) return "";
             var shop = ServerShops_.FirstOrDefault(x => x.shopId == shopId);
-            if(shop != null)
+            if (shop != null)
             {
                 return shop.neededLicense;
             }
@@ -128,7 +127,7 @@ namespace Altv_Roleplay.Model
         {
             if (shopId <= 0) return "";
             var shop = ServerShops_.FirstOrDefault(x => x.shopId == shopId);
-            if(shop != null)
+            if (shop != null)
             {
                 return shop.name;
             }

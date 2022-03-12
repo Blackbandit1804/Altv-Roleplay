@@ -1,13 +1,10 @@
 ﻿using AltV.Net;
 using AltV.Net.Data;
-using AltV.Net.Elements.Entities;
 using Altv_Roleplay.models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Altv_Roleplay.Model
 {
@@ -119,7 +116,7 @@ namespace Altv_Roleplay.Model
                     db.SaveChanges();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -146,7 +143,7 @@ namespace Altv_Roleplay.Model
                     db.SaveChanges();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -158,7 +155,7 @@ namespace Altv_Roleplay.Model
             {
                 if (charId == 0 || noteId == 0) return;
                 var noteData = ServerTabletNotesData_.FirstOrDefault(x => x.id == noteId && x.charId == charId);
-                if(noteData != null)
+                if (noteData != null)
                 {
                     ServerTabletNotesData_.Remove(noteData);
                     using (gtaContext db = new gtaContext())
@@ -168,7 +165,7 @@ namespace Altv_Roleplay.Model
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -180,12 +177,12 @@ namespace Altv_Roleplay.Model
             {
                 if (appName == "") return 999999999;
                 var tabletData = ServerTabletAppsData_.FirstOrDefault(x => x.appName == appName);
-                if(tabletData != null)
+                if (tabletData != null)
                 {
                     return tabletData.appPrice;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -200,7 +197,8 @@ namespace Altv_Roleplay.Model
                 var tabletData = CharactersTabletApps_.FirstOrDefault(x => x.charId == charId);
                 if (tabletData != null)
                 {
-                    switch(AppName) {
+                    switch (AppName)
+                    {
                         case "weather": return tabletData.weather;
                         case "news": return tabletData.weather;
                         case "banking": return tabletData.banking;
@@ -225,9 +223,9 @@ namespace Altv_Roleplay.Model
             {
                 if (charId <= 0 || entry.Length <= 0) return false;
                 var tutData = CharactersTabletTutorialData_.FirstOrDefault(x => x.charId == charId);
-                if(tutData != null)
+                if (tutData != null)
                 {
-                    switch(entry)
+                    switch (entry)
                     {
                         case "openTablet": return tutData.openTablet;
                         case "openInventory": return tutData.openInventory;
@@ -238,7 +236,7 @@ namespace Altv_Roleplay.Model
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -252,7 +250,7 @@ namespace Altv_Roleplay.Model
                 if (charId <= 0 || entry.Length <= 0) return;
                 var tutData = CharactersTabletTutorialData_.FirstOrDefault(x => x.charId == charId);
                 if (tutData == null) return;
-                switch(entry)
+                switch (entry)
                 {
                     case "openTablet": tutData.openTablet = isCompleted; break;
                     case "openInventory": tutData.openInventory = isCompleted; break;
@@ -280,9 +278,9 @@ namespace Altv_Roleplay.Model
             {
                 if (charId == 0 || appName == "") return;
                 var tabletData = CharactersTabletApps_.FirstOrDefault(x => x.charId == charId);
-                if(tabletData != null)
+                if (tabletData != null)
                 {
-                    switch(appName)
+                    switch (appName)
                     {
                         case "weather": tabletData.weather = isInstalled; break;
                         case "news": tabletData.news = isInstalled; break;
@@ -301,7 +299,7 @@ namespace Altv_Roleplay.Model
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -313,7 +311,7 @@ namespace Altv_Roleplay.Model
             {
                 if (charId == 0) return;
                 var tabletData = CharactersTabletApps_.FirstOrDefault(x => x.charId == charId);
-                if(tabletData != null)
+                if (tabletData != null)
                 {
                     tabletData.weather = weather;
                     tabletData.news = news;
@@ -331,7 +329,7 @@ namespace Altv_Roleplay.Model
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -352,10 +350,10 @@ namespace Altv_Roleplay.Model
                 company = ServerCompanys.IsCharacterInAnyServerCompany(charId),
                 x.notices,
                 factionmanager = ServerFactions.IsCharacterInAnyFaction(charId) && (ServerFactions.GetCharacterFactionRank(charId) >= ServerFactions.GetFactionMaxRankCount(ServerFactions.GetCharacterFactionId(charId)) - 2),
-                lspdapp = ServerFactions.IsCharacterInAnyFaction(charId) && ServerFactions.IsCharacterInFactionDuty(charId) && ServerFactions.GetCharacterFactionId(charId) == 2,
-                lsfdapp = ServerFactions.IsCharacterInAnyFaction(charId) && ServerFactions.IsCharacterInFactionDuty(charId) && ServerFactions.GetCharacterFactionId(charId) == 3,
-                aclsapp = ServerFactions.IsCharacterInAnyFaction(charId) && ServerFactions.IsCharacterInFactionDuty(charId) && ServerFactions.GetCharacterFactionId(charId) == 4,
-                justiceapp = ServerFactions.IsCharacterInAnyFaction(charId) && ServerFactions.IsCharacterInFactionDuty(charId) && ServerFactions.GetCharacterFactionId(charId) == 1,
+                lspdapp = ServerFactions.IsCharacterInAnyFaction(charId) && ServerFactions.IsCharacterInFactionDuty(charId) && ServerFactions.GetCharacterFactionId(charId) == 1,
+                lsfdapp = ServerFactions.IsCharacterInAnyFaction(charId) && ServerFactions.IsCharacterInFactionDuty(charId) && ServerFactions.GetCharacterFactionId(charId) == 4,
+                aclsapp = ServerFactions.IsCharacterInAnyFaction(charId) && ServerFactions.IsCharacterInFactionDuty(charId) && ServerFactions.GetCharacterFactionId(charId) == 5,
+                justiceapp = ServerFactions.IsCharacterInAnyFaction(charId) && ServerFactions.IsCharacterInFactionDuty(charId) && ServerFactions.GetCharacterFactionId(charId) == 7,
             }).ToList();
 
             return JsonConvert.SerializeObject(items);
@@ -450,11 +448,11 @@ namespace Altv_Roleplay.Model
                 var vehicle = ServerVehicles.ServerVehicles_.FirstOrDefault(x => x.id == vehId);
                 if (vehicle != null)
                 {
-                    if(vehicle.isInGarage) { return ServerGarages.GetGarageSlotPosition(vehicle.garageId, 1); } 
+                    if (vehicle.isInGarage) { return ServerGarages.GetGarageSlotPosition(vehicle.garageId, 1); }
                     else { return new Position(vehicle.posX, vehicle.posY, vehicle.posZ); }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }

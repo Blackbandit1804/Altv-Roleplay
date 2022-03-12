@@ -22,5 +22,9 @@ namespace Altv_Roleplay.models
         public int producedItemAmount { get; set; }
         public string blipName { get; set; }
         public bool isBlipVisible { get; set; }
+        public string neededItemTWO { get; set; }
+        public string neededItemTHREE { get; set; }
+        public int neededItemTWOAmount { get; set; }
+        public int neededItemTHREEAmount { get; set; }
     }
 }

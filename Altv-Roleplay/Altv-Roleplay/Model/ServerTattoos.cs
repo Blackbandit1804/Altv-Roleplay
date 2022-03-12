@@ -4,7 +4,6 @@ using Altv_Roleplay.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Altv_Roleplay.Model
 {
@@ -12,7 +11,7 @@ namespace Altv_Roleplay.Model
     {
         public static List<Server_Tattoos> ServerTattoos_ = new List<Server_Tattoos>();
 
-        public static void GetAllTattoos(ClassicPlayer player)
+        public static async void GetAllTattoos(ClassicPlayer player)
         {
             try
             {

@@ -1,18 +1,15 @@
 ﻿using AltV.Net;
+using AltV.Net.Async;
 using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
-using Altv_Roleplay.models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using AltV.Net.Enums;
-using System.Linq;
-using System.Globalization;
+using Altv_Roleplay.Factories;
+using Altv_Roleplay.models;
 using Altv_Roleplay.Utils;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
-using AltV.Net.Async;
-using Altv_Roleplay.Factories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Altv_Roleplay.Model
 {
@@ -59,7 +56,7 @@ namespace Altv_Roleplay.Model
             else if (lockState == false) { veh.LockState = VehicleLockState.Unlocked; }
             veh.NumberplateText = plate;
             veh.EngineOn = engineState;
-            veh.SetVehicleId((long)id);
+            veh.SetVehicleId((ulong)id);
             veh.SetVehicleTrunkState(false);
             SetVehicleModsCorrectly(veh);
         }
@@ -211,9 +208,9 @@ namespace Altv_Roleplay.Model
         public static void SetVehicleLockState(IVehicle veh, bool state)
         {
             if (veh == null || !veh.Exists) return;
-            long vehID = veh.GetVehicleId();
+            ulong vehID = veh.GetVehicleId();
             if (vehID == 0) return;
-            var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehID);
+            var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehID);
             if (vehs != null)
             {
                 AltAsync.Do(() =>
@@ -233,9 +230,9 @@ namespace Altv_Roleplay.Model
 
         public static bool GetVehicleLockState(IVehicle veh)
         {
-            long vehID = veh.GetVehicleId();
+            ulong vehID = veh.GetVehicleId();
             if (veh == null || !veh.Exists || vehID == 0) return false;
-            var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehID);
+            var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehID);
             if (vehs != null)
             {
                 return vehs.lockState;
@@ -246,9 +243,9 @@ namespace Altv_Roleplay.Model
         public static void SetVehicleEngineState(IVehicle veh, bool state)
         {
             if (veh == null || !veh.Exists) return;
-            long vehID = veh.GetVehicleId();
+            ulong vehID = veh.GetVehicleId();
             if (vehID == 0) return;
-            var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehID);
+            var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehID);
             if (vehs != null)
             {
                 AltAsync.Do(() =>
@@ -261,9 +258,9 @@ namespace Altv_Roleplay.Model
 
         public static bool GetVehicleEngineState(IVehicle veh)
         {
-            long vehID = veh.GetVehicleId();
+            ulong vehID = veh.GetVehicleId();
             if (veh == null || !veh.Exists || vehID == 0) return false;
-            var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehID);
+            var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehID);
             if (vehs != null)
             {
                 return vehs.engineState;
@@ -274,8 +271,8 @@ namespace Altv_Roleplay.Model
         public static Position GetVehiclePosition(IVehicle veh)
         {
             Position pos = new Position();
-            long vehId = veh.GetVehicleId();
-            var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehId);
+            ulong vehId = veh.GetVehicleId();
+            var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehId);
             if (vehs != null)
             {
                 pos = new Position(vehs.posX, vehs.posY, vehs.posZ);
@@ -286,8 +283,8 @@ namespace Altv_Roleplay.Model
         public static Rotation GetVehicleRotation(IVehicle veh)
         {
             Rotation rot = new Rotation();
-            long vehID = veh.GetVehicleId();
-            var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehID);
+            ulong vehID = veh.GetVehicleId();
+            var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehID);
             if (vehs != null)
             {
                 rot = new Rotation(vehs.rotX, vehs.rotY, vehs.rotZ);
@@ -297,9 +294,9 @@ namespace Altv_Roleplay.Model
 
         public static int GetVehicleOwner(IVehicle veh)
         {
-            long vehID = veh.GetVehicleId();
+            ulong vehID = veh.GetVehicleId();
             if (veh == null || !veh.Exists || vehID == 0) return 0;
-            var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehID);
+            var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehID);
             if (vehs != null)
             {
                 return vehs.charid;
@@ -307,7 +304,7 @@ namespace Altv_Roleplay.Model
             return 0;
         }
 
-        public static long GetVehicleHashById(int vehId)
+        public static ulong GetVehicleHashById(int vehId)
         {
             try
             {
@@ -345,9 +342,20 @@ namespace Altv_Roleplay.Model
 
         public static int GetVehicleFactionId(IVehicle veh)
         {
-            long vehID = veh.GetVehicleId();
+            ulong vehID = veh.GetVehicleId();
             if (veh == null || !veh.Exists || vehID == 0) return 0;
-            var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehID);
+            var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehID);
+            if (vehs != null)
+            {
+                return vehs.faction;
+            }
+            return 0;
+        }
+
+        public static int GetVehicleFactionId2(int id)
+        {
+            if (id == null) return 0;
+            var vehs = ServerVehicles_.FirstOrDefault(v => v.id == id);
             if (vehs != null)
             {
                 return vehs.faction;
@@ -357,9 +365,9 @@ namespace Altv_Roleplay.Model
 
         public static int GetVehicleType(IVehicle veh)
         {
-            long vehID = veh.GetVehicleId();
+            ulong vehID = veh.GetVehicleId();
             if (veh == null || !veh.Exists || vehID == 0) return -1;
-            var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehID);
+            var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehID);
             if (vehs != null)
             {
                 return vehs.vehType;
@@ -369,9 +377,9 @@ namespace Altv_Roleplay.Model
 
         public static float GetVehicleFuel(IVehicle veh)
         {
-            long vehID = veh.GetVehicleId();
+            ulong vehID = veh.GetVehicleId();
             if (veh == null || !veh.Exists || vehID == 0) return 0;
-            var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehID);
+            var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehID);
             if (vehs != null)
             {
                 return vehs.fuel;
@@ -384,9 +392,9 @@ namespace Altv_Roleplay.Model
             try
             {
                 if (veh == null || !veh.Exists) return;
-                long vehID = veh.GetVehicleId();
+                ulong vehID = veh.GetVehicleId();
                 if (vehID == 0) return;
-                var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehID);
+                var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehID);
                 if (vehs != null)
                 {
                     vehs.fuel = fuel;
@@ -406,9 +414,9 @@ namespace Altv_Roleplay.Model
 
         public static float GetVehicleKM(IVehicle veh)
         {
-            long vehID = veh.GetVehicleId();
+            ulong vehID = veh.GetVehicleId();
             if (veh == null || !veh.Exists || vehID == 0) return 0;
-            var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehID);
+            var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehID);
             if (vehs != null)
             {
                 return vehs.KM;
@@ -421,9 +429,9 @@ namespace Altv_Roleplay.Model
             try
             {
                 if (veh == null || !veh.Exists) return;
-                long vehID = veh.GetVehicleId();
+                ulong vehID = veh.GetVehicleId();
                 if (vehID == 0) return;
-                var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehID);
+                var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehID);
                 if (vehs != null)
                 {
                     vehs.KM = km;
@@ -440,9 +448,9 @@ namespace Altv_Roleplay.Model
             try
             {
                 if (veh == null || !veh.Exists) return;
-                long vehID = veh.GetVehicleId();
+                ulong vehID = veh.GetVehicleId();
                 if (vehID == 0) return;
-                var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehID);
+                var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehID);
                 if (vehs != null)
                 {
                     vehs.isEngineHealthy = state;
@@ -464,9 +472,9 @@ namespace Altv_Roleplay.Model
             try
             {
                 if (veh == null || !veh.Exists) return false;
-                long vehID = veh.GetVehicleId();
+                ulong vehID = veh.GetVehicleId();
                 if (vehID == 0) return false;
-                var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehID);
+                var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehID);
                 if (vehs != null)
                 {
                     return vehs.isEngineHealthy;
@@ -480,32 +488,32 @@ namespace Altv_Roleplay.Model
             }
         }
 
-        public static string GetVehicleNameOnHash(long hash)
+        public static string GetVehicleNameOnHash(ulong hash)
         {
             return ServerAllVehicles.ServerAllVehicles_.FirstOrDefault(x => x.hash == hash)?.name ?? "";
         }
 
-        public static string GetVehicleManufactorOnHash(long hash)
+        public static string GetVehicleManufactorOnHash(ulong hash)
         {
             return ServerAllVehicles.ServerAllVehicles_.FirstOrDefault(x => x.hash == hash)?.manufactor ?? "";
         }
 
-        public static string GetVehicleFuelTypeOnHash(long hash)
+        public static string GetVehicleFuelTypeOnHash(ulong hash)
         {
             return ServerAllVehicles.ServerAllVehicles_.FirstOrDefault(x => x.hash == hash)?.fuelType ?? "";
         }
 
-        public static int GetVehicleFuelLimitOnHash(long hash)
+        public static int GetVehicleFuelLimitOnHash(ulong hash)
         {
             return ServerAllVehicles.ServerAllVehicles_.FirstOrDefault(x => x.hash == hash)?.maxFuel ?? 0;
         }
 
-        public static int GetVehicleTrunkCapacityOnHash(long hash)
+        public static int GetVehicleTrunkCapacityOnHash(ulong hash)
         {
             return ServerAllVehicles.ServerAllVehicles_.FirstOrDefault(x => x.hash == hash)?.trunkCapacity ?? 0;
         }
 
-        public static int GetVehicleMaxSeatsOnHash(long hash)
+        public static int GetVehicleMaxSeatsOnHash(ulong hash)
         {
             return ServerAllVehicles.ServerAllVehicles_.FirstOrDefault(x => x.hash == hash)?.seats ?? 0;
         }
@@ -558,9 +566,9 @@ namespace Altv_Roleplay.Model
 
         public static bool IsVehicleInGarage(IVehicle veh)
         {
-            long vehID = veh.GetVehicleId();
+            ulong vehID = veh.GetVehicleId();
             if (veh == null || !veh.Exists || vehID == 0) return false;
-            var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehID);
+            var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehID);
             if (vehs != null)
             {
                 return vehs.isInGarage;
@@ -570,9 +578,9 @@ namespace Altv_Roleplay.Model
 
         public static int GetVehicleGarageId(IVehicle veh)
         {
-            long vehID = veh.GetVehicleId();
+            ulong vehID = veh.GetVehicleId();
             if (veh == null || !veh.Exists || vehID == 0) return 0;
-            var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehID);
+            var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehID);
             if (vehs != null)
             {
                 return vehs.garageId;
@@ -585,7 +593,7 @@ namespace Altv_Roleplay.Model
             try
             {
                 if (veh == null || !veh.Exists) return;
-                long vehID = veh.GetVehicleId();
+                ulong vehID = veh.GetVehicleId();
                 if (vehID == 0) return;
                 var dbVehicle = ServerVehicles_.FirstOrDefault(v => v.id == (int)veh.GetVehicleId());
                 if (dbVehicle == null) return;
@@ -602,6 +610,26 @@ namespace Altv_Roleplay.Model
             {
                 Alt.Log($"{e}");
             }
+        }
+        public static void SetVehicleNewOwner(int newOwner, string plate)
+        {
+            int vehID = ServerVehicles.GetVehicleIdByPlate(plate);
+            if (vehID == 0) return;
+            var vehs = ServerVehicles_.FirstOrDefault(v => v.id == vehID);
+            if (vehs != null)
+            {
+                AltAsync.Do(() =>
+                {
+                    vehs.charid = newOwner;
+                });
+                vehs.charid = newOwner;
+                using (gtaContext db = new gtaContext())
+                {
+                    db.Server_Vehicles.Update(vehs);
+                    db.SaveChanges();
+                }
+            }
+
         }
 
         public static float GetVehicleVehicleTrunkWeight(int vehId, bool searchOnlyGlovebox)
@@ -650,9 +678,11 @@ namespace Altv_Roleplay.Model
         {
             try
             {
-                long vehID = veh.GetVehicleId();
+
+
+                ulong vehID = veh.GetVehicleId();
                 if (veh == null || !veh.Exists || vehID == 0) return;
-                var vehs = ServerVehicles_.FirstOrDefault(v => (long)v.id == vehID);
+                var vehs = ServerVehicles_.FirstOrDefault(v => (ulong)v.id == vehID);
                 if (vehs != null)
                 {
                     vehs.posX = veh.Position.X;
@@ -773,6 +803,7 @@ namespace Altv_Roleplay.Model
                     plate_color = (byte)args[67],
                     interior_color = (byte)args[68],
                     smoke = (byte)args[69]
+
                 };
 
                 ServerVehiclesMod_.Add(vehMods);
@@ -792,6 +823,8 @@ namespace Altv_Roleplay.Model
                 Alt.Log($"{e}");
             }
         }
+
+
 
         public static void SetVehicleModsCorrectly(IVehicle veh)
         {
@@ -866,6 +899,7 @@ namespace Altv_Roleplay.Model
                     veh.NeonColor = new Rgba((byte)mod.neon_r, (byte)mod.neon_g, (byte)mod.neon_b, 255);
                     veh.TireSmokeColor = new Rgba((byte)mod.smoke_r, (byte)mod.smoke_g, (byte)mod.smoke_b, 255);
                 }
+
             }
             catch (Exception e)
             {
@@ -906,6 +940,7 @@ namespace Altv_Roleplay.Model
                         case 20: mod.smoke = modId; veh.SetMod((byte)modType, (byte)modId); break;
                         case 22: mod.xenon = modId; veh.SetMod((byte)modType, (byte)modId); break;
                         case 23: mod.wheels = modId; veh.SetWheels(0, (byte)modId); break;
+                        case 132: mod.wheelcolor = modId; veh.WheelColor = (byte)modId; break;
                         //case 24: mod.back_wheels = modId; veh.SetWheels(0, (byte)modId); break; BACK WHEELS
                         case 25: mod.plate_holder = modId; veh.SetMod((byte)modType, (byte)modId); break;
                         case 26: mod.plate_vanity = modId; veh.SetMod((byte)modType, (byte)modId); break;
@@ -936,7 +971,7 @@ namespace Altv_Roleplay.Model
                         case 53: mod.window_tint = modId; veh.WindowTint = (byte)modId; break;
                         case 54: mod.plate_color = modId; veh.NumberplateIndex = (uint)modId; break;
                         case 55: mod.colorPrimaryType = modId; veh.PrimaryColor = (byte)modId; break;
-                        case 59: mod.colorSecondaryType = modId; veh.SecondaryColor = (byte)modId; break;
+                        case 59: mod.colorSecondary_b = modId; veh.SecondaryColor = (byte)modId; break;
                         case 63: mod.colorPearl = modId; veh.PearlColor = (byte)modId; break;
                         case 80: mod.interior_color = modId; veh.InteriorColor = (byte)modId; break;
                         case 81: mod.neon = modId; if (modId == 0) veh.SetNeonActive(false, false, false, false); else veh.SetNeonActive(true, true, true, true); break;
@@ -947,6 +982,7 @@ namespace Altv_Roleplay.Model
                         case 86: mod.smoke_g = modId; veh.TireSmokeColor = new Rgba((byte)mod.smoke_r, (byte)mod.smoke_g, (byte)mod.smoke_b, 255); break;
                         case 87: mod.smoke_b = modId; veh.TireSmokeColor = new Rgba((byte)mod.smoke_r, (byte)mod.smoke_g, (byte)mod.smoke_b, 255); break;
                         case 88: mod.headlightColor = modId; veh.HeadlightColor = (byte)modId; break;
+
                     }
 
                     using (gtaContext db = new gtaContext())
@@ -993,7 +1029,8 @@ namespace Altv_Roleplay.Model
             }
         }
 
-        public static void CreateVehicle(long hash, int charid, int vehtype, int faction, bool isInGarage, int garageId, Position pos, Rotation rot, string plate, int colorR, int colorG, int colorB)
+
+        public static void CreateVehicle(ulong hash, int charid, int vehtype, int faction, bool isInGarage, int garageId, Position pos, Rotation rot, string plate, int colorR, int colorG, int colorB)
         {
             try
             {
@@ -1034,7 +1071,7 @@ namespace Altv_Roleplay.Model
                 veh.NumberplateText = plate;
                 veh.LockState = VehicleLockState.Locked;
                 veh.EngineOn = false;
-                veh.SetVehicleId((long)nVehicle.id);
+                veh.SetVehicleId((ulong)nVehicle.id);
                 veh.SetVehicleTrunkState(false);
                 if (vehtype != 2) { SetVehicleModsCorrectly(veh); }
             }
@@ -1049,7 +1086,7 @@ namespace Altv_Roleplay.Model
             try
             {
                 if (veh == null || !veh.Exists) return;
-                long vehID; vehID = veh.GetVehicleId();
+                ulong vehID; vehID = veh.GetVehicleId();
                 if (vehID <= 0) return;
                 var mod = ServerVehiclesMod_.FirstOrDefault(x => x.vehId == (int)vehID);
                 var vehItems = ServerVehicleTrunkItems_.Where(x => x.vehId == (int)vehID).ToList();

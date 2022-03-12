@@ -4,8 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Altv_Roleplay.Model
 {
@@ -58,9 +56,9 @@ namespace Altv_Roleplay.Model
             {
                 if (charId <= 0) return false;
                 var licData = CharactersLicenses_.FirstOrDefault(x => x.charId == charId);
-                if(licData != null)
+                if (licData != null)
                 {
-                    switch(lic)
+                    switch (lic)
                     {
                         case "pkw": return licData.PKW;
                         case "lkw": return licData.LKW;
@@ -86,7 +84,7 @@ namespace Altv_Roleplay.Model
             {
                 if (licShort == "") return "None";
                 var licData = ServerLicenses_.FirstOrDefault(x => x.licCut == licShort);
-                if(licData != null)
+                if (licData != null)
                 {
                     return licData.licName;
                 }
@@ -105,7 +103,7 @@ namespace Altv_Roleplay.Model
             {
                 if (licShort == "") return 0;
                 var licData = ServerLicenses_.FirstOrDefault(x => x.licCut == licShort);
-                if(licData != null)
+                if (licData != null)
                 {
                     return licData.licPrice;
                 }
@@ -123,9 +121,9 @@ namespace Altv_Roleplay.Model
             {
                 if (charId <= 0 || lic == "") return;
                 var licData = CharactersLicenses_.FirstOrDefault(x => x.charId == charId);
-                if(licData != null)
+                if (licData != null)
                 {
-                    switch(lic)
+                    switch (lic)
                     {
                         case "pkw": licData.PKW = valid; break;
                         case "lkw": licData.LKW = valid; break;

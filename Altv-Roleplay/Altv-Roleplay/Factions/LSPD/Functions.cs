@@ -1,30 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
-using System.Threading.Tasks;
-using AltV.Net;
+﻿using AltV.Net;
 using AltV.Net.Async;
 using AltV.Net.Elements.Entities;
 using Altv_Roleplay.Handler;
 using Altv_Roleplay.Model;
 using Altv_Roleplay.Utils;
+using System;
+using System.Globalization;
+using System.Threading.Tasks;
 
 namespace Altv_Roleplay.Factions.LSPD
 {
     class Functions : IScript
     {
         [AsyncClientEvent("Server:Tablet:LSPDAppSearchPerson")]
-        public void LSPDAppSearchPerson(IPlayer player, string targetCharname)
+        public async Task LSPDAppSearchPerson(IPlayer player, string targetCharname)
         {
             try
             {
                 if (player == null || !player.Exists || targetCharname == "") return;
                 int charId = User.GetPlayerOnline(player);
                 if (charId <= 0) return;
-                if(player.HasPlayerHandcuffs() || player.HasPlayerRopeCuffs()) { HUDHandler.SendNotification(player, 4, 5000, "Wie willst du das mit Handschellen/Fesseln machen?"); return; }
-                if(!ServerFactions.IsCharacterInAnyFaction(charId)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist in keiner Fraktion."); return; }
-                if(ServerFactions.GetCharacterFactionId(charId) != 2 && ServerFactions.GetCharacterFactionId(charId) != 1) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist nicht im L.S.P.D. oder der Justiz angestellt."); return; }
+                if (player.HasPlayerHandcuffs() || player.HasPlayerRopeCuffs()) { HUDHandler.SendNotification(player, 4, 5000, "Wie willst du das mit Handschellen/Fesseln machen?"); return; }
+                if (!ServerFactions.IsCharacterInAnyFaction(charId)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist in keiner Fraktion."); return; }
+                if (ServerFactions.GetCharacterFactionId(charId) != 2 && ServerFactions.GetCharacterFactionId(charId) != 1) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist nicht im L.S.P.D. oder der Justiz angestellt."); return; }
                 if (!ServerFactions.IsCharacterInFactionDuty(charId)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist nicht im Dienst."); return; }
                 if (!Characters.ExistCharacterName(targetCharname)) { HUDHandler.SendNotification(player, 3, 5000, "Fehler: Der eingegebene Name wurde nicht gefunden."); return; }
                 int targetCharId = Characters.GetCharacterIdFromCharName(targetCharname);
@@ -38,8 +36,8 @@ namespace Altv_Roleplay.Factions.LSPD
                 string mainBankAccount = "Nicht vorhanden";
                 string firstJoinDate = $"{Characters.GetCharacterFirstJoinDate(targetCharId).ToString("d", CultureInfo.CreateSpecificCulture("de-DE"))}";
                 if (job == "None") { job = "Arbeitslos"; }
-                if(CharactersBank.HasCharacterBankMainKonto(targetCharId)) { mainBankAccount = $"{CharactersBank.GetCharacterBankMainKonto(targetCharId)}"; }
-                if(Characters.GetCharacterGender(targetCharId)) { gender = "Weiblich"; }
+                if (CharactersBank.HasCharacterBankMainKonto(targetCharId)) { mainBankAccount = $"{CharactersBank.GetCharacterBankMainKonto(targetCharId)}"; }
+                if (Characters.GetCharacterGender(targetCharId)) { gender = "Weiblich"; }
                 else { gender = "Männlich"; }
                 player.EmitLocked("Client:Tablet:SetLSPDAppPersonSearchData", charName, gender, birthdate, birthplace, address, job, mainBankAccount, firstJoinDate);
                 HUDHandler.SendNotification(player, 2, 1500, $"Personenabfrage durchgeführt: {charName}.");
@@ -51,7 +49,7 @@ namespace Altv_Roleplay.Factions.LSPD
         }
 
         [AsyncClientEvent("Server:Tablet:LSPDAppSearchVehiclePlate")]
-        public void LSPDAppSearchVehiclePlate(IPlayer player, string targetPlate)
+        public async Task LSPDAppSearchVehiclePlate(IPlayer player, string targetPlate)
         {
             try
             {
@@ -62,7 +60,7 @@ namespace Altv_Roleplay.Factions.LSPD
                 if (!ServerFactions.IsCharacterInAnyFaction(charId)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist in keiner Fraktion."); return; }
                 if (ServerFactions.GetCharacterFactionId(charId) != 2 && ServerFactions.GetCharacterFactionId(charId) != 1) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist nicht im L.S.P.D. oder der Justiz angestellt."); return; }
                 if (!ServerFactions.IsCharacterInFactionDuty(charId)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist nicht im Dienst."); return; }
-                if(!ServerVehicles.ExistServerVehiclePlate(targetPlate)) { HUDHandler.SendNotification(player, 3, 5000, "Fehler: Das angegebene Kennzeichen wurde nicht gefunden."); return; }
+                if (!ServerVehicles.ExistServerVehiclePlate(targetPlate)) { HUDHandler.SendNotification(player, 3, 5000, "Fehler: Das angegebene Kennzeichen wurde nicht gefunden."); return; }
                 int vehicleId = ServerVehicles.GetVehicleIdByPlate(targetPlate);
                 if (vehicleId <= 0) return;
                 int ownerId = ServerVehicles.GetVehicleOwnerById(vehicleId);
@@ -85,7 +83,7 @@ namespace Altv_Roleplay.Factions.LSPD
         }
 
         [AsyncClientEvent("Server:Tablet:LSPDAppSearchLicense")]
-        public void LSPDAppSearchLicense(IPlayer player, string targetCharname)
+        public async Task LSPDAppSearchLicense(IPlayer player, string targetCharname)
         {
             try
             {
@@ -111,7 +109,7 @@ namespace Altv_Roleplay.Factions.LSPD
         }
 
         [AsyncClientEvent("Server:Tablet:LSPDAppTakeLicense")]
-        public void LSPDAppTakeLicense(IPlayer player, string targetCharname, string licName)
+        public async Task LSPDAppTakeLicense(IPlayer player, string targetCharname, string licName)
         {
             try
             {
@@ -120,15 +118,16 @@ namespace Altv_Roleplay.Factions.LSPD
                 if (charId <= 0) return;
                 if (player.HasPlayerHandcuffs() || player.HasPlayerRopeCuffs()) { HUDHandler.SendNotification(player, 4, 5000, "Wie willst du das mit Handschellen/Fesseln machen?"); return; }
                 if (!ServerFactions.IsCharacterInAnyFaction(charId)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist in keiner Fraktion."); return; }
-                if (ServerFactions.GetCharacterFactionId(charId) != 2) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist nicht im L.S.P.D. angestellt."); return; }
+                if (ServerFactions.GetCharacterFactionId(charId) != 1) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist nicht im L.S.P.D. angestellt."); return; }
                 if (!ServerFactions.IsCharacterInFactionDuty(charId)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist nicht im Dienst."); return; }
                 if (!Characters.ExistCharacterName(targetCharname)) { HUDHandler.SendNotification(player, 3, 5000, "Fehler: Der eingegebene Name wurde nicht gefunden."); return; }
                 Alt.Log($"{CharactersLicenses.GetFullLicenseName(licName)}");
                 if (CharactersLicenses.GetFullLicenseName(licName) == "None") return;
                 int targetCharId = Characters.GetCharacterIdFromCharName(targetCharname);
                 if (targetCharId <= 0) return;
-                if(!CharactersLicenses.HasCharacterLicense(targetCharId, licName)) { HUDHandler.SendNotification(player, 3, 5000, "Fehler: Der Spieler hat diese Lizenz nicht mehr."); return; }
+                if (!CharactersLicenses.HasCharacterLicense(targetCharId, licName)) { HUDHandler.SendNotification(player, 3, 5000, "Fehler: Der Spieler hat diese Lizenz nicht mehr."); return; }
                 CharactersLicenses.SetCharacterLicense(targetCharId, licName, false);
+                Characters.RemoveCharacterPermission(charId, licName);
                 HUDHandler.SendNotification(player, 2, 2000, $"{targetCharname} wurde die Lizenz {CharactersLicenses.GetFullLicenseName(licName)} entzogen.");
                 LSPDAppSearchLicense(player, targetCharname);
             }

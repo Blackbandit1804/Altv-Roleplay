@@ -21,5 +21,8 @@ namespace Altv_Roleplay.models
         public float parkOutRotY { get; set; }
         public float parkOutRotZ { get; set; }
         public string neededLicense { get; set; }
+        public float sellX { get; set; }
+        public float sellY { get; set; }
+        public float sellZ { get; set; }
     }
 }

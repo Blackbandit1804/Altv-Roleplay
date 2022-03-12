@@ -8,10 +8,8 @@ using Altv_Roleplay.Model;
 using Altv_Roleplay.models;
 using Altv_Roleplay.Utils;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Altv_Roleplay.Minijobs.Müllmann
@@ -19,7 +17,7 @@ namespace Altv_Roleplay.Minijobs.Müllmann
     public class Main
     {
         public static ClassicColshape startJobShape = (ClassicColshape)Alt.CreateColShapeSphere(Constants.Positions.Minijob_Müllmann_StartPos, 3f);
-        
+
         public static void Initialize()
         {
             Alt.Log("Lade Minijob: Müllmann...");
@@ -71,7 +69,7 @@ namespace Altv_Roleplay.Minijobs.Müllmann
                 if (player.GetPlayerCurrentMinijobStep() != "DRIVE_BACK_TO_START") return;
                 if (!vehicle.Position.IsInRange(Constants.Positions.Minijob_Müllmann_VehOutPos, 8f)) return;
                 player.EmitLocked("Client:Minijob:RemoveJobMarker");
-                foreach(var veh in Alt.GetAllVehicles().Where(x => x.NumberplateText == $"MM-{charId}").ToList())
+                foreach (var veh in Alt.GetAllVehicles().Where(x => x.NumberplateText == $"MM-{charId}").ToList())
                 {
                     if (veh == null || !veh.Exists) continue;
                     ServerVehicles.RemoveVehiclePermanently(veh);
@@ -108,7 +106,7 @@ namespace Altv_Roleplay.Minijobs.Müllmann
                 if (ServerVehicles.GetVehicleOwner(vehicle) != charId) return;
                 if (player.GetPlayerCurrentMinijob() != "Müllmann") return;
                 if (player.GetPlayerCurrentMinijobStep() == "None") return;
-                if(player.GetPlayerCurrentMinijobStep() == "FirstStepInVehicle")
+                if (player.GetPlayerCurrentMinijobStep() == "FirstStepInVehicle")
                 {
                     HUDHandler.SendNotification(player, 1, 2500, "Fahre zum ersten Zielort um den Müll abzuholen, dieser wurde auf deinem GPS markiert.");
                     var spot = Model.GetCharacterMinijobNextSpot(player);
@@ -134,7 +132,7 @@ namespace Altv_Roleplay.Minijobs.Müllmann
                 if (client == null || !client.Exists) return;
                 int charId = User.GetPlayerOnline(client);
                 if (charId <= 0) return;
-                if(colShape == startJobShape && state)
+                if (colShape == startJobShape && state)
                 {
                     if (client.GetPlayerCurrentMinijob() == "Müllmann") { HUDHandler.SendNotification(client, 1, 2500, "Drücke E um den Müllmann Minijob zu beenden."); }
                     else if (client.GetPlayerCurrentMinijob() == "None") { HUDHandler.SendNotification(client, 1, 2500, "Drücke E um den Müllmann Minijob zu starten."); }
@@ -145,12 +143,12 @@ namespace Altv_Roleplay.Minijobs.Müllmann
                 if (client.GetPlayerCurrentMinijob() != "Müllmann") return;
                 if (client.GetPlayerCurrentMinijobRouteId() <= 0) return;
                 if (client.GetPlayerCurrentMinijobActionCount() <= 0) return;
-                if(client.GetPlayerCurrentMinijobStep() == "PICKUP_TRASH" && state && !client.IsInVehicle)
+                if (client.GetPlayerCurrentMinijobStep() == "PICKUP_TRASH" && state && !client.IsInVehicle)
                 {
                     var spot = Model.GetCharacterMinijobNextSpot(client);
                     if (spot == null) return;
                     if (colShape != spot.destinationColshape) return;
-                    var personalThrowCol = Alt.GetAllColShapes().Where(x => x.Exists && x != null).ToList().FirstOrDefault(x => x != null && x.Exists && x.GetColShapeName() == "GarbageMinijobThrowInVehicle" && x.GetColShapeId() == (long)charId);
+                    var personalThrowCol = Alt.GetAllColShapes().Where(x => x.Exists && x != null).ToList().FirstOrDefault(x => x != null && x.Exists && x.GetColShapeName() == "GarbageMinijobThrowInVehicle" && x.GetColShapeId() == (ulong)charId);
                     if (personalThrowCol != null && personalThrowCol.Exists) personalThrowCol.Remove();
                     //ToDo: Objeklt in Hand geben
                     InventoryHandler.InventoryAnimation(client, "farmPickup", 1100);
@@ -164,19 +162,19 @@ namespace Altv_Roleplay.Minijobs.Müllmann
                     client.EmitLocked("Client:Minijob:CreateJobMarker", "Minijob: Müll einladen", 3, 514, 22, MMThrowPos.X, MMThrowPos.Y, MMThrowPos.Z, true);
                     ClassicColshape throwCol = (ClassicColshape)Alt.CreateColShapeSphere(MMThrowPos, 2.5f);
                     throwCol.SetColShapeName("GarbageMinijobThrowInVehicle");
-                    throwCol.SetColShapeId((long)charId);
+                    throwCol.SetColShapeId((ulong)charId);
                     throwCol.Radius = 2.5f;
                     return;
                 }
-                else if(client.GetPlayerCurrentMinijobStep() == "THROW_TRASH_IN_VEHICLE" && state && !client.IsInVehicle)
+                else if (client.GetPlayerCurrentMinijobStep() == "THROW_TRASH_IN_VEHICLE" && state && !client.IsInVehicle)
                 {
-                    var personalThrowCol = Alt.GetAllColShapes().Where(x => x.Exists && x != null).ToList().FirstOrDefault(x => x != null && x.Exists && x.GetColShapeName() == "GarbageMinijobThrowInVehicle" && x.GetColShapeId() == (long)charId);
+                    var personalThrowCol = Alt.GetAllColShapes().Where(x => x.Exists && x != null).ToList().FirstOrDefault(x => x != null && x.Exists && x.GetColShapeName() == "GarbageMinijobThrowInVehicle" && x.GetColShapeId() == (ulong)charId);
                     if (personalThrowCol == null || !personalThrowCol.Exists) return;
                     if (!((ClassicColshape)personalThrowCol).IsInRange((ClassicPlayer)client)) return;
                     client.EmitLocked("Client:Minijob:RemoveJobMarker");
                     //ToDo: Objekt aus Hand entfernen
                     InventoryHandler.InventoryAnimation(client, "farmPickup", 1100);
-                    int maxSpots = Model.GetMinijobGarbageMaxRouteSpots((int)client.GetPlayerCurrentMinijobRouteId()); 
+                    int maxSpots = Model.GetMinijobGarbageMaxRouteSpots((int)client.GetPlayerCurrentMinijobRouteId());
                     if ((int)client.GetPlayerCurrentMinijobActionCount() < maxSpots)
                     {
                         //neuer Punkt
@@ -187,11 +185,12 @@ namespace Altv_Roleplay.Minijobs.Müllmann
                         client.EmitLocked("Client:Minijob:CreateJobMarker", "Minijob: Müll abholen", 3, 514, 1, spot.posX, spot.posY, spot.posZ, false);
                         HUDHandler.SendNotification(client, 1, 2500, "Fahre zum nächsten Zielort um den Müll abzuholen, dieser wurde auf deinem GPS markiert.");
                         Alt.Log($"Aktueller Spot || Route: {spot.routeId} || SpotID: {spot.spotId}");
-                    } 
-                    else if((int)client.GetPlayerCurrentMinijobActionCount() >= maxSpots)
+                    }
+                    else if ((int)client.GetPlayerCurrentMinijobActionCount() >= maxSpots)
                     {
                         //zurueck zum Depot
-                        HUDHandler.SendNotification(client, 1, 2222, "VERSUCH: Colshape entfernen [003]");
+                        /*                        HUDHandler.SendNotification(client, 1, 2222, "VERSUCH: Colshape entfernen [003]");
+                        */
                         if (personalThrowCol != null && personalThrowCol.Exists) personalThrowCol.Remove();
                         HUDHandler.SendNotification(client, 1, 6000, "Alles aufgesammelt mein Jung. Zurück zur Mülldeponie - das Zeug abgeben, stell das Fahrzeug einfach dort ab wo du es bekommen hast.");
                         client.SetPlayerCurrentMinijobStep("DRIVE_BACK_TO_START");
@@ -214,16 +213,16 @@ namespace Altv_Roleplay.Minijobs.Müllmann
                 if (!((ClassicColshape)startJobShape).IsInRange((ClassicPlayer)player)) return;
                 int charId = User.GetPlayerOnline(player);
                 if (charId <= 0) return;
-                if(player.GetPlayerCurrentMinijob() == "Müllmann")
+                if (player.GetPlayerCurrentMinijob() == "Müllmann")
                 {
                     //Job abbrechen
-                    foreach(var veh in Alt.GetAllVehicles().Where(x => x.NumberplateText == $"MM-{charId}").ToList())
+                    foreach (var veh in Alt.GetAllVehicles().Where(x => x.NumberplateText == $"MM-{charId}").ToList())
                     {
                         if (veh == null || !veh.Exists) continue;
                         ServerVehicles.RemoveVehiclePermanently(veh);
                         veh.Remove();
                     }
-                    var personalThrowCol = Alt.GetAllColShapes().Where(x => x.Exists && x != null).ToList().FirstOrDefault(x => x.GetColShapeName() == "GarbageMinijobThrowInVehicle" && x.GetColShapeId() == (long)charId);
+                    var personalThrowCol = Alt.GetAllColShapes().Where(x => x.Exists && x != null).ToList().FirstOrDefault(x => x.GetColShapeName() == "GarbageMinijobThrowInVehicle" && x.GetColShapeId() == (ulong)charId);
                     if (personalThrowCol != null && personalThrowCol.Exists) personalThrowCol.Remove();
                     HUDHandler.SendNotification(player, 2, 1500, "Du hast den Minijob: Müllmann beendet.");
                     player.SetPlayerCurrentMinijob("None");
@@ -233,20 +232,20 @@ namespace Altv_Roleplay.Minijobs.Müllmann
                     player.EmitLocked("Client:Minijob:RemoveJobMarker");
                     return;
                 }
-                else if(player.GetPlayerCurrentMinijob() == "None")
+                else if (player.GetPlayerCurrentMinijob() == "None")
                 {
                     //Job annehmen
-                    foreach(var veh in Alt.GetAllVehicles().ToList())
+                    foreach (var veh in Alt.GetAllVehicles().ToList())
                     {
                         if (veh == null || !veh.Exists) continue;
-                        if(veh.Position.IsInRange(Constants.Positions.Minijob_Müllmann_VehOutPos, 5f)) { HUDHandler.SendNotification(player, 3, 5000, "Der Ausparkpunkt ist belegt."); return; }
+                        if (veh.Position.IsInRange(Constants.Positions.Minijob_Müllmann_VehOutPos, 5f)) { HUDHandler.SendNotification(player, 3, 5000, "Der Ausparkpunkt ist belegt."); return; }
                     }
                     ServerVehicles.CreateVehicle(3039269212, charId, 2, 0, false, 0, Constants.Positions.Minijob_Müllmann_VehOutPos, Constants.Positions.Minijob_Müllmann_VehOutRot, $"MM-{charId}", 255, 255, 255);
                     var generatorId = new Random();
                     int routeId = generatorId.Next(1, Model.GetMinijobGarbageMaxRoutes());
                     player.SetPlayerCurrentMinijob("Müllmann");
                     player.SetPlayerCurrentMinijobStep("FirstStepInVehicle");
-                    player.SetPlayerCurrentMinijobRouteId((long)routeId);
+                    player.SetPlayerCurrentMinijobRouteId((ulong)routeId);
                     player.SetPlayerCurrentMinijobActionCount(1);
                     HUDHandler.SendNotification(player, 1, 2500, "Du hast den Minijob begonnen. Wir haben dir ein Fahrzeug zur Verfügung gestellt, steige in dies ein um zu beginnen.");
                     Alt.Log($"Max Routes: {Model.GetMinijobGarbageMaxRoutes()}"); //2

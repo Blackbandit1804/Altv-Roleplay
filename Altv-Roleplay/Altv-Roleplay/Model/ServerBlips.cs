@@ -1,11 +1,5 @@
-﻿using AltV.Net;
-using AltV.Net.Data;
-using AltV.Net.Elements.Entities;
-using Altv_Roleplay.Handler;
-using Altv_Roleplay.models;
+﻿using Altv_Roleplay.models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

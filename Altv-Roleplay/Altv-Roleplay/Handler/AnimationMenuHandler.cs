@@ -1,29 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AltV.Net;
+﻿using AltV.Net;
 using AltV.Net.Async;
-using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
-using AltV.Net.Enums;
-using Altv_Roleplay.Factories;
-using Altv_Roleplay.Model;
-using Altv_Roleplay.Services;
-using Altv_Roleplay.Utils;
+using System;
+using System.Threading.Tasks;
 
 namespace Altv_Roleplay.Handler
 {
     class AnimationMenuHandler : IScript
     {
         [AsyncClientEvent("Server:AnimationMenu:GetAnimationItems")]
-        public void GetAnimationItems(IPlayer player)
+        public async Task GetAnimationItems(IPlayer player)
         {
             try
             {
-                var interactHTML = ""; 
+                var interactHTML = "";
                 interactHTML += "<li><p id='InteractionMenu-SelectedTitle'>Schließen</p></li><li class='interactitem' data-action='close' data-actionstring='Abbrechen'><img src='../utils/img/cancel.png'></li>";
 
                 interactHTML += "<li class='interactitem' id='InteractionMenu-crossarms3' data-action='crossarms3' data-actionstring='Arme verschränken'><img src='../utils/img/crossarms.png'></li>";
@@ -39,14 +29,14 @@ namespace Altv_Roleplay.Handler
 
                 player.EmitLocked("Client:AnimationMenu:SetMenuItems", interactHTML);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
         }
 
         [AsyncClientEvent("Server:AnimationMenuPage2:GetAnimationItems")]
-        public void GetAnimationItemsPage2(IPlayer player)
+        public async Task GetAnimationItemsPage2(IPlayer player)
         {
             try
             {
@@ -64,9 +54,9 @@ namespace Altv_Roleplay.Handler
                 interactHTML += "<li class='interactitem' id='InteractionMenu-dancesilly' data-action='dancesilly' data-actionstring='Dumm Tanzen'><img src='../utils/img/dance.png'></li>";
                 interactHTML += "<li class='interactitem' id='InteractionMenu-dancesilly4' data-action='dancesilly4' data-actionstring='Dumm Tanzen 2'><img src='../utils/img/dance.png'></li>";
                 interactHTML += "<li class='interactitem' id='InteractionMenu-dancesilly5' data-action='dancesilly5' data-actionstring='Dumm Tanzen 3'><img src='../utils/img/dance.png'></li>";
-                
 
-                player.EmitLocked("Client:AnimationMenuPage2:SetMenuItems", interactHTML); 
+
+                player.EmitLocked("Client:AnimationMenuPage2:SetMenuItems", interactHTML);
             }
             catch (Exception e)
             {
@@ -75,7 +65,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:AnimationMenuPage3:GetAnimationItems")]
-        public void GetAnimationItemsPage3(IPlayer player)
+        public async Task GetAnimationItemsPage3(IPlayer player)
         {
             try
             {
@@ -93,9 +83,9 @@ namespace Altv_Roleplay.Handler
                 interactHTML += "<li class='interactitem' id='InteractionMenu-gangster2' data-action='gangster2' data-actionstring='Gangster 2'><img src='../utils/img/gangster.png'></li>";
                 interactHTML += "<li class='interactitem' id='InteractionMenu-cop' data-action='cop' data-actionstring='Polizist'><img src='../utils/img/cop.png'></li>";
                 interactHTML += "<li class='interactitem' id='InteractionMenu-cop2' data-action='cop2' data-actionstring='Polizist 2'><img src='../utils/img/cop.png'></li>";
-                
 
-                player.EmitLocked("Client:AnimationMenuPage3:SetMenuItems", interactHTML); 
+
+                player.EmitLocked("Client:AnimationMenuPage3:SetMenuItems", interactHTML);
             }
             catch (Exception e)
             {

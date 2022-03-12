@@ -78,5 +78,6 @@ namespace Altv_Roleplay.models
         public int smoke_g { get; set; }
         public int smoke_b { get; set; }
         public int smoke { get; set; }
+
     }
 }

@@ -1,10 +1,9 @@
-﻿using Altv_Roleplay.models;
+﻿using AltV.Net;
+using Altv_Roleplay.Factories;
+using Altv_Roleplay.models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using AltV.Net;
-using Altv_Roleplay.Factories;
 
 namespace Altv_Roleplay.Model
 {
@@ -70,7 +69,8 @@ namespace Altv_Roleplay.Model
                     }
 
                     return price;
-                } else
+                }
+                else
                 {
                     switch (ServerClothes.GetClothesComponent(clothId, Convert.ToInt32(Characters.GetCharacterGender(player.CharacterId))))
                     {
@@ -94,7 +94,7 @@ namespace Altv_Roleplay.Model
 
                     return price;
                 }
-                
+
             }
             catch (Exception e)
             {

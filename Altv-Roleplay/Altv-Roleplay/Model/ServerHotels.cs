@@ -7,8 +7,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Altv_Roleplay.Model
 {
@@ -38,7 +36,7 @@ namespace Altv_Roleplay.Model
                 var iterations = Math.Floor((decimal)(itemCount / 20));
                 var rest = itemCount % 20;
 
-                for(var i = 0; i < iterations; i++)
+                for (var i = 0; i < iterations; i++)
                 {
                     var skip = i * 20;
                     if (player == null || !player.Exists) continue;
@@ -61,7 +59,7 @@ namespace Altv_Roleplay.Model
             {
                 if (hotelId <= 0) return "Fehler";
                 var hotel = ServerHotels_.FirstOrDefault(x => x.id == hotelId);
-                if(hotel != null)
+                if (hotel != null)
                 {
                     return hotel.name;
                 }
@@ -69,7 +67,7 @@ namespace Altv_Roleplay.Model
             }
             catch (Exception e)
             {
-                Alt.Log($"{e}"); 
+                Alt.Log($"{e}");
                 return "Fehler";
             }
         }
@@ -81,7 +79,7 @@ namespace Altv_Roleplay.Model
             {
                 if (hotelId <= 0 || apartmentId <= 0) return name;
                 var hotelApartment = ServerHotelsApartments_.FirstOrDefault(x => x.hotelId == hotelId && x.id == apartmentId);
-                if(hotelApartment != null)
+                if (hotelApartment != null)
                 {
                     if (hotelApartment.ownerId <= 0) return name;
                     name = Characters.GetCharacterName(hotelApartment.ownerId);
@@ -101,7 +99,7 @@ namespace Altv_Roleplay.Model
             {
                 if (hotelId <= 0 || apartmentId <= 0) return false;
                 var hotelApartment = ServerHotelsApartments_.FirstOrDefault(x => x.hotelId == hotelId && x.id == apartmentId);
-                if(hotelApartment != null)
+                if (hotelApartment != null)
                 {
                     return true;
                 }
@@ -119,12 +117,12 @@ namespace Altv_Roleplay.Model
             {
                 if (hotelId <= 0 || apartmentId == 0) return 0;
                 var hotelApartment = ServerHotelsApartments_.FirstOrDefault(x => x.hotelId == hotelId && x.id == apartmentId);
-                if(hotelApartment != null)
+                if (hotelApartment != null)
                 {
                     return hotelApartment.ownerId;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -137,7 +135,7 @@ namespace Altv_Roleplay.Model
             {
                 if (hotelId <= 0 || apartmentId <= 0) return 999999999;
                 var hotelApartment = ServerHotelsApartments_.FirstOrDefault(x => x.hotelId == hotelId && x.id == apartmentId);
-                if(hotelApartment != null)
+                if (hotelApartment != null)
                 {
                     return hotelApartment.rentPrice;
                 }
@@ -155,7 +153,7 @@ namespace Altv_Roleplay.Model
             {
                 if (charId <= 0) return false;
                 var hotelApartment = ServerHotelsApartments_.FirstOrDefault(x => x.ownerId == charId);
-                if(hotelApartment != null)
+                if (hotelApartment != null)
                 {
                     return true;
                 }
@@ -173,7 +171,7 @@ namespace Altv_Roleplay.Model
             {
                 if (charId <= 0) return "Fehler";
                 var hotelApartment = ServerHotelsApartments_.FirstOrDefault(x => x.ownerId == charId);
-                if(hotelApartment != null)
+                if (hotelApartment != null)
                 {
                     var hotel = ServerHotels_.FirstOrDefault(x => x.id == hotelApartment.hotelId);
                     if (hotel != null) return hotel.name;
@@ -192,7 +190,7 @@ namespace Altv_Roleplay.Model
             {
                 if (hotelId <= 0 || apartmentId <= 0) return;
                 var hotelApartment = ServerHotelsApartments_.FirstOrDefault(x => x.hotelId == hotelId && x.id == apartmentId);
-                if(hotelApartment != null)
+                if (hotelApartment != null)
                 {
                     hotelApartment.ownerId = newOwner;
                     hotelApartment.isLocked = true;
@@ -216,7 +214,7 @@ namespace Altv_Roleplay.Model
             {
                 if (hotelId <= 0 || apartmentId <= 0) return 0;
                 var hotelApartment = ServerHotelsApartments_.FirstOrDefault(x => x.hotelId == hotelId && x.id == apartmentId);
-                if(hotelApartment != null)
+                if (hotelApartment != null)
                 {
                     return hotelApartment.maxRentHours;
                 }
@@ -235,7 +233,7 @@ namespace Altv_Roleplay.Model
             {
                 if (hotelId <= 0 || apartmentId <= 0) return pos;
                 var hotelApartment = ServerHotelsApartments_.FirstOrDefault(x => x.hotelId == hotelId && x.id == apartmentId);
-                if(hotelApartment != null)
+                if (hotelApartment != null)
                 {
                     var hotel = ServerHotels_.FirstOrDefault(x => x.id == hotelId);
                     if (hotel != null) return new Position(hotel.posX, hotel.posY, hotel.posZ);
@@ -254,7 +252,7 @@ namespace Altv_Roleplay.Model
             {
                 if (apartmentId <= 0) return 0;
                 var hotel = ServerHotelsApartments_.FirstOrDefault(x => x.id == apartmentId);
-                if(hotel != null)
+                if (hotel != null)
                 {
                     return hotel.hotelId;
                 }
@@ -410,7 +408,7 @@ namespace Altv_Roleplay.Model
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }

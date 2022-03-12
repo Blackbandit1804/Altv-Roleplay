@@ -10,7 +10,7 @@ namespace Altv_Roleplay.models
         public int id { get; set; }
 
         public int shopId { get; set; }
-        public long hash { get; set; }
+        public ulong hash { get; set; }
         public int price { get; set; }
         public float posX { get; set; }
         public float posY { get; set; }
@@ -19,5 +19,6 @@ namespace Altv_Roleplay.models
         public float rotY { get; set; }
         public float rotZ { get; set; }
         public bool isOnlyOnlineAvailable { get; set; }
+        public int isSpawned { get; set; }
     }
 }

@@ -1,14 +1,12 @@
 ﻿using AltV.Net;
 using AltV.Net.Data;
+using Altv_Roleplay.Factories;
 using Altv_Roleplay.models;
+using Altv_Roleplay.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Altv_Roleplay.Utils;
 using System.Linq;
-using Newtonsoft.Json;
-using System.Threading.Tasks;
-using Altv_Roleplay.Factories;
 
 namespace Altv_Roleplay.Model
 {
@@ -43,22 +41,26 @@ namespace Altv_Roleplay.Model
                     isLocked = true,
                     entranceShape = Alt.CreateColShapeSphere(entrancePos, 2f)
                 };
-                houseData.entranceShape.SetColShapeId((long)id);
+                houseData.entranceShape.SetColShapeId((ulong)id);
                 ((ClassicColshape)houseData.entranceShape).Radius = 2f;
                 ServerHouses_.Add(houseData);
 
-                var blipData = new Server_Blips
+                var markerData = new Server_Markers
                 {
-                    name = "Haus",
+                    type = 0,
+                    bobUpAndDown = true,
+                    scaleX = 1,
+                    scaleY = 1,
+                    scaleZ = 1,
+                    alpha = 50,
                     posX = entrancePos.X,
                     posY = entrancePos.Y,
-                    posZ = entrancePos.Z,
-                    scale = 0.2f,
-                    shortRange = true,
-                    sprite = 40,
-                    color = 0
+                    posZ = entrancePos.Z + 0.15f,
+                    red = 242,
+                    green = 58,
+                    blue = 58
                 };
-                ServerBlips.ServerBlips_.Add(blipData);
+                ServerBlips.ServerMarkers_.Add(markerData);
             }
             catch (Exception e)
             {
@@ -212,11 +214,11 @@ namespace Altv_Roleplay.Model
             {
                 if (houseId <= 0) return;
                 var house = ServerHouses_.FirstOrDefault(x => x.id == houseId);
-                if(house != null)
+                if (house != null)
                 {
                     house.ownerId = newOwner;
                     house.isLocked = true;
-                    if(newOwner == 0) { house.isRentable = false; }
+                    if (newOwner == 0) { house.isRentable = false; }
                     using (gtaContext db = new gtaContext())
                     {
                         db.Server_Houses.Update(house);
@@ -237,7 +239,7 @@ namespace Altv_Roleplay.Model
             {
                 if (houseId <= 0) return pos;
                 var house = ServerHouses_.FirstOrDefault(x => x.id == houseId);
-                if(house != null)
+                if (house != null)
                 {
                     pos = new Position(house.entranceX, house.entranceY, house.entranceZ);
                 }
@@ -284,7 +286,7 @@ namespace Altv_Roleplay.Model
             {
                 if (interiorId <= 0) return pos;
                 var interior = ServerHousesInteriors_.FirstOrDefault(x => x.interiorId == interiorId);
-                if(interior != null) pos = new Position(interior.exitX, interior.exitY, interior.exitZ);
+                if (interior != null) pos = new Position(interior.exitX, interior.exitY, interior.exitZ);
             }
             catch (Exception e)
             {
@@ -356,7 +358,7 @@ namespace Altv_Roleplay.Model
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -476,7 +478,7 @@ namespace Altv_Roleplay.Model
                     }
                 }
             }
-            catch (Exception _) { Alt.Log($"{_}");}
+            catch (Exception _) { Alt.Log($"{_}"); }
         }
 
         public static void RemoveServerHouseStorageItem(int houseId, string itemName)
@@ -536,9 +538,9 @@ namespace Altv_Roleplay.Model
             {
                 if (houseId <= 0) return;
                 var house = ServerHouses_.FirstOrDefault(x => x.id == houseId);
-                if(house != null)
+                if (house != null)
                 {
-                    switch(upgrade)
+                    switch (upgrade)
                     {
                         case "alarm":
                             house.hasAlarm = state;
@@ -570,7 +572,7 @@ namespace Altv_Roleplay.Model
             {
                 if (houseId <= 0) return;
                 var house = ServerHouses_.FirstOrDefault(x => x.id == houseId);
-                if(house != null)
+                if (house != null)
                 {
                     house.money = money;
                     using (gtaContext db = new gtaContext())
@@ -607,7 +609,7 @@ namespace Altv_Roleplay.Model
             {
                 if (houseId <= 0) return;
                 var house = ServerHouses_.FirstOrDefault(x => x.id == houseId);
-                if(house != null)
+                if (house != null)
                 {
                     house.isRentable = state;
                     using (gtaContext db = new gtaContext())
@@ -646,7 +648,7 @@ namespace Altv_Roleplay.Model
                 var renter = ServerHousesRenter_.FirstOrDefault(x => x.charId == charId && x.houseId == houseId);
                 if (renter != null) return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -753,7 +755,7 @@ namespace Altv_Roleplay.Model
             {
                 if (houseId <= 0 || rentPrice <= 0) return;
                 var house = ServerHouses_.FirstOrDefault(x => x.id == houseId);
-                if(house != null)
+                if (house != null)
                 {
                     house.rentPrice = rentPrice;
                     using (gtaContext db = new gtaContext())

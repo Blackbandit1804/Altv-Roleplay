@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
-using AltV.Net;
+﻿using AltV.Net;
+using AltV.Net.Async;
+using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
+using AltV.Net.Enums;
 using Altv_Roleplay.Model;
 using Altv_Roleplay.Utils;
-using Altv_Roleplay.models;
-using Newtonsoft.Json;
-using AltV.Net.Data;
-using System.Threading.Tasks;
+using System;
+using System.Globalization;
 using System.Linq;
-using AltV.Net.Enums;
-using AltV.Net.Async;
+using System.Threading.Tasks;
 
 namespace Altv_Roleplay.Handler
 {
     class HouseHandler : IScript
     {
+        #region allgemein
         internal static void openEntranceCEF(IPlayer player, int houseId)
         {
             try
@@ -34,7 +31,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:House:BuyHouse")]
-        public void BuyHouse(IPlayer player, int houseId)
+        public async Task BuyHouse(IPlayer player, int houseId)
         {
             try
             {
@@ -42,7 +39,7 @@ namespace Altv_Roleplay.Handler
                 int charId = User.GetPlayerOnline(player);
                 if (charId <= 0) return;
                 if (!ServerHouses.ExistHouse(houseId)) return;
-                if(ServerHouses.GetHouseOwner(houseId) > 0) { HUDHandler.SendNotification(player, 3, 5000, "Fehler: Dieses Haus gehört bereits jemanden."); return; }
+                if (ServerHouses.GetHouseOwner(houseId) > 0) { HUDHandler.SendNotification(player, 3, 5000, "Fehler: Dieses Haus gehört bereits jemanden."); return; }
                 if (!CharactersBank.HasCharacterBankMainKonto(charId)) { HUDHandler.SendNotification(player, 3, 5000, "Du hast noch kein Hauptkonto in der Bank festgelegt."); return; }
                 int accNumber = CharactersBank.GetCharacterBankMainKonto(charId);
                 if (accNumber <= 0) return;
@@ -58,7 +55,6 @@ namespace Altv_Roleplay.Handler
                 Alt.Log($"{e}");
             }
         }
-
         internal static void LockHouse(IPlayer player, int houseId)
         {
             try
@@ -67,10 +63,10 @@ namespace Altv_Roleplay.Handler
                 int charId = (int)player.GetCharacterMetaId();
                 if (charId <= 0) return;
                 if (!ServerHouses.ExistHouse(houseId)) return;
-                if(ServerHouses.GetHouseOwner(houseId) != charId && !ServerHouses.IsCharacterRentedInHouse(charId, houseId)) { HUDHandler.SendNotification(player, 3, 5000, "Dieses Haus gehört nicht dir und / oder du bist nicht eingemietet."); return; }
+                if (ServerHouses.GetHouseOwner(houseId) != charId && !ServerHouses.IsCharacterRentedInHouse(charId, houseId)) { HUDHandler.SendNotification(player, 3, 5000, "Dieses Haus gehört nicht dir und / oder du bist nicht eingemietet."); return; }
                 bool lockState = ServerHouses.IsHouseLocked(houseId);
                 ServerHouses.SetHouseLocked(houseId, !lockState);
-                if(lockState) { HUDHandler.SendNotification(player, 2, 2500, "Du hast das Haus aufgeschlossen."); }
+                if (lockState) { HUDHandler.SendNotification(player, 2, 2500, "Du hast das Haus aufgeschlossen."); }
                 else { HUDHandler.SendNotification(player, 3, 2500, "Du hast das Haus abgeschlossen."); }
             }
             catch (Exception e)
@@ -79,8 +75,9 @@ namespace Altv_Roleplay.Handler
             }
         }
 
+
         [AsyncClientEvent("Server:House:EnterHouse")]
-        public void EnterHouse(IPlayer player, int houseId)
+        public async Task EnterHouse(IPlayer player, int houseId)
         {
             try
             {
@@ -89,8 +86,8 @@ namespace Altv_Roleplay.Handler
                 if (charId <= 0) return;
                 if (!ServerHouses.ExistHouse(houseId)) return;
                 if (!player.Position.IsInRange(ServerHouses.GetHouseEntrance(houseId), 2f)) return;
-                if(ServerHouses.GetHouseOwner(houseId) <= 0) { HUDHandler.SendNotification(player, 4, 5000, "Dieses Haus gehört Niemanden."); return; }
-                if(ServerHouses.IsHouseLocked(houseId)) { HUDHandler.SendNotification(player, 4, 5000, "Das Haus ist abgeschlossen."); return; }
+                if (ServerHouses.GetHouseOwner(houseId) <= 0) { HUDHandler.SendNotification(player, 4, 5000, "Dieses Haus gehört Niemanden."); return; }
+                if (ServerHouses.IsHouseLocked(houseId)) { HUDHandler.SendNotification(player, 4, 5000, "Das Haus ist abgeschlossen."); return; }
                 int interiorId = ServerHouses.GetHouseInteriorId(houseId);
                 if (interiorId <= 0) return;
                 Position targetPos = ServerHouses.GetInteriorExitPosition(interiorId);
@@ -125,7 +122,9 @@ namespace Altv_Roleplay.Handler
                 Alt.Log($"{e}");
             }
         }
+        #endregion
 
+        #region something
         internal static void openManageCEF(IPlayer player)
         {
             try
@@ -159,7 +158,7 @@ namespace Altv_Roleplay.Handler
                 if (dimension <= 10000) return;
                 int houseId = dimension - 10000;
                 if (houseId <= 0 || !ServerHouses.ExistHouse(houseId)) return;
-                if(!ServerHouses.HasHouseStorageUpgrade(houseId)) { HUDHandler.SendNotification(player, 4, 5000, "Dieses Haus besitzt noch keinen ausgebauten Lagerplatz."); return; }
+                if (!ServerHouses.HasHouseStorageUpgrade(houseId)) { HUDHandler.SendNotification(player, 4, 5000, "Dieses Haus besitzt noch keinen ausgebauten Lagerplatz."); return; }
                 int interiorId = ServerHouses.GetHouseInteriorId(houseId);
                 if (interiorId <= 0) return;
                 if (!player.Position.IsInRange(ServerHouses.GetInteriorStoragePosition(interiorId), 2f)) return;
@@ -172,9 +171,11 @@ namespace Altv_Roleplay.Handler
                 Alt.Log($"{e}");
             }
         }
+        #endregion
 
+        #region storage
         [AsyncClientEvent("Server:HouseStorage:StorageItem")]
-        public void StorageItem(IPlayer player, int houseId, string itemName, int itemAmount, string fromContainer)
+        public async Task StorageItem(IPlayer player, int houseId, string itemName, int itemAmount, string fromContainer)
         {
             try
             {
@@ -190,7 +191,8 @@ namespace Altv_Roleplay.Handler
                 if (CharactersInventory.IsItemActive(player, itemName)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Ausgerüstete Gegenstände können nicht umgelagert werden."); return; }
                 float storageLimit = ServerHouses.GetInteriorStorageLimit(ServerHouses.GetHouseInteriorId(houseId));
                 float itemWeight = ServerItems.GetItemWeight(itemName) * itemAmount;
-                if(ServerHouses.GetHouseStorageItemWeight(houseId) >= storageLimit || (ServerHouses.GetHouseStorageItemWeight(houseId) + itemWeight >= storageLimit)) {
+                if (ServerHouses.GetHouseStorageItemWeight(houseId) >= storageLimit || (ServerHouses.GetHouseStorageItemWeight(houseId) + itemWeight >= storageLimit))
+                {
                     HUDHandler.SendNotification(player, 3, 5000, $"Fehler: Soviel passt in das Hauslager nicht rein (maximal {storageLimit}kg Lagerplatz).");
                     return;
                 }
@@ -205,8 +207,9 @@ namespace Altv_Roleplay.Handler
             }
         }
 
+
         [AsyncClientEvent("Server:HouseStorage:TakeItem")]
-        public void TakeItem(IPlayer player, int houseId, string itemName, int itemAmount)
+        public async Task TakeItem(IPlayer player, int houseId, string itemName, int itemAmount)
         {
             try
             {
@@ -221,22 +224,44 @@ namespace Altv_Roleplay.Handler
                 if (ServerHouses.GetServerHouseStorageItemAmount(houseId, itemName) < itemAmount) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Soviele Gegenstände sind nicht im Hauslager."); return; }
                 float itemWeight = ServerItems.GetItemWeight(itemName) * itemAmount;
                 float invWeight = CharactersInventory.GetCharacterItemWeight(charId, "inventory");
+                var itemType = ServerItems.GetItemType(itemName);
                 float backpackWeight = CharactersInventory.GetCharacterItemWeight(charId, "backpack");
                 if (invWeight + itemWeight > 15f && backpackWeight + itemWeight > Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId))) { HUDHandler.SendNotification(player, 3, 5000, $"Du hast nicht genug Platz in deinen Taschen."); return; }
-               ServerHouses.RemoveServerHouseStorageItemAmount(houseId, itemName, itemAmount);
+                ServerHouses.RemoveServerHouseStorageItemAmount(houseId, itemName, itemAmount);
                 //ToDo: Log Eintrag
-                if(invWeight + itemWeight <= 15f)
+                if (itemName.Contains("Fahrzeugschluessel"))
                 {
-                    HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus dem Hauslager genommen (Lagerort: Inventar).");
-                    CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "inventory");
+                    HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus dem Hauslager genommen (Lagerort: Schluesselbund).");
+                    CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "schluessel");
                     return;
                 }
-
-                if (Characters.GetCharacterBackpack(charId) != -2 && backpackWeight + itemWeight <= Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId)))
+                if (itemName.Contains("Handschellenschluessel"))
                 {
-                    HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus dem Hauslager genommen (Lagerort: Rucksack / Tasche).");
-                    CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "backpack");
+                    HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus dem Hauslager genommen (Lagerort: Schluesselbund).");
+                    CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "schluessel");
                     return;
+                }
+                if (itemName.Contains("Generalschluessel"))
+                {
+                    HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus dem Hauslager genommen (Lagerort: Schluesselbund).");
+                    CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "schluessel");
+                    return;
+                }
+                else
+                {
+                    if (invWeight + itemWeight <= 15f)
+                    {
+                        HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus dem Hauslager genommen (Lagerort: Inventar).");
+                        CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "inventory");
+                        return;
+                    }
+
+                    if (Characters.GetCharacterBackpack(charId) != -2 && backpackWeight + itemWeight <= Characters.GetCharacterBackpackSize(Characters.GetCharacterBackpack(charId)))
+                    {
+                        HUDHandler.SendNotification(player, 2, 5000, $"Du hast {itemName} ({itemAmount}x) aus dem Hauslager genommen (Lagerort: Rucksack / Tasche).");
+                        CharactersInventory.AddCharacterItem(charId, itemName, itemAmount, "backpack");
+                        return;
+                    }
                 }
             }
             catch (Exception e)
@@ -244,6 +269,7 @@ namespace Altv_Roleplay.Handler
                 Alt.Log($"{e}");
             }
         }
+        #endregion
 
         internal static async void BreakIntoHouse(IPlayer player, int houseId)
         {
@@ -256,8 +282,8 @@ namespace Altv_Roleplay.Handler
                 if (player.HasPlayerHandcuffs() || player.HasPlayerRopeCuffs()) { HUDHandler.SendNotification(player, 3, 5000, "Wie willst du das mit Handschellen/Fesseln machen?"); return; }
                 if (!ServerHouses.ExistHouse(houseId) || ServerHouses.GetHouseOwner(houseId) <= 0 || !ServerHouses.IsHouseLocked(houseId)) return;
                 if (!CharactersInventory.ExistCharacterItem(charId, "Brecheisen", "inventory") && !CharactersInventory.ExistCharacterItem(charId, "Brecheisen", "backpack")) return;
-                if(ServerFactions.GetFactionDutyMemberCount(2) < 6) { HUDHandler.SendNotification(player, 3, 5000, "Es sind nicht genügend Beamte im Dienst (6)."); return; }
-                if(!player.IsPlayerUsingCrowbar())
+                if (ServerFactions.GetFactionDutyMemberCount(2) < 6) { HUDHandler.SendNotification(player, 3, 5000, "Es sind nicht genügend Beamte im Dienst (6)."); return; }
+                if (!player.IsPlayerUsingCrowbar())
                 {
                     int houseOwner = ServerHouses.GetHouseOwner(houseId);
                     if (houseOwner <= 0) return;
@@ -268,7 +294,7 @@ namespace Altv_Roleplay.Handler
                     var houseOwnerPlayer = Alt.GetAllPlayers().ToList().FirstOrDefault(x => x != null && x.Exists && x.GetCharacterMetaId() == (ulong)houseOwner);
                     if (ServerHouses.HasHouseAlarmUpgrade(houseId))
                     {
-                        ServerFactions.AddNewFactionDispatchNoName($"Hauseinbruch: {ServerHouses.GetHouseStreet(houseId)}", 2, $"Ein Einbruch in ein Haus wurde gemeldet - ein Dispatch wurde dazu in der Notrufverwaltung angelegt.", player.Position);
+                        ServerFactions.createFactionDispatch(player, 2, $"Hauseinbruch: {ServerHouses.GetHouseStreet(houseId)}", $"Ein Einbruch in ein Haus wurde gemeldet - ein Dispatch wurde dazu in der Notrufverwaltung angelegt.");
                         if (houseOwnerPlayer != null && (CharactersInventory.ExistCharacterItem(houseOwner, "Tablet", "inventory") || CharactersInventory.ExistCharacterItem(houseOwner, "Tablet", "backpack")))
                         {
                             HUDHandler.SendNotification(houseOwnerPlayer, 3, 3500, $"Jemand bricht in dein Haus ein: {ServerHouses.GetHouseStreet(houseId)}");
@@ -282,14 +308,14 @@ namespace Altv_Roleplay.Handler
                     HUDHandler.SendNotification(player, 1, duration, "Aufbrechen des Hauses begonnen (5 Minuten)...");
                     await Task.Delay(duration);
                     if (player == null || !player.Exists) return;
-                    if(!player.Position.IsInRange(curPos, 3f)) { HUDHandler.SendNotification(player, 3, 5000, "Aufbrechen abgebrochen, du bist zu weit entfernt."); player.SetPlayerUsingCrowbar(false); player.RemoveWeapon(WeaponModel.Crowbar); return; }
+                    if (!player.Position.IsInRange(curPos, 3f)) { HUDHandler.SendNotification(player, 3, 5000, "Aufbrechen abgebrochen, du bist zu weit entfernt."); player.SetPlayerUsingCrowbar(false); player.RemoveWeapon(WeaponModel.Crowbar); return; }
                     if (!player.IsPlayerUsingCrowbar()) return;
                     player.RemoveWeapon(WeaponModel.Crowbar);
                     ServerHouses.SetHouseLocked(houseId, false);
-                    HUDHandler.SendNotification(player, 2, 2500, "Haus aufgebrochen, beeil dich.");                    
+                    HUDHandler.SendNotification(player, 2, 2500, "Haus aufgebrochen, beeil dich.");
                     player.SetPlayerUsingCrowbar(false);
                     return;
-                } 
+                }
                 else
                 {
                     //Einbruch: Abbrechen
@@ -306,7 +332,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:House:setMainHouse")]
-        public void setMainHouse(IPlayer player, int houseId)
+        public async Task setMainHouse(IPlayer player, int houseId)
         {
             try
             {
@@ -324,15 +350,15 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:House:SellHouse")]
-        public void SellHouse(IPlayer player, int houseId)
+        public async Task SellHouse(IPlayer player, int houseId)
         {
             try
             {
                 if (player == null || !player.Exists || houseId <= 0) return;
                 int charId = (int)player.GetCharacterMetaId();
                 if (charId <= 0) return;
-                if(!ServerHouses.ExistHouse(houseId) || ServerHouses.GetHouseOwner(houseId) != charId) { HUDHandler.SendNotification(player, 4, 3500, "Fehler: Dieses Haus gehört nicht dir."); return; }
-                if(!CharactersBank.HasCharacterBankMainKonto(charId)) { HUDHandler.SendNotification(player, 3, 2500, "Du besitzt kein Haupt-Bankkonto"); return; }
+                if (!ServerHouses.ExistHouse(houseId) || ServerHouses.GetHouseOwner(houseId) != charId) { HUDHandler.SendNotification(player, 4, 3500, "Fehler: Dieses Haus gehört nicht dir."); return; }
+                if (!CharactersBank.HasCharacterBankMainKonto(charId)) { HUDHandler.SendNotification(player, 3, 2500, "Du besitzt kein Haupt-Bankkonto"); return; }
                 int accNumber = CharactersBank.GetCharacterBankMainKonto(charId);
                 int housePrice = ServerHouses.GetHousePrice(houseId) / 2;
                 if (!CharactersBank.ExistBankAccountNumber(accNumber)) return;
@@ -349,7 +375,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:HouseManage:DepositMoney")]
-        public void DepositMoney(IPlayer player, int houseId, int money)
+        public async Task DepositMoney(IPlayer player, int houseId, int money)
         {
             if (player == null || !player.Exists || houseId <= 0 || money <= 0) return;
             int charId = (int)player.GetCharacterMetaId();
@@ -359,14 +385,14 @@ namespace Altv_Roleplay.Handler
             int dhouseId = dimension - 10000;
             if (dhouseId <= 0 || dhouseId != houseId || !ServerHouses.ExistHouse(houseId)) return;
             if (ServerHouses.GetHouseOwner(houseId) != charId) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist nicht der Hausbesitzer."); return; }
-            if(!CharactersInventory.ExistCharacterItem(charId, "Bargeld", "inventory") || CharactersInventory.GetCharacterItemAmount(charId, "Bargeld", "inventory") < money) { HUDHandler.SendNotification(player, 4, 3500, $"Fehler: Du hast nicht genügend Geld dabei ({money}$)."); return; }
+            if (!CharactersInventory.ExistCharacterItem(charId, "Bargeld", "inventory") || CharactersInventory.GetCharacterItemAmount(charId, "Bargeld", "inventory") < money) { HUDHandler.SendNotification(player, 4, 3500, $"Fehler: Du hast nicht genügend Geld dabei ({money}$)."); return; }
             CharactersInventory.RemoveCharacterItemAmount(charId, "Bargeld", money, "inventory");
             ServerHouses.SetHouseBankMoney(houseId, ServerHouses.GetHouseBankMoney(houseId) + money);
             HUDHandler.SendNotification(player, 2, 2500, $"Du hast erfolgreich {money}$ in den Tresor gelagert.");
         }
 
         [AsyncClientEvent("Server:HouseManage:WithdrawMoney")]
-        public void WithdrawMoney(IPlayer player, int houseId, int money)
+        public async Task WithdrawMoney(IPlayer player, int houseId, int money)
         {
             try
             {
@@ -378,7 +404,7 @@ namespace Altv_Roleplay.Handler
                 int dhouseId = dimension - 10000;
                 if (dhouseId <= 0 || dhouseId != houseId || !ServerHouses.ExistHouse(houseId)) return;
                 if (ServerHouses.GetHouseOwner(houseId) != charId) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist nicht der Hausbesitzer."); return; }
-                if(ServerHouses.GetHouseBankMoney(houseId) < money) { HUDHandler.SendNotification(player, 4, 5000, $"Fehler: Soviel Geld ist nicht im Tresor (Aktueller Stand: {ServerHouses.GetHouseBankMoney(houseId)}$)."); return; }
+                if (ServerHouses.GetHouseBankMoney(houseId) < money) { HUDHandler.SendNotification(player, 4, 5000, $"Fehler: Soviel Geld ist nicht im Tresor (Aktueller Stand: {ServerHouses.GetHouseBankMoney(houseId)}$)."); return; }
                 ServerHouses.SetHouseBankMoney(houseId, ServerHouses.GetHouseBankMoney(houseId) - money);
                 CharactersInventory.AddCharacterItem(charId, "Bargeld", money, "inventory");
                 HUDHandler.SendNotification(player, 2, 2500, $"Du hast erfolgreich {money}$ aus dem Tresor entnommen.");
@@ -390,25 +416,25 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:HouseManage:BuyUpgrade")]
-        public void BuyUpgrade(IPlayer player, int houseId, string upgrade)
+        public async Task BuyUpgrade(IPlayer player, int houseId, string upgrade)
         {
             try
             {
                 if (player == null || !player.Exists || houseId <= 0) return;
                 if (upgrade != "alarm" && upgrade != "storage" && upgrade != "bank") return;
                 int charId = (int)player.GetCharacterMetaId();
-                if (charId <= 0) return; 
+                if (charId <= 0) return;
                 int dimension = player.Dimension;
                 if (dimension <= 10000) return;
                 int dhouseId = dimension - 10000;
                 if (dhouseId <= 0 || dhouseId != houseId || !ServerHouses.ExistHouse(houseId)) return;
                 if (ServerHouses.GetHouseOwner(houseId) != charId) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist nicht der Hausbesitzer."); return; }
-                switch(upgrade)
+                switch (upgrade)
                 {
                     case "alarm":
-                        if(ServerHouses.HasHouseAlarmUpgrade(houseId)) { HUDHandler.SendNotification(player, 4, 2500, "Dein Haus besitzt bereits eine Alarmanlage."); return; }
+                        if (ServerHouses.HasHouseAlarmUpgrade(houseId)) { HUDHandler.SendNotification(player, 4, 2500, "Dein Haus besitzt bereits eine Alarmanlage."); return; }
                         if (!ServerHouses.HasHouseBankUpgrade(houseId)) { HUDHandler.SendNotification(player, 4, 2500, "Du hast noch keinen Tresor ausgebaut in dem genügend Geld ist (500$)."); return; }
-                        if(ServerHouses.GetHouseBankMoney(houseId) < 500) { HUDHandler.SendNotification(player, 4, 2500, "Dein Haustresor verfügt nicht über die Kosten (500$)."); return; }
+                        if (ServerHouses.GetHouseBankMoney(houseId) < 500) { HUDHandler.SendNotification(player, 4, 2500, "Dein Haustresor verfügt nicht über die Kosten (500$)."); return; }
                         ServerHouses.SetHouseBankMoney(houseId, ServerHouses.GetHouseBankMoney(houseId) - 500);
                         ServerHouses.SetHouseUpgradeState(houseId, "alarm", true);
                         HUDHandler.SendNotification(player, 2, 2500, $"Du hast das Hausupgrade 'Alarmanlage' erfolgreich erworben.");
@@ -423,15 +449,15 @@ namespace Altv_Roleplay.Handler
                         return;
                     case "bank":
                         if (ServerHouses.HasHouseBankUpgrade(houseId)) { HUDHandler.SendNotification(player, 4, 2500, "Dein Haus besitzt bereits einen Tersor."); return; }
-                        if(!CharactersBank.HasCharacterBankMainKonto(charId)) { HUDHandler.SendNotification(player, 4, 5000, "Du besitzt noch kein Hauptkonto in deiner Bank."); return; }
+                        if (!CharactersBank.HasCharacterBankMainKonto(charId)) { HUDHandler.SendNotification(player, 4, 5000, "Du besitzt noch kein Hauptkonto in deiner Bank."); return; }
                         int accNumber = CharactersBank.GetCharacterBankMainKonto(charId);
                         if (accNumber <= 0) return;
-                        if(CharactersBank.GetBankAccountMoney(accNumber) < 250) { HUDHandler.SendNotification(player, 4, 5000, "Dein Hauptkonto ist nicht ausreichend gedeckt (250$)."); return; }
+                        if (CharactersBank.GetBankAccountMoney(accNumber) < 250) { HUDHandler.SendNotification(player, 4, 5000, "Dein Hauptkonto ist nicht ausreichend gedeckt (250$)."); return; }
                         CharactersBank.SetBankAccountMoney(accNumber, CharactersBank.GetBankAccountMoney(accNumber) - 250);
                         ServerHouses.SetHouseUpgradeState(houseId, "bank", true);
                         HUDHandler.SendNotification(player, 2, 2500, $"Du hast das Hausupgrade 'Tresor' erfolgreich erworben.");
                         return;
-                }                
+                }
             }
             catch (Exception e)
             {
@@ -440,7 +466,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:HouseManage:RemoveRenter")]
-        public void RemoveRenter(IPlayer player, int houseId, int renterId)
+        public async Task RemoveRenter(IPlayer player, int houseId, int renterId)
         {
             try
             {
@@ -452,10 +478,10 @@ namespace Altv_Roleplay.Handler
                 int dhouseId = dimension - 10000;
                 if (dhouseId <= 0 || dhouseId != houseId || !ServerHouses.ExistHouse(houseId)) return;
                 if (ServerHouses.GetHouseOwner(houseId) != charId) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist nicht der Hausbesitzer."); return; }
-                if(!ServerHouses.IsCharacterRentedInAnyHouse(renterId) || !ServerHouses.IsCharacterRentedInHouse(renterId, houseId)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Dieser Spieler ist nicht in deinem Haus eingemietet."); return; }
+                if (!ServerHouses.IsCharacterRentedInAnyHouse(renterId) || !ServerHouses.IsCharacterRentedInHouse(renterId, houseId)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Dieser Spieler ist nicht in deinem Haus eingemietet."); return; }
                 ServerHouses.RemoveServerHouseRenter(houseId, renterId);
                 HUDHandler.SendNotification(player, 2, 2000, $"Du hast den Mieter {Characters.GetCharacterName(renterId)} erfolgreich gekündigt.");
-                foreach(var renterPlayer in Alt.GetAllPlayers().ToList().Where(x => x != null && x.Exists && x.GetCharacterMetaId() == (ulong)renterId)) { HUDHandler.SendNotification(renterPlayer, 3, 2000, $"Dein Mietvertrag in dem Haus '{ServerHouses.GetHouseStreet(houseId)}' wurde gekündigt."); break; }
+                foreach (var renterPlayer in Alt.GetAllPlayers().ToList().Where(x => x != null && x.Exists && x.GetCharacterMetaId() == (ulong)renterId)) { HUDHandler.SendNotification(renterPlayer, 3, 2000, $"Dein Mietvertrag in dem Haus '{ServerHouses.GetHouseStreet(houseId)}' wurde gekündigt."); break; }
             }
             catch (Exception e)
             {
@@ -464,7 +490,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:HouseManage:setRentState")]
-        public void setRentState(IPlayer player, int houseId, string rentState)
+        public async Task setRentState(IPlayer player, int houseId, string rentState)
         {
             try
             {
@@ -479,7 +505,7 @@ namespace Altv_Roleplay.Handler
                 if (dhouseId <= 0 || dhouseId != houseId || !ServerHouses.ExistHouse(houseId)) return;
                 if (ServerHouses.GetHouseOwner(houseId) != charId) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist nicht der Hausbesitzer."); return; }
                 ServerHouses.SetHouseRentState(houseId, rentBool);
-                if(rentBool) { HUDHandler.SendNotification(player, 2, 2500, $"Du hast den Mietstatus auf 'Mieter zulassen' gestellt."); return; }
+                if (rentBool) { HUDHandler.SendNotification(player, 2, 2500, $"Du hast den Mietstatus auf 'Mieter zulassen' gestellt."); return; }
                 else { HUDHandler.SendNotification(player, 2, 2500, $"Du hast den Mietstatus auf 'Mieter nicht zulassen' gestellt."); return; }
             }
             catch (Exception e)
@@ -489,22 +515,22 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:HouseManage:setRentPrice")]
-        public void setRentPrice(IPlayer player, int houseId, int rentPrice)
+        public async Task setRentPrice(IPlayer player, int houseId, int rentPrice)
         {
             try
             {
                 if (player == null || !player.Exists || houseId <= 0 || rentPrice <= 0) return;
                 int charId = (int)player.GetCharacterMetaId();
                 if (charId <= 0) return;
-                if(rentPrice > 1000) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Die Miete darf einen Wert von 1.000$ nicht überschreiten."); return; }
+                if (rentPrice > 1000) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Die Miete darf einen Wert von 1.000$ nicht überschreiten."); return; }
                 int dimension = player.Dimension;
                 if (dimension <= 10000) return;
                 int dhouseId = dimension - 10000;
                 if (dhouseId <= 0 || dhouseId != houseId || !ServerHouses.ExistHouse(houseId)) return;
-                if(ServerHouses.GetHouseOwner(houseId) != charId) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist nicht der Hausbesitzer."); return; }
+                if (ServerHouses.GetHouseOwner(houseId) != charId) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist nicht der Hausbesitzer."); return; }
                 ServerHouses.SetHouseRentPrice(houseId, rentPrice);
                 HUDHandler.SendNotification(player, 2, 3000, $"Du hast den Mietpreis auf {rentPrice}$ festgelegt. Die Miete wird jede 7 Tage von Mietbeginn eines Mieters abgebucht.");
-                if(!ServerHouses.HasHouseBankUpgrade(houseId)) { HUDHandler.SendNotification(player, 3, 5000, "Dein Haus besitzt keinen Tresor. Mieteinnahmen werden erst gesammelt sofern dieser ausgebaut ist."); }
+                if (!ServerHouses.HasHouseBankUpgrade(houseId)) { HUDHandler.SendNotification(player, 3, 5000, "Dein Haus besitzt keinen Tresor. Mieteinnahmen werden erst gesammelt sofern dieser ausgebaut ist."); }
             }
             catch (Exception e)
             {
@@ -513,7 +539,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:House:RentHouse")]
-        public void RentHouse(IPlayer player, int houseId)
+        public async Task RentHouse(IPlayer player, int houseId)
         {
             try
             {
@@ -522,15 +548,15 @@ namespace Altv_Roleplay.Handler
                 if (charId <= 0) return;
                 if (!ServerHouses.ExistHouse(houseId)) return;
                 if (ServerHouses.GetHouseOwner(houseId) <= 0 || ServerHouses.GetHouseOwner(houseId) == charId) return;
-                if(ServerHouses.IsCharacterRentedInAnyHouse(charId)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist bereits in einem anderen Haus eingemietet."); return; }
-                if(ServerHouses.IsCharacterRentedInHouse(charId, houseId)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: In diesem Haus bist du bereits eingemietet."); return; }
-                if(!CharactersBank.HasCharacterBankMainKonto(charId)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du besitzt kein Haupt-Bankkonto."); return; }
+                if (ServerHouses.IsCharacterRentedInAnyHouse(charId)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du bist bereits in einem anderen Haus eingemietet."); return; }
+                if (ServerHouses.IsCharacterRentedInHouse(charId, houseId)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: In diesem Haus bist du bereits eingemietet."); return; }
+                if (!CharactersBank.HasCharacterBankMainKonto(charId)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Du besitzt kein Haupt-Bankkonto."); return; }
                 int accNumber = CharactersBank.GetCharacterBankMainKonto(charId);
                 int ownerBankNumber = CharactersBank.GetCharacterBankMainKonto(ServerHouses.GetHouseOwner(houseId));
                 int rentPrice = ServerHouses.GetHouseRentPrice(houseId);
                 if (accNumber <= 0 || rentPrice <= 0 || ownerBankNumber <= 0) return;
                 if (CharactersBank.GetBankAccountLockStatus(accNumber)) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Dein Hauptkonto ist gesperrt."); return; }
-                if(CharactersBank.GetBankAccountMoney(accNumber) < rentPrice) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Dein Hauptkonto ist nicht ausreichend gedeckt."); return; }
+                if (CharactersBank.GetBankAccountMoney(accNumber) < rentPrice) { HUDHandler.SendNotification(player, 4, 5000, "Fehler: Dein Hauptkonto ist nicht ausreichend gedeckt."); return; }
                 CharactersBank.SetBankAccountMoney(accNumber, CharactersBank.GetBankAccountMoney(accNumber) - rentPrice);
                 CharactersBank.SetBankAccountMoney(ownerBankNumber, CharactersBank.GetBankAccountMoney(ownerBankNumber) + rentPrice);
                 ServerHouses.AddServerHouseRenter(houseId, charId);
@@ -545,7 +571,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:House:UnrentHouse")]
-        public void UnrentHouse(IPlayer player, int houseId)
+        public async Task UnrentHouse(IPlayer player, int houseId)
         {
             try
             {

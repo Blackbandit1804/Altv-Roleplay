@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using AltV.Net;
+﻿using AltV.Net;
 using AltV.Net.Async;
-using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
 using Altv_Roleplay.Model;
 using Altv_Roleplay.Utils;
+using System;
+using System.Threading.Tasks;
 
 namespace Altv_Roleplay.Handler
 {
     class TownhallHandler : IScript
     {
         [AsyncClientEvent("Server:HUD:sendIdentityCardApplyForm")]
-        public void sendIdentityCardApplyForm(IPlayer player, string birthplace)
+        public async Task sendIdentityCardApplyForm(IPlayer player, string birthplace)
         {
             if (player == null || !player.Exists) return;
             int charId = User.GetPlayerOnline(player);
@@ -44,12 +41,12 @@ namespace Altv_Roleplay.Handler
             if (player == null || !player.Exists) return;
             int charId = User.GetPlayerOnline(player);
             if (charId == 0) return;
-            var jobs = ServerJobs.GetAllServerJobs(); 
+            var jobs = ServerJobs.GetAllServerJobs();
             player.EmitLocked("Client:Jobcenter:OpenCEF", jobs);
         }
 
         [AsyncClientEvent("Server:Jobcenter:SelectJob")]
-        public void SelectJobcenterJob(IPlayer player, string jobName)
+        public async Task SelectJobcenterJob(IPlayer player, string jobName)
         {
             try
             {
@@ -67,7 +64,7 @@ namespace Altv_Roleplay.Handler
                     HUDHandler.SendNotification(player, 1, 2500, "Erfolg freigeschaltet: Die Tür vom Arbeitsamt");
                 }
             }
-            catch(Exception e) { Alt.Log($"{e}"); }
+            catch (Exception e) { Alt.Log($"{e}"); }
         }
 
         internal static void openHouseSelector(IPlayer player)

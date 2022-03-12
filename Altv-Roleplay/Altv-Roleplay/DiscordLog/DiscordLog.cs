@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using Discord.Webhook;
 using Discord.Webhook.HookRequest;
 
@@ -13,10 +14,10 @@ namespace Altv_Roleplay.Handler
             switch (type)
             {
                 case "adminmenu":
-                    hook.HookUrl = "YOUR_WEBHOOK";
+                    hook.HookUrl = "https://discordapp.com/api/webhooks/952175744056975410/xC6Kltx761KQ6LFTDxbKXJoBjDH6zaoOOWioQgK3-9jIdvVg1bPXXC-qaOrAkSBLxXEi";
                     break;
                 default:
-                    hook.HookUrl = "YOUR_WEBHOOK";
+                    hook.HookUrl = "https://discordapp.com/api/webhooks/952175744056975410/xC6Kltx761KQ6LFTDxbKXJoBjDH6zaoOOWioQgK3-9jIdvVg1bPXXC-qaOrAkSBLxXEi";
                     break;
             }
 
@@ -25,10 +26,10 @@ namespace Altv_Roleplay.Handler
             DiscordHookBuilder builder = DiscordHookBuilder.Create(Nickname: nickname, AvatarUrl: "https://media.discordapp.net/attachments/723871259791720520/784117781271937034/Logo.png?width=519&height=519");
 
             DiscordEmbed embed = new DiscordEmbed(
-                            Title: "Timo's Scripting Service - Logs",
+                            Title: "Community-host.net Log",
                             Description: text,
                             Color: 0xf54242,
-                            FooterText: "Timo's Scripting Service - Logs",
+                            FooterText: "Community-host.net - Logs",
                             FooterIconUrl: "https://media.discordapp.net/attachments/723871259791720520/784117781271937034/Logo.png?width=519&height=519");
             builder.Embeds.Add(embed);
 

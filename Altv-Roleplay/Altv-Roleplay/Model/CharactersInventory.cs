@@ -5,8 +5,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Altv_Roleplay.Model
 {
@@ -37,7 +35,7 @@ namespace Altv_Roleplay.Model
             return CharactersInventory_.ToList().Where(x => x.charId == charId && x.itemLocation == "backpack").Count();
         }
 
-        public static void AddCharacterItem(int charId, string itemName, int itemAmount, string itemLocation)
+        public static async void AddCharacterItem(int charId, string itemName, int itemAmount, string itemLocation)
         {
             if (charId == 0 || itemName == "" || itemLocation == "" || itemAmount == 0) return;
 
@@ -52,10 +50,10 @@ namespace Altv_Roleplay.Model
             try
             {
                 var hasItem = CharactersInventory_.ToList().FirstOrDefault(i => i.charId == charId && i.itemName == itemName && i.itemLocation == itemLocation);
-                if(hasItem != null)
+                if (hasItem != null)
                 {
                     //Item existiert, itemAmount erhöhen
-                    hasItem.itemAmount += itemAmount; 
+                    hasItem.itemAmount += itemAmount;
 
                     using (gtaContext db = new gtaContext())
                     {
@@ -66,7 +64,8 @@ namespace Altv_Roleplay.Model
                         }
                         db.SaveChanges();
                     }
-                } else
+                }
+                else
                 {
                     //Existiert nicht, Item neu adden
                     CharactersInventory_.Add(itemData);
@@ -116,10 +115,42 @@ namespace Altv_Roleplay.Model
                     var tplayer = Alt.GetAllPlayers().ToList().FirstOrDefault(x => User.GetPlayerOnline(x) == charId);
                     tplayer.Emit("Client:HUD:updateMoney", CharactersInventory.GetCharacterItemAmount(User.GetPlayerOnline(tplayer), "Bargeld", "inventory"));
                 }
-            } catch (Exception _) { Alt.Log($"{_}"); }
+            }
+            catch (Exception _) { Alt.Log($"{_}"); }
         }
 
-        public static void RemoveCharacterItem(int charId, string itemName, string itemLocation) 
+        public static void RemoveCharacterItemAmount2(int charId, string itemName, int itemAmount)
+        {
+            try
+            {
+                if (charId == 0 || itemName == "" || itemAmount == 0) return;
+                var item = CharactersInventory_.FirstOrDefault(i => i.charId == charId && i.itemName == itemName);
+                if (item != null)
+                {
+                    using (gtaContext db = new gtaContext())
+                    {
+                        int prevAmount = item.itemAmount;
+                        item.itemAmount -= itemAmount;
+                        if (item.itemAmount > 0)
+                        {
+                            db.Characters_Inventory.Update(item);
+                            db.SaveChanges();
+                        }
+                        else
+                            RemoveCharacterItem2(charId, itemName);
+                    }
+                }
+
+                if (itemName == "Bargeld")
+                {
+                    var tplayer = Alt.GetAllPlayers().ToList().FirstOrDefault(x => User.GetPlayerOnline(x) == charId);
+                    tplayer.Emit("Client:HUD:updateMoney", CharactersInventory.GetCharacterItemAmount(User.GetPlayerOnline(tplayer), "Bargeld", "inventory"));
+                }
+            }
+            catch (Exception _) { Alt.Log($"{_}"); }
+        }
+
+        public static void RemoveCharacterItem(int charId, string itemName, string itemLocation)
         {
             try
             {
@@ -134,7 +165,48 @@ namespace Altv_Roleplay.Model
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
+            {
+                Alt.Log($"{e}");
+            }
+        }
+        public static void RemoveCharacterItem2(int charId, string itemName)
+        {
+            try
+            {
+                var item = CharactersInventory_.FirstOrDefault(i => i.charId == charId && i.itemName == itemName);
+                if (item != null)
+                {
+                    CharactersInventory_.Remove(item);
+                    using (gtaContext db = new gtaContext())
+                    {
+                        db.Characters_Inventory.Remove(item);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Alt.Log($"{e}");
+            }
+        }
+
+        public static void RemoveItem(string itemName, string itemLocation)
+        {
+            try
+            {
+                var item = CharactersInventory_.FirstOrDefault(i => i.itemName == itemName && i.itemLocation == itemLocation);
+                if (item != null)
+                {
+                    CharactersInventory_.Remove(item);
+                    using (gtaContext db = new gtaContext())
+                    {
+                        db.Characters_Inventory.Remove(item);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -147,7 +219,20 @@ namespace Altv_Roleplay.Model
                 var item = CharactersInventory_.ToList().FirstOrDefault(i => i.charId == charId && i.itemName == itemName && i.itemLocation == itemLocation);
                 if (item != null) return true;
             }
-            catch(Exception e)
+            catch (Exception e)
+            {
+                Alt.Log($"{e}");
+            }
+            return false;
+        }
+        public static bool ExistCharacterItem2(int charId, string itemName)
+        {
+            try
+            {
+                var item = CharactersInventory_.ToList().FirstOrDefault(i => i.charId == charId && i.itemName == itemName);
+                if (item != null) return true;
+            }
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -174,9 +259,9 @@ namespace Altv_Roleplay.Model
                 }
 
                 var factionStorageItems = ServerFactions.ServerFactionStorageItems_.Where(i => i.itemName == itemName);
-                if(factionStorageItems != null)
+                if (factionStorageItems != null)
                 {
-                    foreach(var i in factionStorageItems.Where(x => x != null))
+                    foreach (var i in factionStorageItems.Where(x => x != null))
                     {
                         i.itemName = newItemname;
                         using (gtaContext db = new gtaContext())
@@ -188,9 +273,9 @@ namespace Altv_Roleplay.Model
                 }
 
                 var vehicleItems = ServerVehicles.ServerVehicleTrunkItems_.Where(i => i.itemName == itemName);
-                if(vehicleItems != null)
+                if (vehicleItems != null)
                 {
-                    foreach(var i in vehicleItems.Where(x => x != null))
+                    foreach (var i in vehicleItems.Where(x => x != null))
                     {
                         i.itemName = newItemname;
                         using (gtaContext db = new gtaContext())
@@ -214,7 +299,20 @@ namespace Altv_Roleplay.Model
                 var item = CharactersInventory_.ToList().FirstOrDefault(i => i.charId == charId && i.itemName == itemName && i.itemLocation == itemLocation);
                 if (item != null) return item.itemAmount;
             }
-            catch(Exception e)
+            catch (Exception e)
+            {
+                Alt.Log($"{e}");
+            }
+            return 0;
+        }
+        public static int GetCharacterItemAmount2(int charId, string itemName)
+        {
+            try
+            {
+                var item = CharactersInventory_.ToList().FirstOrDefault(i => i.charId == charId && i.itemName == itemName);
+                if (item != null) return item.itemAmount;
+            }
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -237,7 +335,7 @@ namespace Altv_Roleplay.Model
                 }
                 return invWeight;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -263,7 +361,7 @@ namespace Altv_Roleplay.Model
                 else if (itemName == "Smartphone" && Characters.IsCharacterPhoneEquipped(charId)) return true;
                 return false;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }

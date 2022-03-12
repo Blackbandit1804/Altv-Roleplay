@@ -1,8 +1,6 @@
 ﻿using AltV.Net;
 using AltV.Net.Elements.Entities;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Altv_Roleplay.Factories
 {
@@ -11,7 +9,7 @@ namespace Altv_Roleplay.Factories
         public int ColshapeId { get; set; } = 0;
         public string ColshapeName { get; set; } = "None";
         public string CarDealerVehName { get; set; }
-        public long CarDealerVehPrice { get; set; }
+        public ulong CarDealerVehPrice { get; set; }
         public float Radius { get; set; }
 
 

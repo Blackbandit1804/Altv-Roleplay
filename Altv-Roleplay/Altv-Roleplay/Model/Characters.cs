@@ -5,9 +5,7 @@ using AltV.Net.Elements.Entities;
 using Altv_Roleplay.Factories;
 using Altv_Roleplay.Handler;
 using Altv_Roleplay.models;
-using Altv_Roleplay.Utils;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -23,7 +21,7 @@ namespace Altv_Roleplay.Model
         public static List<Characters_LastPos> CharactersLastPos = new List<Characters_LastPos>();
         public static List<Characters_Permissions> CharactersPermissions = new List<Characters_Permissions>();
 
-        public static void CreatePlayerCharacter(IPlayer client, string charname, string birthdate, bool gender, string facefeaturesarray, string headblendsdataarray, string headoverlaysarray1, string headoverlaysarray2, string headoverlaysarray3)
+        public static void CreatePlayerCharacter(IPlayer client, string charname, string birthdate, bool gender, string facefeaturesarray, string headblendsdataarray, string headoverlaysarray)
         {
             try
             {
@@ -44,7 +42,7 @@ namespace Altv_Roleplay.Model
                     armor = 0,
                     hunger = 100,
                     thirst = 100,
-                    address = "Boulevard Del Perro 2a",
+                    address = "Obdachlos",
                     phonenumber = 0,
                     isCrime = false,
                     paydayTime = 0,
@@ -81,15 +79,15 @@ namespace Altv_Roleplay.Model
 
                 GenerateCharacterPhonenumber(client, CharData.charId);
 
-                CreateCharacterSkin(charname, facefeaturesarray, headblendsdataarray, headoverlaysarray1, headoverlaysarray2, headoverlaysarray3);
+                CreateCharacterSkin(charname, facefeaturesarray, headblendsdataarray, headoverlaysarray);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
         }
 
-        public static void CreateCharacterSkin(string charname, string facefeaturesarray, string headblendsdataarray, string headoverlaysarray1, string headoverlaysarray2, string headoverlaysarray3)
+        public static void CreateCharacterSkin(string charname, string facefeaturesarray, string headblendsdataarray, string headoverlaysarray)
         {
             int charId = GetCharacterIdFromCharName(charname);
             var CharSkinData = new Characters_Skin
@@ -97,9 +95,7 @@ namespace Altv_Roleplay.Model
                 charId = charId,
                 facefeatures = facefeaturesarray,
                 headblendsdata = headblendsdataarray,
-                headoverlays1 = headoverlaysarray1,
-                headoverlays2 = headoverlaysarray2,
-                headoverlays3 = headoverlaysarray3,
+                headoverlays = headoverlaysarray,
                 clothesTop = -2,
                 clothesTorso = -2,
                 clothesLeg = -2,
@@ -302,7 +298,7 @@ namespace Altv_Roleplay.Model
             try
             {
                 var chars = PlayerCharacters.FirstOrDefault(x => x.charId == charId);
-                if(chars != null) chars.targetNumber = targetNumber;
+                if (chars != null) chars.targetNumber = targetNumber;
             }
             catch (Exception e)
             {
@@ -351,6 +347,20 @@ namespace Altv_Roleplay.Model
             return false;
         }
 
+        public static bool IsCharacterLaptopEquipped(int charId)
+        {
+            try
+            {
+                var chars = PlayerCharacters.ToList().FirstOrDefault(x => x.charId == charId);
+                if (chars != null) return chars.isLaptopEquipped;
+            }
+            catch (Exception e)
+            {
+                Alt.Log($"{e}");
+            }
+            return false;
+        }
+
         public static void SetCharacterPhoneEquipped(int charId, bool isPhoneEquipped)
         {
             try
@@ -369,16 +379,32 @@ namespace Altv_Roleplay.Model
                 Alt.Log($"{e}");
             }
         }
-
-        public static void SetCharacterHeadOverlays(int charid, string headoverlayarray1, string headoverlayarray2, string headoverlayarray3)
+        public static void SetCharacterLaptopEquipped(int charId, bool isLaptopEquipped)
         {
-            if (charid == 0 || headoverlayarray1.Length == 0 || headoverlayarray2.Length == 0 || headoverlayarray3.Length == 0) return;
-            var chars = CharactersSkin.FirstOrDefault(x => x.charId == charid);
-            if(chars != null)
+            try
             {
-                chars.headoverlays1 = headoverlayarray1;
-                chars.headoverlays2 = headoverlayarray2;
-                chars.headoverlays3 = headoverlayarray3;
+                var chars = PlayerCharacters.FirstOrDefault(x => x.charId == charId);
+                if (chars == null) return;
+                chars.isLaptopEquipped = isLaptopEquipped;
+                using (var db = new gtaContext())
+                {
+                    db.AccountsCharacters.Update(chars);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Alt.Log($"{e}");
+            }
+        }
+
+        public static void SetCharacterHeadOverlays(int charid, string headoverlays)
+        {
+            if (charid == 0 || headoverlays == "") return;
+            var chars = CharactersSkin.FirstOrDefault(x => x.charId == charid);
+            if (chars != null)
+            {
+                chars.headoverlays = headoverlays;
 
                 using (gtaContext db = new gtaContext())
                 {
@@ -421,10 +447,11 @@ namespace Altv_Roleplay.Model
             try
             {
                 if (player == null || !player.Exists) return;
-                int generatedNumber = new Random().Next(100000, 999999);
-                if(ExistPhoneNumber(generatedNumber)) { 
-                    GenerateCharacterPhonenumber(player, charId); 
-                    return; 
+                int generatedNumber = new Random().Next(1000000, 9999999);
+                if (ExistPhoneNumber(generatedNumber))
+                {
+                    GenerateCharacterPhonenumber(player, charId);
+                    return;
                 }
 
                 var charData = PlayerCharacters.FirstOrDefault(x => x.charId == charId);
@@ -436,44 +463,22 @@ namespace Altv_Roleplay.Model
                     db.SaveChanges();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
         }
 
-        public static float[] GetCharacterHeadOverlay1(int charid)
+        public static string GetCharacterHeadOverlays(int charid)
         {
-            if (charid == 0) return null;
+            if (charid == 0) return "";
             var chars = CharactersSkin.FirstOrDefault(x => x.charId == charid);
             if (chars != null)
             {
-                return Array.ConvertAll(chars.headoverlays1.Split(';'), param => float.Parse(param, CultureInfo.InvariantCulture));
+                return chars.headoverlays;
             }
 
-            return null;
-        }
-        public static float[] GetCharacterHeadOverlay2(int charid)
-        {
-            if (charid == 0) return null;
-            var chars = CharactersSkin.FirstOrDefault(x => x.charId == charid);
-            if (chars != null)
-            {
-                return Array.ConvertAll(chars.headoverlays2.Split(';'), param => float.Parse(param, CultureInfo.InvariantCulture));
-            }
-
-            return null;
-        }
-        public static float[] GetCharacterHeadOverlay3(int charid)
-        {
-            if (charid == 0) return null;
-            var chars = CharactersSkin.FirstOrDefault(x => x.charId == charid);
-            if (chars != null)
-            {
-                return Array.ConvertAll(chars.headoverlays3.Split(';'), param => float.Parse(param, CultureInfo.InvariantCulture));
-            }
-
-            return null;
+            return "";
         }
 
         public static void CreateCharacterLastPos(int charid, Position pos, short dimension)
@@ -504,7 +509,7 @@ namespace Altv_Roleplay.Model
         }
 
         [AsyncClientEvent("Server:Charselector:KillCharacter")]
-        public void KillCharacter(IPlayer client, int charId)
+        public async Task KillCharacter(IPlayer client, int charId)
         {
             try
             {
@@ -520,10 +525,10 @@ namespace Altv_Roleplay.Model
                         db.SaveChanges();
                     }
 
-                    if (client.Exists && client != null) LoginHandler.SendDataToCharselectorArea(client);
+                    if (client.Exists && client != null) LoginHandler.SendDataToCharselectorArea((ClassicPlayer)client);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -533,7 +538,7 @@ namespace Altv_Roleplay.Model
         {
             if (charId == 0) return 0;
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
-            if(chars != null)
+            if (chars != null)
             {
                 return chars.paydayTime;
             }
@@ -557,7 +562,7 @@ namespace Altv_Roleplay.Model
                     }
                 }
             }
-            catch(Exception e) { Alt.Log($"{e}"); }
+            catch (Exception e) { Alt.Log($"{e}"); }
         }
 
         public static void ResetCharacterJobHourCounter(int charId)
@@ -566,16 +571,17 @@ namespace Altv_Roleplay.Model
             {
                 if (charId == 0) return;
                 var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
-                if(chars != null)
+                if (chars != null)
                 {
-                    chars.jobHourCounter = 0; 
+                    chars.jobHourCounter = 0;
                     using (gtaContext db = new gtaContext())
                     {
                         db.AccountsCharacters.Update(chars);
                         db.SaveChanges();
                     }
                 }
-            } catch(Exception e) { Alt.Log($"{e}"); }
+            }
+            catch (Exception e) { Alt.Log($"{e}"); }
         }
 
         public static void IncreaseCharacterPlayTimeHours(int charId)
@@ -584,7 +590,7 @@ namespace Altv_Roleplay.Model
             {
                 if (charId <= 0) return;
                 var chars = PlayerCharacters.FirstOrDefault(x => x.charId == charId);
-                if(chars != null)
+                if (chars != null)
                 {
                     chars.playtimeHours += 1;
                     using (var db = new gtaContext())
@@ -606,7 +612,7 @@ namespace Altv_Roleplay.Model
             {
                 if (charId == 0) return;
                 var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
-                if(chars != null)
+                if (chars != null)
                 {
                     chars.jobHourCounter += 1;
                     using (gtaContext db = new gtaContext())
@@ -615,7 +621,8 @@ namespace Altv_Roleplay.Model
                         db.SaveChanges();
                     }
                 }
-            }catch(Exception e) { Alt.Log($"{e}"); }
+            }
+            catch (Exception e) { Alt.Log($"{e}"); }
         }
 
         public static void ResetCharacterPaydayTime(int charId)
@@ -624,7 +631,7 @@ namespace Altv_Roleplay.Model
             {
                 if (charId <= 0) return;
                 var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
-                if(chars != null)
+                if (chars != null)
                 {
                     chars.paydayTime = 0;
                     using (gtaContext db = new gtaContext())
@@ -634,7 +641,7 @@ namespace Altv_Roleplay.Model
                     }
                 }
             }
-            catch(Exception e) { Alt.Log($"{e}"); }
+            catch (Exception e) { Alt.Log($"{e}"); }
         }
 
         public static string GetCharacterName(int charId)
@@ -648,7 +655,7 @@ namespace Altv_Roleplay.Model
                     return chars.charname;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -666,7 +673,7 @@ namespace Altv_Roleplay.Model
                     return chars.birthdate;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -684,7 +691,7 @@ namespace Altv_Roleplay.Model
                     return chars.birthplace;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -702,7 +709,7 @@ namespace Altv_Roleplay.Model
                     return chars.accState;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -712,7 +719,7 @@ namespace Altv_Roleplay.Model
         public static string GetCharacterStreet(int charId)
         {
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
-            if(chars != null)
+            if (chars != null)
             {
                 return chars.address;
             }
@@ -725,7 +732,7 @@ namespace Altv_Roleplay.Model
             {
                 if (charId <= 0 || st == "") return;
                 var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
-                if(chars != null)
+                if (chars != null)
                 {
                     chars.address = st;
                     using (gtaContext db = new gtaContext())
@@ -748,9 +755,9 @@ namespace Altv_Roleplay.Model
             int charId = User.GetPlayerOnline(player);
             if (charId == 0) return obj;
             var chars = PlayerCharacters.FirstOrDefault(x => x.charId == charId);
-            if(chars != null)
+            if (chars != null)
             {
-                switch(type)
+                switch (type)
                 {
                     case "PrimaryWeapon": obj = chars.weapon_Primary; break;
                     case "PrimaryAmmo": obj = chars.weapon_Primary_Ammo; break;
@@ -774,7 +781,7 @@ namespace Altv_Roleplay.Model
                 var chars = PlayerCharacters.FirstOrDefault(x => x.charId == charId);
                 if (chars != null)
                 {
-                    switch(type)
+                    switch (type)
                     {
                         case "PrimaryWeapon": chars.weapon_Primary = (string)weaponValue; break;
                         case "PrimaryAmmo": chars.weapon_Primary_Ammo = (int)weaponValue; break;
@@ -793,7 +800,7 @@ namespace Altv_Roleplay.Model
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -845,6 +852,17 @@ namespace Altv_Roleplay.Model
 
             return 0;
         }
+        public static int GetCharacterIdFromAccId(int accid)
+        {
+            var chars = PlayerCharacters.FirstOrDefault(p => p.accountId == accid);
+
+            if (chars != null)
+            {
+                return chars.charId;
+            }
+
+            return 0;
+        }
 
         public static string GetCharacterSkin(string type, int charid)
         {
@@ -855,69 +873,14 @@ namespace Altv_Roleplay.Model
                 switch (type)
                 {
                     case "facefeatures":
-                        return $"{Array.ConvertAll(chars.facefeatures.Split(';'), int.Parse)}";
+                        return chars.facefeatures;
                     case "headblendsdata":
-                        return $"{Array.ConvertAll(chars.headblendsdata.Split(';'), int.Parse)}";
-                    case "headoverlays1":
-                        return $"{Array.ConvertAll(chars.headoverlays1.Split(';'), int.Parse)}";
-                    case "headoverlays2":
-                        return $"{Array.ConvertAll(chars.headoverlays2.Split(';'), int.Parse)}";
-                    case "headoverlays3":
-                        return $"{Array.ConvertAll(chars.headoverlays3.Split(';'), int.Parse)}";
+                        return chars.headblendsdata;
+                    case "headoverlays":
+                        return chars.headoverlays;
                 }
             }
             return "";
-        }
-
-        public static void SetCharacterSkin(IPlayer player)
-        {
-            try
-            {
-                int charId = User.GetPlayerOnline(player);
-                if (charId <= 0) return;
-                var chars = CharactersSkin.FirstOrDefault(p => p.charId == charId);
-                if (chars != null)
-                {
-                    float[] facefeatures = Array.ConvertAll(chars.facefeatures.Split(';'), param => float.Parse(param, CultureInfo.InvariantCulture));
-                    float[] headblendsdata = Array.ConvertAll(chars.headblendsdata.Split(';'), param => float.Parse(param, CultureInfo.InvariantCulture));
-                    float[] headoverlays1 = Array.ConvertAll(chars.headoverlays1.Split(';'), param => float.Parse(param, CultureInfo.InvariantCulture));
-                    float[] headoverlays2 = Array.ConvertAll(chars.headoverlays2.Split(';'), param => float.Parse(param, CultureInfo.InvariantCulture));
-                    float[] headoverlays3 = Array.ConvertAll(chars.headoverlays3.Split(';'), param => float.Parse(param, CultureInfo.InvariantCulture));
-
-                    player.SetHeadBlendData((uint)headblendsdata[0], (uint)headblendsdata[1], 0, (uint)headblendsdata[2], (uint)headblendsdata[5], 0, (uint)headblendsdata[3], (uint)headblendsdata[4], 0);
-                    player.SetHeadOverlayColor(1, 1, (byte)headoverlays3[1], 1);
-                    player.SetHeadOverlayColor(2, 1, (byte)headoverlays3[2], 1);
-                    player.SetHeadOverlayColor(5, 2, (byte)headoverlays3[5], 1);
-                    player.SetHeadOverlayColor(8, 2, (byte)headoverlays3[8], 1);
-                    player.SetHeadOverlayColor(10, 1, (byte)headoverlays3[10], 1);
-                    player.SetEyeColor((ushort)headoverlays1[14]);
-                    player.SetHeadOverlay(0, (byte)headoverlays1[0], headoverlays2[0]);
-                    player.SetHeadOverlay(1, (byte)headoverlays1[1], headoverlays2[1]);
-                    player.SetHeadOverlay(2, (byte)headoverlays1[2], headoverlays2[2]);
-                    player.SetHeadOverlay(3, (byte)headoverlays1[3], headoverlays2[3]);
-                    player.SetHeadOverlay(4, (byte)headoverlays1[4], headoverlays2[4]);
-                    player.SetHeadOverlay(5, (byte)headoverlays1[5], headoverlays2[5]);
-                    player.SetHeadOverlay(6, (byte)headoverlays1[6], headoverlays2[6]);
-                    player.SetHeadOverlay(7, (byte)headoverlays1[7], headoverlays2[7]);
-                    player.SetHeadOverlay(8, (byte)headoverlays1[8], headoverlays2[8]);
-                    player.SetHeadOverlay(9, (byte)headoverlays1[9], headoverlays2[9]);
-                    player.SetHeadOverlay(10, (byte)headoverlays1[10], headoverlays2[10]);
-
-                    player.HairColor = (byte)headoverlays3[13];
-                    player.HairHighlightColor = (byte)headoverlays2[13];
-
-                    player.SetClothes(2, (ushort)headoverlays1[13], 0, 2);
-
-                    for (int i = 0; i < 20; i++)
-                    {
-                        player.SetFaceFeature((byte)i, facefeatures[i]);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Alt.Log($"{e}");
-            }
         }
 
         public static string GetPlayerCharacters(IPlayer player)
@@ -990,7 +953,7 @@ namespace Altv_Roleplay.Model
             if (player == null || !player.Exists || charId == 0) return "";
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId && p.accountId == User.GetPlayerAccountId(player));
 
-            if(chars != null)
+            if (chars != null)
             {
                 return chars.firstSpawnPlace;
             }
@@ -1002,7 +965,7 @@ namespace Altv_Roleplay.Model
         {
             var chars = CharactersLastPos.FirstOrDefault(p => p.charId == charId);
 
-            if(chars != null)
+            if (chars != null)
             {
                 return new Position(chars.lastPosX, chars.lastPosY, chars.lastPosZ);
             }
@@ -1014,7 +977,7 @@ namespace Altv_Roleplay.Model
         {
             var chars = CharactersLastPos.FirstOrDefault(p => p.charId == charId);
 
-            if(chars != null)
+            if (chars != null)
             {
                 chars.lastPosX = pos.X;
                 chars.lastPosY = pos.Y;
@@ -1040,7 +1003,7 @@ namespace Altv_Roleplay.Model
         {
             var chars = CharactersLastPos.FirstOrDefault(p => p.charId == charId);
 
-            if(chars != null)
+            if (chars != null)
             {
                 return chars.lastDimension;
             }
@@ -1052,7 +1015,7 @@ namespace Altv_Roleplay.Model
         {
             if (charId == 0) return false;
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
-            if(chars != null)
+            if (chars != null)
             {
                 return chars.isCrime;
             }
@@ -1063,7 +1026,7 @@ namespace Altv_Roleplay.Model
         {
             if (charId == 0 || permission == "") return false;
             var chars = CharactersPermissions.FirstOrDefault(p => p.charId == charId && p.permissionName == permission);
-            if(chars != null)
+            if (chars != null)
             {
                 return true;
             }
@@ -1095,7 +1058,7 @@ namespace Altv_Roleplay.Model
         {
             if (charId == 0 || permission == "") return;
             var chars = CharactersPermissions.FirstOrDefault(p => p.charId == charId && p.permissionName == permission);
-            if(chars != null)
+            if (chars != null)
             {
                 CharactersPermissions.Remove(chars);
                 using (gtaContext db = new gtaContext())
@@ -1120,7 +1083,7 @@ namespace Altv_Roleplay.Model
                     db.SaveChanges();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1130,7 +1093,7 @@ namespace Altv_Roleplay.Model
         {
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
 
-            if(chars != null)
+            if (chars != null)
             {
                 return chars.health;
             }
@@ -1142,7 +1105,7 @@ namespace Altv_Roleplay.Model
         {
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
 
-            if(chars != null)
+            if (chars != null)
             {
                 return chars.armor;
             }
@@ -1154,7 +1117,7 @@ namespace Altv_Roleplay.Model
         {
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
 
-            if(chars != null)
+            if (chars != null)
             {
                 return chars.hunger;
             }
@@ -1166,7 +1129,7 @@ namespace Altv_Roleplay.Model
         {
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
 
-            if(chars != null)
+            if (chars != null)
             {
                 return chars.thirst;
             }
@@ -1178,9 +1141,9 @@ namespace Altv_Roleplay.Model
         {
             if (charId == 0) return -2;
             var chars = CharactersSkin.FirstOrDefault(p => p.charId == charId);
-            if(chars != null)
+            if (chars != null)
             {
-                switch(clothesType)
+                switch (clothesType)
                 {
                     case "Top":
                         return chars.clothesTop;
@@ -1220,21 +1183,26 @@ namespace Altv_Roleplay.Model
         {
             if (charId == 0) return -2;
             var chars = CharactersSkin.FirstOrDefault(p => p.charId == charId);
-            if(chars != null)
+            if (chars != null)
             {
                 return chars.clothesBag;
             }
             return -2;
         }
 
+        //66 = Rucksack
+        //45 = Tasche
+        //86 = jedes Armypack
         public static float GetCharacterBackpackSize(int BackpackDrawId)
         {
-            switch(BackpackDrawId)
+            switch (BackpackDrawId)
             {
-                case 31:
+                case 66:
                     return 15f;
                 case 45:
-                    return 30f;
+                    return 25f;
+                case 86:
+                    return 35f;
             }
             return 0f;
         }
@@ -1243,7 +1211,7 @@ namespace Altv_Roleplay.Model
         {
             if (charId == 0) return "None";
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
-            if(chars != null) { return chars.job; }
+            if (chars != null) { return chars.job; }
             return "None";
         }
 
@@ -1251,7 +1219,7 @@ namespace Altv_Roleplay.Model
         {
             if (charId == 0) return 0;
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
-            if(chars != null) { return chars.jobHourCounter; }
+            if (chars != null) { return chars.jobHourCounter; }
             return 0;
         }
 
@@ -1341,7 +1309,7 @@ namespace Altv_Roleplay.Model
             DateTime dt = new DateTime(0001, 01, 01);
             if (charId <= 0) return dt;
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
-            if(chars != null)
+            if (chars != null)
             {
                 dt = chars.firstJoinTimestamp;
             }
@@ -1352,7 +1320,7 @@ namespace Altv_Roleplay.Model
         {
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
 
-            if(chars != null)
+            if (chars != null)
             {
                 chars.health = health - 100;
 
@@ -1364,7 +1332,7 @@ namespace Altv_Roleplay.Model
                         db.SaveChanges();
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Alt.Log($"{e}");
                 }
@@ -1374,7 +1342,7 @@ namespace Altv_Roleplay.Model
         public static void SetCharacterBirthplace(int charId, string place)
         {
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
-            if(chars != null)
+            if (chars != null)
             {
                 chars.birthplace = place;
                 try
@@ -1385,7 +1353,7 @@ namespace Altv_Roleplay.Model
                         db.SaveChanges();
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Alt.Log($"{e}");
                 }
@@ -1395,7 +1363,7 @@ namespace Altv_Roleplay.Model
         public static void setCharacterAccState(int charId, int state)
         {
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
-            if(chars != null)
+            if (chars != null)
             {
                 chars.accState = state;
                 try
@@ -1406,7 +1374,7 @@ namespace Altv_Roleplay.Model
                         db.SaveChanges();
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Alt.Log($"{e}");
                 }
@@ -1417,7 +1385,7 @@ namespace Altv_Roleplay.Model
         {
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
 
-            if(chars != null)
+            if (chars != null)
             {
                 chars.armor = armor;
 
@@ -1429,9 +1397,69 @@ namespace Altv_Roleplay.Model
                         db.SaveChanges();
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Alt.Log($"{e}");
+                }
+            }
+        }
+
+        public static void SetCharacterAmmo(int charId, int ammo, int slot)
+        {
+            var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
+
+            if (chars != null)
+            {
+                if (slot == 1)
+                {
+                    chars.weapon_Primary_Ammo = ammo;
+
+                    try
+                    {
+                        using (gtaContext db = new gtaContext())
+                        {
+                            db.AccountsCharacters.Update(chars);
+                            db.SaveChanges();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Alt.Log($"{e}");
+                    }
+                }
+                else if (slot == 2)
+                {
+                    chars.weapon_Secondary_Ammo = ammo;
+
+                    try
+                    {
+                        using (gtaContext db = new gtaContext())
+                        {
+                            db.AccountsCharacters.Update(chars);
+                            db.SaveChanges();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Alt.Log($"{e}");
+                    }
+                }
+                else if (slot == 3)
+                {
+                    chars.weapon_Secondary2_Ammo = ammo;
+
+                    try
+                    {
+                        using (gtaContext db = new gtaContext())
+                        {
+                            db.AccountsCharacters.Update(chars);
+                            db.SaveChanges();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Alt.Log($"{e}");
+                    }
                 }
             }
         }
@@ -1440,10 +1468,10 @@ namespace Altv_Roleplay.Model
         {
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
 
-            if(chars != null)
+            if (chars != null)
             {
                 chars.hunger = hunger;
-                if(chars.hunger > 100)
+                if (chars.hunger > 100)
                 {
                     chars.hunger = 100;
                 }
@@ -1456,7 +1484,7 @@ namespace Altv_Roleplay.Model
                         db.SaveChanges();
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Alt.Log($"{e}");
                 }
@@ -1467,7 +1495,7 @@ namespace Altv_Roleplay.Model
         {
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
 
-            if(chars != null)
+            if (chars != null)
             {
                 chars.thirst = thirst;
                 if (chars.thirst > 100)
@@ -1482,7 +1510,7 @@ namespace Altv_Roleplay.Model
                         db.SaveChanges();
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Alt.Log($"{e}");
                 }
@@ -1494,7 +1522,7 @@ namespace Altv_Roleplay.Model
             if (player == null || !player.Exists || charId == 0) return;
             var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId && p.accountId == User.GetPlayerAccountId(player));
 
-            if(chars != null)
+            if (chars != null)
             {
                 chars.firstSpawnPlace = spawnplace;
                 chars.firstJoin = false;
@@ -1507,14 +1535,14 @@ namespace Altv_Roleplay.Model
                         db.SaveChanges();
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Alt.Log($"{e}");
                 }
             }
         }
 
-        
+
 
         public static void SetCharacterBackpack(IPlayer player, string backpack)
         {
@@ -1522,21 +1550,25 @@ namespace Altv_Roleplay.Model
             var charId = User.GetPlayerOnline(player);
             if (charId == 0) return;
             var chars = CharactersSkin.FirstOrDefault(p => p.charId == charId);
-            if(chars != null)
+            if (chars != null)
             {
-                int BackpackDrawId = 0;
-                switch(backpack)
+                int BackpackDrawId = -2;
+                switch (backpack)
                 {
-                    case "None":
-                        player.SetClothes(5, 0, 0, 2);
+                    case "-2":
+                        player.EmitLocked("Client:SpawnArea:setCharClothes", 5, 0, 0);
                         break;
                     case "Rucksack":
-                        player.SetClothes(5, 31, 0, 2);
-                        BackpackDrawId = 31;
+                        player.EmitLocked("Client:SpawnArea:setCharClothes", 5, 66, 0);
+                        BackpackDrawId = 66;
                         break;
                     case "Tasche":
-                        player.SetClothes(5, 45, 0, 2);
+                        player.EmitLocked("Client:SpawnArea:setCharClothes", 5, 45, 0);
                         BackpackDrawId = 45;
+                        break;
+                    case "Armytasche":
+                        player.EmitLocked("Client:SpawnArea:setCharClothes", 5, 86, 2);
+                        BackpackDrawId = 86;
                         break;
                 }
 
@@ -1549,7 +1581,7 @@ namespace Altv_Roleplay.Model
                         db.SaveChanges();
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Alt.Log($"{e}");
                 }
@@ -1562,9 +1594,9 @@ namespace Altv_Roleplay.Model
             int charId = User.GetPlayerOnline(player);
             if (charId == 0) return;
             int CTorso = 0;
-            if(GetCharacterGender(charId) == false)
+            if (GetCharacterGender(charId) == false)
             {
-                switch(topID)
+                switch (topID)
                 {
                     case 0: CTorso = 0; break;
                     case 1: CTorso = 0; break;
@@ -1822,9 +1854,10 @@ namespace Altv_Roleplay.Model
                     case 253: CTorso = 4; break;
                     case 333: CTorso = 30; break;
                 }
-            } else
+            }
+            else
             {
-                switch(topID)
+                switch (topID)
                 {
                     case 0: CTorso = 0; break;
                     case 1: CTorso = 5; break;
@@ -2093,11 +2126,11 @@ namespace Altv_Roleplay.Model
                 }
             }
 
-            player.SetClothes(3, (ushort)CTorso, 0, 2);
+            player.EmitLocked("Client:SpawnArea:setCharClothes", 3, CTorso, 0);
         }
 
         [AsyncClientEvent("Server:ClothesShop:RequestCurrentSkin")]
-        public static void SetCharacterCorrectClothes(IPlayer player, bool withWeapons = false)
+        public static async Task SetCharacterCorrectClothes(IPlayer player)
         {
             if (player == null || !player.Exists) return;
             int charid = User.GetPlayerOnline(player);
@@ -2108,174 +2141,119 @@ namespace Altv_Roleplay.Model
             else if (GetCharacterBackpack(charid) == 31) SetCharacterBackpack(player, "Rucksack");
             else if (GetCharacterBackpack(charid) == 45) SetCharacterBackpack(player, "Tasche");
 
-            if (GetCharacterClothes(charid, "Top") == -2) player.SetClothes(11, 15, 0, 2);
-            else player.SetClothes(11, (ushort)ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Top"), Convert.ToInt32(gender)), (byte)ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Top"), Convert.ToInt32(gender)), 2);
+            if (GetCharacterClothes(charid, "Top") == -2) player.EmitLocked("Client:SpawnArea:setCharClothes", 11, 15, 0);
+            else player.EmitLocked("Client:SpawnArea:setCharClothes", 11, ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Top"), Convert.ToInt32(gender)), ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Top"), Convert.ToInt32(gender)));
 
-            if (GetCharacterClothes(charid, "Torso") == -2) player.SetClothes(3, 15, 0, 2);
-            else player.SetClothes(3, (ushort)ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Torso"), Convert.ToInt32(gender)), (byte)ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Torso"), Convert.ToInt32(gender)), 2);             
-            
+            if (GetCharacterClothes(charid, "Torso") == -2) player.EmitLocked("Client:SpawnArea:setCharClothes", 3, 15, 0);
+            else player.EmitLocked("Client:SpawnArea:setCharClothes", 3, ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Torso"), Convert.ToInt32(gender)), ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Torso"), Convert.ToInt32(gender)));
+
             if (GetCharacterClothes(charid, "Leg") == -2)
             {
-                if (gender) player.SetClothes(4, 15, 0, 2);
-                else player.SetClothes(4, 21, 0, 2);
+                if (gender) player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 15, 0);
+                else player.EmitLocked("Client:SpawnArea:setCharClothes", 4, 21, 0);
             }
-            else player.SetClothes(4, (ushort)ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Leg"), Convert.ToInt32(gender)), (byte)ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Leg"), Convert.ToInt32(gender)), 2);
+            else player.EmitLocked("Client:SpawnArea:setCharClothes", 4, ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Leg"), Convert.ToInt32(gender)), ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Leg"), Convert.ToInt32(gender)));
 
             if (GetCharacterClothes(charid, "Feet") == -2)
             {
-                if (gender) player.SetClothes(6, 35, 0, 2);
-                else player.SetClothes(6, 34, 0, 2);
+                if (gender) player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 35, 0);
+                else player.EmitLocked("Client:SpawnArea:setCharClothes", 6, 34, 0);
             }
-            else player.SetClothes(6, (ushort)ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Feet"), Convert.ToInt32(gender)), (byte)ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Feet"), Convert.ToInt32(gender)), 2);
+            else player.EmitLocked("Client:SpawnArea:setCharClothes", 6, ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Feet"), Convert.ToInt32(gender)), ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Feet"), Convert.ToInt32(gender)));
 
-            if(GetCharacterClothes(charid, "Mask") == -2) player.SetClothes(1, 0, 0, 2);
-            else player.SetClothes(1, (ushort)ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Mask"), Convert.ToInt32(gender)), (byte)ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Mask"), Convert.ToInt32(gender)), 2);
+            if (GetCharacterClothes(charid, "Mask") == -2) player.EmitLocked("Client:SpawnArea:setCharClothes", 1, 0, 0);
+            else player.EmitLocked("Client:SpawnArea:setCharClothes", 1, ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Mask"), Convert.ToInt32(gender)), ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Mask"), Convert.ToInt32(gender)));
 
-            if(GetCharacterClothes(charid, "Necklace") == -2) player.SetClothes(7, 0, 0, 2);
-            else player.SetClothes(7, (ushort)ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Necklace"), Convert.ToInt32(gender)), (byte)ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Necklace"), Convert.ToInt32(gender)), 2); 
+            if (GetCharacterClothes(charid, "Necklace") == -2) player.EmitLocked("Client:SpawnArea:setCharClothes", 7, 0, 0);
+            else player.EmitLocked("Client:SpawnArea:setCharClothes", 7, ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Necklace"), Convert.ToInt32(gender)), ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Necklace"), Convert.ToInt32(gender)));
 
-            if(GetCharacterClothes(charid, "Armor") == -2) player.SetClothes(9, 0, 0, 2);
-            else player.SetClothes(9, (ushort)ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Armor"), Convert.ToInt32(gender)), (byte)ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Armor"), Convert.ToInt32(gender)), 2); 
+            if (GetCharacterClothes(charid, "Armor") == -2) player.EmitLocked("Client:SpawnArea:setCharClothes", 9, 0, 0);
+            else player.EmitLocked("Client:SpawnArea:setCharClothes", 9, ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Armor"), Convert.ToInt32(gender)), ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Armor"), Convert.ToInt32(gender)));
 
-            if(GetCharacterClothes(charid, "Hat") == -2) player.EmitLocked("Client:SpawnArea:clearCharAccessory", 0);
-            else player.SetProps(0, (ushort)ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Hat"), Convert.ToInt32(gender)), (byte)ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Hat"), Convert.ToInt32(gender)));
-        
-            if(GetCharacterClothes(charid, "Glass") == -2) player.EmitLocked("Client:SpawnArea:clearCharAccessory", 1);
-            else player.SetProps(1, (ushort)ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Glass"), Convert.ToInt32(gender)), (byte)ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Glass"), Convert.ToInt32(gender)));
+            if (GetCharacterClothes(charid, "Hat") == -2) player.EmitLocked("Client:SpawnArea:clearCharAccessory", 0);
+            else player.EmitLocked("Client:SpawnArea:setCharAccessory", 0, ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Hat"), Convert.ToInt32(gender)), ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Hat"), Convert.ToInt32(gender)));
 
-            if(GetCharacterClothes(charid, "Earring") == -2) player.EmitLocked("Client:SpawnArea:clearCharAccessory", 2);
-            else player.SetProps(2, (ushort)ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Earring"), Convert.ToInt32(gender)), (byte)ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Earring"), Convert.ToInt32(gender)));
+            if (GetCharacterClothes(charid, "Glass") == -2) player.EmitLocked("Client:SpawnArea:clearCharAccessory", 1);
+            else player.EmitLocked("Client:SpawnArea:setCharAccessory", 1, ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Glass"), Convert.ToInt32(gender)), ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Glass"), Convert.ToInt32(gender)));
 
-            if(GetCharacterClothes(charid, "Watch") == -2) player.EmitLocked("Client:SpawnArea:clearCharAccessory", 6);
-            else player.SetProps(6, (ushort)ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Watch"), Convert.ToInt32(gender)), (byte)ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Watch"), Convert.ToInt32(gender)));
+            if (GetCharacterClothes(charid, "Earring") == -2) player.EmitLocked("Client:SpawnArea:clearCharAccessory", 2);
+            else player.EmitLocked("Client:SpawnArea:setCharAccessory", 2, ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Earring"), Convert.ToInt32(gender)), ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Earring"), Convert.ToInt32(gender)));
 
-            if(GetCharacterClothes(charid, "Bracelet") == -2) player.EmitLocked("Client:SpawnArea:clearCharAccessory", 7);
-            else player.SetProps(7, (ushort)ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Bracelet"), Convert.ToInt32(gender)), (byte)ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Bracelet"), Convert.ToInt32(gender)));
+            if (GetCharacterClothes(charid, "Watch") == -2) player.EmitLocked("Client:SpawnArea:clearCharAccessory", 6);
+            else player.EmitLocked("Client:SpawnArea:setCharAccessory", 6, ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Watch"), Convert.ToInt32(gender)), ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Watch"), Convert.ToInt32(gender)));
+
+            if (GetCharacterClothes(charid, "Bracelet") == -2) player.EmitLocked("Client:SpawnArea:clearCharAccessory", 7);
+            else player.EmitLocked("Client:SpawnArea:setCharAccessory", 7, ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Bracelet"), Convert.ToInt32(gender)), ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Bracelet"), Convert.ToInt32(gender)));
 
             if (GetCharacterClothes(charid, "Undershirt") == -2)
             {
-                if (!gender) player.SetClothes(8, 57, 0, 2);
-                else if (gender) player.SetClothes(8, 34, 0, 2);
+                if (!gender) player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 57, 0);
+                else if (gender) player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 34, 0);
             }
-            else player.SetClothes(8, (ushort)ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Undershirt"), Convert.ToInt32(gender)), (byte)ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Undershirt"), Convert.ToInt32(gender)), 2);
+            else player.EmitLocked("Client:SpawnArea:setCharClothes", 8, ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Undershirt"), Convert.ToInt32(gender)), ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Undershirt"), Convert.ToInt32(gender)));
 
-            if (GetCharacterClothes(charid, "Decal") == -2) player.SetClothes(10, 0, 0, 2);
-            else player.SetClothes(10, (ushort)ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Decal"), Convert.ToInt32(gender)), (byte)ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Decal"), Convert.ToInt32(gender)), 2);
+            if (GetCharacterClothes(charid, "Decal") == -2) player.EmitLocked("Client:SpawnArea:setCharClothes", 10, 0, 0);
+            else player.EmitLocked("Client:SpawnArea:setCharClothes", 10, ServerClothes.GetClothesDraw(GetCharacterClothes(charid, "Decal"), Convert.ToInt32(gender)), ServerClothes.GetClothesTexture(GetCharacterClothes(charid, "Decal"), Convert.ToInt32(gender)));
 
-            if (withWeapons)
-            {
-                string primaryWeapon = (string)GetCharacterWeapon(player, "PrimaryWeapon");
-                int primaryAmmo = (int)GetCharacterWeapon(player, "PrimaryAmmo");
-                string SecWeapon = (string)GetCharacterWeapon(player, "SecondaryWeapon");
-                int SecAmmo = (int)GetCharacterWeapon(player, "SecondaryAmmo");
-                string Sec2Weapon = (string)GetCharacterWeapon(player, "SecondaryWeapon2");
-                int Sec2Ammo = (int)GetCharacterWeapon(player, "SecondaryAmmo2");
-                string FistWeapon = (string)GetCharacterWeapon(player, "FistWeapon");
-                if (primaryWeapon != "None") { player.GiveWeapon(WeaponHandler.GetWeaponModelByName(primaryWeapon), 0, false); WeaponHandler.SetWeaponComponents(player, primaryWeapon); player.Emit("Client:Weapon:SetWeaponAmmo", (uint)WeaponHandler.GetWeaponModelByName(primaryWeapon), primaryAmmo); }
-                if (SecWeapon != "None") { player.GiveWeapon(WeaponHandler.GetWeaponModelByName(SecWeapon), 0, false); WeaponHandler.SetWeaponComponents(player, SecWeapon); player.Emit("Client:Weapon:SetWeaponAmmo", (uint)WeaponHandler.GetWeaponModelByName(SecWeapon), SecAmmo); }
-                if (Sec2Weapon != "None") { player.GiveWeapon(WeaponHandler.GetWeaponModelByName(Sec2Weapon), 0, false); WeaponHandler.SetWeaponComponents(player, Sec2Weapon); player.Emit("Client:Weapon:SetWeaponAmmo", (uint)WeaponHandler.GetWeaponModelByName(Sec2Weapon), Sec2Ammo); }
-                if (FistWeapon != "None") { player.GiveWeapon(WeaponHandler.GetWeaponModelByName(FistWeapon), 1, false); }
-            }
+            string primaryWeapon = (string)GetCharacterWeapon(player, "PrimaryWeapon");
+            int primaryAmmo = (int)GetCharacterWeapon(player, "PrimaryAmmo");
+            string SecWeapon = (string)GetCharacterWeapon(player, "SecondaryWeapon");
+            int SecAmmo = (int)GetCharacterWeapon(player, "SecondaryAmmo");
+            string Sec2Weapon = (string)GetCharacterWeapon(player, "SecondaryWeapon2");
+            int Sec2Ammo = (int)GetCharacterWeapon(player, "SecondaryAmmo2");
+            string FistWeapon = (string)GetCharacterWeapon(player, "FistWeapon");
+            if (primaryWeapon != "None") { player.GiveWeapon(WeaponHandler.GetWeaponModelByName(primaryWeapon), primaryAmmo, false); }
+            if (SecWeapon != "None") { player.GiveWeapon(WeaponHandler.GetWeaponModelByName(SecWeapon), SecAmmo, false); }
+            if (Sec2Weapon != "None") { player.GiveWeapon(WeaponHandler.GetWeaponModelByName(Sec2Weapon), Sec2Ammo, false); }
+            if (FistWeapon != "None") { player.GiveWeapon(WeaponHandler.GetWeaponModelByName(FistWeapon), 1, false); }
         }
 
-        public static void SwitchCharacterClothesItem(IPlayer player, string ClothesName, string Type)
+        /*public static void SwitchCharacterClothesItem(IPlayer player, string ClothesName, string Type)
         {
             if (player == null || !player.Exists) return;
             bool ClothesGender = false;
             int charid = User.GetPlayerOnline(player);
             int clothesId = 0;
             if (charid == 0) return;
-            if (ClothesName.Contains("-W-")) ClothesGender = true;  
-            else if(ClothesName.Contains("-M-")) ClothesGender = false; 
-            else ClothesGender = GetCharacterGender(charid);
-
-            int componentId = 0;
-            bool isProp = false;
-
-            switch (Type)
-            {
-                case "Mask":
-                    componentId = 1;
-                    break;
-                case "Leg":
-                    componentId = 4;
-                    break;
-                case "Feet":
-                    componentId = 6;
-                    break;
-                case "Necklace":
-                    componentId = 7;
-                    break;
-                case "Undershirt":
-                    componentId = 8;
-                    break;
-                case "Armor":
-                    componentId = 9;
-                    break;
-                case "Top":
-                    componentId = 11;
-                    break;
-
-                case "Hat":
-                    componentId = 0;
-                    isProp = true;
-                    break;
-                case "Glass":
-                    componentId = 1;
-                    isProp = true;
-                    break;
-                case "Earring":
-                    componentId = 2;
-                    isProp = true;
-                    break;
-                case "Watch":
-                    componentId = 6;
-                    isProp = true;
-                    break;
-                case "Bracelet":
-                    componentId = 7;
-                    isProp = true;
-                    break;
-                default:
-                    return;
-            }
-            int clothId = ServerClothes.GetClothesId(componentId, ServerItems.ServerItems_.FirstOrDefault(i => i.itemName == ClothesName).ClothesDraw, ServerItems.ServerItems_.FirstOrDefault(i => i.itemName == ClothesName).ClothesTexture, Convert.ToInt32(ClothesGender));
+            if (ClothesName.Contains("-W-")) { ClothesGender = true; } 
+            else if(ClothesName.Contains("-M-")) { ClothesGender = false; }
+            else { ClothesGender = GetCharacterGender(charid); }
 
             if (GetCharacterClothes(charid, Type) == -2)
             {
                 if (ClothesGender == GetCharacterGender(charid))
                 {
-                    SetCharacterClothes((ClassicPlayer)player, charid, clothId, isProp);
+                    SetCharacterClothes(charid, Type, ClothesName);
                     if (Type == "Top")
                     {
                         clothesId = 11;
                         var sItem = ServerItems.ServerItems_.FirstOrDefault(i => i.itemName == ClothesName);
                         if (sItem != null)
                         {
-                            player.SetClothes((byte)clothesId, (ushort)sItem.ClothesDraw, (byte)sItem.ClothesTexture, 2);
-                            player.SetClothes(10, (ushort)sItem.ClothesDecals, (byte)sItem.ClothesDecalsTexture, 2);
-                            if (sItem.ClothesUndershirt != 0) { player.SetClothes(8, (ushort)sItem.ClothesUndershirt, (byte)sItem.ClothesUndershirtTexture, 2); }
+                            player.EmitLocked("Client:SpawnArea:setCharClothes", clothesId, sItem.ClothesDraw, sItem.ClothesTexture);
+                            player.EmitLocked("Client:SpawnArea:setCharClothes", 10, sItem.ClothesDecals, sItem.ClothesDecalsTexture);
+                            if (sItem.ClothesUndershirt != 0) { player.EmitLocked("Client:SpawnArea:setCharClothes", 8, sItem.ClothesUndershirt, sItem.ClothesUndershirtTexture); }
                             else
                             {
-                                if (ClothesGender == false) { player.SetClothes(8, 57, 0, 2); }
-                                else { player.SetClothes(8, 2, 0, 2); }
+                                if (ClothesGender == false) { player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 57, 0); }
+                                else { player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 2, 0); }
                             }
                         }
                     }
                     else if (Type == "Leg") {
                         clothesId = 4; 
-                        player.SetClothes((byte)clothesId, (ushort)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, (byte)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture, 2);
+                        player.EmitLocked("Client:SpawnArea:setCharClothes", clothesId, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture);
                     }
-                    else if (Type == "Feet") { clothesId = 6; player.SetClothes((byte)clothesId, (ushort)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, (byte)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture, 2); }
-                    else if (Type == "Mask") { clothesId = 1; player.SetClothes((byte)clothesId, (ushort)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, (byte)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture, 2); }
-                    else if (Type == "Necklace") { clothesId = 7; player.SetClothes((byte)clothesId, (ushort)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, (byte)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture, 2); }
-                    else if (Type == "Undershirt") { clothesId = 8; player.SetClothes((byte)clothesId, (ushort)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, (byte)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture, 2); }
-                    else if (Type == "Armor") { clothesId = 9; player.SetClothes((byte)clothesId, (ushort)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, (byte)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture, 2); }
-                    else if (Type == "Hat") { clothesId = 0; player.SetProps((byte)clothesId, (ushort)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, (byte)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture); }
-                    else if (Type == "Glass") { clothesId = 1; player.SetProps((byte)clothesId, (ushort)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, (byte)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture); }
-                    else if (Type == "Earring") { clothesId = 2; player.SetProps((byte)clothesId, (ushort)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, (byte)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture); }
-                    else if (Type == "Watch") { clothesId = 6; player.SetProps((byte)clothesId, (ushort)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, (byte)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture); }
-                    else if (Type == "Bracelet") { clothesId = 7; player.SetProps((byte)clothesId, (ushort)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, (byte)ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture); }
+                    else if (Type == "Feet") { clothesId = 6; player.EmitLocked("Client:SpawnArea:setCharClothes", clothesId, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture); }
+                    else if (Type == "Mask") { clothesId = 1; player.EmitLocked("Client:SpawnArea:setCharClothes", clothesId, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture); }
+                    else if (Type == "Necklace") { clothesId = 7; player.EmitLocked("Client:SpawnArea:setCharClothes", clothesId, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture); }
+                    else if (Type == "Undershirt") { clothesId = 8; player.EmitLocked("Client:SpawnArea:setCharClothes", clothesId, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture); }
+                    else if (Type == "Armor") { clothesId = 9; player.EmitLocked("Client:SpawnArea:setCharClothes", clothesId, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture); }
+                    else if (Type == "Hat") { clothesId = 0; player.EmitLocked("Client:SpawnArea:setCharAccessory", clothesId, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture); }
+                    else if (Type == "Glass") { clothesId = 1; player.EmitLocked("Client:SpawnArea:setCharAccessory", clothesId, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture); }
+                    else if (Type == "Earring") { clothesId = 2; player.EmitLocked("Client:SpawnArea:setCharAccessory", clothesId, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture); }
+                    else if (Type == "Watch") { clothesId = 6; player.EmitLocked("Client:SpawnArea:setCharAccessory", clothesId, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture); }
+                    else if (Type == "Bracelet") { clothesId = 7; player.EmitLocked("Client:SpawnArea:setCharAccessory", clothesId, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesTexture); }
                     if (Type == "Top") { SetCharacterCorrectTorso(player, ServerItems.ServerItems_.First(x => x.itemName == ClothesName).ClothesDraw); }
                     if (ClothesName.Contains("-M-")) { ClothesName = ClothesName.Replace("-M-", "♂"); }
                     else if (ClothesName.Contains("-W")) { ClothesName = ClothesName.Replace("-W-", "♀"); }
@@ -2283,48 +2261,49 @@ namespace Altv_Roleplay.Model
                 }
                 else { HUDHandler.SendNotification(player, 4, 5000, $"Dieses Kleidungsstück passt dir nicht ({ClothesName})."); }
             }
-            else if(GetCharacterClothes(charid, Type) == clothId)
+            else if(GetCharacterClothes(charid, Type) == ClothesName)
             {
+                SetCharacterClothes(charid, Type, "None");
                 if (Type == "Top")
                 {
                     clothesId = 11;
-                    player.SetClothes((byte)clothesId, 15, 0, 2);
+                    player.EmitLocked("Client:SpawnArea:setCharClothes", clothesId, 15, 0);
                     SetCharacterCorrectTorso(player, 15);
-                    if (ClothesGender == false) { player.SetClothes(8, 57, 0, 2); }
-                    else { player.SetClothes(8, 2, 0, 2); }
+                    if (ClothesGender == false) { player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 57, 0); }
+                    else { player.EmitLocked("Client:SpawnArea:setCharClothes", 8, 2, 0); }
                 }
                 else if (Type == "Leg")
                 {
                     clothesId = 4;
-                    if (ClothesGender == false) { player.SetClothes((byte)clothesId, 21, 0, 2); }
-                    else { player.SetClothes((byte)clothesId, 15, 0, 2); }
+                    if (ClothesGender == false) { player.EmitLocked("Client:SpawnArea:setCharClothes", clothesId, 21, 0); }
+                    else { player.EmitLocked("Client:SpawnArea:setCharClothes", clothesId, 15, 0); }
                 }
                 else if (Type == "Feet")
                 {
                     clothesId = 6;
-                    if (ClothesGender == false) { player.SetClothes((byte)clothesId, 34, 0, 2); }
-                    else { player.SetClothes((byte)clothesId, 35, 0, 2); }
+                    if (ClothesGender == false) { player.EmitLocked("Client:SpawnArea:setCharClothes", clothesId, 34, 0); }
+                    else { player.EmitLocked("Client:SpawnArea:setCharClothes", clothesId, 35, 0); }
                 }
                 else if (Type == "Mask")
                 {
                     clothesId = 1;
-                    player.SetClothes((byte)clothesId, 0, 0, 2);
+                    player.EmitLocked("Client:SpawnArea:setCharClothes", clothesId, 0, 0);
                 }
                 else if(Type == "Necklace")
                 {
                     clothesId = 7;
-                    player.SetClothes((byte)clothesId, 0, 0, 2);
+                    player.EmitLocked("Client:SpawnArea:setCharClothes", clothesId, 0, 0);
                 }
                 else if(Type == "Undershirt")
                 {
                     clothesId = 8;
-                    if(ClothesGender == false) { player.SetClothes((byte)clothesId, 57, 0, 2); }
-                    else { player.SetClothes((byte)clothesId, 34, 0, 2); }
+                    if(ClothesGender == false) { player.EmitLocked("Client:SpawnArea:setCharClothes", clothesId, 57, 0); }
+                    else { player.EmitLocked("Client:SpawnArea:setCharClothes", clothesId, 34, 0); }
                 }
                 else if(Type == "Armor")
                 {
                     clothesId = 9;
-                    player.SetClothes((byte)clothesId, 0, 0, 2);
+                    player.EmitLocked("Client:SpawnArea:setCharClothes", clothesId, 0, 0);
                 }
                 else if(Type == "Hat")
                 {
@@ -2352,13 +2331,11 @@ namespace Altv_Roleplay.Model
                     player.EmitLocked("Client:SpawnArea:clearCharAccessory", 7);
                 }
 
-                TakeOffCharacterClothes(player, charid, clothesId, isProp);
-
                 if(ClothesName.Contains("-M-")) { ClothesName = ClothesName.Replace("-M-", "♂"); }
                 else if(ClothesName.Contains("-W-")) { ClothesName = ClothesName.Replace("-W-", "♀"); }
                 HUDHandler.SendNotification(player, 1, 5000, $"Du hast {ClothesName} ausgezogen.");
             }
-            else if(GetCharacterClothes(charid, Type) != clothId && GetCharacterClothes(charid, Type) != -2)
+            else if(GetCharacterClothes(charid, Type) != ClothesName && GetCharacterClothes(charid, Type) != "None")
             {
                 string clothesTypeStr = "";
                 if(Type == "Top") { clothesTypeStr = "deinen Oberkörper"; }
@@ -2374,88 +2351,10 @@ namespace Altv_Roleplay.Model
                 else if(Type == "Bracelet") { clothesTypeStr = "deinen Unterarm"; }
                 HUDHandler.SendNotification(player, 3, 5000, $"Du musst vorher {clothesTypeStr} freimachen.");
             }
-        }
-
-        public static void TakeOffCharacterClothes(IPlayer player, int charid, int componentId, bool isProp)
-        {
-            if (charid <= 0) return;
-            var chars = CharactersSkin.FirstOrDefault(p => p.charId == charid);
-            if (chars != null)
-            {
-                if (!isProp)
-                {
-                    switch (componentId)
-                    {
-                        case 11:
-                            chars.clothesTop = -2;
-                            break;
-                        case 3:
-                            chars.clothesTorso = -2;
-                            break;
-                        case 4:
-                            chars.clothesLeg = -2;
-                            break;
-                        case 6:
-                            chars.clothesFeet = -2;
-                            break;
-                        case 7:
-                            chars.clothesNecklace = -2;
-                            break;
-                        case 1:
-                            chars.clothesMask = -2;
-                            break;
-                        case 9:
-                            chars.clothesArmor = -2;
-                            break;
-                        case 8:
-                            chars.clothesUndershirt = -2;
-                            break;
-                        case 10:
-                            chars.clothesDecal = -2;
-                            break;
-
-                    }
-                }
-                else
-                {
-                    switch (componentId)
-                    {
-                        case 0:
-                            chars.clothesHat = -2;
-                            break;
-                        case 1:
-                            chars.clothesGlass = -2;
-                            break;
-                        case 7:
-                            chars.clothesBracelet = -2;
-                            break;
-                        case 6:
-                            chars.clothesWatch = -2;
-                            break;
-                        case 2:
-                            chars.clothesEarring = -2;
-                            break;
-                    }
-                }
-
-
-                try
-                {
-                    using (gtaContext db = new gtaContext())
-                    {
-                        db.Characters_Skin.Update(chars);
-                        db.SaveChanges();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Alt.Log($"{e}");
-                }
-            }
-        }
+        }*/
 
         [AsyncClientEvent("Server:ClothesStorage:setCharacterClothes")]
-        public static void SwitchCharacterClothes(ClassicPlayer player, int clothId, bool isProp)
+        public static async Task SwitchCharacterClothes(ClassicPlayer player, int clothId, bool isProp)
         {
             try
             {
@@ -2463,8 +2362,8 @@ namespace Altv_Roleplay.Model
                 bool gender = GetCharacterGender(player.CharacterId);
 
                 SetCharacterClothes(player, player.CharacterId, clothId, isProp);
-                if (!isProp) player.SetClothes((byte)ServerClothes.GetClothesComponent(clothId, Convert.ToInt32(gender)), (ushort)ServerClothes.GetClothesDraw(clothId, Convert.ToInt32(gender)), (byte)ServerClothes.GetClothesTexture(clothId, Convert.ToInt32(gender)), 2);
-                else player.SetProps((byte)ServerClothes.GetClothesComponent(clothId, Convert.ToInt32(gender)), (ushort)ServerClothes.GetClothesDraw(clothId, Convert.ToInt32(gender)), (byte)ServerClothes.GetClothesTexture(clothId, Convert.ToInt32(gender)));
+                if (!isProp) player.EmitLocked("Client:SpawnArea:setCharClothes", ServerClothes.GetClothesComponent(clothId, Convert.ToInt32(gender)), ServerClothes.GetClothesDraw(clothId, Convert.ToInt32(gender)), ServerClothes.GetClothesTexture(clothId, Convert.ToInt32(gender)));
+                else player.EmitLocked("Client:SpawnArea:setCharAccessory", ServerClothes.GetClothesComponent(clothId, Convert.ToInt32(gender)), ServerClothes.GetClothesDraw(clothId, Convert.ToInt32(gender)), ServerClothes.GetClothesTexture(clothId, Convert.ToInt32(gender)));
             }
             catch (Exception e)
             {
@@ -2509,9 +2408,10 @@ namespace Altv_Roleplay.Model
                         case 10:
                             chars.clothesDecal = clothId;
                             break;
-                        
+
                     }
-                } else
+                }
+                else
                 {
                     switch (ServerClothes.GetClothesComponent(clothId, Convert.ToInt32(GetCharacterGender(player.CharacterId))))
                     {
@@ -2532,7 +2432,7 @@ namespace Altv_Roleplay.Model
                             break;
                     }
                 }
-                
+
 
                 try
                 {
@@ -2570,7 +2470,7 @@ namespace Altv_Roleplay.Model
             {
                 if (charId <= 0) return;
                 var chars = PlayerCharacters.FirstOrDefault(x => x.charId == charId);
-                if(chars != null)
+                if (chars != null)
                 {
                     chars.isUnconscious = isUnconscious;
                     chars.unconsciousTime = unconsciousTime;
@@ -2661,41 +2561,6 @@ namespace Altv_Roleplay.Model
             return 0;
         }
 
-        public static void SetCharacterPhoneWallpaper(int charId, int WallpaperId)
-        {
-            var chars = PlayerCharacters.FirstOrDefault(p => p.charId == charId);
 
-            if (chars != null)
-            {
-                chars.wallpaper = WallpaperId;
-                try
-                {
-                    using (gtaContext db = new gtaContext())
-                    {
-                        db.AccountsCharacters.Update(chars);
-                        db.SaveChanges();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Alt.Log($"{e}");
-                }
-            }
-        }
-
-        public static int GetCharacterPhoneWallpaper(int charId)
-        {
-            try
-            {
-                if (charId <= 0) return 1;
-                var chars = PlayerCharacters.FirstOrDefault(x => x.charId == charId);
-                if (chars != null) return chars.wallpaper;
-            }
-            catch (Exception e)
-            {
-                Alt.Log($"{e}");
-            }
-            return 1;
-        }
     }
 }

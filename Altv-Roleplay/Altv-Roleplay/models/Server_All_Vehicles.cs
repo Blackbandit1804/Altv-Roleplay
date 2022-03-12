@@ -12,7 +12,7 @@ namespace Altv_Roleplay.models
         public string category { get; set; }
         public string manufactor { get; set; }
         public string name { get; set; }
-        public long hash { get; set; }
+        public ulong hash { get; set; }
         public int price { get; set; }
         public int trunkCapacity { get; set; }
         public int maxFuel { get; set; }

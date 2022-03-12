@@ -1,18 +1,18 @@
 ﻿using AltV.Net;
+using AltV.Net.Async;
 using Altv_Roleplay.Factories;
 using Altv_Roleplay.models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using AltV.Net.Async;
-using Newtonsoft.Json;
 
 namespace Altv_Roleplay.Model
 {
     class CharactersPhone : IScript
     {
         public static List<CharactersPhoneChats> CharactersPhoneChats_ = new List<CharactersPhoneChats>();
+        public static List<CharactersPhoneVerlauf> CharactersPhoneVerlauf_ = new List<CharactersPhoneVerlauf>();
         public static List<CharactersPhoneChatMessages> CharactersPhoneChatMessages_ = new List<CharactersPhoneChatMessages>();
         public static List<CharactersPhoneContacts> CharactersPhoneContacts_ = new List<CharactersPhoneContacts>();
 
@@ -30,6 +30,30 @@ namespace Altv_Roleplay.Model
                 using (gtaContext db = new gtaContext())
                 {
                     db.CharactersPhoneChats.Add(chatData);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Alt.Log($"{e}");
+            }
+        }
+        public static void CreatePhoneVerlauf(ClassicPlayer player, int phoneNumber, int targetPhoneNumber)
+        {
+            try
+            {
+                var chatData = new CharactersPhoneVerlauf()
+                {
+                    charId = player.CharacterId,
+                    phoneNumber = phoneNumber,
+                    anotherNumber = targetPhoneNumber,
+                    date = DateTime.Now
+                };
+
+                CharactersPhoneVerlauf_.Add(chatData);
+                using (gtaContext db = new gtaContext())
+                {
+                    db.CharactersPhoneVerlauf.Add(chatData);
                     db.SaveChanges();
                 }
             }
@@ -95,21 +119,21 @@ namespace Altv_Roleplay.Model
                 using (var db = new gtaContext())
                 {
                     var chatData = CharactersPhoneChats_.ToList().FirstOrDefault(x => x.chatId == chatId);
-                    if(chatData != null)
-                    {                        
+                    if (chatData != null)
+                    {
                         db.CharactersPhoneChats.Remove(chatData);
                         CharactersPhoneChats_.Remove(chatData);
                     }
 
                     foreach (var message in CharactersPhoneChatMessages_.ToList().Where(x => x.chatId == chatId))
-                    {                        
+                    {
                         db.CharactersPhoneChatMessages.Remove(message);
                         CharactersPhoneChatMessages_.Remove(message);
                     }
                     db.SaveChanges();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -237,7 +261,7 @@ namespace Altv_Roleplay.Model
                 var iterations = Math.Floor((decimal)(itemCount / 5));
                 var rest = itemCount % 5;
 
-                for(var i = 0; i < iterations; i++)
+                for (var i = 0; i < iterations; i++)
                 {
                     var skip = i * 5;
                     player.EmitLocked("Client:Smartphone:addChatJSON", JsonConvert.SerializeObject(chats.Skip(skip).Take(5).ToList()));
@@ -245,7 +269,7 @@ namespace Altv_Roleplay.Model
                 if (rest != 0) player.EmitLocked("Client:Smartphone:addChatJSON", JsonConvert.SerializeObject(chats.Skip((int)iterations * 5).ToList()));
                 player.EmitLocked("Client:Smartphone:setAllChats");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -280,4 +304,3 @@ namespace Altv_Roleplay.Model
         }
     }
 }
- 

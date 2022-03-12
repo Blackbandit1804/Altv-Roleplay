@@ -1,5 +1,4 @@
 ﻿using AltV.Net;
-using AltV.Net.Async;
 using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
 using AltV.Net.Enums;
@@ -7,10 +6,11 @@ using Altv_Roleplay.Factories;
 using Altv_Roleplay.Model;
 using Altv_Roleplay.models;
 using Altv_Roleplay.Utils;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Numerics;
 
 namespace Altv_Roleplay.Database
 {
@@ -23,10 +23,9 @@ namespace Altv_Roleplay.Database
                 using (var db = new gtaContext())
                 {
                     User.Player = new List<Accounts>(db.Accounts);
-                    Alt.Log($"{User.Player.Count} Spieler wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -42,16 +41,13 @@ namespace Altv_Roleplay.Database
                     CharactersTattoos.CharactersTattoos_ = new List<Characters_Tattoos>(db.Characters_Tattoos);
                     ServerTattooShops.ServerTattooShops_ = new List<Server_Tattoo_Shops>(db.Server_Tattoo_Shops);
                 }
-                Alt.Log($"{CharactersTattoos.CharactersTattoos_.Count} Character-Tattoos wurden geladen.");
-                Alt.Log($"{ServerTattoos.ServerTattoos_.Count} Server-Tattoos wurden geladen.");
-                Alt.Log($"{ServerTattooShops.ServerTattooShops_.Count} Server-Tattoo-Shops wurden geladen.");
 
                 foreach (var tattooShop in ServerTattooShops.ServerTattooShops_)
                 {
                     ServerBlips.ServerBlips_.Add(new Server_Blips
                     {
                         name = $"Tattoo Shop: {tattooShop.name}",
-                        scale = 0.7f,
+                        scale = 0.5f,
                         shortRange = true,
                         posX = tattooShop.pedX,
                         posY = tattooShop.pedY,
@@ -65,7 +61,7 @@ namespace Altv_Roleplay.Database
                         model = tattooShop.pedModel,
                         posX = tattooShop.pedX,
                         posY = tattooShop.pedY,
-                        posZ = tattooShop.pedZ,
+                        posZ = tattooShop.pedZ - 1.0f,
                         rotation = tattooShop.pedRot
                     });
                 }
@@ -83,14 +79,14 @@ namespace Altv_Roleplay.Database
                 using (var db = new gtaContext())
                 {
                     Characters.PlayerCharacters = new List<AccountsCharacters>(db.AccountsCharacters);
-                    Alt.Log($"{Characters.PlayerCharacters.Count} Charakter wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
         }
+
 
         internal static void LoadAllCharacterWanteds()
         {
@@ -125,6 +121,10 @@ namespace Altv_Roleplay.Database
 
                     CharactersPhone.CharactersPhoneContacts_ = new List<CharactersPhoneContacts>(db.CharactersPhoneContacts);
                     Alt.Log($"{CharactersPhone.CharactersPhoneContacts_.Count} Character-Phone-Contacts wurden geladen.");
+
+                    CharactersPhone.CharactersPhoneVerlauf_ = new List<CharactersPhoneVerlauf>(db.CharactersPhoneVerlauf);
+                    Alt.Log($"{CharactersPhone.CharactersPhoneVerlauf_.Count} Character-Phone-Verlauf wurden geladen.");
+
                 }
             }
             catch (Exception e)
@@ -159,11 +159,12 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{CharactersBank.CharactersBank_.Count} Character Bank Accounts wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
         }
+
 
         internal static void LoadAllServerShopItems()
         {
@@ -183,7 +184,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerShopsItems.ServerShopsItems_.Count} Server ShopItems wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -199,11 +200,11 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerFarmingSpots.ServerFarmingSpots_.Count} Server-Farming-Spots wurden geladen.");
                 }
 
-                foreach(var spot in ServerFarmingSpots.ServerFarmingSpots_)
+                foreach (var spot in ServerFarmingSpots.ServerFarmingSpots_)
                 {
                     ClassicColshape cols = (ClassicColshape)Alt.CreateColShapeSphere(new Position(spot.posX, spot.posY, spot.posZ), spot.range + 0.5f);
                     cols.SetColShapeName("Farmfield");
-                    cols.SetColShapeId((long)spot.id);
+                    cols.SetColShapeId((ulong)spot.id);
                     cols.Radius = spot.range + 0.5f;
                     ServerFarmingSpots.ServerFarmingSpotsColshapes_.Add(cols);
                 }
@@ -218,7 +219,7 @@ namespace Altv_Roleplay.Database
                         {
                             name = $"Feld: {spot.itemName}",
                             color = spot.blipColor,
-                            scale = 0.75f,
+                            scale = 0.5f,
                             shortRange = true,
                             sprite = 164,
                             posX = spot.posX,
@@ -229,7 +230,7 @@ namespace Altv_Roleplay.Database
                     }
                 });
             }
-            catch(Exception e) { Alt.Log($"{e}"); }
+            catch (Exception e) { Alt.Log($"{e}"); }
         }
 
         internal static void LoadAllServerHotels()
@@ -246,22 +247,22 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerHotels.ServerHotelsStorage_.Count} Server-Hotels-Storage-Items wurden geladen.");
                 }
 
-                foreach(var hotel in ServerHotels.ServerHotels_)
+                foreach (var hotel in ServerHotels.ServerHotels_)
                 {
                     var markerData = new Server_Markers
                     {
-                        type = 1,
+                        type = 27,
                         posX = hotel.posX,
                         posY = hotel.posY,
-                        posZ = hotel.posZ - 0.2f,
+                        posZ = (float)(hotel.posZ - 0.95),
                         scaleX = 1,
                         scaleY = 1,
                         scaleZ = 1,
-                        red = 255,
-                        green = 102,
-                        blue = 102,
+                        red = 224,
+                        green = 58,
+                        blue = 58,
                         alpha = 150,
-                        bobUpAndDown = true
+                        bobUpAndDown = false
                     };
 
                     var blipData = new Server_Blips
@@ -270,7 +271,7 @@ namespace Altv_Roleplay.Database
                         posX = hotel.posX,
                         posY = hotel.posY,
                         posZ = hotel.posZ,
-                        scale = 0.75f,
+                        scale = 0.5f,
                         shortRange = true,
                         sprite = 475,
                         color = 6
@@ -298,51 +299,51 @@ namespace Altv_Roleplay.Database
                     {
                         ServerHouses.CreateHouse(house.id, house.interiorId, house.ownerId, house.street, house.price, house.maxRenters, house.rentPrice, house.isRentable, house.hasStorage, house.hasAlarm, house.hasBank, new Position(house.entranceX, house.entranceY, house.entranceZ), house.money);
                     }
-                    foreach(var interior in ServerHouses.ServerHousesInteriors_)
+                    foreach (var interior in ServerHouses.ServerHousesInteriors_)
                     {
                         var exitData = new Server_Markers
                         {
-                            type = 1,
+                            type = 27,
                             posX = interior.exitX,
                             posY = interior.exitY,
-                            posZ = interior.exitZ,
+                            posZ = (float)(interior.exitZ - 0.95),
                             scaleX = 1,
                             scaleY = 1,
                             scaleZ = 1,
-                            red = 255,
-                            green = 102,
-                            blue = 102,
+                            red = 224,
+                            green = 58,
+                            blue = 58,
                             alpha = 150,
                             bobUpAndDown = false
                         };
                         var storageData = new Server_Markers
                         {
-                            type = 22,
+                            type = 27,
                             posX = interior.storageX,
                             posY = interior.storageY,
-                            posZ = interior.storageZ,
+                            posZ = (float)(interior.storageZ - 0.95),
                             scaleX = 1,
                             scaleY = 1,
                             scaleZ = 1,
-                            red = 255,
-                            green = 102,
-                            blue = 102,
-                            alpha = 50,
+                            red = 224,
+                            green = 58,
+                            blue = 58,
+                            alpha = 150,
                             bobUpAndDown = false
-                        }; 
+                        };
                         var manageData = new Server_Markers
                         {
-                            type = 1,
+                            type = 27,
                             posX = interior.manageX,
                             posY = interior.manageY,
-                            posZ = interior.manageZ,
+                            posZ = (float)(interior.manageZ - 0.95),
                             scaleX = 1,
                             scaleY = 1,
                             scaleZ = 1,
-                            red = 255,
-                            green = 102,
-                            blue = 102,
-                            alpha = 50,
+                            red = 224,
+                            green = 58,
+                            blue = 58,
+                            alpha = 150,
                             bobUpAndDown = false
                         };
 
@@ -372,7 +373,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{Minijobs.Busfahrer.Model.ServerMinijobBusdriverRoutes_.Count} Server-Minijobs-BusDriver-Routes wurden geladen.");
                 }
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -404,11 +405,11 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerDoors.ServerDoors_.Count} Server-Doors wurden geladen.");
                 }
 
-                foreach(var door in ServerDoors.ServerDoors_)
+                foreach (var door in ServerDoors.ServerDoors_)
                 {
                     ClassicColshape cols = (ClassicColshape)Alt.CreateColShapeSphere(new Position(door.posX, door.posY, door.posZ), 20f);
                     cols.SetColShapeName("DoorShape");
-                    cols.SetColShapeId((long)door.id);
+                    cols.SetColShapeId((ulong)door.id);
                     cols.Radius = 20f;
                     ServerDoors.ServerDoorsColshapes_.Add(cols);
 
@@ -416,20 +417,20 @@ namespace Altv_Roleplay.Database
                     {
                         ClassicColshape lockCol = (ClassicColshape)Alt.CreateColShapeSphere(new Position(door.lockPosX, door.lockPosY, door.lockPosZ), 1.3f);
                         lockCol.SetColShapeName("DoorShape");
-                        lockCol.SetColShapeId((long)door.id);
+                        lockCol.SetColShapeId((ulong)door.id);
                         lockCol.Radius = 1.3f;
                         ServerDoors.ServerDoorsLockColshapes_.Add(lockCol);
                         continue;
                     }
-                    else if(door.type == "Gate")
+                    else if (door.type == "Gate")
                     {
-                        ClassicColshape lockCol = (ClassicColshape)Alt.CreateColShapeSphere(new Position(door.lockPosX, door.lockPosY, door.lockPosZ), 2f);
+                        ClassicColshape lockCol = (ClassicColshape)Alt.CreateColShapeSphere(new Position(door.lockPosX, door.lockPosY, door.lockPosZ), 5f);
                         lockCol.SetColShapeName("DoorShape");
-                        lockCol.SetColShapeId((long)door.id);
-                        lockCol.Radius = 2f;
+                        lockCol.SetColShapeId((ulong)door.id);
+                        lockCol.Radius = 5f;
                         ServerDoors.ServerDoorsLockColshapes_.Add(lockCol);
                         continue;
-                    }                    
+                    }
                 }
             }
             catch (Exception e)
@@ -448,7 +449,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerFactions.LogsFaction_.Count} Server-Fraktions-Logs wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -456,7 +457,7 @@ namespace Altv_Roleplay.Database
 
         internal static void LoadAllServerLogsCompany()
         {
-            try 
+            try
             {
                 using (var db = new gtaContext())
                 {
@@ -464,7 +465,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerCompanys.LogsCompany_.Count} Server-Company-Logs wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -478,13 +479,19 @@ namespace Altv_Roleplay.Database
                 {
                     ServerFactions.ServerFactions_ = new List<Server_Factions>(db.Server_Factions);
                     ServerFactions.ServerFactionPositions_ = new List<Server_Faction_Positions>(db.Server_Faction_Positions);
-                    ServerFactions.ServerFactionDispatches_ = new List<ServerFaction_Dispatch>(db.Server_Faction_Dispatch);
+                    ServerFactions.ServerFactionLaborItems_ = new List<Server_Faction_Labor_Items>(db.Server_Faction_Labor_Items);
+                    ServerFactions.ServerFactionMembers_ = new List<Server_Faction_Members>(db.Server_Faction_Members);
                     Alt.Log($"{ServerFactions.ServerFactions_.Count} Server-Factions wurden geladen.");
                     Alt.Log($"{ServerFactions.ServerFactionPositions_.Count} Server-Faction-Positions wurden geladen.");
-                    Alt.Log($"{ServerFactions.ServerFactionDispatches_.Count} Server-Faction-Dispatches wurden geladen.");
+                    Alt.Log($"{ServerFactions.ServerFactionLaborItems_.Count} Server-Faction-Labor-Items wurden geladen.");
+                    Alt.Log($"{ServerFactions.ServerFactionPositions_.Count} Server-Faction-Members wurden geladen.");
+                }
+                foreach (Server_Factions faction in ServerFactions.ServerFactions_.ToList().Where(x => x.laborPos != new Position(0, 0, 0)))
+                {
+                    if (faction.laborPos != new Position(0, 0, 0)) EntityStreamer.HelpTextStreamer.Create("Drücke E um das Labor zu betreten und L um es zu öffnen / schließen.", faction.laborPos, streamRange: 2);
                 }
 
-                foreach(var pos in ServerFactions.ServerFactionPositions_)
+                foreach (var pos in ServerFactions.ServerFactionPositions_)
                 {
                     if (pos.posType == "duty")
                     {
@@ -496,7 +503,7 @@ namespace Altv_Roleplay.Database
                             model = model,
                             posX = pos.posX,
                             posY = pos.posY,
-                            posZ = pos.posZ,
+                            posZ = pos.posZ - 1.0f,
                             rotation = pos.rotation
                         };
                         ServerPeds.ServerPeds_.Add(data);
@@ -505,18 +512,18 @@ namespace Altv_Roleplay.Database
                     {
                         var MarkerData = new Server_Markers
                         {
-                            type = 22,
+                            type = 27,
                             posX = pos.posX,
                             posY = pos.posY,
-                            posZ = pos.posZ,
+                            posZ = (float)(pos.posZ - 0.95),
                             scaleX = 1,
                             scaleY = 1,
                             scaleZ = 1,
                             red = 224,
                             green = 58,
                             blue = 58,
-                            alpha = 50,
-                            bobUpAndDown = true
+                            alpha = 150,
+                            bobUpAndDown = false
                         };
                         ServerBlips.ServerMarkers_.Add(MarkerData);
                     }
@@ -525,24 +532,24 @@ namespace Altv_Roleplay.Database
                     {
                         var markerData = new Server_Markers
                         {
-                            type = 22,
+                            type = 27,
                             posX = pos.posX,
                             posY = pos.posY,
-                            posZ = pos.posZ,
+                            posZ = (float)(pos.posZ - 0.95),
                             scaleX = 1,
                             scaleY = 1,
                             scaleZ = 1,
                             red = 224,
                             green = 58,
                             blue = 58,
-                            alpha = 50,
+                            alpha = 150,
                             bobUpAndDown = false
                         };
                         ServerBlips.ServerMarkers_.Add(markerData);
                     }
-                }    
+                }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -558,7 +565,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerFactions.ServerFactionRanks_.Count} Server-Faction-Ranks wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -574,7 +581,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerFactions.ServerFactionMembers_.Count} Server-Faction-Member wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -606,7 +613,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerCompanys.ServerCompanysData_.Count} Server-Companys wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -622,7 +629,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerCompanys.ServerCompanysMember_.Count} Server-Company-Member wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -638,7 +645,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{CharactersTablet.ServerTabletNotesData_.Count} Server-Tablet-Notes wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -653,7 +660,8 @@ namespace Altv_Roleplay.Database
                     CharactersTablet.ServerTabletEventsData_ = new List<Server_Tablet_Events>(db.Server_Tablet_Events);
                 }
 
-                foreach(var ev in CharactersTablet.ServerTabletEventsData_.Where(x => DateTime.Now.Subtract(Convert.ToDateTime(x.created)).TotalHours >= 168).ToList()) {
+                foreach (var ev in CharactersTablet.ServerTabletEventsData_.Where(x => DateTime.Now.Subtract(Convert.ToDateTime(x.created)).TotalHours >= 168).ToList())
+                {
                     CharactersTablet.ServerTabletEventsData_.Remove(ev);
                     using (gtaContext db = new gtaContext())
                     {
@@ -663,7 +671,7 @@ namespace Altv_Roleplay.Database
                 }
                 Alt.Log($"{CharactersTablet.ServerTabletEventsData_.Count} Server-Tablet-Events wurden geladen.");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -679,7 +687,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{CharactersTablet.ServerTabletAppsData_.Count} Server-Tablet-App-Datas wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -695,7 +703,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{CharactersTablet.CharactersTabletApps_.Count} Character-Tablet-App Einträge wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -710,7 +718,8 @@ namespace Altv_Roleplay.Database
                     ServerFuelStations.ServerFuelStations_ = new List<Server_Fuel_Stations>(db.Server_Fuel_Stations);
                     Alt.Log($"{ServerFuelStations.ServerFuelStations_.Count} Server-Tankstellen wurden geladen.");
                 }
-            } catch(Exception e) { Alt.Log($"{e}"); }
+            }
+            catch (Exception e) { Alt.Log($"{e}"); }
         }
 
         internal static void LoadALlServerFuelStationSpots()
@@ -731,7 +740,7 @@ namespace Altv_Roleplay.Database
                     {
                         name = "Tankstelle",
                         color = 75,
-                        scale = 0.75f,
+                        scale = 0.5f,
                         shortRange = true,
                         sprite = 361,
                         posX = spot.posX,
@@ -740,7 +749,8 @@ namespace Altv_Roleplay.Database
                     };
                     ServerBlips.ServerBlips_.Add(blipData);
                 });
-            } catch(Exception e) { Alt.Log($"{e}"); }
+            }
+            catch (Exception e) { Alt.Log($"{e}"); }
         }
 
         internal static void LoadAllServerFarmingProducers()
@@ -753,7 +763,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerFarmingSpots.ServerFarmingProducer_.Count} Server-Farming-Verarbeiter wurden geladen.");
                 }
 
-                foreach(var producer in ServerFarmingSpots.ServerFarmingProducer_)
+                foreach (var producer in ServerFarmingSpots.ServerFarmingProducer_)
                 {
                     if (producer.isBlipVisible)
                     {
@@ -761,7 +771,7 @@ namespace Altv_Roleplay.Database
                         {
                             name = $"Verarbeiter: {producer.blipName}",
                             color = 2,
-                            scale = 0.75f,
+                            scale = 0.5f,
                             shortRange = true,
                             sprite = 464,
                             posX = producer.posX,
@@ -775,22 +785,23 @@ namespace Altv_Roleplay.Database
                         model = $"{producer.pedModel}",
                         posX = producer.posX,
                         posY = producer.posY,
-                        posZ = producer.posZ,
+                        posZ = producer.posZ - 1.0f,
                         rotation = producer.pedRotation
                     });
 
                     ClassicColshape cols = (ClassicColshape)Alt.CreateColShapeSphere(new Position(producer.posX, producer.posY, producer.posZ), producer.range);
                     cols.SetColShapeName("Farmproducer");
-                    cols.SetColShapeId((long)producer.id);
+                    cols.SetColShapeId((ulong)producer.id);
                     cols.Radius = producer.range;
                     ServerFarmingSpots.ServerFarmingProducerColshapes_.Add(cols);
                 }
-            } catch(Exception e) { Alt.Log($"{e}"); }
+            }
+            catch (Exception e) { Alt.Log($"{e}"); }
         }
 
         internal static void LoadAllVehicleShops()
         {
-           try
+            try
             {
                 using (var db = new gtaContext())
                 {
@@ -804,26 +815,26 @@ namespace Altv_Roleplay.Database
                     {
                         name = $"{shop.name}",
                         color = 9,
-                        scale = 0.75f,
+                        scale = 0.5f,
                         shortRange = true,
                         sprite = 225,
                         posX = shop.pedX,
                         posY = shop.pedY,
                         posZ = shop.pedZ
                     };
-                    if (shop.id != 6 && shop.id != 7 && shop.id != 8 && shop.id != 9 && shop.id != 10)
+                    if (shop.id != 6 && shop.id != 7 && shop.id != 8 && shop.id != 9 && shop.id != 10 && shop.id != 21 && shop.id != 22 && shop.id != 23 && shop.id != 24 && shop.id != 1000 && shop.id != 999 && shop.id != 998 && shop.id != 997)
                     {
                         ServerBlips.ServerBlips_.Add(BlipData);
-                    } 
-                    
-                    
+                    }
+
+
 
                     var PedData = new Server_Peds
                     {
                         model = "ig_car3guy1",
                         posX = shop.pedX,
                         posY = shop.pedY,
-                        posZ = shop.pedZ,
+                        posZ = shop.pedZ - 1.0f,
                         rotation = shop.pedRot
                     };
                     ServerPeds.ServerPeds_.Add(PedData);
@@ -833,7 +844,7 @@ namespace Altv_Roleplay.Database
                         type = 36,
                         posX = shop.parkOutX,
                         posY = shop.parkOutY,
-                        posZ = (float)(shop.parkOutZ + 0.8f),
+                        posZ = (float)(shop.parkOutZ - 0.8f),
                         scaleX = 1,
                         scaleY = 1,
                         scaleZ = 1,
@@ -844,11 +855,28 @@ namespace Altv_Roleplay.Database
                         bobUpAndDown = false
                     };
                     ServerBlips.ServerMarkers_.Add(MarkerData);
+
+                    var MarkerData2 = new Server_Markers
+                    {
+                        type = 36,
+                        posX = shop.sellX,
+                        posY = shop.sellY,
+                        posZ = (float)(shop.sellZ + 0.8f),
+                        scaleX = 1,
+                        scaleY = 1,
+                        scaleZ = 1,
+                        red = 224,
+                        green = 58,
+                        blue = 58,
+                        alpha = 150,
+                        bobUpAndDown = false
+                    };
+                    ServerBlips.ServerMarkers_.Add(MarkerData2);
                 }
             }
-            catch(Exception e) { Alt.Log($"{e}"); }
+            catch (Exception e) { Alt.Log($"{e}"); }
         }
-        
+
         internal static void LoadAllVehicleShopItems()
         {
             try
@@ -859,22 +887,25 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerVehicleShops.ServerVehicleShopsItems_.Count} Server-Vehicle-ShopItems wurden geladen.");
                 }
 
-                foreach(var veh in ServerVehicleShops.ServerVehicleShopsItems_.Where(x => x.isOnlyOnlineAvailable == false))
+                foreach (var veh in ServerVehicleShops.ServerVehicleShopsItems_.Where(x => x.isOnlyOnlineAvailable == false))
                 {
-                    IVehicle altVeh = Alt.CreateVehicle((uint)veh.hash, new Position(veh.posX, veh.posY, veh.posZ), new Rotation(veh.rotX, veh.rotY, veh.rotZ)); //ToDo: Fahrzeug ggf. unzerstörbar machen & freezen
-                    altVeh.LockState = VehicleLockState.Locked;
-                    altVeh.EngineOn = false;
-                    altVeh.NumberplateText = "CARDEALER";
-                    altVeh.SetStreamSyncedMetaData("IsVehicleCardealer", true);
+                    if (veh.isSpawned == 1)
+                    {
+                        IVehicle altVeh = Alt.CreateVehicle((uint)veh.hash, new Position(veh.posX, veh.posY, veh.posZ), new Rotation(veh.rotX, veh.rotY, veh.rotZ)); //ToDo: Fahrzeug ggf. unzerstörbar machen & freezen
+                        altVeh.LockState = VehicleLockState.Locked;
+                        altVeh.EngineOn = false;
+                        altVeh.NumberplateText = "CARDEALER";
+                        altVeh.SetStreamSyncedMetaData("IsVehicleCardealer", true);
 
-                    ClassicColshape colShape = (ClassicColshape)Alt.CreateColShapeSphere(new Position(veh.posX, veh.posY, veh.posZ), 2.25f);
-                    colShape.ColshapeName = "Cardealer";
-                    colShape.CarDealerVehName = ServerVehicles.GetVehicleNameOnHash(veh.hash);
-                    colShape.CarDealerVehPrice = (long)veh.price;
-                    colShape.Radius = 2.25f;
+                        ClassicColshape colShape = (ClassicColshape)Alt.CreateColShapeSphere(new Position(veh.posX, veh.posY, veh.posZ), 2.25f);
+                        colShape.ColshapeName = "Cardealer";
+                        colShape.CarDealerVehName = ServerVehicles.GetVehicleNameOnHash(veh.hash);
+                        colShape.CarDealerVehPrice = (ulong)veh.price;
+                        colShape.Radius = 2.25f;
+                    }
                 }
             }
-            catch(Exception e) { Alt.Log($"{e}"); }
+            catch (Exception e) { Alt.Log($"{e}"); }
         }
 
         internal static void LoadAllServerJobs()
@@ -886,7 +917,8 @@ namespace Altv_Roleplay.Database
                     ServerJobs.ServerJobs_ = new List<Server_Jobs>(db.Server_Jobs);
                     Alt.Log($"{ServerJobs.ServerJobs_.Count} Server-Jobs wurden geladen.");
                 }
-            } catch(Exception e) { Alt.Log($"{e}"); }
+            }
+            catch (Exception e) { Alt.Log($"{e}"); }
         }
 
         internal static void LoadAllServerLicenses()
@@ -926,12 +958,12 @@ namespace Altv_Roleplay.Database
                         if (shop.isOnlySelling == true) blipColor = 3;
                         if (shop.isOnlySelling == true) blipName = $"Verkauf: {shop.name}";
                         if (shop.name.Contains("Ammunation") && !shop.isOnlySelling) { blipSprite = 110; blipColor = 0; }
-                        if(shop.name.Contains("Juwelier") && !shop.isOnlySelling) { blipSprite = 617; blipColor = 0; }
+                        if (shop.name.Contains("Juwelier") && !shop.isOnlySelling) { blipSprite = 617; blipColor = 0; }
                         var ServerShopBlipData = new Server_Blips
                         {
                             name = blipName,
                             color = blipColor,
-                            scale = 0.75f,
+                            scale = 0.5f,
                             shortRange = true,
                             sprite = blipSprite,
                             posX = shop.posX,
@@ -946,13 +978,13 @@ namespace Altv_Roleplay.Database
                         model = shop.pedModel,
                         posX = shop.pedX,
                         posY = shop.pedY,
-                        posZ = shop.pedZ,
+                        posZ = shop.pedZ - 1.0f,
                         rotation = shop.pedRot
                     };
                     ServerPeds.ServerPeds_.Add(PedData);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -968,13 +1000,15 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerBarbers.ServerBarbers_.Count} Server-Barbers wurden geladen.");
                 }
 
-                foreach(var barber in ServerBarbers.ServerBarbers_)
+                foreach (var barber in ServerBarbers.ServerBarbers_)
                 {
+
+                    EntityStreamer.HelpTextStreamer.Create("Drücke E um mit dem Friseur zu interagieren", new Position(barber.posX, barber.posY, barber.posZ), streamRange: 2);
                     var ServerBarberBlipData = new Server_Blips
-                    {                        
+                    {
                         name = "Friseur",
                         color = 0,
-                        scale = 0.75f,
+                        scale = 0.5f,
                         shortRange = true,
                         sprite = 71,
                         posX = barber.posX,
@@ -988,7 +1022,7 @@ namespace Altv_Roleplay.Database
                         model = barber.pedModel,
                         posX = barber.pedX,
                         posY = barber.pedY,
-                        posZ = barber.pedZ,
+                        posZ = barber.pedZ - 1.0f,
                         rotation = barber.pedRot
                     };
                     ServerPeds.ServerPeds_.Add(ServerBarberPedData);
@@ -1011,7 +1045,38 @@ namespace Altv_Roleplay.Database
                     ServerBlips.ServerMarkers_.Add(ServerBarberMarkerData);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
+            {
+                Alt.Log($"{e}");
+            }
+        }
+
+
+        internal static void LoadAllServerStorages()
+        {
+            try
+            {
+                using (var db = new gtaContext())
+                {
+                    ServerStorages.ServerStorages_ = new List<Server_Storages>(db.Server_Storages);
+                    Alt.Log($"{ServerStorages.ServerStorages_.Count} Server-Storages wurden geladen.");
+                }
+
+                foreach (Server_Storages storage in ServerStorages.ServerStorages_.ToList())
+                {
+                    EntityStreamer.MarkerStreamer.Create(EntityStreamer.MarkerTypes.MarkerTypeVerticalCylinder, new Vector3(storage.entryPos.X, storage.entryPos.Y, storage.entryPos.Z - 1), new Vector3(1), color: new Rgba(255, 51, 51, 100), streamRange: 50);
+                    EntityStreamer.HelpTextStreamer.Create("Drücke E um die Lagerhalle zu betreten und U um sie zu öffnen / schließen.", storage.entryPos, streamRange: 2);
+                    if (ServerStorages.GetOwner(storage.id) == 0)
+                    {
+                        EntityStreamer.BlipStreamer.CreateStaticBlip("Lagerhalle", 39, 0.5f, true, 568, storage.entryPos, 0);
+                    }
+                    else if (ServerStorages.GetOwner(storage.id) != 0)
+                    {
+                        EntityStreamer.BlipStreamer.CreateStaticBlip("Lagerhalle", 44, 0.5f, true, 568, storage.entryPos, 0);
+                    }
+                }
+            }
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1065,7 +1130,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{Characters.CharactersPermissions.Count} Character-Permissions wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1081,7 +1146,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{Characters.CharactersSkin.Count} Charakter-Skins wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1097,7 +1162,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{Characters.CharactersLastPos.Count} Charakter Positionen wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1113,7 +1178,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerBlips.ServerBlips_.Count} Server-Blips wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1127,9 +1192,74 @@ namespace Altv_Roleplay.Database
                 {
                     ServerBlips.ServerMarkers_ = new List<Server_Markers>(db.Server_Markers);
                     Alt.Log($"{ServerBlips.ServerMarkers_.Count} Server-Marker wurden geladen.");
+
+                    ServerBlips.ServerMarkers_.Add(new Server_Markers
+                    {
+                        alpha = 150,
+                        bobUpAndDown = false,
+                        posX = Handler.RobberyHandler.jeweleryRobPosition.X,
+                        posY = Handler.RobberyHandler.jeweleryRobPosition.Y,
+                        posZ = Handler.RobberyHandler.jeweleryRobPosition.Z - 1,
+                        scaleX = 1,
+                        scaleY = 1,
+                        scaleZ = 1,
+                        red = 255,
+                        green = 77,
+                        blue = 77,
+                        type = 1
+                    });
+
+                    ServerBlips.ServerMarkers_.Add(new Server_Markers
+                    {
+                        alpha = 150,
+                        bobUpAndDown = false,
+                        posX = Handler.RobberyHandler.bankRobPosition.X,
+                        posY = Handler.RobberyHandler.bankRobPosition.Y,
+                        posZ = Handler.RobberyHandler.bankRobPosition.Z - 1,
+                        scaleX = 1,
+                        scaleY = 1,
+                        scaleZ = 1,
+                        type = 1,
+                        red = 255,
+                        green = 77,
+                        blue = 77
+                    });
+
+                    ServerBlips.ServerMarkers_.Add(new Server_Markers
+                    {
+                        alpha = 150,
+                        bobUpAndDown = false,
+                        posX = Handler.RobberyHandler.bankExitPosition.X,
+                        posY = Handler.RobberyHandler.bankExitPosition.Y,
+                        posZ = Handler.RobberyHandler.bankExitPosition.Z - 1,
+                        scaleX = 1,
+                        scaleY = 1,
+                        scaleZ = 1,
+                        type = 1,
+                        red = 255,
+                        green = 77,
+                        blue = 77
+                    });
+
+                    foreach (var bankRobGold in Handler.RobberyHandler.bankPickUpPositions)
+                        ServerBlips.ServerMarkers_.Add(new Server_Markers
+                        {
+                            alpha = 150,
+                            bobUpAndDown = false,
+                            posX = bankRobGold.position.X,
+                            posY = bankRobGold.position.Y,
+                            posZ = bankRobGold.position.Z - 1,
+                            scaleX = 1,
+                            scaleY = 1,
+                            scaleZ = 1,
+                            type = 1,
+                            red = 255,
+                            green = 77,
+                            blue = 77
+                        });
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1145,7 +1275,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerPeds.ServerPeds_.Count} Server-Peds wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1159,9 +1289,9 @@ namespace Altv_Roleplay.Database
                 {
                     ServerAllVehicles.ServerAllVehicles_ = new List<Server_All_Vehicles>(db.Server_All_Vehicles);
                     Alt.Log($"{ServerAllVehicles.ServerAllVehicles_.Count} Server-All-Vehicles wurden geladen.");
-                }                
+                }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1189,7 +1319,7 @@ namespace Altv_Roleplay.Database
             {
                 using (var db = new gtaContext())
                 {
-                    foreach(var spot in db.Server_Minijob_Busdriver_Spots)
+                    foreach (var spot in db.Server_Minijob_Busdriver_Spots)
                     {
                         Minijobs.Busfahrer.Model.CreateMinijobRouteSpot(spot.id, spot.routeId, spot.spotId, new Position(spot.posX, spot.posY, spot.posZ));
                     }
@@ -1208,7 +1338,7 @@ namespace Altv_Roleplay.Database
             {
                 using (var db = new gtaContext())
                 {
-                    foreach(var spot in db.Server_Minijob_Garbage_Spots)
+                    foreach (var spot in db.Server_Minijob_Garbage_Spots)
                     {
                         Minijobs.Müllmann.Model.CreateMinijobGarbageSpot(spot.id, spot.routeId, spot.spotId, new Position(spot.posX, spot.posY, spot.posZ));
                     }
@@ -1229,7 +1359,7 @@ namespace Altv_Roleplay.Database
                 {
                     foreach (var veh in db.Server_Vehicles)
                     {
-                        ServerVehicles.CreateServerVehicle(veh.id, veh.charid, (uint)(veh.hash), veh.vehType, veh.faction, veh.fuel, veh.KM, veh.engineState, veh.isEngineHealthy, true, veh.isInGarage, veh.garageId, new Position(veh.posX, veh.posY, veh.posZ), new Rotation(veh.rotX, veh.rotY, veh.rotZ), veh.plate, veh.lastUsage, veh.buyDate);       
+                        ServerVehicles.CreateServerVehicle(veh.id, veh.charid, (uint)(veh.hash), veh.vehType, veh.faction, veh.fuel, veh.KM, veh.engineState, veh.isEngineHealthy, true, veh.isInGarage, veh.garageId, new Position(veh.posX, veh.posY, veh.posZ), new Rotation(veh.rotX, veh.rotY, veh.rotZ), veh.plate, veh.lastUsage, veh.buyDate);
                     }
                     Alt.Log($"{ServerVehicles.ServerVehicles_.Count} Server-Vehicles wurden geladen.");
                 }
@@ -1262,14 +1392,14 @@ namespace Altv_Roleplay.Database
             {
                 using (var db = new gtaContext())
                 {
-                    foreach(var m in db.Server_Vehicles_Mods)
+                    foreach (var m in db.Server_Vehicles_Mods)
                     {
                         ServerVehicles.AddVehicleModToList(m.id, m.vehId, m.colorPrimaryType, m.colorSecondaryType, m.spoiler, m.front_bumper, m.rear_bumper, m.side_skirt, m.exhaust, m.frame, m.grille, m.hood, m.fender, m.right_fender, m.roof, m.engine, m.brakes, m.transmission, m.horns, m.suspension, m.armor, m.turbo, m.xenon, m.wheel_type, m.wheels, m.wheelcolor, m.plate_holder, m.trim_design, m.ornaments, m.dial_design, m.steering_wheel, m.shift_lever, m.plaques, m.hydraulics, m.airfilter, m.window_tint, m.livery, m.plate, m.neon, m.neon_r, m.neon_g, m.neon_b, m.smoke_r, m.smoke_g, m.smoke_b, m.colorPearl, m.headlightColor, m.colorPrimary_r, m.colorPrimary_g, m.colorPrimary_b, m.colorSecondary_r, m.colorSecondary_g, m.colorSecondary_b, m.back_wheels, m.plate_vanity, m.door_interior, m.seats, m.rear_shelf, m.trunk, m.engine_block, m.strut_bar, m.arch_cover, m.antenna, m.exterior_parts, m.tank, m.rear_hydraulics, m.door, m.plate_color, m.interior_color, m.smoke);
                     }
                     Alt.Log($"{ServerVehicles.ServerVehiclesMod_.Count} Server-Vehicle-Mods wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1284,24 +1414,25 @@ namespace Altv_Roleplay.Database
                     ServerGarages.ServerGarages_ = new List<Server_Garages>(db.Server_Garages);
                     Alt.Log($"{ServerGarages.ServerGarages_.Count} Server-Garagen wurden geladen.");
 
-                    foreach(var garage in ServerGarages.ServerGarages_)
+                    foreach (var garage in ServerGarages.ServerGarages_)
                     {
                         if (garage.isBlipVisible)
                         {
                             string garageType = ""; int garageSprite = 0, garageColor = 0;
                             switch (garage.type)
                             {
-                                case 0: garageType = "Garage"; garageSprite = 473; garageColor = 0; break;
+                                case 0: garageType = "Garage"; garageSprite = 473; garageColor = 3; break;
                                 case 1: garageType = "Bootsgarage"; garageSprite = 356; garageColor = 77; break;
                                 case 2: garageType = "Flugzeuggarage"; garageSprite = 359; garageColor = 77; break;
                                 case 3: garageType = "Helikoptergarage"; garageSprite = 360; garageColor = 77; break;
+                                case 4: garageType = "Lkwgarage"; garageSprite = 360; garageColor = 77; break;
                             }
 
                             var ServerGarageBlipData = new Server_Blips
                             {
                                 name = $"{garageType}: {garage.name}",
                                 color = garageColor,
-                                scale = 0.75f,
+                                scale = 0.5f,
                                 shortRange = true,
                                 sprite = garageSprite,
                                 posX = garage.posX,
@@ -1310,23 +1441,23 @@ namespace Altv_Roleplay.Database
                             };
                             //if (garage.id != 6)
                             //{
-                                ServerBlips.ServerBlips_.Add(ServerGarageBlipData);
+                            ServerBlips.ServerBlips_.Add(ServerGarageBlipData);
                             //}
                         }
 
                         var ServerGaragePedData = new Server_Peds
                         {
-                            model = "s_m_m_autoshop_02",
+                            model = "s_m_m_security_01",
                             posX = garage.posX,
                             posY = garage.posY,
-                            posZ = garage.posZ,
+                            posZ = garage.posZ - 1.0f,
                             rotation = garage.rotation
                         };
                         ServerPeds.ServerPeds_.Add(ServerGaragePedData);
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1348,10 +1479,10 @@ namespace Altv_Roleplay.Database
                             type = 30,
                             posX = slot.posX,
                             posY = slot.posY,
-                            posZ = (float)(slot.posZ + 0.25),
-                            scaleX = 1,
-                            scaleY = 1,
-                            scaleZ = 1,
+                            posZ = (float)(slot.posZ + 0.25f),
+                            scaleX = 0.5f,
+                            scaleY = 0.5f,
+                            scaleZ = 0.5f,
                             red = 27,
                             green = 124,
                             blue = 227,
@@ -1362,7 +1493,7 @@ namespace Altv_Roleplay.Database
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1378,7 +1509,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerATM.ServerATM_.Count} Server-ATMs wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1392,12 +1523,12 @@ namespace Altv_Roleplay.Database
                 {
                     ServerBanks.ServerBanks_ = new List<Server_Banks>(db.Server_Banks);
                     Alt.Log($"{ServerBanks.ServerBanks_.Count} Server-Banken wurden geladen.");
-                    foreach(var bank in ServerBanks.ServerBanks_)
+                    foreach (var bank in ServerBanks.ServerBanks_)
                     {
-                        string bName = "Fleeca Bank";
+                        /*string bName = "Fleeca Bank";
                         int bColor = 2,
-                            bSprite = 500;
-                        if(bank.zoneName == "Maze Bank") { bName = "Maze Bank"; bColor = 1; bSprite = 605; }
+                            bSprite = 500;*/
+                        /*if(bank.zoneName == "Maze Bank") { bName = "Maze Bank"; bColor = 1; bSprite = 605; }
                         if (bank.zoneName != "Maze Bank Fraktion" && bank.zoneName != "Maze Bank Company")
                         {
                             var ServerBankBlipData = new Server_Blips
@@ -1412,7 +1543,7 @@ namespace Altv_Roleplay.Database
                                 posZ = bank.posZ
                             };
                             ServerBlips.ServerBlips_.Add(ServerBankBlipData);
-                        }
+                        }*/
 
                         var ServerBankMarkerData = new Server_Markers
                         {
@@ -1433,7 +1564,7 @@ namespace Altv_Roleplay.Database
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1449,7 +1580,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerBankPapers.ServerBankPaper_.Count} Server-Bank-Papers geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1465,7 +1596,7 @@ namespace Altv_Roleplay.Database
                     Alt.Log($"{ServerItems.ServerItems_.Count} Server-Items wurden geladen.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1482,35 +1613,55 @@ namespace Altv_Roleplay.Database
 
                     ServerClothesShops.ServerClothesShopsItems_ = new List<Server_Clothes_Shops_Items>(db.Server_Clothes_Shops_Items);
                     Alt.Log($"{ServerClothesShops.ServerClothesShopsItems_.Count} Server-Clothes-Shop-Items wurden geladen.");
+
+
                 }
 
-                foreach(var cs in ServerClothesShops.ServerClothesShops_)
+                foreach (var cs in ServerClothesShops.ServerClothesShops_)
                 {
-                    ServerBlips.ServerBlips_.Add(new Server_Blips
+                    var id = cs.id;
+                    if (id == 15)
                     {
-                        name = cs.name,
-                        color = 0,
-                        scale = 0.75f,
-                        sprite = 73,
-                        posX = cs.posX,
-                        posY = cs.posY,
-                        posZ = cs.posZ,
-                        shortRange = true
-                    });
+                        ServerBlips.ServerBlips_.Add(new Server_Blips
+                        {
+                            name = cs.name,
+                            color = 0,
+                            scale = 0.5f,
+                            sprite = 617,
+                            posX = cs.posX,
+                            posY = cs.posY,
+                            posZ = cs.posZ,
+                            shortRange = true
+                        });
+                    }
+                    else if (id != 15)
+                    {
+                        ServerBlips.ServerBlips_.Add(new Server_Blips
+                        {
+                            name = cs.name,
+                            color = 0,
+                            scale = 0.5f,
+                            sprite = 73,
+                            posX = cs.posX,
+                            posY = cs.posY,
+                            posZ = cs.posZ,
+                            shortRange = true
+                        });
+                    }
 
                     ServerBlips.ServerMarkers_.Add(new Server_Markers
                     {
-                        type = 21,
+                        type = 27,
                         posX = cs.posX,
                         posY = cs.posY,
-                        posZ = cs.posZ,
+                        posZ = (float)(cs.posZ - 0.95),
                         scaleX = 1,
                         scaleY = 1,
                         scaleZ = 1,
                         red = 224,
                         green = 58,
                         blue = 58,
-                        alpha = 40,
+                        alpha = 150,
                         bobUpAndDown = false
                     });
 
@@ -1519,7 +1670,7 @@ namespace Altv_Roleplay.Database
                         model = $"{cs.pedModel}",
                         posX = cs.pedX,
                         posY = cs.pedY,
-                        posZ = cs.pedZ,
+                        posZ = (float)(cs.pedZ - 1.0f),
                         rotation = cs.pedRot
                     });
                 }
@@ -1529,6 +1680,8 @@ namespace Altv_Roleplay.Database
                 Alt.Log($"{e}");
             }
         }
+
+
 
         internal static void LoadAllServerTeleports()
         {
@@ -1560,7 +1713,7 @@ namespace Altv_Roleplay.Database
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1576,7 +1729,7 @@ namespace Altv_Roleplay.Database
                     db.SaveChanges();
 
                     foreach (var veh in db.Server_Vehicles)
-                    {  
+                    {
                         if (!veh.isInGarage && DateTime.Now.Subtract(veh.lastUsage).TotalHours >= 48)
                         {
                             veh.isInGarage = true;
@@ -1593,7 +1746,7 @@ namespace Altv_Roleplay.Database
                     db.SaveChanges();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Alt.Log($"{e}");
             }
@@ -1619,5 +1772,60 @@ namespace Altv_Roleplay.Database
                 Alt.Log($"TutorialApp-Entrys nachher: {CharactersTablet.CharactersTabletTutorialData_.Count}");
             }
         }
+
+
+        public static void UpdateBank(IPlayer player, string zoneName)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(Constants.DatabaseConfig.Database))
+                {
+                    connection.Open();
+                    MySqlCommand command = connection.CreateCommand();
+                    command.CommandText = "UPDATE server_shops SET bank=@bank WHERE id=@id";
+                    command.Parameters.AddWithValue("@id", 0);
+                    command.Parameters.AddWithValue("@posX", player.Position.X);
+                    command.Parameters.AddWithValue("@posY", player.Position.Y);
+                    command.Parameters.AddWithValue("@posZ", player.Position.Z);
+                    command.Parameters.AddWithValue("@zoneName", zoneName);
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"{e}");
+            }
+        }
+
+        /*
+                public static void LoadAllServerUtilities()
+                {
+                    try
+                    {
+                        using (var db = new gtaContext())
+                        {
+                            ServerStorages.ServerStorages_ = new List<Server_Storages>(db.Server_Storages);
+                        }
+                        Alt.Log($"{ServerStorages.ServerStorages_.Count} Storages geladen..");
+
+                        foreach (Server_Storages storage in ServerStorages.ServerStorages_.ToList())
+                        {
+                            MarkerStreamer.Create(MarkerTypes.MarkerTypeHorizontalCircleFat, new Vector3(storage.entryPos.X, storage.entryPos.Y, storage.entryPos.Z - 1), new Vector3(1), color: new Rgba(255, 51, 51, 100), streamRange: 50);
+                            HelpTextStreamer.Create("Drücke E um die Lagerhalle zu betreten und U um sie zu öffnen / schließen.", storage.entryPos, streamRange: 2);
+                            BlipStreamer.CreateStaticBlip("Lagerhalle", 0, 0.5f, true, 50, storage.entryPos, 0);
+                        }
+                        MarkerStreamer.Create(MarkerTypes.MarkerTypeHorizontalCircleFat, new Vector3(Constants.Positions.storage_ExitPosition.X, Constants.Positions.storage_ExitPosition.Y, Constants.Positions.storage_ExitPosition.Z - 1), new Vector3(1), color: new Rgba(150, 0, 0, 100), streamRange: 15, dimension: -2147483648);
+                        MarkerStreamer.Create(MarkerTypes.MarkerTypeHorizontalCircleFat, new Vector3(Constants.Positions.storage_InvPosition.X, Constants.Positions.storage_InvPosition.Y, Constants.Positions.storage_InvPosition.Z - 1), new Vector3(1), color: new Rgba(150, 0, 0, 100), streamRange: 15, dimension: -2147483648);
+
+
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"{e}");
+                    }
+                }*/
     }
 }
+
