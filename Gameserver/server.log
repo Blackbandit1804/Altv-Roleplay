@@ -175,3 +175,26 @@
 [17:04:15] GetVehicleItems: 10 - 1
 [17:04:23] Vehicle KM-State-HUD updated!
 [17:04:26] GetVehicleItems: 10 - 1
+[17:04:52] OnEntityTimer: Player Foreach benötigte: 00:00:00.0058911
+[17:04:53] Vehicle KM-State-HUD updated!
+[17:05:52] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000121
+[17:06:52] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000031
+[17:07:31] OnDesireTimer Timer aufgerufen
+[17:07:52] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000052
+[17:08:52] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000038
+[17:09:52] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000105
+[17:10:51] OnDesireTimer Timer aufgerufen
+[17:10:52] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000055
+[17:11:52] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000145
+[17:12:52] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000115
+[17:13:53] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000040
+[17:14:11] OnDesireTimer Timer aufgerufen
+[17:14:53] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000039
+[17:15:53] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000026
+[17:16:53] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000024
+[17:17:31] OnDesireTimer Timer aufgerufen
+[17:17:53] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000037
+[17:18:53] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000042
+[17:19:53] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[17:20:51] OnDesireTimer Timer aufgerufen
+[17:20:53] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
