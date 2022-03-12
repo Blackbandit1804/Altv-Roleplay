@@ -25,7 +25,8 @@
           "MySqlConnector": "2.1.8",
           "Newtonsoft.Json": "13.0.1",
           "Pomelo.EntityFrameworkCore.MySql": "6.0.1",
-          "Pomelo.EntityFrameworkCore.MySql.Design": "1.1.2"
+          "Pomelo.EntityFrameworkCore.MySql.Design": "1.1.2",
+          "SaltyChat.Server": "1.0.0"
         },
         "runtime": {
           "Altv-Roleplay.dll": {}
@@ -1306,6 +1307,15 @@
         "runtime": {
           "DiscordLog.dll": {}
         }
+      },
+      "SaltyChat.Server/1.0.0": {
+        "dependencies": {
+          "AltV.Net.Async": "9.0.4",
+          "Newtonsoft.Json": "13.0.1"
+        },
+        "runtime": {
+          "SaltyChat.Server.dll": {}
+        }
       }
     }
   },
@@ -2233,6 +2243,11 @@
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
     },
     "DiscordLog/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SaltyChat.Server/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

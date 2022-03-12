@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DiscordLog\DiscordLog.csproj" />
+    <ProjectReference Include="..\SaltyServer\SaltyChat.Server.csproj" />
   </ItemGroup>
 
 </Project>

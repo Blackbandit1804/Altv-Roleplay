@@ -1963,6 +1963,20 @@
         "runtime": {
           "bin/placeholder/DiscordLog.dll": {}
         }
+      },
+      "SaltyChat.Server/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "AltV.Net.Async": "9.0.4",
+          "Newtonsoft.Json": "13.0.1"
+        },
+        "compile": {
+          "bin/placeholder/SaltyChat.Server.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SaltyChat.Server.dll": {}
+        }
       }
     }
   },
@@ -6563,6 +6577,11 @@
       "type": "project",
       "path": "../DiscordLog/DiscordLog.csproj",
       "msbuildProject": "../DiscordLog/DiscordLog.csproj"
+    },
+    "SaltyChat.Server/1.0.0": {
+      "type": "project",
+      "path": "../SaltyServer/SaltyChat.Server.csproj",
+      "msbuildProject": "../SaltyServer/SaltyChat.Server.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -6584,7 +6603,8 @@
       "MySqlConnector >= 2.1.8",
       "Newtonsoft.Json >= 13.0.1",
       "Pomelo.EntityFrameworkCore.MySql >= 6.0.1",
-      "Pomelo.EntityFrameworkCore.MySql.Design >= 1.1.2"
+      "Pomelo.EntityFrameworkCore.MySql.Design >= 1.1.2",
+      "SaltyChat.Server >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -6621,6 +6641,9 @@
           "projectReferences": {
             "E:\\Git-Hub\\Altv-Roleplay\\Altv-Roleplay\\DiscordLog\\DiscordLog.csproj": {
               "projectPath": "E:\\Git-Hub\\Altv-Roleplay\\Altv-Roleplay\\DiscordLog\\DiscordLog.csproj"
+            },
+            "E:\\Git-Hub\\Altv-Roleplay\\Altv-Roleplay\\SaltyServer\\SaltyChat.Server.csproj": {
+              "projectPath": "E:\\Git-Hub\\Altv-Roleplay\\Altv-Roleplay\\SaltyServer\\SaltyChat.Server.csproj"
             }
           }
         }

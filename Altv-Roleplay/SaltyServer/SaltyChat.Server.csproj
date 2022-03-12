@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\\..\Gameserver\resources\SaltyClient\Server</OutputPath>
+    <OutputPath>E:\Git-Hub\Altv-Roleplay\Gameserver\resources\SaltyClient\Server</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="AltV.Net.Async" Version="9.0.2" />
+	<PackageReference Include="AltV.Net.Async" Version="9.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
