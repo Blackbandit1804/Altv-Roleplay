@@ -1,255 +1,149 @@
-[13:07:49] alt:V Server 9.6 (release)
-[13:07:49] Starting Community-Roleplay on 0.0.0.0:7788
-[13:07:49] Loading resource minimap
-[13:07:49] Loaded resource minimap
-[13:07:49] Loading resource minimap_js
-[13:07:49] Loaded resource minimap_js
-[13:07:49] Loading resource maps_gabz
-[13:07:50] Loaded resource maps_gabz
-[13:07:50] Loading resource passengerseat
-[13:07:50] Loaded resource passengerseat
-[13:07:50] Loading resource els
-[13:07:50] Loaded resource els
-[13:07:50] Loading resource clothes_01
-[13:07:50] Loaded resource clothes_01
-[13:07:50] Loading resource DisableIdleCam
-[13:07:50] Loading resource chat
-[13:07:50] Loaded resource chat
-[13:07:50] Loaded resource DisableIdleCam
-[13:07:50] Loading resource es-blip
-[13:07:50] Loaded resource es-blip
-[13:07:50] Loading resource es-helptext
-[13:07:50] Loaded resource es-helptext
-[13:07:50] Loading resource es-marker
-[13:07:50] Loaded resource es-marker
-[13:07:50] Loading resource es-object
-[13:07:50] Loaded resource es-object
-[13:07:50] Loading resource es-streamer-text
-[13:07:50] Loaded resource es-streamer-text
-[13:07:50] Loading resource es-ped
-[13:07:50] Loaded resource es-ped
-[13:07:50] Loading resource gabz_mrpdloader
-[13:07:50] Loaded resource gabz_mrpdloader
-[13:07:50] Loading resource hairs
-[13:07:50] Loaded resource hairs
-[13:07:50] Loading resource maps
-[13:07:51] Loaded resource maps
-[13:07:51] Loading resource modcars
-[13:07:52] Loaded resource modcars
-[13:07:52] Loading resource timecycle
-[13:07:52] Loaded resource timecycle
-[13:07:52] Loading resource modems
-[13:07:52] Loaded resource modems
-[13:07:52] Loading resource flatbedscript
-[13:07:52] Loaded resource flatbedscript
-[13:07:52] Loading resource meetingpoint
-[13:07:52] Loaded resource meetingpoint
-[13:07:52] Loading resource patoche_boatdealer
-[13:07:52] Loaded resource patoche_boatdealer
-[13:07:52] Loading resource SaltyClient
-[13:07:52] [SaltyChat] New status: enabled. Version: 1.2.0. Server-ID: k7NgKrbENwzMsIh6yj/8r9WQMl8=
-[13:07:52] Loaded resource SaltyClient
-[13:07:52] Loading resource HideMap
-[13:07:52] Loaded resource HideMap
-[13:07:52] Loading resource pointing
-[13:07:52] Loaded resource pointing
-[13:07:52] Loading resource weather
-[13:07:52] RealWeatherTimeSync: started
-[13:07:52] Loaded resource weather
-[13:07:52] Loading resource roleplay
-[13:07:56] MySqlConnector.MySqlException (0x80004005): Unknown column 'a.isLaptopEquipped' in 'field list'
-   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior)
-   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken)
-   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
-   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
-   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
-   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
-   at Altv_Roleplay.Database.DatabaseHandler.LoadAllPlayerCharacters() in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Database\DatabaseHandler.cs:line 81
-[13:07:56] MySqlConnector.MySqlException (0x80004005): Unknown column 'c.headoverlays' in 'field list'
-   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior)
-   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken)
-   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
-   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
-   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
-   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
-   at Altv_Roleplay.Database.DatabaseHandler.LoadAllCharacterSkins() in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Database\DatabaseHandler.cs:line 1145
-[13:07:56] 1 Character Bank Accounts wurden geladen.
-[13:07:56] 2 Charakter Positionen wurden geladen.
-[13:07:56] 11 Charakter Inventar-Items wurden geladen.
-[13:07:56] 2 Character-Licenses wurden geladen.
-[13:07:56] 0 Character-Permissions wurden geladen.
-[13:07:56] 1 Character-Minijob-Entrys wurden geladen.
-[13:07:56] 0 Character-Phone-Chats wurden geladen.
-[13:07:56] 0 Character-Phone-Chat-Messages wurden geladen.
-[13:07:56] 0 Character-Phone-Contacts wurden geladen.
-[13:07:56] MySqlConnector.MySqlException (0x80004005): Table 'gta.characters_phone_verlauf' doesn't exist
-   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior)
-   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken)
-   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
-   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
-   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
-   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
-   at Altv_Roleplay.Database.DatabaseHandler.LoadAllCharacterPhoneChats() in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Database\DatabaseHandler.cs:line 125
-[13:07:56] MySqlConnector.MySqlException (0x80004005): Table 'gta.server_storages' doesn't exist
-   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior)
-   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken)
-   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
-   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
-   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
-   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
-   at Altv_Roleplay.Database.DatabaseHandler.LoadAllServerStorages() in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Database\DatabaseHandler.cs:line 1061
-[13:07:56] 51 Server-Wanted-Einträge wurden geladen.
-[13:07:56] 0 Characters-Wanted-Einträge wurden geladen.
-[13:07:56] 29 Server-Blips wurden geladen.
-[13:07:56] 1 Server-Marker wurden geladen.
-[13:07:56] 740 Server-All-Vehicles wurden geladen.
-[13:07:56] 309 Server-Animationen wurden geladen.
-[13:07:56] 78 Server-ATMs wurden geladen.
-[13:07:56] 10 Server-Banken wurden geladen.
-[13:07:56] 104 Server-Bank-Papers geladen.
-[13:07:56] 2068 Server-Items wurden geladen.
-[13:07:56] 9 Server-Peds wurden geladen.
-[13:07:56] 12 Server-Clothes-Shops wurden geladen.
-[13:07:56] 30175 Server-Clothes-Shop-Items wurden geladen.
-[13:07:56] 39 Server-Shops wurden geladen.
-[13:07:57] 2319 Server ShopItems wurden geladen.
-[13:07:57] 7 Server-Barbers wurden geladen.
-[13:07:57] 8 Server-Teleports wurden geladen.
-[13:07:57] 59 Server-Garagen wurden geladen.
-[13:07:57] 91 Server-Garagen Slots wurden geladen.
-[13:07:57] 0 Server-Vehicle-Mods wurden geladen.
-[13:07:57] 0 Server-Vehicles wurden geladen.
-[13:07:57] 8 Server-Vehicle-Trunk-Items wurden geladen.
-[13:07:57] MySqlConnector.MySqlException (0x80004005): Unknown column 's.sellX' in 'field list'
-   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior)
-   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken)
-   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
-   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
-   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
-   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
-   at Altv_Roleplay.Database.DatabaseHandler.LoadAllVehicleShops() in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Database\DatabaseHandler.cs:line 808
-[13:07:57] MySqlConnector.MySqlException (0x80004005): Unknown column 's.isSpawned' in 'field list'
-   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior)
-   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken)
-   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
-   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
-   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
-   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
-   at Altv_Roleplay.Database.DatabaseHandler.LoadAllVehicleShopItems() in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Database\DatabaseHandler.cs:line 886
-[13:07:57] 11 Server-Farming-Spots wurden geladen.
-[13:07:57] MySqlConnector.MySqlException (0x80004005): Unknown column 's.neededItemTHREE' in 'field list'
-   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior)
-   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken)
-   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
-   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
-   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
-   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
-   at Altv_Roleplay.Database.DatabaseHandler.LoadAllServerFarmingProducers() in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Database\DatabaseHandler.cs:line 762
-[13:07:57] 9 Server-Jobs wurden geladen.
-[13:07:57] 1 Server-Licenses wurden geladen.
-[13:07:57] 8 Server-Tankstellen wurden geladen.
-[13:07:57] 94 Server-Tankstellen-Spots wurden geladen
-[13:07:57] 9 Server-Tablet-App-Datas wurden geladen.
-[13:07:57] 2 Character-Tablet-App Einträge wurden geladen.
-[13:07:57] 2 Character-Tablet-Tutorial Entrys wurden geladen.
-[13:07:57] 0 Server-Tablet-Events wurden geladen.
-[13:07:57] 0 Server-Tablet-Notes wurden geladen.
-[13:07:57] 0 Server-Companys wurden geladen.
-[13:07:57] 0 Server-Company-Member wurden geladen.
-[13:07:57] MySqlConnector.MySqlException (0x80004005): Unknown column 's.laborPos' in 'field list'
-   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior)
-   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken)
-   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
-   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
-   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
-   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
-   at Altv_Roleplay.Database.DatabaseHandler.LoadAllServerFactions() in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Database\DatabaseHandler.cs:line 480
-[13:07:57] 111 Server-Faction-Ranks wurden geladen.
-[13:07:57] MySqlConnector.MySqlException (0x80004005): Unknown column 's.charname' in 'field list'
-   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior)
-   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken)
-   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
-   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
-   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
-   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
-   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
-   at Altv_Roleplay.Database.DatabaseHandler.LoadAllServerFactionMembers() in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Database\DatabaseHandler.cs:line 580
-[13:07:57] 0 Server-Faction-Storage-Items wurden geladen.
-[13:07:57] 10 Server-Doors wurden geladen.
-[13:07:57] 0 Server-Hotels wurden geladen.
-[13:07:57] 0 Server-Hotels-Apartments wurden geladen.
-[13:07:57] 0 Server-Hotels-Storage-Items wurden geladen.
-[13:07:57] 1012 Server-Houses wurden geladen.
-[13:07:57] 10 Server-House-Interior wurden geladen.
-[13:07:57] 0 Server-House-Storage-Items wurden geladen.
-[13:07:57] 0 Server-House-Renter wurden geladen.
-[13:07:57] 3 Server-Minijobs-BusDriver-Routes wurden geladen.
-[13:07:57] 47 Server-Minijob-Busdriver-Spots wurden geladen.
-[13:07:57] 177 Server-Minijob-Garbage-Spots wurden geladen.
-[13:07:57] 0 Server-Fraktions-Logs wurden geladen.
-[13:07:57] 0 Server-Company-Logs wurden geladen.
-[13:07:57] Lade Minijob: Elektrolieferant...
-[13:07:57] Minijob: Elektrolieferant geladen...
-[13:07:57] Lade Minijob: Pilot...
-[13:07:57] Minijob: Pilot geladen...
-[13:07:57] Lade Minijob: Müllmann...
-[13:07:57] Minijob: Müllmann geladen...
-[13:07:57] Lade Minijob: Busfahrer...
-[13:07:57] Minijob: Busfahrer geladen...
-[13:07:58] Loaded resource roleplay
-[13:07:58] Loading resource DiscordLog
-[13:07:58] Loaded resource DiscordLog
-[13:07:58] Required server permissions:
-[13:07:58] Optional server permissions:
-[13:07:58] Starting HTTP server on 0.0.0.0:7788
-[13:07:58] Main thread started (ThreadId: 26848)
-[13:07:58] Colshape thread started (ThreadId: 30012)
-[13:07:58] EntityStreamer thread started (ThreadId: 32672)
-[13:07:58] Sync thread started (ThreadId: 32680)
-[13:07:58] Network thread started (ThreadId: 32684)
-[13:07:58] Console thread started (ThreadId: 32688)
-[13:07:58][Warning] Server started in debug mode
+[15:00:19] alt:V Server 9.6 (release)
+[15:00:20] Starting Community-Roleplay on 0.0.0.0:7788
+[15:00:20] Loading resource minimap
+[15:00:20] Loaded resource minimap
+[15:00:20] Loading resource minimap_js
+[15:00:20] Loaded resource minimap_js
+[15:00:20] Loading resource maps_gabz
+[15:00:20] Loaded resource maps_gabz
+[15:00:20] Loading resource passengerseat
+[15:00:20] Loaded resource passengerseat
+[15:00:20] Loading resource els
+[15:00:20] Loaded resource els
+[15:00:20] Loading resource clothes_01
+[15:00:20] Loaded resource clothes_01
+[15:00:20] Loading resource DisableIdleCam
+[15:00:20] Loading resource chat
+[15:00:20] Loaded resource chat
+[15:00:20] Loaded resource DisableIdleCam
+[15:00:20] Loading resource es-blip
+[15:00:20] Loaded resource es-blip
+[15:00:20] Loading resource es-helptext
+[15:00:20] Loaded resource es-helptext
+[15:00:20] Loading resource es-marker
+[15:00:20] Loaded resource es-marker
+[15:00:20] Loading resource es-object
+[15:00:20] Loaded resource es-object
+[15:00:20] Loading resource es-streamer-text
+[15:00:20] Loaded resource es-streamer-text
+[15:00:20] Loading resource es-ped
+[15:00:20] Loaded resource es-ped
+[15:00:20] Loading resource gabz_mrpdloader
+[15:00:20] Loaded resource gabz_mrpdloader
+[15:00:20] Loading resource hairs
+[15:00:20] Loaded resource hairs
+[15:00:20] Loading resource maps
+[15:00:21] Loaded resource maps
+[15:00:21] Loading resource modcars
+[15:00:22] Loaded resource modcars
+[15:00:22] Loading resource timecycle
+[15:00:22] Loaded resource timecycle
+[15:00:22] Loading resource modems
+[15:00:22] Loaded resource modems
+[15:00:22] Loading resource flatbedscript
+[15:00:22] Loaded resource flatbedscript
+[15:00:22] Loading resource meetingpoint
+[15:00:22] Loaded resource meetingpoint
+[15:00:22] Loading resource patoche_boatdealer
+[15:00:22] Loaded resource patoche_boatdealer
+[15:00:22] Loading resource SaltyClient
+[15:00:22] [SaltyChat] New status: enabled. Version: 1.2.0. Server-ID: k7NgKrbENwzMsIh6yj/8r9WQMl8=
+[15:00:23] Loaded resource SaltyClient
+[15:00:23] Loading resource HideMap
+[15:00:23] Loaded resource HideMap
+[15:00:23] Loading resource pointing
+[15:00:23] Loaded resource pointing
+[15:00:23] Loading resource weather
+[15:00:23] RealWeatherTimeSync: started
+[15:00:23] Loaded resource weather
+[15:00:23] Loading resource roleplay
+[15:00:26] 0 Charakter-Skins wurden geladen.
+[15:00:26] 0 Character Bank Accounts wurden geladen.
+[15:00:26] 0 Charakter Positionen wurden geladen.
+[15:00:26] 0 Charakter Inventar-Items wurden geladen.
+[15:00:26] 0 Character-Licenses wurden geladen.
+[15:00:26] 0 Character-Permissions wurden geladen.
+[15:00:26] 0 Character-Minijob-Entrys wurden geladen.
+[15:00:26] 0 Character-Phone-Chats wurden geladen.
+[15:00:26] 0 Character-Phone-Chat-Messages wurden geladen.
+[15:00:26] 0 Character-Phone-Contacts wurden geladen.
+[15:00:26] 0 Character-Phone-Verlauf wurden geladen.
+[15:00:26] 142 Server-Storages wurden geladen.
+[15:00:26] 104 Server-Wanted-Einträge wurden geladen.
+[15:00:26] 0 Characters-Wanted-Einträge wurden geladen.
+[15:00:26] 28 Server-Blips wurden geladen.
+[15:00:26] 5 Server-Marker wurden geladen.
+[15:00:26] 803 Server-All-Vehicles wurden geladen.
+[15:00:26] 309 Server-Animationen wurden geladen.
+[15:00:26] 78 Server-ATMs wurden geladen.
+[15:00:26] 16 Server-Banken wurden geladen.
+[15:00:26] 0 Server-Bank-Papers geladen.
+[15:00:26] 264 Server-Items wurden geladen.
+[15:00:26] 11 Server-Peds wurden geladen.
+[15:00:26] 15 Server-Clothes-Shops wurden geladen.
+[15:00:26] 30175 Server-Clothes-Shop-Items wurden geladen.
+[15:00:26] 51 Server-Shops wurden geladen.
+[15:00:26] 677 Server ShopItems wurden geladen.
+[15:00:26] 7 Server-Barbers wurden geladen.
+[15:00:26] 12 Server-Teleports wurden geladen.
+[15:00:26] 58 Server-Garagen wurden geladen.
+[15:00:26] 90 Server-Garagen Slots wurden geladen.
+[15:00:26] 0 Server-Vehicle-Mods wurden geladen.
+[15:00:26] 0 Server-Vehicles wurden geladen.
+[15:00:26] 0 Server-Vehicle-Trunk-Items wurden geladen.
+[15:00:26] 10 Server-Vehicle-Shops wurden geladen.
+[15:00:26] 142 Server-Vehicle-ShopItems wurden geladen.
+[15:00:27] 9 Server-Farming-Spots wurden geladen.
+[15:00:27] 19 Server-Farming-Verarbeiter wurden geladen.
+[15:00:27] 9 Server-Jobs wurden geladen.
+[15:00:27] 8 Server-Licenses wurden geladen.
+[15:00:27] 26 Server-Tankstellen wurden geladen.
+[15:00:27] 230 Server-Tankstellen-Spots wurden geladen
+[15:00:27] 9 Server-Tablet-App-Datas wurden geladen.
+[15:00:27] 0 Character-Tablet-App Einträge wurden geladen.
+[15:00:27] 0 Character-Tablet-Tutorial Entrys wurden geladen.
+[15:00:27] 0 Server-Tablet-Events wurden geladen.
+[15:00:27] 51 Server-Tablet-Notes wurden geladen.
+[15:00:27] 0 Server-Companys wurden geladen.
+[15:00:27] 0 Server-Company-Member wurden geladen.
+[15:00:27] 17 Server-Factions wurden geladen.
+[15:00:27] 30 Server-Faction-Positions wurden geladen.
+[15:00:27] 0 Server-Faction-Labor-Items wurden geladen.
+[15:00:27] 30 Server-Faction-Members wurden geladen.
+[15:00:27] 168 Server-Faction-Ranks wurden geladen.
+[15:00:27] 0 Server-Faction-Member wurden geladen.
+[15:00:27] 0 Server-Faction-Storage-Items wurden geladen.
+[15:00:27] 43 Server-Doors wurden geladen.
+[15:00:27] 7 Server-Hotels wurden geladen.
+[15:00:27] 68 Server-Hotels-Apartments wurden geladen.
+[15:00:27] 0 Server-Hotels-Storage-Items wurden geladen.
+[15:00:27] 1012 Server-Houses wurden geladen.
+[15:00:27] 10 Server-House-Interior wurden geladen.
+[15:00:27] 0 Server-House-Storage-Items wurden geladen.
+[15:00:27] 0 Server-House-Renter wurden geladen.
+[15:00:27] 6 Server-Minijobs-BusDriver-Routes wurden geladen.
+[15:00:27] 47 Server-Minijob-Busdriver-Spots wurden geladen.
+[15:00:27] 177 Server-Minijob-Garbage-Spots wurden geladen.
+[15:00:27] 0 Server-Fraktions-Logs wurden geladen.
+[15:00:27] 0 Server-Company-Logs wurden geladen.
+[15:00:27] Lade Minijob: Elektrolieferant...
+[15:00:27] Minijob: Elektrolieferant geladen...
+[15:00:27] Lade Minijob: Pilot...
+[15:00:27] Minijob: Pilot geladen...
+[15:00:27] Lade Minijob: Müllmann...
+[15:00:27] Minijob: Müllmann geladen...
+[15:00:27] Lade Minijob: Busfahrer...
+[15:00:27] Minijob: Busfahrer geladen...
+[15:00:27] Loaded resource roleplay
+[15:00:27] Loading resource DiscordLog
+[15:00:28] Loaded resource DiscordLog
+[15:00:28] Required server permissions:
+[15:00:28] Optional server permissions:
+[15:00:28] Starting HTTP server on 0.0.0.0:7788
+[15:00:28] Main thread started (ThreadId: 20132)
+[15:00:28] Colshape thread started (ThreadId: 31692)
+[15:00:28] EntityStreamer thread started (ThreadId: 26560)
+[15:00:28] Sync thread started (ThreadId: 21724)
+[15:00:28] Network thread started (ThreadId: 7508)
+[15:00:28] Console thread started (ThreadId: 27892)
+[15:00:28][Warning] Server started in debug mode
