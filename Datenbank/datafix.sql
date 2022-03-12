@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 12. Mrz 2022 um 15:00
+-- Erstellungszeit: 12. Mrz 2022 um 15:50
 -- Server-Version: 10.4.22-MariaDB
 -- PHP-Version: 8.1.2
 
@@ -46,7 +46,7 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `username`, `email`, `socialid`, `password`, `hwid`, `online`, `whitelisted`, `ban`, `banReason`, `adminlevel`) VALUES
-(1, 'TookieLive', 'pingobve@gmail.com', 357441060, '$2a$11$Uuduxc6UI0SJZTkE/iPbMu4xFfYqqZG46lFKbl6aQ9hQbGM0uevcG', 0, 0, 0, 0, '', 0);
+(2, 'mauke', 'mauke', 443259492, '$2a$11$oUZUwQeTLzkp0I0HXCYDZu5kRNEsz7EvGrWu5ht3DfU0Ryd9QYl.2', 10702691886087647157, 0, 1, 0, '', 1000);
 
 -- --------------------------------------------------------
 
@@ -100,6 +100,13 @@ CREATE TABLE `accounts_characters` (
   `isLaptopEquipped` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
+--
+-- Daten für Tabelle `accounts_characters`
+--
+
+INSERT INTO `accounts_characters` (`charId`, `accountId`, `charname`, `death`, `accState`, `firstjoin`, `firstspawnplace`, `firstJoinTimestamp`, `gender`, `birthdate`, `birthplace`, `health`, `armor`, `hunger`, `thirst`, `address`, `phonenumber`, `isCrime`, `paydayTime`, `job`, `jobHourCounter`, `lastJobPaycheck`, `weapon_primary`, `weapon_primary_ammo`, `weapon_secondary`, `weapon_secondary_ammo`, `weapon_secondary2`, `weapon_secondary2_ammo`, `weapon_fist`, `weapon_fist_ammo`, `isUnconscious`, `unconsciousTime`, `isFastFarm`, `fastFarmTime`, `lastLogin`, `isPhoneEquipped`, `playtimeHours`, `isInJail`, `jailTime`, `wallpaper`, `pedName`, `isAnimalPed`, `isLaptopEquipped`) VALUES
+(1, 2, 'ANdrew White', 0, 0, 0, 'lsairport', '2022-03-12 14:19:25', 0, '14.07.1995', 'None', 98, 0, 93, 93, 'Obdachlos', 8281708, 0, 21, 'None', 0, '2022-03-12 14:19:25', 'None', 0, 'None', 0, 'None', 0, 'None', 0, 0, 0, 0, 0, '2022-03-12 14:31:08', 0, 0, 0, 0, 1, 'none', 0, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -132,6 +139,18 @@ CREATE TABLE `characters_inventory` (
   `itemLocation` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
+--
+-- Daten für Tabelle `characters_inventory`
+--
+
+INSERT INTO `characters_inventory` (`id`, `charid`, `itemName`, `itemAmount`, `itemLocation`) VALUES
+(2, 1, 'Tasche', 1, 'inventory'),
+(3, 1, 'Sandwich', 3, 'backpack'),
+(4, 1, 'Tablet', 1, 'inventory'),
+(5, 1, 'Smartphone', 1, 'inventory'),
+(6, 1, 'Fahrzeugschluessel LSPD820', 2, 'schluessel'),
+(7, 1, 'Generalschluessel LSPD', 1, 'schluessel');
+
 -- --------------------------------------------------------
 
 --
@@ -145,6 +164,13 @@ CREATE TABLE `characters_lastpos` (
   `lastPosZ` float NOT NULL,
   `lastDimension` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+--
+-- Daten für Tabelle `characters_lastpos`
+--
+
+INSERT INTO `characters_lastpos` (`charid`, `lastPosX`, `lastPosY`, `lastPosZ`, `lastDimension`) VALUES
+(1, -354.62, -154.919, 39.0022, 0);
 
 -- --------------------------------------------------------
 
@@ -164,6 +190,13 @@ CREATE TABLE `characters_licenses` (
   `passengertransport` tinyint(1) NOT NULL DEFAULT 0,
   `weaponlicense` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+--
+-- Daten für Tabelle `characters_licenses`
+--
+
+INSERT INTO `characters_licenses` (`id`, `charId`, `pkw`, `lkw`, `bike`, `boat`, `fly`, `helicopter`, `passengertransport`, `weaponlicense`) VALUES
+(1, 1, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -285,6 +318,13 @@ CREATE TABLE `characters_skin` (
   `clothesDecal` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
+--
+-- Daten für Tabelle `characters_skin`
+--
+
+INSERT INTO `characters_skin` (`id`, `charId`, `facefeatures`, `headblendsdata`, `headoverlays`, `clothesTop`, `clothesTorso`, `clothesLeg`, `clothesFeet`, `clothesHat`, `clothesGlass`, `clothesEarring`, `clothesNecklace`, `clothesMask`, `clothesArmor`, `clothesUndershirt`, `clothesBracelet`, `clothesWatch`, `clothesBag`, `clothesDecal`) VALUES
+(1, 1, '[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]', '[0,0,0,0,0,0,0,0,0]', '[[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0],[1,10,10,1,1,1,1,1,1,1,1,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0]]', -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, 45, -2);
+
 -- --------------------------------------------------------
 
 --
@@ -305,6 +345,13 @@ CREATE TABLE `characters_tablet_apps` (
   `notices` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
+--
+-- Daten für Tabelle `characters_tablet_apps`
+--
+
+INSERT INTO `characters_tablet_apps` (`id`, `charId`, `weather`, `news`, `banking`, `lifeinvader`, `vehicles`, `events`, `company`, `buyapp`, `notices`) VALUES
+(1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -321,6 +368,13 @@ CREATE TABLE `characters_tablet_tutorial` (
   `useGarage` tinyint(1) NOT NULL DEFAULT 0,
   `acceptJob` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+--
+-- Daten für Tabelle `characters_tablet_tutorial`
+--
+
+INSERT INTO `characters_tablet_tutorial` (`id`, `charId`, `openTablet`, `openInventory`, `createBankAccount`, `buyVehicle`, `useGarage`, `acceptJob`) VALUES
+(1, 1, 0, 1, 0, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -395,6 +449,15 @@ CREATE TABLE `logs_login` (
   `success` tinyint(1) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+--
+-- Daten für Tabelle `logs_login`
+--
+
+INSERT INTO `logs_login` (`id`, `username`, `socialclub`, `text`, `ipadress`, `hardwareid`, `success`, `timestamp`) VALUES
+(1, 'mauke', 443259492, 'Erfolgreich eingeloggt.', '::ffff:127.0.0.1', 10702691886087647157, 1, '2022-03-12 14:19:10'),
+(2, 'mauke', 443259492, 'Erfolgreich eingeloggt.', '::ffff:127.0.0.1', 10702691886087647157, 1, '2022-03-12 14:19:43'),
+(3, 'mauke', 443259492, 'Erfolgreich eingeloggt.', '::ffff:127.0.0.1', 10702691886087647157, 1, '2022-03-12 14:31:05');
 
 -- --------------------------------------------------------
 
@@ -45359,6 +45422,13 @@ CREATE TABLE `server_faction_members` (
   `factionname` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
+--
+-- Daten für Tabelle `server_faction_members`
+--
+
+INSERT INTO `server_faction_members` (`id`, `charId`, `factionId`, `rank`, `servicenumber`, `isDuty`, `lastChange`, `phone`, `charname`, `rankname`, `factionname`) VALUES
+(4, 1, 2, 6, 1, 0, '2022-03-12 14:41:53', 8281708, 'ANdrew White', 'Chief of Justice', 'DOJ');
+
 -- --------------------------------------------------------
 
 --
@@ -47748,7 +47818,8 @@ INSERT INTO `server_items` (`id`, `itemName`, `itemType`, `itemDescription`, `it
 (10020, 'Eisenerz', 'farm', 'farm', 0.25, 0, 0, 0, 0, 'None', 1, 0, 1, 0, 'None', 0, 0, 0, 0, 0, 0, 'Ironor.png'),
 (10021, 'Zinkerz', 'farm', 'farm', 0.25, 0, 0, 0, 0, 'None', 1, 0, 1, 0, 'None', 0, 0, 0, 0, 0, 0, 'zinkor.png'),
 (10022, 'Kokain', 'farm', 'farm', 0.5, 0, 0, 0, 0, 'None', 1, 1, 1, 0, 'None', 0, 0, 0, 0, 0, 0, 'Kokain.png'),
-(10023, 'Kokablatt', 'farm', 'farm', 0.2, 0, 0, 0, 0, 'None', 1, 0, 1, 0, 'None', 0, 0, 0, 0, 0, 0, 'Kokablatt.png');
+(10023, 'Kokablatt', 'farm', 'farm', 0.2, 0, 0, 0, 0, 'None', 1, 0, 1, 0, 'None', 0, 0, 0, 0, 0, 0, 'Kokablatt.png'),
+(15000, 'Generalschluessel LSPD', 'keys', 'keys', 0, 0, 0, 0, 0, 'None', 1, 0, 1, 0, 'None', 0, 0, 0, 0, 0, 0, 'Generalschluessel.png');
 
 -- --------------------------------------------------------
 
@@ -48881,7 +48952,7 @@ INSERT INTO `server_shop_items` (`id`, `shopid`, `itemName`, `itemAmount`, `item
 (1015, 60, 'Karottensaft', 20, 42, 0),
 (1016, 60, 'Glasscheiben', 20, 54, 0),
 (1017, 84, 'Ephedrin', 20, 80, 0),
-(1018, 84, 'Meth', 20, 80, 0),
+(1018, 84, 'Meth', 20, 107, 0),
 (1019, 84, 'Joint', 20, 80, 0),
 (1020, 84, 'Kevlar', 20, 145, 0),
 (1021, 30, 'Rechnungspapier', 30, 1, 0),
@@ -48944,7 +49015,8 @@ INSERT INTO `server_shop_items` (`id`, `shopid`, `itemName`, `itemAmount`, `item
 (416931, 31, 'Verbandskasten', 1, 50, 0),
 (416932, 88, 'Cannabiskiste', 1, 4888, 0),
 (416933, 88, 'Methkiste', 1, 4888, 0),
-(416934, 88, 'Joints', 1, 350, 0);
+(416934, 88, 'Joints', 1, 350, 0),
+(416935, 30, 'Generalschluessel LSPD', 1, 0, 2);
 
 -- --------------------------------------------------------
 
@@ -50271,6 +50343,13 @@ CREATE TABLE `server_vehicles` (
   `buyDate` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
+--
+-- Daten für Tabelle `server_vehicles`
+--
+
+INSERT INTO `server_vehicles` (`id`, `charid`, `hash`, `vehType`, `faction`, `fuel`, `km`, `enginestate`, `isEngineHealthy`, `lockstate`, `isingarage`, `garageid`, `posX`, `posY`, `posZ`, `rotX`, `rotY`, `rotZ`, `plate`, `lastUsage`, `buyDate`) VALUES
+(1, 1, 2046537925, 0, 0, 119.875, 0.000000306698, 0, 1, 1, 1, 1, 452.585, -1007.38, 26.8367, 0.00100872, -0.259828, -3.12265, 'LSPD820', '2022-03-12 14:39:34', '2022-03-12 14:32:18');
+
 -- --------------------------------------------------------
 
 --
@@ -50350,6 +50429,13 @@ CREATE TABLE `server_vehicles_mod` (
   `smoke` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
+--
+-- Daten für Tabelle `server_vehicles_mod`
+--
+
+INSERT INTO `server_vehicles_mod` (`id`, `vehId`, `colorPearl`, `headlightColor`, `spoiler`, `front_bumper`, `rear_bumper`, `side_skirt`, `exhaust`, `frame`, `grille`, `hood`, `fender`, `right_fender`, `roof`, `engine`, `brakes`, `transmission`, `horns`, `suspension`, `armor`, `turbo`, `xenon`, `wheel_type`, `wheels`, `wheelcolor`, `plate_holder`, `trim_design`, `ornaments`, `dial_design`, `steering_wheel`, `shift_lever`, `plaques`, `hydraulics`, `airfilter`, `window_tint`, `livery`, `plate`, `neon`, `neon_r`, `neon_g`, `neon_b`, `smoke_r`, `smoke_g`, `smoke_b`, `back_wheels`, `plate_vanity`, `door_interior`, `seats`, `rear_shelf`, `trunk`, `engine_block`, `strut_bar`, `arch_cover`, `antenna`, `exterior_parts`, `tank`, `rear_hydraulics`, `door`, `plate_color`, `colorPrimary_r`, `colorPrimary_g`, `colorPrimary_b`, `colorSecondary_r`, `colorSecondary_g`, `colorSecondary_b`, `colorPrimaryType`, `colorSecondaryType`, `interior_color`, `smoke`) VALUES
+(1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -50394,16 +50480,16 @@ CREATE TABLE `server_vehicle_shops` (
 --
 
 INSERT INTO `server_vehicle_shops` (`id`, `name`, `pedX`, `pedY`, `pedZ`, `pedRot`, `parkOutX`, `parkOutY`, `parkOutZ`, `parkOutRotX`, `parkOutRotY`, `parkOutRotZ`, `neededLicense`, `sellX`, `sellY`, `sellZ`) VALUES
-(1, 'Premium Deluxe Motorsports', -56.6182, -1098.63, 26.4154, 30.9921, -45.7582, -1082.11, 26.0041, 0, 0, 1.18737, 'None', 0, 0, 0),
-(2, 'Harrys Lkws', -126.847, -2530.6, 6.09448, -126.734, -102.857, -2531.31, 7, 0, 0, -0.593687, 'None', 0, 0, 0),
-(4, 'Gebrauchtwagenhändler', -984.066, -2640.36, 13.98, 150.236, -993.679, -2655.82, 13.9634, 0, 0, -2, 'None', 0, 0, 0),
-(5, 'Mosleys Lowrider', -37.5692, -1671.44, 29.4652, 145.108, -24.1451, -1677.77, 30, 0, 0, 1.92948, 'None', 0, 0, 0),
-(12, 'Sanders Sport Motorcycles', 268.602, -1155.36, 29.2799, 79.7434, 263.84, -1172.36, 29, 0, 0, 2.2758, 'None', 0, 0, 0),
-(14, 'Vapid\'s Coupés', -180.607, -1178.45, 23.1128, -173.981, -174.659, -1182.73, 23.1633, 0, 0, 1.53369, 'None', 0, 0, 0),
-(15, 'Larrys Off-Roader', 1224.69, 2728.01, 37.9912, 175.055, 1225.4, 2714.94, 38.463, 0, 0, -3.11686, 'None', 0, 0, 0),
-(999, 'Gebrauchtwagenankauf', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'None', 376.365, -1612.3, 28.6901),
-(1000, 'Adminhändler', 2786.32, 1397.39, 24.6461, 89.5912, 2743.89, 1368.82, 24.1069, 0, 0, -3.11686, 'None', 2794.89, 1409.88, 24.4271),
-(1002, 'Classic´s Helikopter', -1621.5, -3152.8, 13.9802, 48.189, -1653.39, -3144.07, 14.7373, 0, 0, -28.3465, 'None', 0, 0, 0);
+(1, 'Premium Deluxe Motorsports', -56.6182, -1098.63, 25.4224, 30.9921, -13.0418, -1080.87, 25.8931, 0, 0, 1.1875, 'None', 0, 0, 0),
+(2, 'LKWS', 638.215, 205.78, 97.589, 0.395791, 630.079, 195.746, 97.0835, 0, 0, 1.92948, 'None', 0, 0, 0),
+(3, 'Compact Wagen', 268.404, -1156.35, 28.2799, -1.53369, 256.312, -1161.03, 29.1787, 0, 0, 0.0989478, 'None', 0, 0, 0),
+(4, 'Fahrradhändler', -984.322, -2640.86, 12.9802, 157.684, -993.679, -2655.82, 13.9634, 0, 0, 2.67159, 'None', 0, 0, 0),
+(5, 'Yekashi Imports', -40.5758, -1674.55, 28.4821, 145.108, -24.1451, -1677.77, 30, 0, 0, 1.92948, 'None', 0, 0, 0),
+(6, 'Polizeifahrzeugshop', 458.927, -1017.2, 28, 92.5563, 452.598, -1007.6, 28.241, 0.21875, 0, -3.125, 'None', 0, 0, 0),
+(7, 'Polizeihelikoptershop', 463.635, -985.24, 43, 95.5878, 450.409, -981.389, 43.7876, 0, 0, 1.54688, 'None', 0, 0, 0),
+(8, 'Medicfahrzeugshop', 297.613, -600.765, 43, 171.179, 273.007, -608.848, 42.6249, -0.03125, 0, 1.67188, 'None', 0, 0, 0),
+(9, 'Medichelikoptershop', 337.569, -586.523, 73.9, -108.428, 352.207, -589.002, 74.252, 0, 0, 0.053125, 'None', 0, 0, 0),
+(10, 'Mechanikerfahrzeugshop', -355.396, 152.73, 39.0022, -128.388, -356.927, -158.927, 38.7157, 0, 0, 0.494739, 'None', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -50431,148 +50517,57 @@ CREATE TABLE `server_vehicle_shops_items` (
 --
 
 INSERT INTO `server_vehicle_shops_items` (`id`, `shopid`, `hash`, `price`, `posX`, `posY`, `posZ`, `rotX`, `rotY`, `rotZ`, `isOnlyOnlineAvailable`, `isSpawned`) VALUES
-(22, 3, 3950024287, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(23, 3, 3117103977, 20000, 0, 0, 0, 0, 0, 0, 0, 0),
-(24, 3, 2844316578, 22500, 0, 0, 0, 0, 0, 0, 0, 0),
-(25, 3, 3164157193, 22000, 0, 0, 0, 0, 0, 0, 0, 0),
-(26, 4, 2452219115, 1500, 0, 0, 0, 0, 0, 0, 0, 0),
-(27, 4, 3627815886, 3000, 0, 0, 0, 0, 0, 0, 0, 0),
-(30, 5, 634118882, 45000, -60.1319, -1686.94, 29.381, 0, 0, -1.92948, 0, 1),
-(31, 5, 3101863448, 27500, 0, 0, 0, 0, 0, 0, 0, 0),
-(32, 5, 2751205197, 20000, 0, 0, 0, 0, 0, 0, 0, 0),
-(243, 5, 1871995513, 25000, -41.3802, -1688.85, 28.8755, 0, 0, 0.742109, 0, 1),
-(244, 5, 523724515, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(246, 5, 1507916787, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(247, 5, 2198276962, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(248, 5, 3089165662, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(249, 5, 3612755468, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(250, 5, 349605904, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(251, 5, 2728360112, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(252, 5, 784565758, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(253, 5, 1279262537, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(260, 5, 723973206, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(262, 5, 2175389151, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(263, 5, 2504420315, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(265, 5, 3027423925, 25000, -38.1758, -1659.47, 29.1113, 0, 0, -1.3358, 0, 1),
-(266, 5, 2494797233, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(267, 5, 349315417, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(268, 5, 722226637, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(269, 5, 15219735, 25000, -17.9604, -1648.67, 28.8923, 0, 0, 2.77054, 0, 1),
-(270, 5, 37348240, 25000, -34.5494, -1655.37, 28.8418, 0, 0, -2.96843, 0, 1),
-(271, 5, 600450546, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(278, 5, 525509695, 25000, -52.7604, -1679.72, 28.9766, 0, 0, -1.88001, 0, 1),
-(279, 5, 2351681756, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(280, 5, 1830407356, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(281, 5, 2199527893, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(283, 5, 3705788919, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(284, 5, 4067225593, 25000, -50.2154, -1693.78, 28.9766, 0, 0, 0.791582, 0, 1),
-(286, 5, 777714999, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(287, 5, 2609945748, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(288, 5, 223258115, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(289, 5, 729783779, 25000, -45.9824, -1690.77, 28.9934, 0, 0, 0.742109, 0, 1),
-(290, 5, 833469436, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(291, 5, 1119641113, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(295, 5, 1923400478, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(296, 5, 3893323758, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(297, 5, 972671128, 25000, -27.1253, -1658.08, 28.9934, 0, 0, -0.643161, 0, 1),
-(298, 5, 3084515313, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(299, 5, 1456744817, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(300, 5, 4245851645, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(301, 5, 3469130167, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(302, 5, 3796912450, 25000, -22.8527, -1646.66, 28.9934, 0, 0, 2.77054, 0, 1),
-(304, 5, 3395457658, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(305, 5, 1693751655, 25000, 0, 0, 0, 0, 0, 0, 0, 0),
-(306, 15, 3579220348, 30000, 0, 0, 0, 0, 0, 0, 0, 0),
-(308, 15, 1645267888, 30000, 0, 0, 0, 0, 0, 0, 0, 0),
-(309, 15, 1933662059, 30000, 0, 0, 0, 0, 0, 0, 0, 0),
-(310, 15, 3087195462, 30000, 1230.33, 2723.88, 37.5868, 0, 0, -3.11686, 0, 1),
-(311, 15, 2249373259, 30000, 0, 0, 0, 0, 0, 0, 0, 0),
-(312, 15, 2762269779, 30000, 1218.92, 2724.36, 37.99, 0, 0, 3.06738, 0, 1),
-(313, 15, 3105951696, 30000, 1235.97, 2727.23, 38.0081, 0, 0, -3.06738, 0, 1),
-(314, 15, 989381445, 30000, 1213.86, 2727.55, 37.7554, 0, 0, -3.06738, 0, 1),
-(315, 15, 101905590, 30000, 0, 0, 0, 0, 0, 0, 0, 0),
-(316, 15, 3631668194, 30000, 0, 0, 0, 0, 0, 0, 0, 0),
-(317, 15, 740289177, 30000, 1248, 2719.37, 37.6036, 0, 0, 2.91896, 0, 1),
-(353, 22, 3568198617, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-(373, 12, 3685342204, 25000, 248.149, -1148.45, 28.7744, 0, 0, -2.52001, 0, 1),
-(374, 12, 2941886209, 30000, 246.149, -1148.45, 28.5721, 0, 0, -2.52001, 0, 1),
-(375, 12, 4154065143, 25000, 244.149, -1148.45, 28.7744, 0, 0, -2.52001, 0, 1),
-(376, 12, 1836027715, 25000, 239.81, -1163.16, 28.589, 0, 0, 0.24737, 0, 1),
-(377, 12, 3385765638, 25000, 243.81, -1163.16, 28.6732, 0, 0, 0.24737, 0, 1),
-(378, 12, 640818791, 25000, 245.81, -1163.16, 28.7744, 0, 0, 0.24737, 0, 1),
-(379, 12, 3537231886, 15000, 250.149, -1148.45, 28.6901, 0, 0, -2.52001, 0, 1),
-(380, 12, 2841686334, 15000, 266.149, -1148.45, 28.7744, 0, 0, -2.52001, 0, 1),
-(381, 12, 788045382, 15000, 264.149, -1148.45, 28.7744, 0, 0, -2.52001, 0, 1),
-(385, 12, 2035069708, 15000, 258.149, -1148.45, 28.7744, 0, 0, -2.52001, 0, 1),
-(386, 12, 1753414259, 15000, 256.149, -1148.45, 28.7744, 0, 0, -2.52001, 0, 1),
-(387, 12, 390201602, 15000, 254.149, -1148.45, 28.7744, 0, 0, -2.52001, 0, 1),
-(388, 12, 4039289119, 25000, 247.81, -1163.16, 28.6732, 0, 0, 0.24737, 0, 1),
-(389, 12, 1265391242, 25000, 249.81, -1163.16, 28.6732, 0, 0, 0.24737, 0, 1),
-(391, 12, 3401388520, 25000, 241.81, -1163.16, 28.7744, 0, 0, 0.24737, 0, 1),
-(392, 12, 1672195559, 25000, 267.84, -1163.16, 28.7744, 0, 0, 0.24737, 0, 1),
-(394, 12, 822018448, 25000, 259.84, -1163.16, 28.6732, 0, 0, 0.24737, 0, 1),
-(395, 12, 4055125828, 25000, 257.84, -1163.16, 28.5216, 0, 0, 0.24737, 0, 1),
-(396, 12, 1790834270, 25000, 255.84, -1163.16, 28.5048, 0, 0, 0.24737, 0, 1),
-(397, 12, 11251904, 25000, 261.613, -1163.16, 28.6901, 0, 0, 0.24737, 0, 1),
-(398, 12, 2623969160, 25000, 253.84, -1163.16, 28.6564, 0, 0, 0.24737, 0, 1),
-(399, 12, 627535535, 25000, 251.81, -1163.16, 28.5553, 0, 0, 0.24737, 0, 1),
-(400, 12, 741090084, 20000, 252.796, 2599.09, 44.53, 0, 0, 0, 0, 0),
-(401, 12, 301427732, 20000, 250.796, 2599.09, 44.835, 0, 0, 0, 0, 0),
-(403, 12, 2688780135, 20000, 257.266, 2605.66, 44.45, 0, 0, 0, 0, 0),
-(404, 12, 1873600305, 10000, 255.266, 2605.66, 44.5, 0, 0, 0, 0, 0),
-(405, 12, 3676349299, 20000, 251.266, 2605.66, 44.6, 0, 0, 0, 0, 0),
-(406, 12, 3724934023, 15000, 249.266, 2605.66, 44.65, 0, 0, 0, 0, 0),
-(407, 12, 2154536131, 20000, 262.796, 2599.09, 44.5, 0, 0, 0, 0, 0),
-(408, 12, 2890830793, 20000, 254.796, 2599.09, 44.525, 0, 0, 0, 0, 0),
-(409, 12, 2006142190, 20000, 256.796, 2599.09, 44.52, 0, 0, 0, 0, 0),
-(410, 12, 6774487, 20000, 258.796, 2599.09, 44.51, 0, 0, 0, 0, 0),
-(411, 12, 2179174271, 20000, 260.796, 2599.09, 44.4817, 0, 0, 0, 0, 0),
-(412, 14, 3172678083, 15000, -140.901, -1183.66, 24.6124, 0, 0, 0.692635, 0, 1),
-(413, 14, 3783366066, 50000, -152.044, -1184.2, 24.3597, 0, 0, 0.692635, 0, 1),
-(414, 14, 2945871676, 30000, -136.721, -1168.8, 26.2502, 0, 0, 2.52317, 1, 0),
-(415, 14, 4205676014, 11500, -147.824, -1161.73, 24.9326, 0, 0, 2.82001, 0, 1),
-(416, 14, 2364918497, 100000, -141.284, -1162.96, 24.7473, 0, 0, 2.82001, 0, 1),
-(417, 14, 1349725314, 19500, -144.593, -1183.86, 24.5787, 0, 0, 0.692635, 0, 1),
-(418, 14, 3670438162, 100000, -136.945, 1183.75, 24.9663, 0, 0, 0.692635, 0, 1),
-(419, 14, 1581459400, 75000, -144.409, -1161.93, 24.7473, 0, 0, 2.82001, 0, 1),
-(420, 14, 1348744438, 50000, -150.897, -1175.27, 24.8652, 0, 0, 1.1379, 0, 1),
-(421, 14, 3903372712, 11000, -151.24, -1172.48, 24.8484, 0, 0, 1.1379, 0, 1),
-(422, 14, 4289813342, 25000, -150.963, -1161.48, 24.9642, 0, 0, 2.82001, 0, 1),
-(423, 14, 3703357000, 55000, -151.346, -1169.46, 24.7979, 0, 0, 1.1379, 0, 1),
-(451, 23, 3564062519, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-(452, 23, 2157618379, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-(536, 1000, 2288235567, 100, 2758.73, 1331.16, 21.2924, 0, 0, 0, 0, 0),
-(537, 1000, 4151271568, 100, 2750.32, 1331.29, 24.1575, 0, 0, 0, 0, 0),
-(575, 1000, 949614817, 0, 2742.94, 1330.67, 24.1575, 0, 0, 0, 0, 0),
-(577, 15, 2859047862, 15000, 1206.21, 2724.61, 37.99, 0, 0, -1.73159, 0, 1),
-(578, 1000, 4167070867, 0, 2728.58, 1330.34, 24.1575, 0, 0, 0, 0, 0),
-(579, 1000, 2557800893, 0, 2721.14, 1329.13, 24.1575, 0, 0, 0, 0, 0),
-(580, 1000, 3221727505, 0, 2713.96, 1329.73, 24.1575, 0, 0, 0, 0, 0),
-(581, 1000, 2501405741, 0, 2706.34, 1329.67, 24.1575, 0, 0, 0, 0, 0),
-(583, 1000, 3557826374, 0, 2699.09, 1330.02, 24.1575, 0, 0, 0, 0, 0),
-(586, 2, 3387490166, 15000, 0, 0, 0, 0, 0, 0, 0, 0),
-(587, 2, 2948279460, 18000, 0, 0, 0, 0, 0, 0, 0, 0),
-(588, 2, 2551651283, 18000, 0, 0, 0, 0, 0, 0, 0, 0),
-(589, 2, 893081117, 18000, 0, 0, 0, 0, 0, 0, 0, 0),
-(590, 2, 1945374990, 100000, 0, 0, 0, 0, 0, 0, 0, 0),
-(591, 2, 2589662668, 120000, 0, 0, 0, 0, 0, 0, 0, 0),
-(592, 2, 2053223216, 160000, 0, 0, 0, 0, 0, 0, 0, 0),
-(593, 2, 2112052861, 250000, 0, 0, 0, 0, 0, 0, 0, 0),
-(594, 1002, 745926877, 220000, 0, 0, 0, 0, 0, 0, 0, 0),
-(595, 1002, 744705981, 205000, 0, 0, 0, 0, 0, 0, 0, 0),
-(596, 1002, 2310691317, 210000, 0, 0, 0, 0, 0, 0, 0, 0),
-(597, 1002, 2634305738, 230000, 0, 0, 0, 0, 0, 0, 0, 0),
-(598, 1002, 3568198617, 260000, 0, 0, 0, 0, 0, 0, 0, 0),
-(599, 1002, 3955379698, 500000, 0, 0, 0, 0, 0, 0, 0, 0),
-(600, 1002, 2449479409, 500000, 0, 0, 0, 0, 0, 0, 0, 0),
-(601, 1, 2598821281, 180000, 0, 0, 0, 0, 0, 0, 0, 0),
-(602, 1, 418536135, 190000, 0, 0, 0, 0, 0, 0, 0, 0),
-(603, 1, 2536829930, 180000, 0, 0, 0, 0, 0, 0, 0, 0),
-(604, 1, 338562499, 200000, 0, 0, 0, 0, 0, 0, 0, 0),
-(605, 1, 2672523198, 170000, 0, 0, 0, 0, 0, 0, 0, 0),
-(606, 1, 3460613305, 150000, 0, 0, 0, 0, 0, 0, 0, 0),
-(607, 1, 4086055493, 185000, 0, 0, 0, 0, 0, 0, 0, 0),
-(608, 1, 3847255899, 200000, 0, 0, 0, 0, 0, 0, 0, 0);
+(9, 2, 2255212070, 55000, 660.29, 196.444, 94.9941, 0, 0, -1.1379, 0, 0),
+(10, 2, 4175309224, 55000, 658.51, 192.079, 95.011, 0, 0, -1.1379, 0, 0),
+(11, 2, 943752001, 55000, 655.51, 185.248, 95.011, 0, 0, -1.1379, 0, 0),
+(12, 2, 1162065741, 55000, 655.51, 181.49, 95.011, 0, 0, -1.1379, 0, 0),
+(13, 2, 2549763894, 75000, 653.51, 177.086, 95.011, 0, 0, -1.1379, 0, 0),
+(14, 2, 296357396, 75000, 652.51, 173.235, 95.011, 0, 0, -1.1379, 0, 0),
+(15, 2, 3387490166, 75000, 651.51, 169.622, 95.011, 0, 0, -1.1379, 0, 0),
+(16, 2, 2551651283, 75000, 650.51, 165.732, 95.011, 0, 0, -1.1379, 0, 0),
+(17, 2, 2948279460, 75000, 649.51, 162, 95.011, 0, 0, -1.1379, 0, 0),
+(18, 2, 2242229361, 2500000, 624.897, 180.396, 97.1003, 0, 0, 1.9, 0, 0),
+(19, 2, 2053223216, 3500000, 624.897, 186.949, 97.1003, 0, 0, 1.9, 0, 0),
+(20, 2, 2112052861, 5000000, 619.609, 150.949, 96.8308, 0, 0, 0.3, 0, 0),
+(21, 3, 3164157193, 20000, 243.508, -1150.05, 29.1956, 0, 0, -3.06738, 0, 0),
+(22, 3, 3950024287, 25000, 246.508, -1150.05, 29.1956, 0, 0, -3.06738, 0, 0),
+(23, 3, 3117103977, 20000, 250.009, -1150.05, 29.1956, 0, 0, -3.06738, 0, 0),
+(24, 3, 2844316578, 22500, 253.009, -1150.05, 29.1956, 0, 0, -3.06738, 0, 0),
+(25, 3, 3164157193, 22000, 256.009, -1150.05, 29.1956, 0, 0, -3.06738, 0, 0),
+(26, 4, 448402357, 500, -990.818, -2658.57, 13.559, 0, 0, 0.65625, 0, 0),
+(27, 4, 4108429845, 750, -989.855, -2656.63, 13.6432, 0, 0, 0.65625, 0, 0),
+(28, 5, 4108429845, 220000, -46.0615, -1691.71, 29.1282, 0, 0.015625, -0.015625, 0, 0),
+(29, 5, 2364918497, 800000, -55.4901, -1681.79, 28.926, 0, 0, -1.875, 0, 0),
+(30, 5, 634118882, 350000, -52.0352, -1693.67, 29.4147, 0, 0, -0.15625, 0, 0),
+(31, 5, 3101863448, 180000, -41.0637, -1689.9, 28.7406, 0.015625, 0, 0.03125, 0, 0),
+(32, 5, 2751205197, 200000, -58.5626, -1685.7, 29.4315, 0, 0, -1.84375, 0, 0),
+(33, 5, 3884762073, 800000, -51.6396, -1678.69, 28.8923, 0, -0.015625, -1.89062, 0, 0),
+(34, 5, 3783366066, 270000, -57.5868, -1691.35, 28.8, 0, 0, -0.791582, 0, 0),
+(35, 1, 2983726598, 55000, -45.0725, -1116.4, 26.1963, -0.015625, 0, 0.015625, 0, 0),
+(36, 1, 3253274834, 275000, -39.6, -1096.4, 25.9941, 0, 0, -3, 0, 0),
+(37, 1, 3249425686, 780000, -42.6857, -1094.14, 25.9773, 0, 0, -3, 0, 0),
+(38, 1, 1456336509, 470000, -45.4286, -1093.81, 25.8257, 0, 0, -3, 0, 0),
+(39, 1, 2945871676, 940000, -48.3956, -1093.91, 26.1289, 0, 0, -3, 0, 0),
+(40, 1, 1693751655, 1050000, -37.4901, -1088.28, 25.8594, 0, 0, -1.89062, 0, 0),
+(41, 1, 1909141499, 105000, -48.8308, -1103.02, 26.1121, 0, 0, -1.90625, 0, 0),
+(42, 1, 767087018, 480000, -61.9516, -1116.63, 26.1121, 0, 0, 0.015625, 0, 0),
+(43, 1, 2891838741, 1150000, -59.0769, -1116.74, 25.9941, 0, 0, 0.015625, 0, 0),
+(44, 1, 1475773103, 85000, -47.9022, -1115.99, 26.6344, 0, 0, 0.015625, 0, 0),
+(45, 1, 758895617, 425000, -50.7297, -1116.24, 25.8425, 0, 0, 0.015625, 0, 0),
+(46, 1, 3306466016, 165000, -56.4396, -1117.27, 25.8594, 0, 0, 0.015625, 0, 0),
+(47, 1, 2728226064, 410000, -53.5912, -1117.04, 25.6066, 0, 0, 0.015625, 0, 0),
+(48, 6, 2046537925, 10000, 446.097, -1025.63, 28.2351, 0, 0.015625, 0.09375, 0, 0),
+(49, 6, 2667966721, 20000, 442.18, -1026.17, 28.3195, 0, 0.015625, 0.09375, 0, 0),
+(50, 6, 1912215274, 30000, 438.527, -1026.47, 28.5385, 0, 0.015625, 0.09375, 0, 0),
+(51, 7, 353883353, 50000, 0, 0, 0, 0, 0, 0, 0, 0),
+(52, 8, 1171614426, 10000, 299.934, -616.945, 43.2146, 0, 0, 1.1875, 0, 0),
+(53, 9, 2634305738, 50000, 0, 0, 0, 0, 0, 0, 0, 0),
+(54, 10, 2971866336, 20000, 0, 0, 0, 0, 0, 0, 0, 0),
+(55, 10, 3852654278, 10000, 0, 0, 0, 0, 0, 0, 0, 0),
+(56, 12, 1489967196, 1, 0, 0, 0, 0, 0, 0, 0, 0),
+(57, 4, 1131912276, 600, -991.807, -2660.33, 13.3568, 0, 0, 0.65625, 0, 0),
+(58, 4, 3458454463, 850, -993.073, -2662.26, 13.5927, 0, 0, 0.65625, 0, 0),
+(59, 4, 3894672200, 900, -994.233, -2664.34, 13.5927, 0, 0, 0.65625, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -51179,13 +51174,13 @@ ALTER TABLE `server_wanteds`
 -- AUTO_INCREMENT für Tabelle `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT für Tabelle `accounts_characters`
 --
 ALTER TABLE `accounts_characters`
-  MODIFY `charId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `charId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT für Tabelle `characters_bank`
@@ -51197,13 +51192,13 @@ ALTER TABLE `characters_bank`
 -- AUTO_INCREMENT für Tabelle `characters_inventory`
 --
 ALTER TABLE `characters_inventory`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT für Tabelle `characters_licenses`
 --
 ALTER TABLE `characters_licenses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT für Tabelle `characters_minijobs`
@@ -51251,19 +51246,19 @@ ALTER TABLE `characters_phone_verlauf`
 -- AUTO_INCREMENT für Tabelle `characters_skin`
 --
 ALTER TABLE `characters_skin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT für Tabelle `characters_tablet_apps`
 --
 ALTER TABLE `characters_tablet_apps`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT für Tabelle `characters_tablet_tutorial`
 --
 ALTER TABLE `characters_tablet_tutorial`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT für Tabelle `characters_tattoos`
@@ -51293,7 +51288,7 @@ ALTER TABLE `logs_faction`
 -- AUTO_INCREMENT für Tabelle `logs_login`
 --
 ALTER TABLE `logs_login`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT für Tabelle `server_all_vehicles`
@@ -51389,7 +51384,7 @@ ALTER TABLE `server_faction_labor_items`
 -- AUTO_INCREMENT für Tabelle `server_faction_members`
 --
 ALTER TABLE `server_faction_members`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT für Tabelle `server_faction_positions`
@@ -51497,7 +51492,7 @@ ALTER TABLE `server_houses_storage`
 -- AUTO_INCREMENT für Tabelle `server_items`
 --
 ALTER TABLE `server_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10024;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15001;
 
 --
 -- AUTO_INCREMENT für Tabelle `server_jobs`
@@ -51551,7 +51546,7 @@ ALTER TABLE `server_shops`
 -- AUTO_INCREMENT für Tabelle `server_shop_items`
 --
 ALTER TABLE `server_shop_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=416935;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=416936;
 
 --
 -- AUTO_INCREMENT für Tabelle `server_storages`
@@ -51587,13 +51582,13 @@ ALTER TABLE `server_teleports`
 -- AUTO_INCREMENT für Tabelle `server_vehicles`
 --
 ALTER TABLE `server_vehicles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT für Tabelle `server_vehicles_mod`
 --
 ALTER TABLE `server_vehicles_mod`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT für Tabelle `server_vehicle_items`
@@ -51605,13 +51600,13 @@ ALTER TABLE `server_vehicle_items`
 -- AUTO_INCREMENT für Tabelle `server_vehicle_shops`
 --
 ALTER TABLE `server_vehicle_shops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1003;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT für Tabelle `server_vehicle_shops_items`
 --
 ALTER TABLE `server_vehicle_shops_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=609;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT für Tabelle `server_wanteds`
