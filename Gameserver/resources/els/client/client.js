@@ -17,7 +17,7 @@ alt.everyTick(() => {
     game.disableControlAction(0, 14, true);
     if (game.isDisabledControlJustPressed(0, 14)){
         if(alt.Player.local.vehicle == null || game.getVehicleClass(alt.Player.local.vehicle.scriptID) != 18){return;}
-        if(alt.Player.local.vehicle != null && alt.Player.local.scriptID != game.getPedInVehicleSeat(alt.Player.local.vehicle.scriptID, -1)){return;}
+        if(alt.Player.local.vehicle != null && alt.Player.local.scriptID != game.getPedInVehicleSeat(alt.Player.local.vehicle.scriptID, -1, false)){return;}
         var index = sirenDict[alt.Player.local.vehicle.id].index;
         if(index == sirenStrings.length-1){
             index = 0;
@@ -55,7 +55,7 @@ function toggleEmergencyLight(){
 
 alt.on('keydown', (key) => {
     if(alt.Player.local.vehicle == null || game.getVehicleClass(alt.Player.local.vehicle.scriptID) != 18){return;}
-    if(alt.Player.local.vehicle != null && alt.Player.local.scriptID != game.getPedInVehicleSeat(alt.Player.local.vehicle.scriptID, -1)){return;}
+    if(alt.Player.local.vehicle != null && alt.Player.local.scriptID != game.getPedInVehicleSeat(alt.Player.local.vehicle.scriptID, -1, false)){return;}
     if (key === "Q".charCodeAt(0)) {
         disableRadio();
         toggleEmergencyLight();
