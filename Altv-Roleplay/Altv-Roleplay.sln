@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altv-Roleplay", "Altv-Rolep
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordLog", "DiscordLog\DiscordLog.csproj", "{11C71B78-004A-471F-B29D-C2CBE4673579}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaltyChat.Server", "SaltyServer\SaltyChat.Server.csproj", "{DABB54BF-2EB1-4E41-8361-CAF662ABE86E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaltyChat.Server", "SaltyServer\SaltyChat.Server.csproj", "{8FCDC6E9-6E97-4539-8F33-0796482956D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{11C71B78-004A-471F-B29D-C2CBE4673579}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11C71B78-004A-471F-B29D-C2CBE4673579}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11C71B78-004A-471F-B29D-C2CBE4673579}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DABB54BF-2EB1-4E41-8361-CAF662ABE86E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DABB54BF-2EB1-4E41-8361-CAF662ABE86E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DABB54BF-2EB1-4E41-8361-CAF662ABE86E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DABB54BF-2EB1-4E41-8361-CAF662ABE86E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FCDC6E9-6E97-4539-8F33-0796482956D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FCDC6E9-6E97-4539-8F33-0796482956D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FCDC6E9-6E97-4539-8F33-0796482956D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FCDC6E9-6E97-4539-8F33-0796482956D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

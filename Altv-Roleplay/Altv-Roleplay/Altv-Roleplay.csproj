@@ -3,9 +3,9 @@
   <PropertyGroup>
 	  <TargetFramework>net6.0</TargetFramework>
 	  <RootNamespace>Altv_Roleplay</RootNamespace>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+	  <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	  <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -38,7 +38,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DiscordLog\DiscordLog.csproj" />
-    <ProjectReference Include="..\SaltyServer\SaltyChat.Server.csproj" />
   </ItemGroup>
 
 </Project>

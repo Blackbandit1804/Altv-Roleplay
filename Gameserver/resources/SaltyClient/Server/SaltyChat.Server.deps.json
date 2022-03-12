@@ -8,14 +8,14 @@
     ".NETCoreApp,Version=v6.0": {
       "SaltyChat.Server/1.0.0": {
         "dependencies": {
-          "AltV.Net.Async": "9.0.4",
+          "AltV.Net.Async": "9.0.0",
           "Newtonsoft.Json": "13.0.1"
         },
         "runtime": {
           "SaltyChat.Server.dll": {}
         }
       },
-      "AltV.Net/9.0.4": {
+      "AltV.Net/9.0.0": {
         "runtime": {
           "lib/net6.0/AltV.Net.dll": {
             "assemblyVersion": "1.0.0.0",
@@ -23,9 +23,9 @@
           }
         }
       },
-      "AltV.Net.Async/9.0.4": {
+      "AltV.Net.Async/9.0.0": {
         "dependencies": {
-          "AltV.Net": "9.0.4",
+          "AltV.Net": "9.0.0",
           "System.Threading.Channels": "5.0.0"
         },
         "runtime": {
@@ -52,19 +52,19 @@
       "serviceable": false,
       "sha512": ""
     },
-    "AltV.Net/9.0.4": {
+    "AltV.Net/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-nBCzW5LeK8BThi7qM0D36t5c0LCdxGUxPW4Lcs0mf3EVjnrcsBu1u3VJwoR4FK3Hj41XsRQWszqZqRTcqL114w==",
-      "path": "altv.net/9.0.4",
-      "hashPath": "altv.net.9.0.4.nupkg.sha512"
+      "sha512": "sha512-bOd7wD9LlYNqUQxrS4ekXAVIylBvTe9KJPsX4f4bCfu9LKl1fg7EhGmkrQjm0Zd/UMefq5yatriEPeonT7qGxg==",
+      "path": "altv.net/9.0.0",
+      "hashPath": "altv.net.9.0.0.nupkg.sha512"
     },
-    "AltV.Net.Async/9.0.4": {
+    "AltV.Net.Async/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-4bzJz2e36CXRFEXPdfHKPf56uqxHaCa1UsJbMJJ6TbF9r44cG2sGL0cpjaKnTJGLcJ/AVRliUHC9HARid/11LQ==",
-      "path": "altv.net.async/9.0.4",
-      "hashPath": "altv.net.async.9.0.4.nupkg.sha512"
+      "sha512": "sha512-NfsiqYhJPIunpJBeudzpkHfTGPYwOstu3LtK2/j5hCBoKaAwQbpzdK4lpNgjl8G5lmW4ji8O/xA4sjlDjgNpOg==",
+      "path": "altv.net.async/9.0.0",
+      "hashPath": "altv.net.async.9.0.0.nupkg.sha512"
     },
     "Newtonsoft.Json/13.0.1": {
       "type": "package",
