@@ -2,17 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-	  <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-	  <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>../../../Server/resources/SaltyClient/Server</OutputPath>
+    <OutputPath>../../Gameserver/resources/SaltyClient/server</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>../../Gameserver/resources/SaltyClient/server</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="AltV.Net.Async" Version="9.0.2" />
+    <PackageReference Include="AltV.Net.Async" Version="9.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 

@@ -24,7 +24,7 @@ namespace SaltyChat.Server
 
         private readonly Dictionary<IPlayer, VoiceClient> _voiceClients = new();
         private readonly List<RadioChannel> _radioChannels = new();
-        private const string _Version = "1.2.0"; // ToDo: Change on update
+        private const string _Version = "2.3.6"; // ToDo: Change on update
 
         #endregion
 
@@ -290,7 +290,7 @@ namespace SaltyChat.Server
             string name;
             do
             {
-                name = $"[{charId}] | alt:V";
+                name = $"[{charId}] | CV";
 
                 if (name.Length > 30)
                 {

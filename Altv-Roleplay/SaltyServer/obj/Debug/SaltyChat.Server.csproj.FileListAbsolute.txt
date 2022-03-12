@@ -1,22 +1,44 @@
-D:\Github\script-a-rework\Server\resources\SaltyClient\Server\SaltyChat.Server.deps.json
-D:\Github\script-a-rework\Server\resources\SaltyClient\Server\SaltyChat.Server.runtimeconfig.json
-D:\Github\script-a-rework\Server\resources\SaltyClient\Server\SaltyChat.Server.dll
-D:\Github\script-a-rework\Server\resources\SaltyClient\Server\SaltyChat.Server.pdb
-D:\Github\script-a-rework\Mappe - Visual Studio\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.AssemblyInfoInputs.cache
-D:\Github\script-a-rework\Mappe - Visual Studio\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.AssemblyInfo.cs
-D:\Github\script-a-rework\Mappe - Visual Studio\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.csproj.CoreCompileInputs.cache
-D:\Github\script-a-rework\Mappe - Visual Studio\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.dll
-D:\Github\script-a-rework\Mappe - Visual Studio\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.pdb
-D:\Github\script-a-rework\Mappe - Visual Studio\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.genruntimeconfig.cache
-D:\Github\script-a-rework\Server\resources\SaltyClient\Server\ref\SaltyChat.Server.dll
-D:\Github\script-a-rework\Mappe - Visual Studio\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.csproj.AssemblyReference.cache
-D:\Github\script-a-rework\Mappe - Visual Studio\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.GeneratedMSBuildEditorConfig.editorconfig
-D:\Github\script-a-rework\Mappe - Visual Studio\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.csproj.CopyComplete
-D:\Github\script-a-rework\Mappe - Visual Studio\Altv-Roleplay\SaltyServer\obj\Debug\ref\SaltyChat.Server.dll
-E:\Git-Hub\Server\resources\SaltyClient\Server\SaltyChat.Server.deps.json
-E:\Git-Hub\Server\resources\SaltyClient\Server\SaltyChat.Server.runtimeconfig.json
-E:\Git-Hub\Server\resources\SaltyClient\Server\SaltyChat.Server.dll
-E:\Git-Hub\Server\resources\SaltyClient\Server\SaltyChat.Server.pdb
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\server\resources\roleplay\SaltyChat.Server.deps.json
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\server\resources\roleplay\SaltyChat.Server.runtimeconfig.json
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\server\resources\roleplay\SaltyChat.Server.runtimeconfig.dev.json
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\server\resources\roleplay\SaltyChat.Server.dll
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\server\resources\roleplay\ref\SaltyChat.Server.dll
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\server\resources\roleplay\SaltyChat.Server.pdb
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\ClassicRoleplay\SaltyServer\obj\Debug\SaltyChat.Server.csproj.AssemblyReference.cache
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\ClassicRoleplay\SaltyServer\obj\Debug\SaltyChat.Server.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\ClassicRoleplay\SaltyServer\obj\Debug\SaltyChat.Server.AssemblyInfoInputs.cache
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\ClassicRoleplay\SaltyServer\obj\Debug\SaltyChat.Server.AssemblyInfo.cs
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\ClassicRoleplay\SaltyServer\obj\Debug\SaltyChat.Server.csproj.CoreCompileInputs.cache
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\ClassicRoleplay\SaltyServer\obj\Debug\SaltyChat.Server.csproj.CopyComplete
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\ClassicRoleplay\SaltyServer\obj\Debug\SaltyChat.Server.dll
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\ClassicRoleplay\SaltyServer\obj\Debug\ref\SaltyChat.Server.dll
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\ClassicRoleplay\SaltyServer\obj\Debug\SaltyChat.Server.pdb
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\ClassicRoleplay\SaltyServer\obj\Debug\SaltyChat.Server.genruntimeconfig.cache
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\server\resources\SaltyClient\server\SaltyChat.Server.deps.json
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\server\resources\SaltyClient\server\SaltyChat.Server.runtimeconfig.json
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\server\resources\SaltyClient\server\SaltyChat.Server.runtimeconfig.dev.json
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\server\resources\SaltyClient\server\SaltyChat.Server.dll
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\server\resources\SaltyClient\server\ref\SaltyChat.Server.dll
+C:\Users\mauke\Desktop\Valea-Script-Reworked-server-side-refactoring\server\resources\SaltyClient\server\SaltyChat.Server.pdb
+D:\Crystal\Crystal-V-master\server\resources\SaltyClient\server\SaltyChat.Server.deps.json
+D:\Crystal\Crystal-V-master\server\resources\SaltyClient\server\SaltyChat.Server.runtimeconfig.json
+D:\Crystal\Crystal-V-master\server\resources\SaltyClient\server\SaltyChat.Server.runtimeconfig.dev.json
+D:\Crystal\Crystal-V-master\server\resources\SaltyClient\server\SaltyChat.Server.dll
+D:\Crystal\Crystal-V-master\server\resources\SaltyClient\server\ref\SaltyChat.Server.dll
+D:\Crystal\Crystal-V-master\server\resources\SaltyClient\server\SaltyChat.Server.pdb
+D:\Crystal\Crystal-V-master\Crystal-VRoleplay\SaltyServer\obj\Debug\SaltyChat.Server.GeneratedMSBuildEditorConfig.editorconfig
+D:\Crystal\Crystal-V-master\Crystal-VRoleplay\SaltyServer\obj\Debug\SaltyChat.Server.AssemblyInfoInputs.cache
+D:\Crystal\Crystal-V-master\Crystal-VRoleplay\SaltyServer\obj\Debug\SaltyChat.Server.AssemblyInfo.cs
+D:\Crystal\Crystal-V-master\Crystal-VRoleplay\SaltyServer\obj\Debug\SaltyChat.Server.csproj.CoreCompileInputs.cache
+D:\Crystal\Crystal-V-master\Crystal-VRoleplay\SaltyServer\obj\Debug\SaltyChat.Server.csproj.CopyComplete
+D:\Crystal\Crystal-V-master\Crystal-VRoleplay\SaltyServer\obj\Debug\SaltyChat.Server.dll
+D:\Crystal\Crystal-V-master\Crystal-VRoleplay\SaltyServer\obj\Debug\ref\SaltyChat.Server.dll
+D:\Crystal\Crystal-V-master\Crystal-VRoleplay\SaltyServer\obj\Debug\SaltyChat.Server.pdb
+D:\Crystal\Crystal-V-master\Crystal-VRoleplay\SaltyServer\obj\Debug\SaltyChat.Server.genruntimeconfig.cache
+E:\Git-Hub\Altv-Roleplay\Gameserver\resources\SaltyClient\server\SaltyChat.Server.deps.json
+E:\Git-Hub\Altv-Roleplay\Gameserver\resources\SaltyClient\server\SaltyChat.Server.runtimeconfig.json
+E:\Git-Hub\Altv-Roleplay\Gameserver\resources\SaltyClient\server\SaltyChat.Server.dll
+E:\Git-Hub\Altv-Roleplay\Gameserver\resources\SaltyClient\server\SaltyChat.Server.pdb
 E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.csproj.AssemblyReference.cache
 E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.GeneratedMSBuildEditorConfig.editorconfig
 E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\SaltyServer\obj\Debug\SaltyChat.Server.AssemblyInfoInputs.cache

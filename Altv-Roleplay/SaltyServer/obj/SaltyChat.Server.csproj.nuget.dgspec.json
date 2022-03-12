@@ -46,7 +46,7 @@
           "dependencies": {
             "AltV.Net.Async": {
               "target": "Package",
-              "version": "[9.0.2, )"
+              "version": "[9.0.4, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",

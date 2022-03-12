@@ -1,4 +1,8 @@
-﻿using AltV.Net;
+﻿using System;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+using AltV.Net;
 using AltV.Net.Async;
 using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
@@ -6,10 +10,6 @@ using Altv_Roleplay.Factories;
 using Altv_Roleplay.Model;
 using Altv_Roleplay.Services;
 using Altv_Roleplay.Utils;
-using System;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Altv_Roleplay.Handler
 {
@@ -208,8 +208,9 @@ namespace Altv_Roleplay.Handler
             Characters.SetCharacterLastLogin(charid, DateTime.Now);
             Characters.SetCharacterCurrentFunkFrequence(charid, null);
             Alt.Log($"Eingeloggt {client.Name}");
-            Alt.Emit("PlayerLoggedIn", client, charid);
+            Alt.Emit("SaltyChat:EnablePlayer", client, (int)charid);
             client.EmitLocked("SaltyChat_OnConnected");
+            client.SetSyncedMetaData("NAME", User.GetPlayerUsername(((ClassicPlayer)client).accountId) + " | " + Characters.GetCharacterName((int)client.GetCharacterMetaId()));
             if (Characters.IsCharacterUnconscious(charid))
             {
                 DeathHandler.openDeathscreen(client);
@@ -233,8 +234,7 @@ namespace Altv_Roleplay.Handler
             }
             SmartphoneHandler.RequestLSPDIntranet(client);
             await setCefStatus(client, false);
-            AltAsync.Do(() =>
-            {
+            AltAsync.Do(() => {
                 client.SetStreamSyncedMetaData("sharedUsername", $"{charName} ({Characters.GetCharacterAccountId(charid)})");
                 client.SetSyncedMetaData("ADMINLEVEL", client.AdminLevel());
                 client.SetSyncedMetaData("PLAYER_SPAWNED", true);
