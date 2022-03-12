@@ -1,168 +1,213 @@
-[18:56:18] alt:V Server 9.6 (release)
-[18:56:18] Starting Community-Roleplay on 0.0.0.0:7788
-[18:56:18] Loading resource minimap
-[18:56:18] Loaded resource minimap
-[18:56:18] Loading resource minimap_js
-[18:56:18] Loaded resource minimap_js
-[18:56:18] Loading resource maps_gabz
-[18:56:18] Loaded resource maps_gabz
-[18:56:18] Loading resource passengerseat
-[18:56:18] Loaded resource passengerseat
-[18:56:18] Loading resource els
-[18:56:18] Loaded resource els
-[18:56:18] Loading resource clothes_01
-[18:56:18] Loaded resource clothes_01
-[18:56:18] Loading resource DisableIdleCam
-[18:56:18] Loading resource chat
-[18:56:18] Loaded resource chat
-[18:56:18] Loaded resource DisableIdleCam
-[18:56:18] Loading resource es-blip
-[18:56:18] Loaded resource es-blip
-[18:56:18] Loading resource es-helptext
-[18:56:18] Loaded resource es-helptext
-[18:56:18] Loading resource es-marker
-[18:56:18] Loaded resource es-marker
-[18:56:18] Loading resource es-object
-[18:56:18] Loaded resource es-object
-[18:56:18] Loading resource es-streamer-text
-[18:56:18] Loaded resource es-streamer-text
-[18:56:18] Loading resource es-ped
-[18:56:18] Loaded resource es-ped
-[18:56:18] Loading resource gabz_mrpdloader
-[18:56:18] Loaded resource gabz_mrpdloader
-[18:56:18] Loading resource hairs
-[18:56:19] Loaded resource hairs
-[18:56:19] Loading resource maps
-[18:56:20] Loaded resource maps
-[18:56:20] Loading resource modcars
-[18:56:20] Loaded resource modcars
-[18:56:20] Loading resource timecycle
-[18:56:20] Loaded resource timecycle
-[18:56:20] Loading resource modems
-[18:56:20] Loaded resource modems
-[18:56:20] Loading resource flatbedscript
-[18:56:20] Loaded resource flatbedscript
-[18:56:20] Loading resource meetingpoint
-[18:56:20] Loaded resource meetingpoint
-[18:56:20] Loading resource patoche_boatdealer
-[18:56:21] Loaded resource patoche_boatdealer
-[18:56:21] Loading resource SaltyClient
-[18:56:21] [SaltyChat] New status: enabled. Version: 1.2.0. Server-ID: k7NgKrbENwzMsIh6yj/8r9WQMl8=
-[18:56:21] Loaded resource SaltyClient
-[18:56:21] Loading resource HideMap
-[18:56:21] Loaded resource HideMap
-[18:56:21] Loading resource pointing
-[18:56:21] Loaded resource pointing
-[18:56:21] Loading resource weather
-[18:56:21] RealWeatherTimeSync: started
-[18:56:21] Loaded resource weather
-[18:56:21] Loading resource roleplay
-[18:56:24] 1 Charakter-Skins wurden geladen.
-[18:56:24] 0 Character Bank Accounts wurden geladen.
-[18:56:24] 1 Charakter Positionen wurden geladen.
-[18:56:24] 9 Charakter Inventar-Items wurden geladen.
-[18:56:24] 1 Character-Licenses wurden geladen.
-[18:56:24] 0 Character-Permissions wurden geladen.
-[18:56:24] 0 Character-Minijob-Entrys wurden geladen.
-[18:56:24] 0 Character-Phone-Chats wurden geladen.
-[18:56:24] 0 Character-Phone-Chat-Messages wurden geladen.
-[18:56:24] 0 Character-Phone-Contacts wurden geladen.
-[18:56:24] 0 Character-Phone-Verlauf wurden geladen.
-[18:56:24] 142 Server-Storages wurden geladen.
-[18:56:24] 104 Server-Wanted-Einträge wurden geladen.
-[18:56:25] 0 Characters-Wanted-Einträge wurden geladen.
-[18:56:25] 28 Server-Blips wurden geladen.
-[18:56:25] 5 Server-Marker wurden geladen.
-[18:56:25] 740 Server-All-Vehicles wurden geladen.
-[18:56:25] 309 Server-Animationen wurden geladen.
-[18:56:25] 78 Server-ATMs wurden geladen.
-[18:56:25] 16 Server-Banken wurden geladen.
-[18:56:25] 0 Server-Bank-Papers geladen.
-[18:56:25] 266 Server-Items wurden geladen.
-[18:56:25] 11 Server-Peds wurden geladen.
-[18:56:25] 15 Server-Clothes-Shops wurden geladen.
-[18:56:25] 30175 Server-Clothes-Shop-Items wurden geladen.
-[18:56:25] 51 Server-Shops wurden geladen.
-[18:56:25] 678 Server ShopItems wurden geladen.
-[18:56:25] 7 Server-Barbers wurden geladen.
-[18:56:25] 12 Server-Teleports wurden geladen.
-[18:56:25] 58 Server-Garagen wurden geladen.
-[18:56:25] 90 Server-Garagen Slots wurden geladen.
-[18:56:25] 10 Server-Vehicle-Mods wurden geladen.
-[18:56:25] 7 Server-Vehicles wurden geladen.
-[18:56:25] 0 Server-Vehicle-Trunk-Items wurden geladen.
-[18:56:25] 10 Server-Vehicle-Shops wurden geladen.
-[18:56:25] 51 Server-Vehicle-ShopItems wurden geladen.
-[18:56:25] 9 Server-Farming-Spots wurden geladen.
-[18:56:25] 19 Server-Farming-Verarbeiter wurden geladen.
-[18:56:25] 9 Server-Jobs wurden geladen.
-[18:56:25] 8 Server-Licenses wurden geladen.
-[18:56:25] 26 Server-Tankstellen wurden geladen.
-[18:56:25] 230 Server-Tankstellen-Spots wurden geladen
-[18:56:25] 9 Server-Tablet-App-Datas wurden geladen.
-[18:56:25] 1 Character-Tablet-App Einträge wurden geladen.
-[18:56:25] 1 Character-Tablet-Tutorial Entrys wurden geladen.
-[18:56:25] 0 Server-Tablet-Events wurden geladen.
-[18:56:25] 51 Server-Tablet-Notes wurden geladen.
-[18:56:25] 0 Server-Companys wurden geladen.
-[18:56:25] 0 Server-Company-Member wurden geladen.
-[18:56:25] 17 Server-Factions wurden geladen.
-[18:56:25] 30 Server-Faction-Positions wurden geladen.
-[18:56:25] 0 Server-Faction-Labor-Items wurden geladen.
-[18:56:25] 30 Server-Faction-Members wurden geladen.
-[18:56:25] 168 Server-Faction-Ranks wurden geladen.
-[18:56:25] 1 Server-Faction-Member wurden geladen.
-[18:56:25] 0 Server-Faction-Storage-Items wurden geladen.
-[18:56:25] 43 Server-Doors wurden geladen.
-[18:56:25] 7 Server-Hotels wurden geladen.
-[18:56:25] 68 Server-Hotels-Apartments wurden geladen.
-[18:56:25] 0 Server-Hotels-Storage-Items wurden geladen.
-[18:56:25] 1012 Server-Houses wurden geladen.
-[18:56:25] 10 Server-House-Interior wurden geladen.
-[18:56:25] 0 Server-House-Storage-Items wurden geladen.
-[18:56:25] 0 Server-House-Renter wurden geladen.
-[18:56:25] 6 Server-Minijobs-BusDriver-Routes wurden geladen.
-[18:56:25] 47 Server-Minijob-Busdriver-Spots wurden geladen.
-[18:56:25] 177 Server-Minijob-Garbage-Spots wurden geladen.
-[18:56:25] 0 Server-Fraktions-Logs wurden geladen.
-[18:56:25] 0 Server-Company-Logs wurden geladen.
-[18:56:25] Lade Minijob: Elektrolieferant...
-[18:56:25] Minijob: Elektrolieferant geladen...
-[18:56:25] Lade Minijob: Pilot...
-[18:56:25] Minijob: Pilot geladen...
-[18:56:25] Lade Minijob: Müllmann...
-[18:56:25] Minijob: Müllmann geladen...
-[18:56:25] Lade Minijob: Busfahrer...
-[18:56:25] Minijob: Busfahrer geladen...
-[18:56:26] Loaded resource roleplay
-[18:56:26] Loading resource DiscordLog
-[18:56:26] Loaded resource DiscordLog
-[18:56:26] Required server permissions:
-[18:56:26] Optional server permissions:
-[18:56:26] Starting HTTP server on 0.0.0.0:7788
-[18:56:26] Main thread started (ThreadId: 16836)
-[18:56:26] Colshape thread started (ThreadId: 23544)
-[18:56:26] EntityStreamer thread started (ThreadId: 18124)
-[18:56:26] Sync thread started (ThreadId: 22748)
-[18:56:26] Network thread started (ThreadId: 27520)
-[18:56:26] Console thread started (ThreadId: 30104)
-[18:56:26][Warning] Server started in debug mode
-[18:57:26] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
-[18:57:59] ValidateLoginCredentials benötigte 207ms
-[18:58:01] Eingeloggt mauke509
-[18:58:01] 1 - CharacterSelectedSpawnPlace benötigte 63ms
-[18:58:26] OnEntityTimer: Player Foreach benötigte: 00:00:00.0105621
-[18:59:05] GetVehicleItems: 10 - 1
-[18:59:26] OnEntityTimer: Player Foreach benötigte: 00:00:00.0139798
-[18:59:46] OnDesireTimer Timer aufgerufen
-[18:59:46] Essen/Durst Anzeige update: 0 | 98 | 82 | 82
-[18:59:51] GetVehicleItems: 7 - 1
-[18:59:56] Vehicle KM-State-HUD updated!
-[19:00:26] OnEntityTimer: Player Foreach benötigte: 00:00:00.0067198
-[19:00:26] Vehicle KM-State-HUD updated!
-[19:00:56] Vehicle KM-State-HUD updated!
-[19:01:14] 1 - OpenGarageCEF benötigte 74ms
-[19:01:24] [chat:cmd] mauke509: /am
-[19:01:26] OnEntityTimer: Player Foreach benötigte: 00:00:00.0067803
-[19:01:38] [chat:cmd] mauke509: /parkallvehicles
-[19:01:49] [chat:cmd] mauke509: /parkallvehicles
+[19:15:03] alt:V Server 9.6 (release)
+[19:15:03] Starting Community-Roleplay on 0.0.0.0:7788
+[19:15:03] Loading resource minimap
+[19:15:03] Loaded resource minimap
+[19:15:03] Loading resource minimap_js
+[19:15:03] Loaded resource minimap_js
+[19:15:03] Loading resource maps_gabz
+[19:15:04] Loaded resource maps_gabz
+[19:15:04] Loading resource passengerseat
+[19:15:04] Loaded resource passengerseat
+[19:15:04] Loading resource clothes_01
+[19:15:04] Loaded resource clothes_01
+[19:15:04] Loading resource DisableIdleCam
+[19:15:04] Loading resource chat
+[19:15:04] Loaded resource chat
+[19:15:04] Loaded resource DisableIdleCam
+[19:15:04] Loading resource es-blip
+[19:15:04] Loaded resource es-blip
+[19:15:04] Loading resource es-helptext
+[19:15:04] Loaded resource es-helptext
+[19:15:04] Loading resource es-marker
+[19:15:04] Loaded resource es-marker
+[19:15:04] Loading resource es-object
+[19:15:04] Loaded resource es-object
+[19:15:04] Loading resource es-streamer-text
+[19:15:04] Loaded resource es-streamer-text
+[19:15:04] Loading resource es-ped
+[19:15:04] Loaded resource es-ped
+[19:15:04] Loading resource gabz_mrpdloader
+[19:15:04] Loaded resource gabz_mrpdloader
+[19:15:04] Loading resource hairs
+[19:15:04] Loaded resource hairs
+[19:15:04] Loading resource maps
+[19:15:05] Loaded resource maps
+[19:15:05] Loading resource modcars
+[19:15:06] Loaded resource modcars
+[19:15:06] Loading resource timecycle
+[19:15:06] Loaded resource timecycle
+[19:15:06] Loading resource modems
+[19:15:06] Loaded resource modems
+[19:15:06] Loading resource flatbedscript
+[19:15:06] Loaded resource flatbedscript
+[19:15:06] Loading resource meetingpoint
+[19:15:06] Loaded resource meetingpoint
+[19:15:06] Loading resource patoche_boatdealer
+[19:15:06] Loaded resource patoche_boatdealer
+[19:15:06] Loading resource SaltyClient
+[19:15:07] [SaltyChat] New status: enabled. Version: 1.2.0. Server-ID: k7NgKrbENwzMsIh6yj/8r9WQMl8=
+[19:15:07] Loaded resource SaltyClient
+[19:15:07] Loading resource HideMap
+[19:15:07] Loaded resource HideMap
+[19:15:07] Loading resource pointing
+[19:15:07] Loaded resource pointing
+[19:15:07] Loading resource weather
+[19:15:07] RealWeatherTimeSync: started
+[19:15:07] Loaded resource weather
+[19:15:07] Loading resource roleplay
+[19:15:11] 1 Charakter-Skins wurden geladen.
+[19:15:11] 1 Character Bank Accounts wurden geladen.
+[19:15:11] 1 Charakter Positionen wurden geladen.
+[19:15:11] 13 Charakter Inventar-Items wurden geladen.
+[19:15:11] 1 Character-Licenses wurden geladen.
+[19:15:11] 0 Character-Permissions wurden geladen.
+[19:15:11] 0 Character-Minijob-Entrys wurden geladen.
+[19:15:11] 0 Character-Phone-Chats wurden geladen.
+[19:15:11] 0 Character-Phone-Chat-Messages wurden geladen.
+[19:15:11] 0 Character-Phone-Contacts wurden geladen.
+[19:15:11] 0 Character-Phone-Verlauf wurden geladen.
+[19:15:11] 142 Server-Storages wurden geladen.
+[19:15:11] 104 Server-Wanted-Einträge wurden geladen.
+[19:15:11] 0 Characters-Wanted-Einträge wurden geladen.
+[19:15:11] 28 Server-Blips wurden geladen.
+[19:15:11] 5 Server-Marker wurden geladen.
+[19:15:11] 740 Server-All-Vehicles wurden geladen.
+[19:15:11] 309 Server-Animationen wurden geladen.
+[19:15:11] 78 Server-ATMs wurden geladen.
+[19:15:11] 16 Server-Banken wurden geladen.
+[19:15:11] 0 Server-Bank-Papers geladen.
+[19:15:11] 266 Server-Items wurden geladen.
+[19:15:11] 11 Server-Peds wurden geladen.
+[19:15:11] 15 Server-Clothes-Shops wurden geladen.
+[19:15:11] 30175 Server-Clothes-Shop-Items wurden geladen.
+[19:15:11] 51 Server-Shops wurden geladen.
+[19:15:11] 678 Server ShopItems wurden geladen.
+[19:15:11] 7 Server-Barbers wurden geladen.
+[19:15:11] 12 Server-Teleports wurden geladen.
+[19:15:11] 58 Server-Garagen wurden geladen.
+[19:15:11] 90 Server-Garagen Slots wurden geladen.
+[19:15:11] 12 Server-Vehicle-Mods wurden geladen.
+[19:15:11] 9 Server-Vehicles wurden geladen.
+[19:15:11] 0 Server-Vehicle-Trunk-Items wurden geladen.
+[19:15:11] 10 Server-Vehicle-Shops wurden geladen.
+[19:15:11] 51 Server-Vehicle-ShopItems wurden geladen.
+[19:15:11] 9 Server-Farming-Spots wurden geladen.
+[19:15:11] 19 Server-Farming-Verarbeiter wurden geladen.
+[19:15:11] 9 Server-Jobs wurden geladen.
+[19:15:11] 8 Server-Licenses wurden geladen.
+[19:15:11] 26 Server-Tankstellen wurden geladen.
+[19:15:11] 230 Server-Tankstellen-Spots wurden geladen
+[19:15:11] 9 Server-Tablet-App-Datas wurden geladen.
+[19:15:11] 1 Character-Tablet-App Einträge wurden geladen.
+[19:15:11] 1 Character-Tablet-Tutorial Entrys wurden geladen.
+[19:15:11] 0 Server-Tablet-Events wurden geladen.
+[19:15:11] 51 Server-Tablet-Notes wurden geladen.
+[19:15:11] 0 Server-Companys wurden geladen.
+[19:15:11] 0 Server-Company-Member wurden geladen.
+[19:15:12] 17 Server-Factions wurden geladen.
+[19:15:12] 30 Server-Faction-Positions wurden geladen.
+[19:15:12] 0 Server-Faction-Labor-Items wurden geladen.
+[19:15:12] 30 Server-Faction-Members wurden geladen.
+[19:15:12] 168 Server-Faction-Ranks wurden geladen.
+[19:15:12] 2 Server-Faction-Member wurden geladen.
+[19:15:12] 0 Server-Faction-Storage-Items wurden geladen.
+[19:15:12] 43 Server-Doors wurden geladen.
+[19:15:12] 7 Server-Hotels wurden geladen.
+[19:15:12] 68 Server-Hotels-Apartments wurden geladen.
+[19:15:12] 0 Server-Hotels-Storage-Items wurden geladen.
+[19:15:12] 1012 Server-Houses wurden geladen.
+[19:15:12] 10 Server-House-Interior wurden geladen.
+[19:15:12] 0 Server-House-Storage-Items wurden geladen.
+[19:15:12] 0 Server-House-Renter wurden geladen.
+[19:15:12] 6 Server-Minijobs-BusDriver-Routes wurden geladen.
+[19:15:12] 47 Server-Minijob-Busdriver-Spots wurden geladen.
+[19:15:12] 177 Server-Minijob-Garbage-Spots wurden geladen.
+[19:15:12] 1 Server-Fraktions-Logs wurden geladen.
+[19:15:12] 0 Server-Company-Logs wurden geladen.
+[19:15:12] Lade Minijob: Elektrolieferant...
+[19:15:12] Minijob: Elektrolieferant geladen...
+[19:15:12] Lade Minijob: Pilot...
+[19:15:12] Minijob: Pilot geladen...
+[19:15:12] Lade Minijob: Müllmann...
+[19:15:12] Minijob: Müllmann geladen...
+[19:15:12] Lade Minijob: Busfahrer...
+[19:15:12] Minijob: Busfahrer geladen...
+[19:15:12] Loaded resource roleplay
+[19:15:12] Loading resource DiscordLog
+[19:15:12] Loaded resource DiscordLog
+[19:15:12] Required server permissions:
+[19:15:12] Optional server permissions:
+[19:15:12] Starting HTTP server on 0.0.0.0:7788
+[19:15:12] Main thread started (ThreadId: 28208)
+[19:15:12] Colshape thread started (ThreadId: 23044)
+[19:15:12] EntityStreamer thread started (ThreadId: 19116)
+[19:15:12] Sync thread started (ThreadId: 30732)
+[19:15:12] Network thread started (ThreadId: 2772)
+[19:15:12] Console thread started (ThreadId: 12632)
+[19:15:12][Warning] Server started in debug mode
+[19:16:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000073
+[19:17:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000059
+[19:17:39] ValidateLoginCredentials benötigte 213ms
+[19:17:42] Eingeloggt mauke509
+[19:17:42] 1 - CharacterSelectedSpawnPlace benötigte 55ms
+[19:17:53] [chat:cmd] mauke509: /am
+[19:18:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0124670
+[19:18:13] [chat:cmd] mauke509: /car police
+[19:18:31][Error] No such resource els is loaded
+[19:18:32] OnDesireTimer Timer aufgerufen
+[19:18:32] Essen/Durst Anzeige update: 0 | 100 | 78 | 78
+[19:18:42] Vehicle KM-State-HUD updated!
+[19:18:58] [chat:cmd] mauke509: /car lspdb
+[19:18:58][Error] Failed to create vehicle: 1392424197 is not a proper model hash
+[19:19:11]  Usage: stop [resourcename]
+[19:19:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0068327
+[19:20:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000106
+[19:21:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000040
+[19:21:52] OnDesireTimer Timer aufgerufen
+[19:22:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000119
+[19:22:57] ValidateLoginCredentials benötigte 136ms
+[19:23:00] Eingeloggt mauke509
+[19:23:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0068269
+[19:23:20] ValidateLoginCredentials benötigte 141ms
+[19:23:43] Vehicle KM-State-HUD updated!
+[19:23:49] ValidateLoginCredentials benötigte 131ms
+[19:23:54] Eingeloggt PandaAffe82
+[19:23:54] 2 - CharacterSelectedSpawnPlace benötigte 43ms
+[19:24:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0213365
+[19:25:12] OnDesireTimer Timer aufgerufen
+[19:25:12] Essen/Durst Anzeige update: 0 | 100 | 99 | 99
+[19:25:12] Essen/Durst Anzeige update: 0 | 100 | 77 | 77
+[19:25:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0141009
+[19:26:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0179069
+[19:26:15] [chat:cmd] PandaAffe82: /am
+[19:26:55] [chat:cmd] mauke509: /car scpd7
+[19:26:57] [chat:cmd] mauke509: /a
+[19:27:00] [chat:cmd] mauke509: /am
+[19:27:03] [chat:cmd] mauke509: /car scpd7
+[19:27:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0179885
+[19:27:14] Vehicle KM-State-HUD updated!
+[19:27:44] Vehicle KM-State-HUD updated!
+[19:27:52] Loading resource els
+[19:27:52] Loaded resource els
+[19:28:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0183614
+[19:28:14] Vehicle KM-State-HUD updated!
+[19:28:32] OnDesireTimer Timer aufgerufen
+[19:28:32] Essen/Durst Anzeige update: 0 | 99 | 98 | 98
+[19:28:32] Essen/Durst Anzeige update: 0 | 100 | 76 | 76
+[19:28:38] [chat:cmd] PandaAffe82: /car t20
+[19:28:44] Vehicle KM-State-HUD updated!
+[19:28:44] Vehicle KM-State-HUD updated!
+[19:29:00] Stopping resource els
+[19:29:00] Stopped resource els
+[19:29:11] Loading resource els
+[19:29:11] Loaded resource els
+[19:29:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0065336
+[19:29:48] [chat:cmd] mauke509: /car police
+[19:30:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0173632
+[19:30:15] Vehicle KM-State-HUD updated!
+[19:30:45] Vehicle KM-State-HUD updated!
+[19:31:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0132649
+[19:31:15] Vehicle KM-State-HUD updated!
+[19:31:45] Vehicle KM-State-HUD updated!
+[19:31:52] OnDesireTimer Timer aufgerufen
+[19:31:52] Essen/Durst Anzeige update: 0 | 100 | 75 | 75
