@@ -211,3 +211,5 @@
 [19:31:45] Vehicle KM-State-HUD updated!
 [19:31:52] OnDesireTimer Timer aufgerufen
 [19:31:52] Essen/Durst Anzeige update: 0 | 100 | 75 | 75
+[19:32:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0051396
+[19:32:15] Vehicle KM-State-HUD updated!
