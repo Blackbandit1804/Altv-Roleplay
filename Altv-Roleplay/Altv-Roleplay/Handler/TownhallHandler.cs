@@ -14,7 +14,7 @@ namespace Altv_Roleplay.Handler
     class TownhallHandler : IScript
     {
         [AsyncClientEvent("Server:HUD:sendIdentityCardApplyForm")]
-        public async Task sendIdentityCardApplyForm(IPlayer player, string birthplace)
+        public void sendIdentityCardApplyForm(IPlayer player, string birthplace)
         {
             if (player == null || !player.Exists) return;
             int charId = User.GetPlayerOnline(player);
@@ -49,7 +49,7 @@ namespace Altv_Roleplay.Handler
         }
 
         [AsyncClientEvent("Server:Jobcenter:SelectJob")]
-        public async Task SelectJobcenterJob(IPlayer player, string jobName)
+        public void SelectJobcenterJob(IPlayer player, string jobName)
         {
             try
             {

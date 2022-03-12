@@ -1,271 +1,195 @@
-[22:36:04] alt:V Server 9.6 (release)
-[22:36:04] Starting Community-Roleplay on 0.0.0.0:7788
-[22:36:04] Loading resource minimap
-[22:36:04] Loaded resource minimap
-[22:36:04] Loading resource minimap_js
-[22:36:04] Loaded resource minimap_js
-[22:36:04] Loading resource maps_gabz
-[22:36:04] Loaded resource maps_gabz
-[22:36:04] Loading resource passengerseat
-[22:36:04] Loaded resource passengerseat
-[22:36:04] Loading resource els
-[22:36:04] Loaded resource els
-[22:36:04] Loading resource clothes_01
-[22:36:05] Loaded resource clothes_01
-[22:36:05] Loading resource DisableIdleCam
-[22:36:05] Loading resource chat
-[22:36:05] Loaded resource chat
-[22:36:05] Loaded resource DisableIdleCam
-[22:36:05] Loading resource es-blip
-[22:36:05] Loaded resource es-blip
-[22:36:05] Loading resource es-helptext
-[22:36:05] Loaded resource es-helptext
-[22:36:05] Loading resource es-marker
-[22:36:05] Loaded resource es-marker
-[22:36:05] Loading resource es-object
-[22:36:05] Loaded resource es-object
-[22:36:05] Loading resource es-streamer-text
-[22:36:05] Loaded resource es-streamer-text
-[22:36:05] Loading resource es-ped
-[22:36:05] Loaded resource es-ped
-[22:36:05] Loading resource gabz_mrpdloader
-[22:36:05] Loaded resource gabz_mrpdloader
-[22:36:05] Loading resource hairs
-[22:36:05] Loaded resource hairs
-[22:36:05] Loading resource modcars
-[22:36:06] Loaded resource modcars
-[22:36:06] Loading resource timecycle
-[22:36:06] Loaded resource timecycle
-[22:36:06] Loading resource modems
-[22:36:06] Loaded resource modems
-[22:36:06] Loading resource flatbedscript
-[22:36:06] Loaded resource flatbedscript
-[22:36:06] Loading resource meetingpoint
-[22:36:06] Loaded resource meetingpoint
-[22:36:06] Loading resource patoche_boatdealer
-[22:36:06] Loaded resource patoche_boatdealer
-[22:36:06] Loading resource HideMap
-[22:36:06] Loaded resource HideMap
-[22:36:06] Loading resource pointing
-[22:36:06] Loaded resource pointing
-[22:36:06] Loading resource weather
-[22:36:06] RealWeatherTimeSync: started
-[22:36:06] Loaded resource weather
-[22:36:06] Loading resource roleplay
-[22:36:09] 1 Spieler wurden geladen.
-[22:36:09] 0 Charakter wurden geladen.
-[22:36:09] 1 Charakter-Skins wurden geladen.
-[22:36:09] 1 Character Bank Accounts wurden geladen.
-[22:36:09] 1 Charakter Positionen wurden geladen.
-[22:36:09] 6 Charakter Inventar-Items wurden geladen.
-[22:36:09] 1 Character-Licenses wurden geladen.
-[22:36:09] 0 Character-Permissions wurden geladen.
-[22:36:09] 1 Character-Minijob-Entrys wurden geladen.
-[22:36:09] 0 Character-Phone-Chats wurden geladen.
-[22:36:09] 0 Character-Phone-Chat-Messages wurden geladen.
-[22:36:09] 0 Character-Phone-Contacts wurden geladen.
-[22:36:09] 51 Server-Wanted-Einträge wurden geladen.
-[22:36:09] 0 Characters-Wanted-Einträge wurden geladen.
-[22:36:09] 29 Server-Blips wurden geladen.
-[22:36:09] 1 Server-Marker wurden geladen.
-[22:36:09] 740 Server-All-Vehicles wurden geladen.
-[22:36:09] 309 Server-Animationen wurden geladen.
-[22:36:09] 78 Server-ATMs wurden geladen.
-[22:36:09] 10 Server-Banken wurden geladen.
-[22:36:09] 104 Server-Bank-Papers geladen.
-[22:36:09] 2068 Server-Items wurden geladen.
-[22:36:09] 9 Server-Peds wurden geladen.
-[22:36:09] 12 Server-Clothes-Shops wurden geladen.
-[22:36:10] 30175 Server-Clothes-Shop-Items wurden geladen.
-[22:36:10] 39 Server-Shops wurden geladen.
-[22:36:11] 2319 Server ShopItems wurden geladen.
-[22:36:11] 7 Server-Barbers wurden geladen.
-[22:36:11] 8 Server-Teleports wurden geladen.
-[22:36:11] 59 Server-Garagen wurden geladen.
-[22:36:12] 91 Server-Garagen Slots wurden geladen.
-[22:36:12] 0 Server-Vehicle-Mods wurden geladen.
-[22:36:12] 0 Server-Vehicles wurden geladen.
-[22:36:12] 8 Server-Vehicle-Trunk-Items wurden geladen.
-[22:36:12] 10 Server-Vehicle-Shops wurden geladen.
-[22:36:12] 51 Server-Vehicle-ShopItems wurden geladen.
-[22:36:12] 11 Server-Farming-Spots wurden geladen.
-[22:36:12] 11 Server-Farming-Verarbeiter wurden geladen.
-[22:36:12] 9 Server-Jobs wurden geladen.
-[22:36:12] 1 Server-Licenses wurden geladen.
-[22:36:12] 8 Server-Tankstellen wurden geladen.
-[22:36:12] 94 Server-Tankstellen-Spots wurden geladen
-[22:36:12] 9 Server-Tablet-App-Datas wurden geladen.
-[22:36:12] 1 Character-Tablet-App Einträge wurden geladen.
-[22:36:12] 1 Character-Tablet-Tutorial Entrys wurden geladen.
-[22:36:12] 0 Server-Tablet-Events wurden geladen.
-[22:36:12] 0 Server-Tablet-Notes wurden geladen.
-[22:36:12] 0 Server-Companys wurden geladen.
-[22:36:12] 0 Server-Company-Member wurden geladen.
-[22:36:12] 12 Server-Factions wurden geladen.
-[22:36:12] 13 Server-Faction-Positions wurden geladen.
-[22:36:12] 0 Server-Faction-Dispatches wurden geladen.
-[22:36:12] 111 Server-Faction-Ranks wurden geladen.
-[22:36:12] 11 Server-Faction-Member wurden geladen.
-[22:36:12] 0 Server-Faction-Storage-Items wurden geladen.
-[22:36:12] 10 Server-Doors wurden geladen.
-[22:36:12] 0 Server-Hotels wurden geladen.
-[22:36:12] 0 Server-Hotels-Apartments wurden geladen.
-[22:36:12] 0 Server-Hotels-Storage-Items wurden geladen.
-[22:36:12] 1012 Server-Houses wurden geladen.
-[22:36:12] 10 Server-House-Interior wurden geladen.
-[22:36:12] 0 Server-House-Storage-Items wurden geladen.
-[22:36:12] 0 Server-House-Renter wurden geladen.
-[22:36:12] 3 Server-Minijobs-BusDriver-Routes wurden geladen.
-[22:36:12] 47 Server-Minijob-Busdriver-Spots wurden geladen.
-[22:36:12] 177 Server-Minijob-Garbage-Spots wurden geladen.
-[22:36:12] 0 Server-Fraktions-Logs wurden geladen.
-[22:36:12] 0 Server-Company-Logs wurden geladen.
-[22:36:12] 0 Character-Tattoos wurden geladen.
-[22:36:12] 919 Server-Tattoos wurden geladen.
-[22:36:12] 1 Server-Tattoo-Shops wurden geladen.
-[22:36:12] Lade Minijob: Elektrolieferant...
-[22:36:12] Minijob: Elektrolieferant geladen...
-[22:36:12] Lade Minijob: Pilot...
-[22:36:12] Minijob: Pilot geladen...
-[22:36:12] Lade Minijob: Müllmann...
-[22:36:12] Minijob: Müllmann geladen...
-[22:36:12] Lade Minijob: Busfahrer...
-[22:36:12] Minijob: Busfahrer geladen...
-[22:36:13] Loaded resource roleplay
-[22:36:13] Loading resource DiscordLog
-[22:36:13] Loaded resource DiscordLog
-[22:36:13] Required server permissions:
-[22:36:13] Optional server permissions:
-[22:36:13] Starting HTTP server on 0.0.0.0:7788
-[22:36:13] Main thread started (ThreadId: 30156)
-[22:36:13] Colshape thread started (ThreadId: 30212)
-[22:36:13] EntityStreamer thread started (ThreadId: 21228)
-[22:36:13] Sync thread started (ThreadId: 20892)
-[22:36:13] Network thread started (ThreadId: 23304)
-[22:36:13] Console thread started (ThreadId: 14828)
-[22:36:13][Warning] Server started in debug mode
-[22:36:42] ValidateLoginCredentials benötigte 347ms
-[22:37:05] Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
- ---> MySqlConnector.MySqlException (0x80004005): Column 'headoverlays3' cannot be null
-   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior)
-   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken)
-   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
-   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
-   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
-   --- End of inner exception stack trace ---
-   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
-   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
-   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
-   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
-   at Altv_Roleplay.Model.Characters.CreateCharacterSkin(String charname, String facefeaturesarray, String headblendsdataarray, String headoverlaysarray1, String headoverlaysarray2, String headoverlaysarray3) in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Model\Characters.cs:line 130
-[22:37:11] ValidateLoginCredentials benötigte 192ms
-[22:37:14] Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
- ---> MySqlConnector.MySqlException (0x80004005): Column 'headoverlays3' cannot be null
-   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior)
-   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken)
-   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
-   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
-   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
-   --- End of inner exception stack trace ---
-   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
-   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
-   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
-   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
-   at Altv_Roleplay.Model.Characters.SetCharacterBackpack(IPlayer player, String backpack) in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Model\Characters.cs:line 1549
-[22:37:14] Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
- ---> MySqlConnector.MySqlException (0x80004005): Column 'headoverlays3' cannot be null
-   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior)
-   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken)
-   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
-   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
-   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
-   --- End of inner exception stack trace ---
-   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
-   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
-   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
-   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
-   at Altv_Roleplay.Model.Characters.SetCharacterClothes(ClassicPlayer player, Int32 charid, Int32 clothId, Boolean isProp) in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Model\Characters.cs:line 2542
-[22:37:14] Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
- ---> MySqlConnector.MySqlException (0x80004005): Column 'headoverlays3' cannot be null
-   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior)
-   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken)
-   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
-   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
-   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
-   --- End of inner exception stack trace ---
-   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
-   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
-   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
-   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
-   at Altv_Roleplay.Model.Characters.SetCharacterClothes(ClassicPlayer player, Int32 charid, Int32 clothId, Boolean isProp) in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Model\Characters.cs:line 2542
-[22:37:14] Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
- ---> MySqlConnector.MySqlException (0x80004005): Column 'headoverlays3' cannot be null
-   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior)
-   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken)
-   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
-   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
-   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
-   --- End of inner exception stack trace ---
-   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
-   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
-   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
-   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
-   at Altv_Roleplay.Model.Characters.SetCharacterClothes(ClassicPlayer player, Int32 charid, Int32 clothId, Boolean isProp) in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Model\Characters.cs:line 2542
-[22:37:15] Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
- ---> MySqlConnector.MySqlException (0x80004005): Column 'headoverlays3' cannot be null
-   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior)
-   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken)
-   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
-   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
-   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
-   --- End of inner exception stack trace ---
-   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
-   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
-   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
-   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
-   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
-   at Altv_Roleplay.Model.Characters.SetCharacterBackpack(IPlayer player, String backpack) in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Model\Characters.cs:line 1549
-[22:37:15] System.FormatException: Input string was not in a correct format.
-   at System.Number.ThrowOverflowOrFormatException(ParsingStatus status, TypeCode type)
-   at System.Single.Parse(String s, IFormatProvider provider)
-   at Altv_Roleplay.Model.Characters.<>c.<SetCharacterSkin>b__50_1(String param) in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Model\Characters.cs:line 881
-   at System.Array.ConvertAll[TInput,TOutput](TInput[] array, Converter`2 converter)
-   at Altv_Roleplay.Model.Characters.SetCharacterSkin(IPlayer player) in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Model\Characters.cs:line 881
-[22:37:15] Eingeloggt mauke509
-[22:37:15] 2 - CharacterSelectedSpawnPlace benötigte 151ms
-[22:41:24] 2 - Inventaraufruf benötigte 62ms
+[12:28:56] alt:V Server 9.6 (release)
+[12:28:56] Starting Community-Roleplay on 0.0.0.0:7788
+[12:28:56] Loading resource minimap
+[12:28:56] Loaded resource minimap
+[12:28:56] Loading resource minimap_js
+[12:28:56] Loaded resource minimap_js
+[12:28:56] Loading resource maps_gabz
+[12:28:56] Loaded resource maps_gabz
+[12:28:56] Loading resource passengerseat
+[12:28:56] Loaded resource passengerseat
+[12:28:56] Loading resource els
+[12:28:56] Loaded resource els
+[12:28:56] Loading resource clothes_01
+[12:28:56] Loaded resource clothes_01
+[12:28:56] Loading resource DisableIdleCam
+[12:28:56] Loading resource chat
+[12:28:56] Loaded resource chat
+[12:28:56] Loaded resource DisableIdleCam
+[12:28:56] Loading resource es-blip
+[12:28:56] Loaded resource es-blip
+[12:28:56] Loading resource es-helptext
+[12:28:56] Loaded resource es-helptext
+[12:28:56] Loading resource es-marker
+[12:28:56] Loaded resource es-marker
+[12:28:56] Loading resource es-object
+[12:28:56] Loaded resource es-object
+[12:28:56] Loading resource es-streamer-text
+[12:28:56] Loaded resource es-streamer-text
+[12:28:56] Loading resource es-ped
+[12:28:56] Loaded resource es-ped
+[12:28:56] Loading resource gabz_mrpdloader
+[12:28:56] Loaded resource gabz_mrpdloader
+[12:28:56] Loading resource hairs
+[12:28:57] Loaded resource hairs
+[12:28:57] Loading resource maps
+[12:28:58] Loaded resource maps
+[12:28:58] Loading resource modcars
+[12:28:58] Loaded resource modcars
+[12:28:58] Loading resource timecycle
+[12:28:58] Loaded resource timecycle
+[12:28:58] Loading resource modems
+[12:28:58] Loaded resource modems
+[12:28:58] Loading resource flatbedscript
+[12:28:59] Loaded resource flatbedscript
+[12:28:59] Loading resource meetingpoint
+[12:28:59] Loaded resource meetingpoint
+[12:28:59] Loading resource patoche_boatdealer
+[12:28:59] Loaded resource patoche_boatdealer
+[12:28:59] Loading resource HideMap
+[12:28:59] Loaded resource HideMap
+[12:28:59] Loading resource pointing
+[12:28:59] Loaded resource pointing
+[12:28:59] Loading resource weather
+[12:28:59] RealWeatherTimeSync: started
+[12:28:59] Loaded resource weather
+[12:28:59] Loading resource roleplay
+[12:29:01] 1 Spieler wurden geladen.
+[12:29:01] 1 Charakter wurden geladen.
+[12:29:01] 1 Charakter-Skins wurden geladen.
+[12:29:01] 1 Character Bank Accounts wurden geladen.
+[12:29:01] 2 Charakter Positionen wurden geladen.
+[12:29:01] 11 Charakter Inventar-Items wurden geladen.
+[12:29:01] 2 Character-Licenses wurden geladen.
+[12:29:01] 0 Character-Permissions wurden geladen.
+[12:29:01] 1 Character-Minijob-Entrys wurden geladen.
+[12:29:01] 0 Character-Phone-Chats wurden geladen.
+[12:29:01] 0 Character-Phone-Chat-Messages wurden geladen.
+[12:29:01] 0 Character-Phone-Contacts wurden geladen.
+[12:29:01] 51 Server-Wanted-Einträge wurden geladen.
+[12:29:01] 0 Characters-Wanted-Einträge wurden geladen.
+[12:29:01] 29 Server-Blips wurden geladen.
+[12:29:01] 1 Server-Marker wurden geladen.
+[12:29:01] 740 Server-All-Vehicles wurden geladen.
+[12:29:01] 309 Server-Animationen wurden geladen.
+[12:29:01] 78 Server-ATMs wurden geladen.
+[12:29:01] 10 Server-Banken wurden geladen.
+[12:29:01] 104 Server-Bank-Papers geladen.
+[12:29:02] 2068 Server-Items wurden geladen.
+[12:29:02] 9 Server-Peds wurden geladen.
+[12:29:02] 12 Server-Clothes-Shops wurden geladen.
+[12:29:02] 30175 Server-Clothes-Shop-Items wurden geladen.
+[12:29:02] 39 Server-Shops wurden geladen.
+[12:29:02] 2319 Server ShopItems wurden geladen.
+[12:29:02] 7 Server-Barbers wurden geladen.
+[12:29:02] 8 Server-Teleports wurden geladen.
+[12:29:02] 59 Server-Garagen wurden geladen.
+[12:29:02] 91 Server-Garagen Slots wurden geladen.
+[12:29:02] 0 Server-Vehicle-Mods wurden geladen.
+[12:29:02] 0 Server-Vehicles wurden geladen.
+[12:29:02] 8 Server-Vehicle-Trunk-Items wurden geladen.
+[12:29:03] 10 Server-Vehicle-Shops wurden geladen.
+[12:29:03] 51 Server-Vehicle-ShopItems wurden geladen.
+[12:29:03] 11 Server-Farming-Spots wurden geladen.
+[12:29:03] 11 Server-Farming-Verarbeiter wurden geladen.
+[12:29:03] 9 Server-Jobs wurden geladen.
+[12:29:03] 1 Server-Licenses wurden geladen.
+[12:29:03] 8 Server-Tankstellen wurden geladen.
+[12:29:03] 94 Server-Tankstellen-Spots wurden geladen
+[12:29:03] 9 Server-Tablet-App-Datas wurden geladen.
+[12:29:03] 2 Character-Tablet-App Einträge wurden geladen.
+[12:29:03] 2 Character-Tablet-Tutorial Entrys wurden geladen.
+[12:29:03] 0 Server-Tablet-Events wurden geladen.
+[12:29:03] 0 Server-Tablet-Notes wurden geladen.
+[12:29:03] 0 Server-Companys wurden geladen.
+[12:29:03] 0 Server-Company-Member wurden geladen.
+[12:29:03] 12 Server-Factions wurden geladen.
+[12:29:03] 13 Server-Faction-Positions wurden geladen.
+[12:29:03] 0 Server-Faction-Dispatches wurden geladen.
+[12:29:03] 111 Server-Faction-Ranks wurden geladen.
+[12:29:03] 11 Server-Faction-Member wurden geladen.
+[12:29:03] 0 Server-Faction-Storage-Items wurden geladen.
+[12:29:03] 10 Server-Doors wurden geladen.
+[12:29:03] 0 Server-Hotels wurden geladen.
+[12:29:03] 0 Server-Hotels-Apartments wurden geladen.
+[12:29:03] 0 Server-Hotels-Storage-Items wurden geladen.
+[12:29:03] 1012 Server-Houses wurden geladen.
+[12:29:03] 10 Server-House-Interior wurden geladen.
+[12:29:03] 0 Server-House-Storage-Items wurden geladen.
+[12:29:03] 0 Server-House-Renter wurden geladen.
+[12:29:03] 3 Server-Minijobs-BusDriver-Routes wurden geladen.
+[12:29:03] 47 Server-Minijob-Busdriver-Spots wurden geladen.
+[12:29:03] 177 Server-Minijob-Garbage-Spots wurden geladen.
+[12:29:03] 0 Server-Fraktions-Logs wurden geladen.
+[12:29:03] 0 Server-Company-Logs wurden geladen.
+[12:29:03] 0 Character-Tattoos wurden geladen.
+[12:29:03] 919 Server-Tattoos wurden geladen.
+[12:29:03] 1 Server-Tattoo-Shops wurden geladen.
+[12:29:04] Lade Minijob: Elektrolieferant...
+[12:29:04] Minijob: Elektrolieferant geladen...
+[12:29:04] Lade Minijob: Pilot...
+[12:29:04] Minijob: Pilot geladen...
+[12:29:04] Lade Minijob: Müllmann...
+[12:29:04] Minijob: Müllmann geladen...
+[12:29:04] Lade Minijob: Busfahrer...
+[12:29:04] Minijob: Busfahrer geladen...
+[12:29:04] Loaded resource roleplay
+[12:29:04] Loading resource DiscordLog
+[12:29:04] Loaded resource DiscordLog
+[12:29:04] Required server permissions:
+[12:29:04] Optional server permissions:
+[12:29:04] Starting HTTP server on 0.0.0.0:7788
+[12:29:04] Main thread started (ThreadId: 14548)
+[12:29:04] Colshape thread started (ThreadId: 9472)
+[12:29:04] EntityStreamer thread started (ThreadId: 16060)
+[12:29:04] Sync thread started (ThreadId: 12940)
+[12:29:04] Console thread started (ThreadId: 14908)
+[12:29:04] Network thread started (ThreadId: 11676)
+[12:29:04][Warning] Server started in debug mode
+[12:30:09] ValidateLoginCredentials benötigte 347ms
+[12:30:12] Eingeloggt mauke509
+[12:30:12] 2 - CharacterSelectedSpawnPlace benötigte 271ms
+[12:30:34] [chat:cmd] mauke509: /a
+[12:30:37] [chat:cmd] mauke509: /pos s
+[12:33:16] Stopping resource minimap
+[12:33:16] Stopped resource minimap
+[12:33:16] Stopping resource minimap_js
+[12:33:16] Stopped resource minimap_js
+[12:33:16] Stopping resource clothes_01
+[12:33:16] Stopped resource clothes_01
+[12:33:16] Stopping resource maps_gabz
+[12:33:16] Stopped resource maps_gabz
+[12:33:16] Stopping resource passengerseat
+[12:33:16] Stopped resource passengerseat
+[12:33:16] Stopping resource els
+[12:33:16] Stopped resource els
+[12:33:16] Stopping resource DisableIdleCam
+[12:33:16] Stopped resource DisableIdleCam
+[12:33:16] Stopping resource chat
+[12:33:16] Stopping resource flatbedscript
+[12:33:16] Stopped resource flatbedscript
+[12:33:16] Stopping resource HideMap
+[12:33:16] Stopped resource HideMap
+[12:33:16] Stopped resource chat
+[12:33:16] Stopping resource gabz_mrpdloader
+[12:33:16] Stopped resource gabz_mrpdloader
+[12:33:16] Stopping resource hairs
+[12:33:16] Stopped resource hairs
+[12:33:16] Stopping resource maps
+[12:33:16] Stopped resource maps
+[12:33:16] Stopping resource modcars
+[12:33:16] Stopped resource modcars
+[12:33:16] Stopping resource timecycle
+[12:33:16] Stopped resource timecycle
+[12:33:16] Stopping resource modems
+[12:33:16] Stopped resource modems
+[12:33:16] Stopping resource meetingpoint
+[12:33:16] Stopped resource meetingpoint
+[12:33:16] Stopping resource patoche_boatdealer
+[12:33:16] Stopped resource patoche_boatdealer
+[12:33:16] Stopping resource pointing
+[12:33:16] Stopped resource pointing
+[12:33:16] Stopping resource weather
+[12:33:16] Stopped resource weather
+[12:33:16] Stopping resource roleplay
+[12:33:16] Server ist gestoppt.
