@@ -1,191 +1,113 @@
-[22:34:55] alt:V Server 9.6 (release)
-[22:34:55] Starting Community-Roleplay on 0.0.0.0:7788
-[22:34:55] Loading resource minimap
-[22:34:55] Loaded resource minimap
-[22:34:55] Loading resource minimap_js
-[22:34:55] Loaded resource minimap_js
-[22:34:55] Loading resource maps_gabz
-[22:34:55] Loaded resource maps_gabz
-[22:34:55] Loading resource passengerseat
-[22:34:55] Loaded resource passengerseat
-[22:34:55] Loading resource clothes_01
-[22:34:55] Loaded resource clothes_01
-[22:34:55] Loading resource DisableIdleCam
-[22:34:55] Loading resource chat
-[22:34:55] Loaded resource chat
-[22:34:55] Loaded resource DisableIdleCam
-[22:34:55] Loading resource els
-[22:34:55] Loaded resource els
-[22:34:55] Loading resource es-blip
-[22:34:55] Loaded resource es-blip
-[22:34:55] Loading resource es-helptext
-[22:34:55] Loaded resource es-helptext
-[22:34:55] Loading resource es-marker
-[22:34:56] Loaded resource es-marker
-[22:34:56] Loading resource es-object
-[22:34:56] Loaded resource es-object
-[22:34:56] Loading resource es-streamer-text
-[22:34:56] Loaded resource es-streamer-text
-[22:34:56] Loading resource es-ped
-[22:34:56] Loaded resource es-ped
-[22:34:56] Loading resource gabz_mrpdloader
-[22:34:56] Loaded resource gabz_mrpdloader
-[22:34:56] Loading resource hairs
-[22:34:56] Loaded resource hairs
-[22:34:56] Loading resource maps
-[22:34:57] Loaded resource maps
-[22:34:57] Loading resource modcars
-[22:34:57] Loaded resource modcars
-[22:34:57] Loading resource timecycle
-[22:34:57] Loaded resource timecycle
-[22:34:57] Loading resource modems
-[22:34:58] Loaded resource modems
-[22:34:58] Loading resource flatbedscript
-[22:34:58] Loaded resource flatbedscript
-[22:34:58] Loading resource meetingpoint
-[22:34:58] Loaded resource meetingpoint
-[22:34:58] Loading resource patoche_boatdealer
-[22:34:58] Loaded resource patoche_boatdealer
-[22:34:58] Loading resource SaltyClient
-[22:34:58] [SaltyChat] New status: enabled. Version: 2.3.6. Server-ID: iUwoS74VzYRgQ7qwoByDc5paXhY=
-[22:34:58] Loaded resource SaltyClient
-[22:34:58] Loading resource HideMap
-[22:34:58] Loaded resource HideMap
-[22:34:58] Loading resource pointing
-[22:34:58] Loaded resource pointing
-[22:34:58] Loading resource weather
-[22:34:58] RealWeatherTimeSync: started
-[22:34:58] Loaded resource weather
-[22:34:58] Loading resource roleplay
-[22:35:02] 2 Charakter-Skins wurden geladen.
-[22:35:02] 1 Character Bank Accounts wurden geladen.
-[22:35:02] 2 Charakter Positionen wurden geladen.
-[22:35:02] 18 Charakter Inventar-Items wurden geladen.
-[22:35:02] 2 Character-Licenses wurden geladen.
-[22:35:02] 0 Character-Permissions wurden geladen.
-[22:35:02] 0 Character-Minijob-Entrys wurden geladen.
-[22:35:02] 0 Character-Phone-Chats wurden geladen.
-[22:35:02] 0 Character-Phone-Chat-Messages wurden geladen.
-[22:35:02] 0 Character-Phone-Contacts wurden geladen.
-[22:35:02] 0 Character-Phone-Verlauf wurden geladen.
-[22:35:02] 142 Server-Storages wurden geladen.
-[22:35:02] 104 Server-Wanted-Einträge wurden geladen.
-[22:35:02] 0 Characters-Wanted-Einträge wurden geladen.
-[22:35:02] 28 Server-Blips wurden geladen.
-[22:35:02] 5 Server-Marker wurden geladen.
-[22:35:02] 740 Server-All-Vehicles wurden geladen.
-[22:35:02] 309 Server-Animationen wurden geladen.
-[22:35:02] 78 Server-ATMs wurden geladen.
-[22:35:02] 16 Server-Banken wurden geladen.
-[22:35:02] 0 Server-Bank-Papers geladen.
-[22:35:02] 266 Server-Items wurden geladen.
-[22:35:02] 11 Server-Peds wurden geladen.
-[22:35:02] 15 Server-Clothes-Shops wurden geladen.
-[22:35:02] 30175 Server-Clothes-Shop-Items wurden geladen.
-[22:35:02] 51 Server-Shops wurden geladen.
-[22:35:02] 678 Server ShopItems wurden geladen.
-[22:35:02] 7 Server-Barbers wurden geladen.
-[22:35:02] 12 Server-Teleports wurden geladen.
-[22:35:02] 58 Server-Garagen wurden geladen.
-[22:35:02] 90 Server-Garagen Slots wurden geladen.
-[22:35:03] 12 Server-Vehicle-Mods wurden geladen.
-[22:35:03] 9 Server-Vehicles wurden geladen.
-[22:35:03] 0 Server-Vehicle-Trunk-Items wurden geladen.
-[22:35:03] 10 Server-Vehicle-Shops wurden geladen.
-[22:35:03] 51 Server-Vehicle-ShopItems wurden geladen.
-[22:35:03] 9 Server-Farming-Spots wurden geladen.
-[22:35:03] 19 Server-Farming-Verarbeiter wurden geladen.
-[22:35:03] 9 Server-Jobs wurden geladen.
-[22:35:03] 8 Server-Licenses wurden geladen.
-[22:35:03] 26 Server-Tankstellen wurden geladen.
-[22:35:03] 230 Server-Tankstellen-Spots wurden geladen
-[22:35:03] 9 Server-Tablet-App-Datas wurden geladen.
-[22:35:03] 2 Character-Tablet-App Einträge wurden geladen.
-[22:35:03] 2 Character-Tablet-Tutorial Entrys wurden geladen.
-[22:35:03] 0 Server-Tablet-Events wurden geladen.
-[22:35:03] 51 Server-Tablet-Notes wurden geladen.
-[22:35:03] 0 Server-Companys wurden geladen.
-[22:35:03] 0 Server-Company-Member wurden geladen.
-[22:35:03] 17 Server-Factions wurden geladen.
-[22:35:03] 30 Server-Faction-Positions wurden geladen.
-[22:35:03] 0 Server-Faction-Labor-Items wurden geladen.
-[22:35:03] 30 Server-Faction-Members wurden geladen.
-[22:35:03] 168 Server-Faction-Ranks wurden geladen.
-[22:35:03] 2 Server-Faction-Member wurden geladen.
-[22:35:03] 0 Server-Faction-Storage-Items wurden geladen.
-[22:35:03] 43 Server-Doors wurden geladen.
-[22:35:03] 7 Server-Hotels wurden geladen.
-[22:35:03] 68 Server-Hotels-Apartments wurden geladen.
-[22:35:03] 0 Server-Hotels-Storage-Items wurden geladen.
-[22:35:03] 1012 Server-Houses wurden geladen.
-[22:35:03] 10 Server-House-Interior wurden geladen.
-[22:35:03] 0 Server-House-Storage-Items wurden geladen.
-[22:35:03] 0 Server-House-Renter wurden geladen.
-[22:35:03] 6 Server-Minijobs-BusDriver-Routes wurden geladen.
-[22:35:03] 47 Server-Minijob-Busdriver-Spots wurden geladen.
-[22:35:03] 177 Server-Minijob-Garbage-Spots wurden geladen.
-[22:35:03] 1 Server-Fraktions-Logs wurden geladen.
-[22:35:03] 0 Server-Company-Logs wurden geladen.
-[22:35:03] Lade Minijob: Elektrolieferant...
-[22:35:03] Minijob: Elektrolieferant geladen...
-[22:35:03] Lade Minijob: Pilot...
-[22:35:03] Minijob: Pilot geladen...
-[22:35:03] Lade Minijob: Müllmann...
-[22:35:03] Minijob: Müllmann geladen...
-[22:35:03] Lade Minijob: Busfahrer...
-[22:35:03] Minijob: Busfahrer geladen...
-[22:35:04] Loaded resource roleplay
-[22:35:04] Loading resource DiscordLog
-[22:35:04] Loaded resource DiscordLog
-[22:35:04] Required server permissions:
-[22:35:04] Optional server permissions:
-[22:35:04] Starting HTTP server on 0.0.0.0:7788
-[22:35:04] Main thread started (ThreadId: 18720)
-[22:35:04] Colshape thread started (ThreadId: 23504)
-[22:35:04] EntityStreamer thread started (ThreadId: 15612)
-[22:35:04] Sync thread started (ThreadId: 22708)
-[22:35:04] Network thread started (ThreadId: 19776)
-[22:35:04] Console thread started (ThreadId: 18304)
-[22:35:04][Warning] Server started in debug mode
-[22:35:25] ValidateLoginCredentials benötigte 214ms
-[22:35:28] Eingeloggt mauke509
-[22:35:28] 1 - CharacterSelectedSpawnPlace benötigte 55ms
-[22:36:03] OnEntityTimer: Player Foreach benötigte: 00:00:00.0165647
-[22:36:25] Stopping resource minimap
-[22:36:25] Stopped resource minimap
-[22:36:25] Stopping resource minimap_js
-[22:36:25] Stopped resource minimap_js
-[22:36:25] Stopping resource clothes_01
-[22:36:25] Stopped resource clothes_01
-[22:36:25] Stopping resource maps_gabz
-[22:36:25] Stopped resource maps_gabz
-[22:36:25] Stopping resource passengerseat
-[22:36:25] Stopped resource passengerseat
-[22:36:25] Stopping resource DisableIdleCam
-[22:36:25] Stopped resource DisableIdleCam
-[22:36:25] Stopping resource chat
-[22:36:25] Stopping resource flatbedscript
-[22:36:25] Stopped resource flatbedscript
-[22:36:25] Stopping resource HideMap
-[22:36:25] Stopped resource HideMap
-[22:36:25] Stopped resource chat
-[22:36:25] Stopping resource els
-[22:36:25] Stopped resource els
-[22:36:25] Stopping resource gabz_mrpdloader
-[22:36:25] Stopped resource gabz_mrpdloader
-[22:36:25] Stopping resource hairs
-[22:36:25] Stopped resource hairs
-[22:36:25] Stopping resource maps
-[22:36:25] Stopped resource maps
-[22:36:25] Stopping resource modcars
-[22:36:25] Stopped resource modcars
-[22:36:25] Stopping resource timecycle
-[22:36:25] Stopped resource timecycle
-[22:36:25] Stopping resource modems
-[22:36:25] Stopped resource modems
-[22:36:25] Stopping resource meetingpoint
-[22:36:25] Stopped resource meetingpoint
-[22:36:25] Stopping resource patoche_boatdealer
-[22:36:25] Stopped resource patoche_boatdealer
-[22:36:25] Stopping resource SaltyClient
-[22:36:25] [SaltyChat] New status: disabled
+[10:33:53] alt:V Server 9.6 (release)
+[10:33:53] Starting Community-Roleplay on 0.0.0.0:7788
+[10:33:53] Lua server module. Version: v1.2.3.61-dev
+[10:33:53] Loading resource minimap
+[10:33:53] Loaded resource minimap
+[10:33:53] Loading resource minimap_js
+[10:33:53] Loaded resource minimap_js
+[10:33:53] Loading resource maps_gabz
+[10:33:54] Loaded resource maps_gabz
+[10:33:54] Loading resource passengerseat
+[10:33:54] Loaded resource passengerseat
+[10:33:54] Loading resource clothes_01
+[10:33:54] Loaded resource clothes_01
+[10:33:54] Loading resource DisableIdleCam
+[10:33:54] Loading resource chat
+[10:33:54] Loaded resource chat
+[10:33:54] Loaded resource DisableIdleCam
+[10:33:54] Loading resource els
+[10:33:54] Loaded resource els
+[10:33:54] Loading resource example
+[10:33:54] Registered events: example - tick - FunctionRef: 1
+[10:33:54] Registering command: respawn
+[10:33:54] Registering command: spawn
+[10:33:54] Registering command: coords
+[10:33:54] Registering command: players
+[10:33:54] Registering command: vehicle
+[10:33:54] Registering command: weapon
+[10:33:54] Registering command: wep
+[10:33:54] Registering command: addwep
+[10:33:54] Loaded: events/playerConnect
+[10:33:54] Registered events: example - playerConnect - FunctionRef: 3
+[10:33:54] Loaded: events/playerConnect
+[10:33:54] Registered events: example - playerDeath - FunctionRef: 4
+[10:33:54] Loaded: events/playerDisconnect
+[10:33:54] Registered events: example - playerDisconnect - FunctionRef: 5
+[10:33:54] The resource has now started! PogChamp
+[10:33:54] Loaded resource example
+[10:33:54] Loading resource es-blip
+[10:33:54] Loaded resource es-blip
+[10:33:54] Loading resource es-helptext
+[10:33:54] Loaded resource es-helptext
+[10:33:54] Loading resource es-marker
+[10:33:54] Loaded resource es-marker
+[10:33:54] Loading resource es-object
+[10:33:54] Loaded resource es-object
+[10:33:54] Loading resource es-streamer-text
+[10:33:54] Loaded resource es-streamer-text
+[10:33:54] Loading resource es-ped
+[10:33:54] Loaded resource es-ped
+[10:33:54] Loading resource gabz_mrpdloader
+[10:33:54] Loaded resource gabz_mrpdloader
+[10:33:54] Loading resource hairs
+[10:33:54] Loaded resource hairs
+[10:33:54] Loading resource maps
+[10:33:55] Loaded resource maps
+[10:33:55] Loading resource modcars
+[10:33:56] Loaded resource modcars
+[10:33:56] Loading resource timecycle
+[10:33:56] Loaded resource timecycle
+[10:33:56] Loading resource modems
+[10:33:56] Loaded resource modems
+[10:33:56] Loading resource flatbedscript
+[10:33:56] Loaded resource flatbedscript
+[10:33:56] Loading resource meetingpoint
+[10:33:56] Loaded resource meetingpoint
+[10:33:56] Loading resource patoche_boatdealer
+[10:33:56] Loaded resource patoche_boatdealer
+[10:33:56] Loading resource SaltyClient
+[10:33:56] [SaltyChat] New status: enabled. Version: 2.3.6. Server-ID: iUwoS74VzYRgQ7qwoByDc5paXhY=
+[10:33:56] Loaded resource SaltyClient
+[10:33:56] Loading resource HideMap
+[10:33:56] Loaded resource HideMap
+[10:33:56] Loading resource pointing
+[10:33:56] Loaded resource pointing
+[10:33:56] Loading resource weather
+[10:33:56] RealWeatherTimeSync: started
+[10:33:56] Loaded resource weather
+[10:33:56] Loading resource roleplay
+[10:34:02] MySqlConnector.MySqlException (0x80004005): Unable to connect to any of the specified MySQL hosts.
+   at MySqlConnector.Core.ServerSession.ConnectAsync(ConnectionSettings cs, MySqlConnection connection, Int32 startTickCount, ILoadBalancer loadBalancer, IOBehavior ioBehavior, CancellationToken cancellationToken)
+   at MySqlConnector.Core.ConnectionPool.ConnectSessionAsync(MySqlConnection connection, String logMessage, Int32 startTickCount, IOBehavior ioBehavior, CancellationToken cancellationToken)
+   at MySqlConnector.Core.ConnectionPool.GetSessionAsync(MySqlConnection connection, Int32 startTickCount, IOBehavior ioBehavior, CancellationToken cancellationToken)
+   at MySqlConnector.Core.ConnectionPool.GetSessionAsync(MySqlConnection connection, Int32 startTickCount, IOBehavior ioBehavior, CancellationToken cancellationToken)
+   at MySqlConnector.MySqlConnection.CreateSessionAsync(ConnectionPool pool, Int32 startTickCount, Nullable`1 ioBehavior, CancellationToken cancellationToken)
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken)
+   at MySqlConnector.MySqlConnection.Open()
+   at Microsoft.EntityFrameworkCore.ServerVersion.AutoDetect(String connectionString)
+   at Altv_Roleplay.models.gtaContext.OnConfiguring(DbContextOptionsBuilder optionsBuilder) in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\models\gtaContext.cs:line 96
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_Model()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityType()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityQueryable()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.System.Collections.Generic.IEnumerable<TEntity>.GetEnumerator()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Altv_Roleplay.Database.DatabaseHandler.ResetDatabaseOnlineState() in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Database\DatabaseHandler.cs:line 1728
+[10:34:06] MySqlConnector.MySqlException (0x80004005): Unable to connect to any of the specified MySQL hosts.
+   at MySqlConnector.Core.ServerSession.ConnectAsync(ConnectionSettings cs, MySqlConnection connection, Int32 startTickCount, ILoadBalancer loadBalancer, IOBehavior ioBehavior, CancellationToken cancellationToken)
+   at MySqlConnector.Core.ConnectionPool.ConnectSessionAsync(MySqlConnection connection, String logMessage, Int32 startTickCount, IOBehavior ioBehavior, CancellationToken cancellationToken)
+   at MySqlConnector.Core.ConnectionPool.GetSessionAsync(MySqlConnection connection, Int32 startTickCount, IOBehavior ioBehavior, CancellationToken cancellationToken)
+   at MySqlConnector.Core.ConnectionPool.GetSessionAsync(MySqlConnection connection, Int32 startTickCount, IOBehavior ioBehavior, CancellationToken cancellationToken)
+   at MySqlConnector.MySqlConnection.CreateSessionAsync(ConnectionPool pool, Int32 startTickCount, Nullable`1 ioBehavior, CancellationToken cancellationToken)
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken)
+   at MySqlConnector.MySqlConnection.Open()
+   at Microsoft.EntityFrameworkCore.ServerVersion.AutoDetect(String connectionString)
+   at Altv_Roleplay.models.gtaContext.OnConfiguring(DbContextOptionsBuilder optionsBuilder) in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\models\gtaContext.cs:line 96
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_Model()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityType()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityQueryable()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.System.Collections.Generic.IEnumerable<TEntity>.GetEnumerator()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at Altv_Roleplay.Database.DatabaseHandler.LoadAllPlayers() in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Database\DatabaseHandler.cs:line 25
