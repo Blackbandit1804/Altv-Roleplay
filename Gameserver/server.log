@@ -1,113 +1,284 @@
-[10:33:53] alt:V Server 9.6 (release)
-[10:33:53] Starting Community-Roleplay on 0.0.0.0:7788
-[10:33:53] Lua server module. Version: v1.2.3.61-dev
-[10:33:53] Loading resource minimap
-[10:33:53] Loaded resource minimap
-[10:33:53] Loading resource minimap_js
-[10:33:53] Loaded resource minimap_js
-[10:33:53] Loading resource maps_gabz
-[10:33:54] Loaded resource maps_gabz
-[10:33:54] Loading resource passengerseat
-[10:33:54] Loaded resource passengerseat
-[10:33:54] Loading resource clothes_01
-[10:33:54] Loaded resource clothes_01
-[10:33:54] Loading resource DisableIdleCam
-[10:33:54] Loading resource chat
-[10:33:54] Loaded resource chat
-[10:33:54] Loaded resource DisableIdleCam
-[10:33:54] Loading resource els
-[10:33:54] Loaded resource els
-[10:33:54] Loading resource example
-[10:33:54] Registered events: example - tick - FunctionRef: 1
-[10:33:54] Registering command: respawn
-[10:33:54] Registering command: spawn
-[10:33:54] Registering command: coords
-[10:33:54] Registering command: players
-[10:33:54] Registering command: vehicle
-[10:33:54] Registering command: weapon
-[10:33:54] Registering command: wep
-[10:33:54] Registering command: addwep
-[10:33:54] Loaded: events/playerConnect
-[10:33:54] Registered events: example - playerConnect - FunctionRef: 3
-[10:33:54] Loaded: events/playerConnect
-[10:33:54] Registered events: example - playerDeath - FunctionRef: 4
-[10:33:54] Loaded: events/playerDisconnect
-[10:33:54] Registered events: example - playerDisconnect - FunctionRef: 5
-[10:33:54] The resource has now started! PogChamp
-[10:33:54] Loaded resource example
-[10:33:54] Loading resource es-blip
-[10:33:54] Loaded resource es-blip
-[10:33:54] Loading resource es-helptext
-[10:33:54] Loaded resource es-helptext
-[10:33:54] Loading resource es-marker
-[10:33:54] Loaded resource es-marker
-[10:33:54] Loading resource es-object
-[10:33:54] Loaded resource es-object
-[10:33:54] Loading resource es-streamer-text
-[10:33:54] Loaded resource es-streamer-text
-[10:33:54] Loading resource es-ped
-[10:33:54] Loaded resource es-ped
-[10:33:54] Loading resource gabz_mrpdloader
-[10:33:54] Loaded resource gabz_mrpdloader
-[10:33:54] Loading resource hairs
-[10:33:54] Loaded resource hairs
-[10:33:54] Loading resource maps
-[10:33:55] Loaded resource maps
-[10:33:55] Loading resource modcars
-[10:33:56] Loaded resource modcars
-[10:33:56] Loading resource timecycle
-[10:33:56] Loaded resource timecycle
-[10:33:56] Loading resource modems
-[10:33:56] Loaded resource modems
-[10:33:56] Loading resource flatbedscript
-[10:33:56] Loaded resource flatbedscript
-[10:33:56] Loading resource meetingpoint
-[10:33:56] Loaded resource meetingpoint
-[10:33:56] Loading resource patoche_boatdealer
-[10:33:56] Loaded resource patoche_boatdealer
-[10:33:56] Loading resource SaltyClient
-[10:33:56] [SaltyChat] New status: enabled. Version: 2.3.6. Server-ID: iUwoS74VzYRgQ7qwoByDc5paXhY=
-[10:33:56] Loaded resource SaltyClient
-[10:33:56] Loading resource HideMap
-[10:33:56] Loaded resource HideMap
-[10:33:56] Loading resource pointing
-[10:33:56] Loaded resource pointing
-[10:33:56] Loading resource weather
-[10:33:56] RealWeatherTimeSync: started
-[10:33:56] Loaded resource weather
-[10:33:56] Loading resource roleplay
-[10:34:02] MySqlConnector.MySqlException (0x80004005): Unable to connect to any of the specified MySQL hosts.
-   at MySqlConnector.Core.ServerSession.ConnectAsync(ConnectionSettings cs, MySqlConnection connection, Int32 startTickCount, ILoadBalancer loadBalancer, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.ConnectionPool.ConnectSessionAsync(MySqlConnection connection, String logMessage, Int32 startTickCount, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.ConnectionPool.GetSessionAsync(MySqlConnection connection, Int32 startTickCount, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.ConnectionPool.GetSessionAsync(MySqlConnection connection, Int32 startTickCount, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlConnection.CreateSessionAsync(ConnectionPool pool, Int32 startTickCount, Nullable`1 ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlConnection.Open()
-   at Microsoft.EntityFrameworkCore.ServerVersion.AutoDetect(String connectionString)
-   at Altv_Roleplay.models.gtaContext.OnConfiguring(DbContextOptionsBuilder optionsBuilder) in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\models\gtaContext.cs:line 96
-   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
-   at Microsoft.EntityFrameworkCore.DbContext.get_Model()
-   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityType()
-   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityQueryable()
-   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.System.Collections.Generic.IEnumerable<TEntity>.GetEnumerator()
-   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
-   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
-   at Altv_Roleplay.Database.DatabaseHandler.ResetDatabaseOnlineState() in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Database\DatabaseHandler.cs:line 1728
-[10:34:06] MySqlConnector.MySqlException (0x80004005): Unable to connect to any of the specified MySQL hosts.
-   at MySqlConnector.Core.ServerSession.ConnectAsync(ConnectionSettings cs, MySqlConnection connection, Int32 startTickCount, ILoadBalancer loadBalancer, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.ConnectionPool.ConnectSessionAsync(MySqlConnection connection, String logMessage, Int32 startTickCount, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.ConnectionPool.GetSessionAsync(MySqlConnection connection, Int32 startTickCount, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.Core.ConnectionPool.GetSessionAsync(MySqlConnection connection, Int32 startTickCount, IOBehavior ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlConnection.CreateSessionAsync(ConnectionPool pool, Int32 startTickCount, Nullable`1 ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken)
-   at MySqlConnector.MySqlConnection.Open()
-   at Microsoft.EntityFrameworkCore.ServerVersion.AutoDetect(String connectionString)
-   at Altv_Roleplay.models.gtaContext.OnConfiguring(DbContextOptionsBuilder optionsBuilder) in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\models\gtaContext.cs:line 96
-   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
-   at Microsoft.EntityFrameworkCore.DbContext.get_Model()
-   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityType()
-   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.get_EntityQueryable()
-   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.System.Collections.Generic.IEnumerable<TEntity>.GetEnumerator()
-   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
-   at Altv_Roleplay.Database.DatabaseHandler.LoadAllPlayers() in E:\Git-Hub\Altv-Roleplay\Altv-Roleplay\Altv-Roleplay\Database\DatabaseHandler.cs:line 25
+[13:49:02] alt:V Server 9.6 (release)
+[13:49:02] Starting Community-Roleplay on 0.0.0.0:7788
+[13:49:03] Lua server module. Version: v1.2.3.61-dev
+[13:49:03] Loading resource minimap
+[13:49:03] Loaded resource minimap
+[13:49:03] Loading resource minimap_js
+[13:49:03] Loaded resource minimap_js
+[13:49:03] Loading resource maps_gabz
+[13:49:03] Loaded resource maps_gabz
+[13:49:03] Loading resource passengerseat
+[13:49:03] Loaded resource passengerseat
+[13:49:03] Loading resource clothes_01
+[13:49:03] Loaded resource clothes_01
+[13:49:03] Loading resource DisableIdleCam
+[13:49:03] Loading resource chat
+[13:49:03] Loaded resource chat
+[13:49:03] Loaded resource DisableIdleCam
+[13:49:03] Loading resource els
+[13:49:03] Loaded resource els
+[13:49:03] Loading resource es-blip
+[13:49:03] Loaded resource es-blip
+[13:49:03] Loading resource es-helptext
+[13:49:03] Loaded resource es-helptext
+[13:49:03] Loading resource es-marker
+[13:49:03] Loaded resource es-marker
+[13:49:03] Loading resource es-object
+[13:49:03] Loaded resource es-object
+[13:49:03] Loading resource es-streamer-text
+[13:49:03] Loaded resource es-streamer-text
+[13:49:03] Loading resource es-ped
+[13:49:03] Loaded resource es-ped
+[13:49:03] Loading resource gabz_mrpdloader
+[13:49:03] Loaded resource gabz_mrpdloader
+[13:49:03] Loading resource hairs
+[13:49:03] Loaded resource hairs
+[13:49:03] Loading resource maps
+[13:49:04] Loaded resource maps
+[13:49:04] Loading resource modcars
+[13:49:05] Loaded resource modcars
+[13:49:05] Loading resource timecycle
+[13:49:05] Loaded resource timecycle
+[13:49:05] Loading resource modems
+[13:49:05] Loaded resource modems
+[13:49:05] Loading resource flatbedscript
+[13:49:05] Loaded resource flatbedscript
+[13:49:05] Loading resource meetingpoint
+[13:49:05] Loaded resource meetingpoint
+[13:49:05] Loading resource patoche_boatdealer
+[13:49:05] Loaded resource patoche_boatdealer
+[13:49:05] Loading resource SaltyClient
+[13:49:06] [SaltyChat] New status: enabled. Version: 2.3.6. Server-ID: iUwoS74VzYRgQ7qwoByDc5paXhY=
+[13:49:06] Loaded resource SaltyClient
+[13:49:06] Loading resource HideMap
+[13:49:06] Loaded resource HideMap
+[13:49:06] Loading resource pointing
+[13:49:06] Loaded resource pointing
+[13:49:06] Loading resource weather
+[13:49:06] RealWeatherTimeSync: started
+[13:49:06] Loaded resource weather
+[13:49:06] Loading resource roleplay
+[13:49:09] 1 Charakter-Skins wurden geladen.
+[13:49:09] 0 Character Bank Accounts wurden geladen.
+[13:49:10] 1 Charakter Positionen wurden geladen.
+[13:49:10] 9 Charakter Inventar-Items wurden geladen.
+[13:49:10] 1 Character-Licenses wurden geladen.
+[13:49:10] 0 Character-Permissions wurden geladen.
+[13:49:10] 0 Character-Minijob-Entrys wurden geladen.
+[13:49:10] 0 Character-Phone-Chats wurden geladen.
+[13:49:10] 0 Character-Phone-Chat-Messages wurden geladen.
+[13:49:10] 0 Character-Phone-Contacts wurden geladen.
+[13:49:10] 0 Character-Phone-Verlauf wurden geladen.
+[13:49:10] 142 Server-Storages wurden geladen.
+[13:49:10] 104 Server-Wanted-Einträge wurden geladen.
+[13:49:10] 0 Characters-Wanted-Einträge wurden geladen.
+[13:49:10] 28 Server-Blips wurden geladen.
+[13:49:10] 5 Server-Marker wurden geladen.
+[13:49:10] 740 Server-All-Vehicles wurden geladen.
+[13:49:10] 309 Server-Animationen wurden geladen.
+[13:49:10] 78 Server-ATMs wurden geladen.
+[13:49:10] 16 Server-Banken wurden geladen.
+[13:49:10] 0 Server-Bank-Papers geladen.
+[13:49:10] 266 Server-Items wurden geladen.
+[13:49:10] 11 Server-Peds wurden geladen.
+[13:49:10] 15 Server-Clothes-Shops wurden geladen.
+[13:49:10] 30175 Server-Clothes-Shop-Items wurden geladen.
+[13:49:10] 51 Server-Shops wurden geladen.
+[13:49:10] 678 Server ShopItems wurden geladen.
+[13:49:10] 7 Server-Barbers wurden geladen.
+[13:49:10] 12 Server-Teleports wurden geladen.
+[13:49:10] 58 Server-Garagen wurden geladen.
+[13:49:10] 90 Server-Garagen Slots wurden geladen.
+[13:49:10] 10 Server-Vehicle-Mods wurden geladen.
+[13:49:10] 7 Server-Vehicles wurden geladen.
+[13:49:10] 0 Server-Vehicle-Trunk-Items wurden geladen.
+[13:49:10] 10 Server-Vehicle-Shops wurden geladen.
+[13:49:10] 51 Server-Vehicle-ShopItems wurden geladen.
+[13:49:10] 9 Server-Farming-Spots wurden geladen.
+[13:49:10] 19 Server-Farming-Verarbeiter wurden geladen.
+[13:49:10] 9 Server-Jobs wurden geladen.
+[13:49:10] 8 Server-Licenses wurden geladen.
+[13:49:10] 26 Server-Tankstellen wurden geladen.
+[13:49:10] 230 Server-Tankstellen-Spots wurden geladen
+[13:49:11] 9 Server-Tablet-App-Datas wurden geladen.
+[13:49:11] 1 Character-Tablet-App Einträge wurden geladen.
+[13:49:11] 1 Character-Tablet-Tutorial Entrys wurden geladen.
+[13:49:11] 0 Server-Tablet-Events wurden geladen.
+[13:49:11] 51 Server-Tablet-Notes wurden geladen.
+[13:49:11] 0 Server-Companys wurden geladen.
+[13:49:11] 0 Server-Company-Member wurden geladen.
+[13:49:11] 17 Server-Factions wurden geladen.
+[13:49:11] 30 Server-Faction-Positions wurden geladen.
+[13:49:11] 0 Server-Faction-Labor-Items wurden geladen.
+[13:49:11] 30 Server-Faction-Members wurden geladen.
+[13:49:11] 168 Server-Faction-Ranks wurden geladen.
+[13:49:11] 1 Server-Faction-Member wurden geladen.
+[13:49:11] 0 Server-Faction-Storage-Items wurden geladen.
+[13:49:11] 43 Server-Doors wurden geladen.
+[13:49:11] 7 Server-Hotels wurden geladen.
+[13:49:11] 68 Server-Hotels-Apartments wurden geladen.
+[13:49:11] 0 Server-Hotels-Storage-Items wurden geladen.
+[13:49:11] 1012 Server-Houses wurden geladen.
+[13:49:11] 10 Server-House-Interior wurden geladen.
+[13:49:11] 0 Server-House-Storage-Items wurden geladen.
+[13:49:11] 0 Server-House-Renter wurden geladen.
+[13:49:11] 6 Server-Minijobs-BusDriver-Routes wurden geladen.
+[13:49:11] 47 Server-Minijob-Busdriver-Spots wurden geladen.
+[13:49:11] 177 Server-Minijob-Garbage-Spots wurden geladen.
+[13:49:11] 0 Server-Fraktions-Logs wurden geladen.
+[13:49:11] 0 Server-Company-Logs wurden geladen.
+[13:49:11] Lade Minijob: Elektrolieferant...
+[13:49:11] Minijob: Elektrolieferant geladen...
+[13:49:11] Lade Minijob: Pilot...
+[13:49:11] Minijob: Pilot geladen...
+[13:49:11] Lade Minijob: Müllmann...
+[13:49:11] Minijob: Müllmann geladen...
+[13:49:11] Lade Minijob: Busfahrer...
+[13:49:11] Minijob: Busfahrer geladen...
+[13:49:11] Loaded resource roleplay
+[13:49:11] Loading resource DiscordLog
+[13:49:13] Loaded resource DiscordLog
+[13:49:13] Required server permissions:
+[13:49:13] Optional server permissions:
+[13:49:13] Starting HTTP server on 0.0.0.0:7788
+[13:49:13] Main thread started (ThreadId: 26504)
+[13:49:13] Colshape thread started (ThreadId: 27108)
+[13:49:13] EntityStreamer thread started (ThreadId: 21624)
+[13:49:13] Sync thread started (ThreadId: 22916)
+[13:49:13] Console thread started (ThreadId: 1384)
+[13:49:13] Network thread started (ThreadId: 25384)
+[13:49:13][Warning] Server started in debug mode
+[13:50:11] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000042
+[13:51:11] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000031
+[13:52:11] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000031
+[13:52:31] OnDesireTimer Timer aufgerufen
+[13:53:11] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000040
+[13:53:42] ValidateLoginCredentials benötigte 236ms
+[13:53:45] Eingeloggt mauke509
+[13:53:45] 1 - CharacterSelectedSpawnPlace benötigte 70ms
+[13:54:11] OnEntityTimer: Player Foreach benötigte: 00:00:00.0110636
+[13:55:11] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000144
+[13:55:51] OnDesireTimer Timer aufgerufen
+[13:56:11] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000052
+[13:57:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000164
+[13:58:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000037
+[13:59:11] OnDesireTimer Timer aufgerufen
+[13:59:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000096
+[14:00:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000024
+[14:01:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000039
+[14:02:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000037
+[14:02:31] OnDesireTimer Timer aufgerufen
+[14:03:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[14:04:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000141
+[14:05:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000106
+[14:05:51] OnDesireTimer Timer aufgerufen
+[14:06:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000119
+[14:07:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000099
+[14:08:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000043
+[14:09:11] OnDesireTimer Timer aufgerufen
+[14:09:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[14:10:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000105
+[14:11:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[14:12:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[14:12:31] OnDesireTimer Timer aufgerufen
+[14:13:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[14:14:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000040
+[14:15:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000022
+[14:15:52] OnDesireTimer Timer aufgerufen
+[14:16:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000130
+[14:17:14] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000101
+[14:18:14] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[14:19:12] OnDesireTimer Timer aufgerufen
+[14:19:14] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000108
+[14:20:14] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000101
+[14:21:14] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[14:22:14] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000153
+[14:22:32] OnDesireTimer Timer aufgerufen
+[14:23:14] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000108
+[14:24:14] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000115
+[14:25:14] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000084
+[14:25:52] OnDesireTimer Timer aufgerufen
+[14:26:14] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000115
+[14:27:15] OnEntityTimer: Player Foreach benötigte: 00:00:00.0009575
+[14:28:15] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000066
+[14:29:12] OnDesireTimer Timer aufgerufen
+[14:29:15] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000069
+[14:30:15] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000028
+[14:31:15] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000131
+[14:32:15] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000158
+[14:32:32] OnDesireTimer Timer aufgerufen
+[14:33:15] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000106
+[14:34:15] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[14:35:15] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[14:35:52] OnDesireTimer Timer aufgerufen
+[14:36:15] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000139
+[14:37:16] OnEntityTimer: Player Foreach benötigte: 00:00:00.0005257
+[14:38:16] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[14:39:12] OnDesireTimer Timer aufgerufen
+[14:39:16] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000030
+[14:41:41][Warning] resourceManager.Update() took: 113192 ms
+[14:42:09] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[14:43:09] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000021
+[14:44:09] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[14:44:26] OnDesireTimer Timer aufgerufen
+[14:45:09] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[14:46:09] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000041
+[14:47:10] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000043
+[14:47:46] OnDesireTimer Timer aufgerufen
+[14:48:10] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000039
+[14:49:10] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[14:50:10] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000040
+[14:51:06] OnDesireTimer Timer aufgerufen
+[14:51:10] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000042
+[14:52:10] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[14:53:10] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000138
+[14:54:10] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[14:54:26] OnDesireTimer Timer aufgerufen
+[14:55:10] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000078
+[14:56:10] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000050
+[14:57:11] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[14:57:46] OnDesireTimer Timer aufgerufen
+[14:58:11] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000104
+[14:59:11] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000109
+[15:00:11] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000033
+[15:01:06] OnDesireTimer Timer aufgerufen
+[15:01:11] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000047
+[15:02:11] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000042
+[15:03:11] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000039
+[15:04:11] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[15:04:26] OnDesireTimer Timer aufgerufen
+[15:05:11] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000036
+[15:06:11] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000056
+[15:07:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000044
+[15:07:46] OnDesireTimer Timer aufgerufen
+[15:08:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000035
+[15:09:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000109
+[15:10:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000133
+[15:11:06] OnDesireTimer Timer aufgerufen
+[15:11:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000044
+[15:12:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000132
+[15:13:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000031
+[15:14:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000134
+[15:14:26] OnDesireTimer Timer aufgerufen
+[15:15:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000024
+[15:16:12] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000049
+[15:17:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000039
+[15:17:47] OnDesireTimer Timer aufgerufen
+[15:18:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000122
+[15:19:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000044
+[15:20:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000034
+[15:21:07] OnDesireTimer Timer aufgerufen
+[15:21:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000029
+[15:22:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000044
+[15:23:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000042
+[15:24:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000138
+[15:24:27] OnDesireTimer Timer aufgerufen
+[15:25:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000043
+[15:26:13] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000140
+[15:27:14] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[15:27:47] OnDesireTimer Timer aufgerufen
+[15:28:14] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000045
+[15:29:14] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000032
+[15:30:14] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000040
+[15:31:07] OnDesireTimer Timer aufgerufen
+[15:31:14] OnEntityTimer: Player Foreach benötigte: 00:00:00.0000043
